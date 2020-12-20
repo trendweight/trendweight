@@ -42,9 +42,10 @@ const HomeHeader = () => {
             >
               TrendWeight
             </Text>
-            <MotionImage
+            <Image
               src="/assets/logo-line.svg"
-              height={{ base: "32px", md: "48px" } as any}
+              height={{ base: "32px", md: "48px" }}
+              width={{ base: "77.13px", md: "115.7px" }}
             />
           </Flex>
           <Text fontSize={{ base: "20px", md: "22px" }}>
@@ -86,7 +87,7 @@ const Home = () => {
                   colorScheme="green"
                   fontSize={24}
                   fontWeight="normal"
-                  width={450}
+                  width={{ base: "100%", md: "450px" }}
                   p={7}
                 >
                   Learn More
@@ -95,7 +96,7 @@ const Home = () => {
                   colorScheme="brand"
                   fontSize={24}
                   fontWeight="normal"
-                  width={450}
+                  width={{ base: "100%", md: "450px" }}
                   p={7}
                 >
                   Go To Dashboard
@@ -134,20 +135,36 @@ const Home = () => {
               >
                 <MotionImage
                   src="/assets/chart.png"
+                  height={
+                    {
+                      base: "auto",
+                      md: "219.6px",
+                      lg: "283.6px",
+                      xl: "405px",
+                    } as any
+                  }
+                  width={
+                    {
+                      base: "100%",
+                      md: "460.8px",
+                      lg: "595.2px",
+                      xl: "768px",
+                    } as any
+                  }
                   initial={{ x: 100, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.2, delay: 0.1 }}
+                  transition={{ duration: 0.2, delay: 0.4 }}
                 />
                 <MotionImage
                   src="/assets/withings-scale-white.png"
-                  height={{ base: 100, md: 180 } as any}
-                  width={{ base: 100, md: 180 } as any}
+                  height={{ base: 120, md: 180 } as any}
+                  width={{ base: 120, md: 180 } as any}
                   position="absolute"
                   right={5}
                   bottom={0}
                   initial={{ y: 50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.3 }}
+                  transition={{ duration: 0.3, delay: 0.83 }}
                 />
               </Center>
               <Stack
@@ -174,13 +191,18 @@ const Home = () => {
                     <Image
                       src="/assets/withings-app.png"
                       height="200px"
+                      width="184px"
                       pb={4}
                     />
                     <Flex direction="column">
                       <Text fontSize="18px" fontWeight="bold">
                         Works with
                       </Text>
-                      <Image src="/assets/withings-logo.png" height="26px" />
+                      <Image
+                        src="/assets/withings-logo.png"
+                        height="26px"
+                        width="202.27px"
+                      />
                     </Flex>
                   </Flex>
                 </Center>{" "}
@@ -196,12 +218,21 @@ const Home = () => {
                     p={1}
                     // width={{ base: "100%", md: "50%" }}
                   >
-                    <Image src="/assets/fitbit-app.png" height="200px" pb={4} />
+                    <Image
+                      src="/assets/fitbit-app.png"
+                      height="200px"
+                      width="184px"
+                      pb={4}
+                    />
                     <Flex direction="column">
                       <Text fontSize="18px" fontWeight="bold">
                         Works with
                       </Text>
-                      <Image src="/assets/fitbit-logo.png" height="32px" />
+                      <Image
+                        src="/assets/fitbit-logo.png"
+                        height="32px"
+                        width={95.03}
+                      />
                     </Flex>
                   </Flex>
                 </Center>
