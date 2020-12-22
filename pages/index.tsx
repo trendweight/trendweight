@@ -1,13 +1,23 @@
-import { Box, Button, Center, Flex, Grid, Heading, Image, Stack, Text, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  Grid,
+  Heading,
+  Image as ChakraImage,
+  Stack,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import React from "react";
 import Footer from "~/components/Footer";
+import LinkButton from "~/components/LinkButton";
 import { ResponsiveContainer } from "~/components/ResponsiveContainer";
 import { useAuth } from "~/lib/auth";
 
-const MotionImage = motion.custom(Image);
+const MotionImage = motion.custom(ChakraImage);
 
 const Home = () => {
   const auth = useAuth();
@@ -61,8 +71,9 @@ const Header = () => {
             >
               TrendWeight
             </Text>
-            <Image
+            <ChakraImage
               src="/assets/logo-line.svg"
+              alt="logo"
               height={{ base: "32px", md: "48px" }}
               width={{ base: "77.13px", md: "115.7px" }}
             />
@@ -86,18 +97,19 @@ const InfoButtons = () => (
     gridArea="buttons"
     py={10}
   >
-    <Link href="/about">
-      <Button
-        colorScheme="green"
-        fontSize={{ base: 22, md: 24 }}
-        fontWeight="normal"
-        width={{ base: "100%", md: "450px" }}
-        p={{ base: 6, md: 7 }}
-      >
-        Learn More
-      </Button>
-    </Link>
-    <Button
+    <LinkButton
+      href="/about"
+      colorScheme="green"
+      fontSize={{ base: 22, md: 24 }}
+      fontWeight="normal"
+      width={{ base: "100%", md: "450px" }}
+      p={{ base: 6, md: 7 }}
+    >
+      Learn More
+    </LinkButton>
+    <LinkButton
+      href="/dashboard"
+      as="a"
       colorScheme="brand"
       fontSize={{ base: 22, md: 24 }}
       fontWeight="normal"
@@ -105,7 +117,7 @@ const InfoButtons = () => (
       p={{ base: 6, md: 7 }}
     >
       Go To Dashboard
-    </Button>
+    </LinkButton>
   </Stack>
 );
 
@@ -121,9 +133,12 @@ const Blurb = () => (
         <br />
         <Text as="b">Step 2</Text>: There is no Step 2!
       </Text>
+      <Text pb={4}>
+        <i>Losing weight is hard</i>. Don't beat yourself just because your weight is higher today than it was
+        yesterday.
+      </Text>
       <Text>
-        Losing weight is hard. Don't beat yourself just because your weight is higher today than it was yesterday. Our
-        weight fluxuates—it just does. That's completely normal. TrendWeight is a tool that helps you focus on your
+        Our weight fluxuates—it just does. That's completely normal. TrendWeight is a tool that helps you focus on your
         weight <i>trend</i> over time instead of day to day changes.
       </Text>
     </Box>
@@ -221,7 +236,7 @@ const WorksWith = () => {
           key={vendor.name}
         >
           <Flex direction="column" align="center" p={1}>
-            <Image
+            <ChakraImage
               src={vendor.app.src}
               alt={`${vendor.name} app logo`}
               height={vendor.app.height}
@@ -232,7 +247,12 @@ const WorksWith = () => {
               <Text fontSize="16px" fontWeight="bold">
                 Works with
               </Text>
-              <Image src={vendor.logo.src} alt={vendor.name} height={vendor.logo.height} width={vendor.logo.width} />
+              <ChakraImage
+                src={vendor.logo.src}
+                alt={vendor.name}
+                height={vendor.logo.height}
+                width={vendor.logo.width}
+              />
             </Flex>
           </Flex>
         </Center>
@@ -240,7 +260,7 @@ const WorksWith = () => {
       <Box fontSize="1.2rem">
         <Box fontWeight="bold">Enter your daily weight how you like...</Box>
         <Box>
-          <FontAwesomeIcon icon="check" color="green" /> Compatible Smart Scales
+          <FontAwesomeIcon icon="check" color="green" /> Smart Scales / WiFi Scales
         </Box>
         <Box>
           <FontAwesomeIcon icon="check" color="green" /> Withings Health Mate App
