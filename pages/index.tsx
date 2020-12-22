@@ -10,14 +10,14 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { motion } from "framer-motion";
 import React from "react";
 import Footer from "~/components/Footer";
 import LinkButton from "~/components/LinkButton";
 import { ResponsiveContainer } from "~/components/ResponsiveContainer";
 import { useAuth } from "~/lib/auth";
 
-const MotionImage = motion.custom(ChakraImage);
+// const MotionImage = motion.custom(ChakraImage);
+const MotionImage = ChakraImage;
 
 const Home = () => {
   const auth = useAuth();
@@ -31,8 +31,10 @@ const Home = () => {
               templateColumns="2fr 3fr"
               templateAreas={{
                 base: '"blurb blurb" "buttons buttons" "chart chart" "works works" "evolution evolution"',
-                md: '"buttons buttons" "blurb chart" "works works" "evolution evolution"',
+                md: '"blurb chart" "buttons buttons" "works works" "evolution evolution"',
               }}
+              pt={6}
+              rowGap={12}
             >
               <InfoButtons />
               <Blurb />
@@ -95,14 +97,13 @@ const InfoButtons = () => (
     // justify="center"
     width="100%"
     gridArea="buttons"
-    py={10}
   >
     <LinkButton
       href="/about"
       colorScheme="green"
-      fontSize={{ base: 22, md: 24 }}
+      fontSize={{ base: 22, lg: 24 }}
       fontWeight="normal"
-      width={{ base: "100%", md: "450px" }}
+      width={{ base: "100%", md: "33%" }}
       p={{ base: 6, md: 7 }}
     >
       Learn More
@@ -111,9 +112,9 @@ const InfoButtons = () => (
       href="/dashboard"
       as="a"
       colorScheme="brand"
-      fontSize={{ base: 22, md: 24 }}
+      fontSize={{ base: 22, lg: 24 }}
       fontWeight="normal"
-      width={{ base: "100%", md: "450px" }}
+      width={{ base: "100%", md: "33%" }}
       p={{ base: 6, md: 7 }}
     >
       Go To Dashboard
@@ -122,7 +123,7 @@ const InfoButtons = () => (
 );
 
 const Blurb = () => (
-  <Center gridArea="blurb" pr={{ md: 6 }} pb={{ md: 6 }} pt={{ base: 6, md: 0 }}>
+  <Center gridArea="blurb" pr={{ md: 6 }}>
     <Box>
       <Heading fontSize="1.6rem" pb={4}>
         Am I losing weight?
@@ -146,7 +147,7 @@ const Blurb = () => (
 );
 
 const Chart = () => (
-  <Center gridArea="chart" pb={{ base: 4, md: 12 }}>
+  <Center gridArea="chart" pb={8}>
     <Box position="relative">
       <MotionImage
         src="/assets/chart.png"
@@ -161,9 +162,9 @@ const Chart = () => (
         width={850}
         maxW="100%"
         fit="contain"
-        initial={{ x: 100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.2, delay: 0.4 }}
+        // initial={{ x: 100, opacity: 0 }}
+        // animate={{ x: 0, opacity: 1 }}
+        // transition={{ duration: 0.2, delay: 0.4 }}
       />
       <MotionImage
         src="/assets/withings-scale-white.png"
@@ -175,9 +176,9 @@ const Chart = () => (
         position="absolute"
         right={5}
         bottom={"-10%"}
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.83 }}
+        // initial={{ y: 50, opacity: 0 }}
+        // animate={{ y: 0, opacity: 1 }}
+        // transition={{ duration: 0.3, delay: 0.83 }}
       />
     </Box>
   </Center>
@@ -223,7 +224,6 @@ const WorksWith = () => {
       // justify="center"
       width="100%"
       gridArea="works"
-      py={12}
     >
       {vendors.map((vendor) => (
         <Center
