@@ -1,0 +1,43 @@
+import { Box, Flex, Image as ChakraImage, Text, useBreakpointValue } from "@chakra-ui/react";
+import React from "react";
+import { ResponsiveContainer } from "~/components/layout/ResponsiveContainer";
+
+export const HomeHeader = () => {
+  const isNarrow = useBreakpointValue({ base: true, md: false });
+  return (
+    <Box as="nav" bg="brand.500" color="white">
+      <ResponsiveContainer
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        flexWrap="wrap"
+        px={{ base: 4, md: 4 }}
+        py={12}
+      >
+        <Flex direction={"column"}>
+          <Flex direction={"row"} align="center">
+            <Text
+              fontFamily="'Zilla Slab', serif"
+              fontWeight="700"
+              fontSize={{ base: "42px", md: "64px" }}
+              pr={2}
+              lineHeight={1.2}
+            >
+              TrendWeight
+            </Text>
+            <ChakraImage
+              src="/assets/logo-line.svg"
+              alt="logo"
+              height={{ base: "32px", md: "48px" }}
+              width={{ base: "77.13px", md: "115.7px" }}
+            />
+          </Flex>
+          <Text fontSize={{ base: "20px", md: "22px" }}>
+            Automated Weight Tracking{isNarrow ? null : ", Hacker's Diet Style"}
+          </Text>
+        </Flex>
+      </ResponsiveContainer>
+    </Box>
+  );
+};
