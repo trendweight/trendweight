@@ -26,7 +26,7 @@ export const HomeChart = () => (
         fit="contain"
         objectPosition="right bottom"
         position="absolute"
-        right={5}
+        left={5}
         bottom={"-10%"}
       />
     </Box>
