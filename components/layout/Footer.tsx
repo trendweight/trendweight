@@ -6,7 +6,7 @@ import { ResponsiveContainer } from "./ResponsiveContainer";
 
 const Footer = () => {
   return (
-    <ResponsiveContainer py={2} px={4}>
+    <ResponsiveContainer as="footer" py={2} px={4}>
       <Flex direction={{ base: "column", md: "row" }} color="gray.300" align="center" justify="space-between">
         <Text>&copy; 2012-{new Date().getFullYear()} Erv Walter</Text>
         <HStack spacing={{ base: 2, md: 4 }}>

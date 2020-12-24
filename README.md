@@ -1,6 +1,6 @@
 # TrendWeight
 
-This is the source code for the next version of https://trendweight.io
+This is the source code for the next version of https://trendweight.com
 
 ## License
 

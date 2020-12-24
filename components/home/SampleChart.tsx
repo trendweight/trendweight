@@ -1,7 +1,7 @@
 import { Box, Center, Image } from "@chakra-ui/react";
 import React from "react";
 
-export const HomeChart = () => (
+export const SampleChart = () => (
   <Center gridArea="chart" pb={8}>
     <Box position="relative">
       <Image

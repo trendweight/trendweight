@@ -46,7 +46,13 @@ export const WorksWith = () => {
       alignItems="center"
     >
       {vendors.map((vendor) => (
-        <Link href={vendor.url} gridArea={vendor.name} _hover={{ textDecoration: "none" }} target="_blank">
+        <Link
+          href={vendor.url}
+          gridArea={vendor.name}
+          _hover={{ textDecoration: "none" }}
+          target="_blank"
+          key={vendor.name}
+        >
           <Center
             boxSize={220}
             borderRadius={20}
@@ -55,7 +61,6 @@ export const WorksWith = () => {
             borderWidth={1}
             borderStyle="solid"
             _hover={{ backgroundColor: "gray.100" }}
-            key={vendor.name}
           >
             <Flex direction="column" align="center" p={1}>
               <Image
