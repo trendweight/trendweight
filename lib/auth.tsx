@@ -1,17 +1,8 @@
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
 import { createUser } from "./db";
 import firebase from "./firebase";
 
-const authContext = createContext<
-  ReturnType<typeof useProviderAuth> | undefined
->(undefined);
+const authContext = createContext<ReturnType<typeof useProviderAuth> | undefined>(undefined);
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const auth = useProviderAuth();
@@ -50,9 +41,7 @@ export const useProviderAuth = () => {
   };
 
   const signinWithGithub = async () => {
-    const response = await firebase
-      .auth()
-      .signInWithRedirect(new firebase.auth.GithubAuthProvider());
+    await firebase.auth().signInWithRedirect(new firebase.auth.GithubAuthProvider());
   };
 
   const signOut = async () => {

@@ -1,7 +1,7 @@
 import { Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { FC, PropsWithChildren } from "react";
+import React, { FC, PropsWithChildren } from "react";
 
 interface MenuItemProps {
   href?: string;
@@ -9,11 +9,12 @@ interface MenuItemProps {
   show?: boolean;
 }
 
-const Item: FC<PropsWithChildren<MenuItemProps>> = ({ children, ...rest }) => {
+const Item: FC<PropsWithChildren<MenuItemProps>> = React.forwardRef(({ children, ...rest }, ref) => {
   const { pathname } = useRouter();
   const { href, onClick } = rest;
   return (
     <Link
+      ref={ref as any}
       as={href ? "a" : "div"}
       bg={{ base: "white", md: pathname === href ? "brand.400" : "inherit" }}
       color={{ base: pathname === href ? "brand.400" : "brand.900", md: "inherit" }}
@@ -30,7 +31,7 @@ const Item: FC<PropsWithChildren<MenuItemProps>> = ({ children, ...rest }) => {
       {children}
     </Link>
   );
-};
+});
 
 const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, show = true, ...rest }) => {
   if (!show) {

@@ -20,8 +20,7 @@
     "framer-motion": "^3.1.1",
     "next": "10.0.4",
     "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "sharp": "^0.27.0"
+    "react-dom": "17.0.1"
   },
   "devDependencies": {
     "@types/node": "^14.14.16",
