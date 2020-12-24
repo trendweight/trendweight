@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^1.0.3",
-    "@emotion/react": "^11.1.2",
+    "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-brands-svg-icons": "^5.15.1",
