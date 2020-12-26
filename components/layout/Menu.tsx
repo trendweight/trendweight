@@ -1,10 +1,14 @@
 import { Box, Stack, useDisclosure } from "@chakra-ui/react";
+import { useCallback } from "react";
 import { useAuth } from "~/lib/auth";
 import MenuItem from "./MenuItem";
 
 const Menu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const auth = useAuth();
+  const handleSignOut = useCallback(() => {
+    auth.signOut();
+  }, [auth.signOut]);
 
   if (auth.isInitializing) {
     return null;
@@ -47,7 +51,7 @@ const Menu = () => {
         <MenuItem href="/login" show={!isLoggedIn}>
           Sign In
         </MenuItem>
-        <MenuItem onClick={auth.signOut} show={isLoggedIn}>
+        <MenuItem onClick={handleSignOut} show={isLoggedIn}>
           Sign Out
         </MenuItem>
       </Stack>

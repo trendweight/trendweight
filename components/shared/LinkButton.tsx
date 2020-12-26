@@ -2,7 +2,7 @@ import { Button, ButtonProps } from "@chakra-ui/react";
 import Link from "next/link";
 import { FC } from "react";
 
-interface LinkButtonProps extends ButtonProps {
+export interface LinkButtonProps extends ButtonProps {
   href: string;
 }
 
