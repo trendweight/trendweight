@@ -1,8 +1,8 @@
 import { Box, Flex, Image as ChakraImage, Text, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
-import { ResponsiveContainer } from "~/components/layout/ResponsiveContainer";
+import ResponsiveContainer from "~/components/layout/ResponsiveContainer";
 
-export const Banner = () => {
+const Banner = () => {
   const isNarrow = useBreakpointValue({ base: true, md: false });
   return (
     <Box as="header" bg="brand.500" color="white">
@@ -41,3 +41,5 @@ export const Banner = () => {
     </Box>
   );
 };
+
+export default Banner;

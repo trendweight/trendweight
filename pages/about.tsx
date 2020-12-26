@@ -1,14 +1,7 @@
-import { Text } from "@chakra-ui/react";
-import Head from "next/head";
-import Layout from "~/components/layout/Layout";
+import Page from "~/components/layout/Page";
 
-export default function About() {
-  return (
-    <Layout>
-      <Head>
-        <title>About - TrendWeight</title>
-      </Head>
-      <Text>About Page </Text>
-    </Layout>
-  );
-}
+const About = () => {
+  return <Page title="About">About Page</Page>;
+};
+
+export default About;

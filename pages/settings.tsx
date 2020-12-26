@@ -1,13 +1,4 @@
-import { Box } from "@chakra-ui/react";
-import Head from "next/head";
-import Layout from "~/components/layout/Layout";
+import AuthenticatedPage from "~/components/layout/AuthenticatedPage";
 
-const Settings = () => (
-  <Layout>
-    <Head>
-      <title>Settings - TrendWeight</title>
-    </Head>
-    <Box>Settings Page</Box>
-  </Layout>
-);
+const Settings = () => <AuthenticatedPage title="Settings">Settings Page</AuthenticatedPage>;
 export default Settings;

@@ -1,8 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import { FC, PropsWithChildren } from "react";
 import Footer from "./Footer";
-import { Header } from "./Header";
-import { ResponsiveContainer } from "./ResponsiveContainer";
+import Header from "./Header";
+import ResponsiveContainer from "./ResponsiveContainer";
 
 const Layout: FC<PropsWithChildren<{}>> = ({ children }) => (
   <Flex direction="column" minH="100vh">

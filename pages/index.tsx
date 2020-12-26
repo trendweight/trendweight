@@ -1,12 +1,12 @@
 import { Flex, Grid } from "@chakra-ui/react";
 import React from "react";
-import { Banner } from "~/components/home/Banner";
-import { Blurb } from "~/components/home/Blurb";
-import { InfoButtons } from "~/components/home/InfoButtons";
-import { SampleChart } from "~/components/home/SampleChart";
-import { WorksWith } from "~/components/home/WorksWith";
+import Banner from "~/components/home/Banner";
+import Blurb from "~/components/home/Blurb";
+import InfoButtons from "~/components/home/InfoButtons";
+import SampleChart from "~/components/home/SampleChart";
+import WorksWith from "~/components/home/WorksWith";
 import Footer from "~/components/layout/Footer";
-import { ResponsiveContainer } from "~/components/layout/ResponsiveContainer";
+import ResponsiveContainer from "~/components/layout/ResponsiveContainer";
 
 const Home = () => {
   return (

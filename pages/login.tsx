@@ -1,26 +1,24 @@
 import { Button } from "@chakra-ui/react";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import Layout from "~/components/layout/Layout";
+import Page from "~/components/layout/Page";
 import { useAuth } from "~/lib/auth";
 
-export default function Home() {
+const Login = () => {
   const auth = useAuth();
   const router = useRouter();
-  if (auth.isInitializing) {
-    return <Layout />;
-  }
-  if (auth.user) {
-    router.push("/dashboard");
+  if (auth.isInitializing || auth.user) {
+    if (auth.user) {
+      router.push("/dashboard");
+    }
     return <Layout />;
   } else {
     return (
-      <Layout>
-        <Head>
-          <title>Sign In - TrendWeight</title>
-        </Head>
+      <Page title="Sign In">
         <Button onClick={(e) => auth.signinWithGithub()}>Sign In</Button>
-      </Layout>
+      </Page>
     );
   }
-}
+};
+
+export default Login;

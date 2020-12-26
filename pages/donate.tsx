@@ -1,13 +1,7 @@
-import { Box } from "@chakra-ui/react";
-import Head from "next/head";
-import Layout from "~/components/layout/Layout";
+import Page from "~/components/layout/Page";
 
-const Donate = () => (
-  <Layout>
-    <Head>
-      <title>Donate - TrendWeight</title>
-    </Head>
-    <Box>Donate Page</Box>
-  </Layout>
-);
+const Donate = () => {
+  return <Page title="Donate">Donate Page</Page>;
+};
+
 export default Donate;

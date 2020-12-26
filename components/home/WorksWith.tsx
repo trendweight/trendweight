@@ -33,7 +33,7 @@ const vendors = [
   },
 ];
 
-export const WorksWith = () => {
+const WorksWith = () => {
   return (
     <Grid
       gridArea="works"
@@ -95,3 +95,5 @@ export const WorksWith = () => {
     </Grid>
   );
 };
+
+export default WorksWith;

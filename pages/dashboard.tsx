@@ -1,13 +1,4 @@
-import { Box } from "@chakra-ui/react";
-import Head from "next/head";
-import Layout from "~/components/layout/Layout";
+import AuthenticatedPage from "~/components/layout/AuthenticatedPage";
 
-const Dashboard = () => (
-  <Layout>
-    <Head>
-      <title>Dashboard - TrendWeight</title>
-    </Head>
-    <Box>Dashboard Page</Box>
-  </Layout>
-);
+const Dashboard = () => <AuthenticatedPage title="Dashboard">Dashboard Page</AuthenticatedPage>;
 export default Dashboard;

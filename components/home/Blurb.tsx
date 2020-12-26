@@ -1,7 +1,7 @@
 import { Box, Center, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 
-export const Blurb = () => (
+const Blurb = () => (
   <Center gridArea="blurb" pr={{ md: 6 }}>
     <Box>
       <Heading fontSize="1.6rem" pb={4}>
@@ -24,3 +24,5 @@ export const Blurb = () => (
     </Box>
   </Center>
 );
+
+export default Blurb;
