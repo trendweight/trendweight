@@ -40,6 +40,25 @@ const theme = extendTheme({
     medium: 500,
     bold: 700,
   },
+  components: {
+    Button: {
+      defaultProps: {
+        colorScheme: "brand",
+      },
+    },
+    Link: {
+      baseStyle: {
+        color: "brand.400",
+        _hover: { color: "brand.800" },
+      },
+      variants: {
+        footer: {
+          color: "gray.300",
+          _hover: { color: "gray.800" },
+        },
+      },
+    },
+  },
 });
 
 export default theme;

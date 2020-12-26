@@ -4,8 +4,9 @@ import { FC, PropsWithChildren, ReactElement } from "react";
 import { useAuth } from "~/lib/auth";
 import Layout from "./Layout";
 
-const AuthenticatedPage: FC<PropsWithChildren<{ title: string; placeholder?: ReactElement }>> = ({
+const AuthenticatedPage: FC<PropsWithChildren<{ title: string; flex?: boolean; placeholder?: ReactElement }>> = ({
   title,
+  flex,
   placeholder,
   children,
 }) => {
@@ -17,7 +18,7 @@ const AuthenticatedPage: FC<PropsWithChildren<{ title: string; placeholder?: Rea
       router.push("/login");
     }
     return (
-      <Layout>
+      <Layout flex={flex}>
         <Head>
           <title>{title} - TrendWWeight</title>
         </Head>
@@ -27,7 +28,7 @@ const AuthenticatedPage: FC<PropsWithChildren<{ title: string; placeholder?: Rea
   }
 
   return (
-    <Layout>
+    <Layout flex={flex}>
       <Head>
         <title>{title} - TrendWWeight</title>
       </Head>

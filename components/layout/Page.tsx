@@ -2,9 +2,9 @@ import Head from "next/head";
 import { FC, PropsWithChildren } from "react";
 import Layout from "./Layout";
 
-const Page: FC<PropsWithChildren<{ title: string }>> = ({ title, children }) => {
+const Page: FC<PropsWithChildren<{ title: string; flex?: boolean }>> = ({ title, flex, children }) => {
   return (
-    <Layout>
+    <Layout flex={flex}>
       <Head>
         <title>{title} - TrendWWeight</title>
       </Head>

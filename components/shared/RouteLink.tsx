@@ -1,11 +1,21 @@
-import { Link as ChakraLink } from "@chakra-ui/react";
-import NextLink, { LinkProps } from "next/link";
-import { FC } from "react";
+import { Link as ChakraLink, LinkProps as ChakraLinkProps } from "@chakra-ui/react";
+import NextLink, { LinkProps as NextLinkProps } from "next/link";
+import { FC, PropsWithChildren } from "react";
 
-const RouteLink: FC<LinkProps> = ({ children, ...rest }) => {
+export type RouteLinkProps = PropsWithChildren<NextLinkProps & Omit<ChakraLinkProps, "as">>;
+
+const RouteLink: FC<RouteLinkProps> = ({ href, as, replace, scroll, shallow, prefetch, children, ...chakraProps }) => {
   return (
-    <NextLink passHref {...rest}>
-      <ChakraLink>{children}</ChakraLink>
+    <NextLink
+      passHref={true}
+      href={href}
+      as={as}
+      replace={replace}
+      scroll={scroll}
+      shallow={shallow}
+      prefetch={prefetch}
+    >
+      <ChakraLink {...chakraProps}>{children}</ChakraLink>
     </NextLink>
   );
 };
