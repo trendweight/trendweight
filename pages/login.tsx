@@ -5,7 +5,6 @@ import {
   FormControl,
   FormControlProps,
   FormErrorMessage,
-  FormLabel,
   Heading,
   Input,
   Stack,
@@ -88,28 +87,24 @@ const Login = () => {
               <Heading size="md" color="brand.500">
                 Sign In
               </Heading>
-              <FloatingFormControl id="email" isInvalid={errors.email}>
+              <FormControl id="email" isInvalid={errors.email}>
                 <Input
                   type="email"
                   name="email"
                   placeholder="Email"
                   ref={register({ required: "Email is required" })}
-                  variant="flushed"
                 />
-                <FormLabel>Email</FormLabel>
                 <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
-              </FloatingFormControl>
-              <FloatingFormControl id="password" isInvalid={errors.password}>
+              </FormControl>
+              <FormControl id="password" isInvalid={errors.password}>
                 <Input
                   type="password"
                   name="password"
                   placeholder="Password"
                   ref={register({ required: "Password is required" })}
-                  variant="flushed"
                 />
                 <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
-                <FormLabel>Password</FormLabel>
-              </FloatingFormControl>
+              </FormControl>
               <Stack direction="row" align="center">
                 <Button isLoading={formState.isSubmitting} type="submit">
                   Sign In
