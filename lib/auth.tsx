@@ -10,7 +10,11 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 export const useAuth = () => {
-  return useContext(authContext)!;
+  const auth = useContext(authContext);
+  if (!auth) {
+    throw new Error("Called useAuth() when the provider is not present.");
+  }
+  return auth;
 };
 
 const formatUser = (user: firebase.User) => {

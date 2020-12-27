@@ -6,22 +6,20 @@ const SampleChart = () => (
     <Box position="relative">
       <Image
         src="/assets/chart.png"
-        height={
-          {
-            base: "auto",
-            md: 220,
-            lg: 285,
-            xl: 370,
-          } as any
-        }
+        height={{
+          base: "auto",
+          md: 220,
+          lg: 285,
+          xl: 370,
+        }}
         width={850}
         maxW="100%"
         fit="contain"
       />
       <Image
         src="/assets/withings-scale-white.png"
-        height={{ base: 120, md: 180 } as any}
-        width={{ base: 120, md: 180 } as any}
+        height={{ base: 120, md: 180 }}
+        width={{ base: 120, md: 180 }}
         maxW="25%"
         fit="contain"
         objectPosition="right bottom"

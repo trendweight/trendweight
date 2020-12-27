@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import Layout from "~/components/layout/Layout";
 import Page from "~/components/layout/Page";
 import { useAuth } from "~/lib/auth";
 
@@ -10,7 +9,7 @@ const Register = () => {
     if (auth.user) {
       router.push("/dashboard");
     }
-    return <Layout />;
+    return <Page title="Register" />;
   } else {
     return <Page title="Register">Register Page</Page>;
   }

@@ -3,7 +3,6 @@ import {
   Button,
   Center,
   FormControl,
-  FormControlProps,
   FormErrorMessage,
   FormLabel,
   Heading,
@@ -11,41 +10,12 @@ import {
   Stack,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { css } from "@emotion/react";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Layout from "~/components/layout/Layout";
 import Page from "~/components/layout/Page";
 import RouteLink from "~/components/shared/RouteLink";
 import { useAuth } from "~/lib/auth";
-
-const FloatingFormControl: FC<FormControlProps> = (props) => {
-  return (
-    <FormControl
-      {...props}
-      css={css`
-        position: relative;
-        padding-top: 0.3rem;
-        & > label {
-          position: absolute;
-          top: 0.8rem;
-          opacity: 0;
-          transition: all 0.3s ease;
-          transform-origin: top left;
-        }
-        & > input:not(:placeholder-shown) {
-          // padding: 28px 0px 12px 0px;
-        }
-        & > input:not(:placeholder-shown) + label {
-          transform-origin: top left;
-          transform: translateY(-1.2rem) scale(0.75);
-          opacity: 0.7;
-        }
-      `}
-    />
-  );
-};
 
 const Login = () => {
   const auth = useAuth();
@@ -67,7 +37,7 @@ const Login = () => {
     if (auth.user) {
       router.push("/dashboard");
     }
-    return <Layout />;
+    return <Page title="Sign In" />;
   } else {
     return (
       <Page title="Sign In">

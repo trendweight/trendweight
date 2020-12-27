@@ -14,6 +14,7 @@ const Item: FC<PropsWithChildren<MenuItemProps>> = React.forwardRef(({ children,
   const { href, onClick } = rest;
   return (
     <Link
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref={ref as any}
       as={href ? "a" : "div"}
       bg={{ base: "white", md: pathname === href ? "brand.400" : "inherit" }}
@@ -32,6 +33,8 @@ const Item: FC<PropsWithChildren<MenuItemProps>> = React.forwardRef(({ children,
     </Link>
   );
 });
+
+Item.displayName = "Item";
 
 const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, show = true, ...rest }) => {
   if (!show) {

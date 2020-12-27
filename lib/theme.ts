@@ -2,7 +2,7 @@ import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
   styles: {
-    global: (props) => ({
+    global: (_props) => ({
       html: {
         minWidth: "360px",
         scrollBehavior: "smooth",

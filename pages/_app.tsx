@@ -12,10 +12,7 @@ function App({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme} resetCSS>
         <Head>
           <title>TrendWeight</title>
-          <meta
-            name="viewport"
-            content="width=device-width,initial-scale=1,shrink-to-fit=no"
-          />
+          <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Component {...pageProps} />
