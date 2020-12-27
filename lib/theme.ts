@@ -41,6 +41,22 @@ const theme = extendTheme({
     bold: 700,
   },
   components: {
+    Input: {
+      variants: {
+        outline: {
+          field: {
+            backgroundColor: "white",
+          },
+        },
+        flushed: {
+          field: {
+            _invalid: {
+              boxShadow: "none",
+            },
+          },
+        },
+      },
+    },
     Button: {
       defaultProps: {
         colorScheme: "brand",

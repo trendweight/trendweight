@@ -40,8 +40,9 @@ export const useProviderAuth = () => {
     }
   };
 
-  const signinWithGithub = async () => {
-    await firebase.auth().signInWithRedirect(new firebase.auth.GithubAuthProvider());
+  const signInWithPassword = async (email: string, password: string) => {
+    const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
+    handleUser(user);
   };
 
   const signOut = async () => {
@@ -67,7 +68,7 @@ export const useProviderAuth = () => {
   return {
     isInitializing,
     user,
-    signinWithGithub,
+    signInWithPassword,
     signOut,
   };
 };
