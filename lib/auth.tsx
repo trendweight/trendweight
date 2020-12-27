@@ -1,11 +1,17 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
-import { createUser } from "./db";
-import firebase from "./firebase";
+import { createOrUpdateUser, getUserData } from "./db";
+import firebase, { auth } from "./firebase";
 
-const authContext = createContext<ReturnType<typeof useProviderAuth> | undefined>(undefined);
+interface User {
+  uid: string;
+  email: string | null;
+  token: string;
+}
+
+const authContext = createContext<ReturnType<typeof useCreateAuth> | undefined>(undefined);
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const auth = useProviderAuth();
+  const auth = useCreateAuth();
   return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 };
 
@@ -17,26 +23,21 @@ export const useAuth = () => {
   return auth;
 };
 
-const formatUser = (user: firebase.User) => {
-  return {
-    uid: user.uid,
-    email: user.email,
-    name: user.displayName,
-    provider: user.providerData[0]?.providerId,
-  };
-};
-
-type User = ReturnType<typeof formatUser>;
-
-export const useProviderAuth = () => {
+export const useCreateAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
 
-  const handleUser = (rawUser: firebase.User | null) => {
+  const handleUserChange = async (rawUser: firebase.User | null) => {
     if (rawUser) {
-      const user = formatUser(rawUser);
-      createUser(user.uid, user);
+      const { uid, email } = rawUser;
+      const tokenPromise = rawUser.getIdToken();
+      const dataPromise = getUserData(uid);
+      const token = await tokenPromise;
+      const data = (await dataPromise).data();
+      const user = { ...data, uid, email, token };
       setUser(user);
+      console.log("user", user);
+      createOrUpdateUser(uid, { uid, email });
       return user;
     } else {
       setUser(null);
@@ -45,25 +46,23 @@ export const useProviderAuth = () => {
   };
 
   const signInWithPassword = async (email: string, password: string) => {
-    const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
-    handleUser(user);
+    const { user } = await auth.signInWithEmailAndPassword(email, password);
+    handleUserChange(user);
   };
 
   const signOut = async () => {
-    await firebase.auth().signOut();
-    handleUser(null);
+    await auth.signOut();
+    handleUserChange(null);
   };
 
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        handleUser(user);
+        handleUserChange(user);
       } else {
-        handleUser(null);
+        handleUserChange(null);
       }
-      if (isInitializing) {
-        setIsInitializing(false);
-      }
+      setIsInitializing(false);
     });
 
     return () => unsubscribe();

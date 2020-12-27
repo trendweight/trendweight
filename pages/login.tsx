@@ -67,7 +67,9 @@ const Login = () => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  ref={register({ required: "Email is required" })}
+                  ref={register({
+                    required: "Please enter your email",
+                  })}
                 />
                 <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
               </FormControl>
@@ -79,7 +81,7 @@ const Login = () => {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  ref={register({ required: "Password is required" })}
+                  ref={register({ required: "Please enter your password" })}
                 />
                 <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
               </FormControl>
