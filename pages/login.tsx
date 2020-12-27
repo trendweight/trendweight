@@ -5,9 +5,11 @@ import {
   FormControl,
   FormControlProps,
   FormErrorMessage,
+  FormLabel,
   Heading,
   Input,
   Stack,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 import { useRouter } from "next/router";
@@ -88,6 +90,9 @@ const Login = () => {
                 Sign In
               </Heading>
               <FormControl id="email" isInvalid={errors.email}>
+                <VisuallyHidden>
+                  <FormLabel>Email</FormLabel>
+                </VisuallyHidden>
                 <Input
                   type="email"
                   name="email"
@@ -97,6 +102,9 @@ const Login = () => {
                 <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
               </FormControl>
               <FormControl id="password" isInvalid={errors.password}>
+                <VisuallyHidden>
+                  <FormLabel>Password</FormLabel>
+                </VisuallyHidden>
                 <Input
                   type="password"
                   name="password"
