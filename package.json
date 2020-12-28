@@ -5,7 +5,8 @@
   "scripts": {
     "postinstall": "husky install",
     "dev": "next dev",
-    "build": "next build",
+    "build": "run-s lint build:next",
+    "build:next": "next build",
     "start": "next start",
     "prettier": "prettier -w **/*.ts **/*.tsx",
     "lint": "run-s lint:eslint lint:prettier",
