@@ -9,7 +9,6 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-      time: "09:00"
       timezone: "America/Chicago"
     allow:
       - dependency-type: "direct"
