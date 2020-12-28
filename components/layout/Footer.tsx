@@ -17,6 +17,9 @@ const Footer = () => {
             <Link href="https://facebook.com/trendweight" px={{ base: 1, md: 2 }} isExternal variant="footer">
               <FontAwesomeIcon icon={["fab", "facebook"]} />
             </Link>
+            <Link href="https://github.com/trendweight" px={{ base: 1, md: 2 }} isExternal variant="footer">
+              <FontAwesomeIcon icon={["fab", "github"]} />
+            </Link>
             <Link href="https://blog.trendweight.com" px={{ base: 1, md: 2 }} isExternal variant="footer">
               <FontAwesomeIcon icon="rss" />
             </Link>
