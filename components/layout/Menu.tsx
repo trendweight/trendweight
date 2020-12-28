@@ -8,7 +8,7 @@ const Menu = () => {
   const auth = useAuth();
   const handleSignOut = useCallback(() => {
     auth.signOut();
-  }, [auth.signOut]);
+  }, [auth]);
 
   if (auth.isInitializing) {
     return null;
