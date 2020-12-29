@@ -56,11 +56,11 @@ export const useCreateAuth = () => {
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        handleUserChange(user);
+        await handleUserChange(user);
       } else {
-        handleUserChange(null);
+        await handleUserChange(null);
       }
       setIsInitializing(false);
     });
