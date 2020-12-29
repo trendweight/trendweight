@@ -3,5 +3,7 @@
     "editor.codeActionsOnSave": {
         "source.organizeImports": true
     },
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "git.pruneOnFetch": true,
+    "git.rebaseWhenSync": true
 }
