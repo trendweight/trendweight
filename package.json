@@ -14,7 +14,7 @@
     "lint:prettier": "prettier -c **/*.ts **/*.tsx"
   },
   "dependencies": {
-    "@chakra-ui/react": "^1.0.3",
+    "@chakra-ui/react": "^1.1.0",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -28,13 +28,13 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-hook-form": "^6.13.1",
-    "react-query": "^3.5.5"
+    "react-query": "^3.5.6"
   },
   "devDependencies": {
     "@types/node": "^14.14.16",
     "@types/react": "^17.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.11.0",
-    "@typescript-eslint/parser": "^4.11.0",
+    "@typescript-eslint/eslint-plugin": "^4.11.1",
+    "@typescript-eslint/parser": "^4.11.1",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-react": "^7.21.5",
