@@ -10,37 +10,20 @@ const InfoButtons = () => {
     as: "a",
     fontSize: { base: 22, lg: 24 },
     fontWeight: "normal",
-    width: { base: "100%", md: "35%" },
+    width: { base: "100%", md: "320px" },
     p: { base: 6, md: 7 },
   };
 
+  const getStartedUrl = isInitializing || !user ? "/register" : "/dashboard";
+
   return (
-    <Stack
-      direction={{ base: "column", md: "row" }}
-      spacing={4}
-      align="center"
-      width="100%"
-      gridArea="buttons"
-      visibility={isInitializing ? "hidden" : "visible"}
-    >
+    <Stack direction={{ base: "column", md: "row" }} spacing={4} align="center" width="100%" gridArea="buttons">
       <LinkButton href="/about" colorScheme="green" {...commonProps}>
         Learn More
       </LinkButton>
-      {!!user && (
-        <LinkButton href="/dashboard" colorScheme="brand" {...commonProps}>
-          Go To Dashboard
-        </LinkButton>
-      )}
-      {!user && (
-        <>
-          <LinkButton href="/register" colorScheme="brand" {...commonProps}>
-            Register
-          </LinkButton>
-          <LinkButton href="/login" colorScheme="brand" {...commonProps}>
-            Sign In
-          </LinkButton>
-        </>
-      )}
+      <LinkButton href={getStartedUrl} colorScheme="brand" {...commonProps}>
+        Get Started
+      </LinkButton>
     </Stack>
   );
 };
