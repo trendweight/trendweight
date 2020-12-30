@@ -8,10 +8,10 @@
     "build": "run-s lint build:next",
     "build:next": "next build",
     "start": "next start",
-    "prettier": "prettier -w **/*.ts **/*.tsx",
+    "prettier": "prettier -w src/**/*.ts src/**/*.tsx",
     "lint": "run-s lint:eslint lint:prettier",
-    "lint:eslint": "eslint .",
-    "lint:prettier": "prettier -c **/*.ts **/*.tsx"
+    "lint:eslint": "eslint src",
+    "lint:prettier": "prettier -c src/**/*.ts src/**/*.tsx"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.1.0",
