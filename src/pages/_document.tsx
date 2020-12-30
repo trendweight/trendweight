@@ -6,7 +6,17 @@ class Document extends BaseDocument {
       <Html>
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link
+            rel="preload"
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+            as="style"
+          />
           <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+          <link
+            rel="preload"
+            href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&display=swap"
+            as="style"
+          />
           <link
             href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&display=swap"
             rel="stylesheet"
