@@ -6,7 +6,7 @@ const Page: FC<PropsWithChildren<{ title: string; flex?: boolean }>> = ({ title,
   return (
     <Layout flex={flex}>
       <Head>
-        <title>{title} - TrendWWeight</title>
+        <title>{title} - TrendWeight</title>
       </Head>
       {children}
     </Layout>
