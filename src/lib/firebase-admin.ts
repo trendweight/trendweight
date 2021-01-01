@@ -6,8 +6,6 @@ const config = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
 };
 
-console.log(config.privateKey);
-
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(config),

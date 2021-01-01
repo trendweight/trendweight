@@ -33,5 +33,6 @@ const Home = () => {
 };
 
 Home.bypassShell = true;
+Home.title = "TrendWeight";
 
 export default Home;
