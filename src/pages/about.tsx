@@ -1,7 +1,9 @@
-import Page from "~/components/layout/Page";
+import { Box } from "@chakra-ui/react";
 
 const About = () => {
-  return <Page title="About">About Page</Page>;
+  return <Box>About Page</Box>;
 };
+
+About.title = "About";
 
 export default About;

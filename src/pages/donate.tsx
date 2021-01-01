@@ -1,7 +1,7 @@
-import Page from "~/components/layout/Page";
+import { Box } from "@chakra-ui/react";
 
-const Donate = () => {
-  return <Page title="Donate">Donate Page</Page>;
-};
+const Donate = () => <Box>Donate Page</Box>;
+
+Donate.title = "Donate";
 
 export default Donate;

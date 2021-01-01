@@ -1,6 +1,6 @@
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import Page from "~/components/layout/Page";
-import { useAuth } from "~/lib/auth";
+import { useAuth } from "~/lib/hooks/auth";
 
 const Register = () => {
   const auth = useAuth();
@@ -9,10 +9,12 @@ const Register = () => {
     if (auth.user) {
       router.push("/dashboard");
     }
-    return <Page title="Register" />;
+    return null;
   } else {
-    return <Page title="Register">Register Page</Page>;
+    return <Box>Register Page</Box>;
   }
 };
+
+Register.title = "Register";
 
 export default Register;

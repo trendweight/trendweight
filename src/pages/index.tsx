@@ -32,4 +32,6 @@ const Home = () => {
   );
 };
 
+Home.bypassShell = true;
+
 export default Home;

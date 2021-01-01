@@ -6,6 +6,10 @@ export const setJwt = (value: string | null) => {
 
 const http = async <T>(path: string, config: RequestInit): Promise<T> => {
   const request = new Request(path, config);
+  if (config.method !== "get") {
+    request.headers.append("Content-Type", "application/json");
+  }
+  request.headers.append("Accept", "application/json");
   if (jwt) {
     request.headers.append("Authorization", `Bearer ${jwt}`);
   }

@@ -1,16 +1,20 @@
-import Head from "next/head";
+import { useRouter } from "next/router";
 import { FC, PropsWithChildren } from "react";
+import { useAuth } from "~/lib/hooks/auth";
 import Layout from "./Layout";
 
-const Page: FC<PropsWithChildren<{ title: string; flex?: boolean }>> = ({ title, flex, children }) => {
-  return (
-    <Layout flex={flex}>
-      <Head>
-        <title>{title} - TrendWeight</title>
-      </Head>
-      {children}
-    </Layout>
-  );
+const Page: FC<PropsWithChildren<{ requireLogin?: boolean }>> = ({ requireLogin, children }) => {
+  const auth = useAuth();
+  const router = useRouter();
+
+  if (requireLogin && !auth.user) {
+    if (!auth.isInitializing) {
+      router.push("/login");
+    }
+    return <Layout />;
+  }
+
+  return <Layout>{children}</Layout>;
 };
 
 export default Page;

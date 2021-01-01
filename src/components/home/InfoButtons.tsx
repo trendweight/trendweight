@@ -1,7 +1,7 @@
 import { Stack } from "@chakra-ui/react";
 import React from "react";
 import LinkButton, { LinkButtonProps } from "~/components/shared/LinkButton";
-import { useAuth } from "~/lib/auth";
+import { useAuth } from "~/lib/hooks/auth";
 
 const InfoButtons = () => {
   const { isInitializing, user } = useAuth();

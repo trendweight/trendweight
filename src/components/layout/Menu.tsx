@@ -1,6 +1,6 @@
 import { Box, Stack, useDisclosure } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { useAuth } from "~/lib/auth";
+import { useAuth } from "~/lib/hooks/auth";
 import MenuItem from "./MenuItem";
 
 const Menu = () => {

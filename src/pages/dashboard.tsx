@@ -1,4 +1,8 @@
-import AuthenticatedPage from "~/components/layout/AuthenticatedPage";
+import { Box } from "@chakra-ui/react";
 
-const Dashboard = () => <AuthenticatedPage title="Dashboard">Dashboard Page</AuthenticatedPage>;
+const Dashboard = () => <Box>Dashboard Page</Box>;
+
+Dashboard.title = "Dashboard";
+Dashboard.requireLogin = true;
+
 export default Dashboard;
