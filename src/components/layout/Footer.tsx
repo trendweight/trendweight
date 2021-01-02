@@ -30,12 +30,9 @@ const Footer = () => {
           <RouteLink href="/donate" variant="footer">
             Donate
           </RouteLink>
-          <Link href="" isExternal variant="footer">
+          <RouteLink href="/privacy" variant="footer">
             Privacy
-          </Link>
-          <Link href="" isExternal variant="footer">
-            Cookies
-          </Link>
+          </RouteLink>
         </HStack>
       </Flex>
     </ResponsiveContainer>
