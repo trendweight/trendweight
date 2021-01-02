@@ -3,8 +3,8 @@ import { Box, Heading, Image, Link, Text } from "@chakra-ui/react";
 const Privacy = () => {
   return (
     <Box maxW={900}>
-      <Heading as="h2" size="lg" mt={4}>
-        Privacy Policy
+      <Heading as="h2" size="md" mt={4}>
+        Our Privacy Policy
       </Heading>
       <Image src="/assets/privacy.svg" my={4} ml={4} float="right" height={{ base: 120, md: 200 }} />
       <Text as="p" mt={4} lineHeight="tall">
@@ -29,6 +29,16 @@ const Privacy = () => {
         We don’t share any personally identifying information publicly or with third-parties, except when required to by
         law.
       </Text>
+      <Text as="p" mt={4} lineHeight="tall">
+        We collect analytics to understand how many people visit the site and what kinds of devices they use. However,
+        our analytics software does not use cookies and does not collect any personally identifiable information. You
+        can see their data privacy policy{" "}
+        <Link href="https://plausible.io/data-policy" isExternal>
+          here
+        </Link>
+        .
+      </Text>
+
       <Text as="p" mt={4} lineHeight="tall">
         Our website may link to external sites that are not operated by us. Please be aware that we have no control over
         the content and practices of these sites, and cannot accept responsibility or liability for their respective

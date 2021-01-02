@@ -64,7 +64,8 @@ const theme = extendTheme({
     },
     Link: {
       baseStyle: {
-        color: "brand.400",
+        color: "brand.600",
+        fontWeight: "medium",
         _hover: { color: "brand.800" },
       },
       variants: {
