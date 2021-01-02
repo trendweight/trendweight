@@ -1,6 +1,8 @@
 import { Box } from "@chakra-ui/react";
 
-const Donate = () => <Box>Donate Page</Box>;
+const Donate = () => {
+  return <Box>Donate Page</Box>;
+};
 
 Donate.title = "Donate";
 

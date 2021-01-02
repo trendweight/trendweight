@@ -21,7 +21,7 @@ class Document extends BaseDocument {
             href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&display=swap"
             rel="stylesheet"
           ></link>
-          <script async defer data-domain="beta.trendweight.io" src="https://plausible.io/js/plausible.js"></script>
+          <script async defer data-domain="trendweight.io" src="https://plausible.io/js/plausible.js"></script>
         </Head>
         <body>
           <Main />

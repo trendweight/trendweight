@@ -1,11 +1,12 @@
-import { Container, Heading, Link, Text } from "@chakra-ui/react";
+import { Box, Heading, Image, Link, Text } from "@chakra-ui/react";
 
 const Privacy = () => {
   return (
-    <Container maxW={960}>
-      <Heading as="h2" size="lg" my={12}>
+    <Box maxW={900}>
+      <Heading as="h2" size="lg" mt={4}>
         Privacy Policy
       </Heading>
+      <Image src="/assets/privacy.svg" my={4} ml={4} float="right" height={{ base: 120, md: 200 }} />
       <Text as="p" mt={4} lineHeight="tall">
         Your privacy is important to us. It is TrendWeight's policy to respect your privacy regarding any information we
         may collect from you across our web app,{" "}
@@ -43,10 +44,10 @@ const Privacy = () => {
         information. If you have any questions about how we handle user data and personal information, feel free to
         contact us.
       </Text>
-      <Text as="p" mt={4} lineHeight="tall">
+      <Text as="p" mt={4} lineHeight="tall" fontStyle="italic">
         This policy is effective as of January 1, 2021.
       </Text>
-    </Container>
+    </Box>
   );
 };
 
