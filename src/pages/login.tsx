@@ -14,9 +14,10 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import RouteLink from "~/components/shared/RouteLink";
+import { Page } from "~/lib/core/interfaces";
 import { useAuth } from "~/lib/hooks/auth";
 
-const Login = () => {
+const Login: Page = () => {
   const auth = useAuth();
   const router = useRouter();
   const [loginFailed, setLoginFailed] = useState<string | undefined>(undefined);

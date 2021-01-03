@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
+import { Page } from "~/lib/core/interfaces";
 
-const Donate = () => {
+const Donate: Page = () => {
   return <Box>Donate Page</Box>;
 };
 

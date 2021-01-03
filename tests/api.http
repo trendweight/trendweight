@@ -1,2 +1,7 @@
 GET http://localhost:3000/api/whoami
 Authorization: Bearer {{$dotenv TEST_JWT}}
+
+###
+
+GET http://localhost:3000/api/withings/getAuthUrl
+Authorization: Bearer {{$dotenv TEST_JWT}}

@@ -1,7 +1,6 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
-import { createOrUpdateUser, getUserData } from "../db";
-import { setJwt } from "../fetch";
-import firebase, { auth } from "../firebase";
+import { setDefaultFetchOptions } from "~/lib/api/fetch";
+import firebase, { auth } from "~/lib/firebase";
 
 interface User {
   uid: string;
@@ -31,19 +30,15 @@ export const useCreateAuth = () => {
   const handleUserChange = async (rawUser: firebase.User | null) => {
     if (rawUser) {
       const { uid, email } = rawUser;
-      const tokenPromise = rawUser.getIdToken();
-      const dataPromise = getUserData(uid);
-      const token = await tokenPromise;
-      const data = (await dataPromise).data();
-      const user = { ...data, uid, email, token };
+      const token = await rawUser.getIdToken();
+      const user: User = { uid, email, token };
       console.log("user", user);
       setUser(user);
-      setJwt(token);
-      createOrUpdateUser(uid, { uid, email });
+      setDefaultFetchOptions({ token }, true);
       return user;
     } else {
       setUser(null);
-      setJwt(null);
+      setDefaultFetchOptions({ token: null });
       return null;
     }
   };

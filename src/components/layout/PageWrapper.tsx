@@ -3,7 +3,7 @@ import { FC, PropsWithChildren } from "react";
 import { useAuth } from "~/lib/hooks/auth";
 import Layout from "./Layout";
 
-const Page: FC<PropsWithChildren<{ requireLogin?: boolean }>> = ({ requireLogin, children }) => {
+const PageWrapper: FC<PropsWithChildren<{ requireLogin?: boolean }>> = ({ requireLogin, children }) => {
   const auth = useAuth();
   const router = useRouter();
 
@@ -17,4 +17,4 @@ const Page: FC<PropsWithChildren<{ requireLogin?: boolean }>> = ({ requireLogin,
   return <Layout>{children}</Layout>;
 };
 
-export default Page;
+export default PageWrapper;

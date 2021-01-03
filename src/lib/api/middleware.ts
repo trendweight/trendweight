@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { auth } from "~/lib/firebase-admin";
-import { ApiError } from "./exceptions";
+import { ApiError } from "~/lib/api/exceptions";
+import { auth } from "~/lib/firebase/admin";
 
 export type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 

@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
+import { Page } from "~/lib/core/interfaces";
 
-const About = () => {
+const About: Page = () => {
   return (
     <Box>
       About Page

@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
+import { Page } from "~/lib/core/interfaces";
 
-const Dashboard = () => <Box>Dashboard Page</Box>;
+const Dashboard: Page = () => <Box>Dashboard Page</Box>;
 
 Dashboard.title = "Dashboard";
 Dashboard.requireLogin = true;

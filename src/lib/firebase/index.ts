@@ -16,7 +16,7 @@ if (!firebase.apps.length) {
 }
 
 export const auth = firebase.auth();
-export const db = firebase.firestore();
-export const now = firebase.firestore.Timestamp.now();
+// export const db = firebase.firestore();
+// export const now = firebase.firestore.Timestamp.now();
 
 export default firebase;

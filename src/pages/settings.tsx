@@ -1,10 +1,12 @@
 import { Box, Code } from "@chakra-ui/react";
-import { useWhoAmI } from "~/lib/hooks/whoami";
-import { toJson } from "~/lib/utils";
+import RouteLink from "~/components/shared/RouteLink";
+import { Page } from "~/lib/core/interfaces";
+import { toJson } from "~/lib/core/utils";
+import { useSettings } from "~/lib/hooks/settings";
 
-const Settings = () => {
-  const { isLoading, data, isError, error } = useWhoAmI();
-  useWhoAmI();
+const Settings: Page = () => {
+  const { isLoading, data, isError, error } = useSettings();
+  useSettings();
   if (isLoading) {
     return null;
   }
@@ -14,11 +16,16 @@ const Settings = () => {
   }
 
   return (
-    <Box>
-      <Code>
-        <pre>{toJson(data)}</pre>
-      </Code>
-    </Box>
+    <>
+      <Box>
+        <RouteLink href="/link">Link an Account</RouteLink>
+      </Box>
+      <Box>
+        <Code>
+          <pre>{toJson(data)}</pre>
+        </Code>
+      </Box>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import { Box, Flex, Image as ChakraImage, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import ResponsiveContainer from "~/components/layout/ResponsiveContainer";
 import Menu from "./Menu";
+import ResponsiveContainer from "./ResponsiveContainer";
 
 const Header = () => {
   return (

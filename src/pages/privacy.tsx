@@ -1,12 +1,13 @@
 import { Box, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { Page } from "~/lib/core/interfaces";
 
-const Privacy = () => {
+const Privacy: Page = () => {
   return (
     <Box maxW={900}>
       <Heading as="h2" size="md" mt={4}>
         Our Privacy Policy
       </Heading>
-      <Image src="/assets/privacy.svg" my={4} ml={4} float="right" height={{ base: 120, md: 200 }} />
+      <Image src="/assets/security.svg" my={4} ml={4} float="right" height={{ base: 120, md: 200 }} />
       <Text as="p" mt={4} lineHeight="tall">
         Your privacy is important to us. It is TrendWeight's policy to respect your privacy regarding any information we
         may collect from you across our web app,{" "}
@@ -31,8 +32,8 @@ const Privacy = () => {
       </Text>
       <Text as="p" mt={4} lineHeight="tall">
         We collect analytics to understand how many people visit the site and what kinds of devices they use. However,
-        our analytics software does not use cookies and does not collect any personally identifiable information. You
-        can see their data privacy policy{" "}
+        our analytics software does not use cookies, does not track you, and does not collect any personally
+        identifiable information. You can see their data privacy policy{" "}
         <Link href="https://plausible.io/data-policy" isExternal>
           here
         </Link>

@@ -1,53 +1,41 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import { NextComponentType, NextPageContext } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import React, { FC, PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import Page from "~/components/layout/Page";
-import "~/lib/fa.ts";
+import PageWrapper from "~/components/layout/PageWrapper";
+import "~/lib/core/fa";
+import { Page } from "~/lib/core/interfaces";
+import theme from "~/lib/core/theme";
 import { AuthProvider } from "~/lib/hooks/auth";
-import theme from "~/lib/theme";
 
 const queryClient = new QueryClient();
 
-interface AdditionalComponentProperties {
-  title: string;
-  bypassShell: boolean;
-  requireLogin: boolean;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const NoShell: FC<PropsWithChildren<any>> = ({ children }) => {
+const NoShell: FC<PropsWithChildren<unknown>> = ({ children }) => {
   return <>{children}</>;
 };
 
 function App({ Component, pageProps }: AppProps) {
-  const { title: pageTitle, bypassShell, requireLogin } = Component as NextComponentType<
-    NextPageContext,
-    unknown,
-    unknown
-  > &
-    AdditionalComponentProperties;
-  const PageWrapper = bypassShell ? NoShell : Page;
-  if (process.env.NODE_ENV === "development" && pageTitle === undefined) {
+  const { title, bypassShell, requireLogin } = Component as Page;
+  const Wrapper = bypassShell ? NoShell : PageWrapper;
+
+  if (process.env.NODE_ENV === "development" && title === undefined) {
     throw new Error("'title' property is required on page component.");
   }
-  const title = pageTitle === "TrendWeight" ? pageTitle : `${pageTitle} - TrendWeight`;
 
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ChakraProvider theme={theme} resetCSS>
           <Head>
-            <title>{title}</title>
+            <title>{title === "TrendWeight" ? title : `${title} - TrendWeight`}</title>
             <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
             <link rel="icon" href="/favicon.ico" />
           </Head>
-          <PageWrapper requireLogin={requireLogin}>
+          <Wrapper requireLogin={requireLogin}>
             <Component {...pageProps} />
-          </PageWrapper>
+          </Wrapper>
           <ReactQueryDevtools initialIsOpen={false} />
         </ChakraProvider>
       </AuthProvider>

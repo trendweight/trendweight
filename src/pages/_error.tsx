@@ -1,15 +1,14 @@
 import { NextPage } from "next";
 
-const ErrorHandler: NextPage<{ statusCode: number }> = () => {
+const ErrorHandler: NextPage = () => {
   if (typeof window !== "undefined") {
     window.location.assign("/oops");
   }
   return null;
 };
 
-ErrorHandler.getInitialProps = ({ res, err }) => {
-  const statusCode = res?.statusCode || err?.statusCode || 500;
-  return { statusCode };
+ErrorHandler.getInitialProps = (_context) => {
+  return {};
 };
 
 export default ErrorHandler;

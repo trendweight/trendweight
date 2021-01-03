@@ -7,8 +7,9 @@ import SampleChart from "~/components/home/SampleChart";
 import WorksWith from "~/components/home/WorksWith";
 import Footer from "~/components/layout/Footer";
 import ResponsiveContainer from "~/components/layout/ResponsiveContainer";
+import { Page } from "~/lib/core/interfaces";
 
-const Home = () => {
+const Home: Page = () => {
   return (
     <Flex direction="column" minH="100vh">
       <Banner />
