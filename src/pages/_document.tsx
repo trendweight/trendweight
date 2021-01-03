@@ -22,6 +22,12 @@ class Document extends BaseDocument {
             rel="stylesheet"
           ></link>
           <script async defer data-domain="trendweight.io" src="https://plausible.io/js/plausible.js"></script>
+          <script
+            type="application/javascript"
+            dangerouslySetInnerHTML={{
+              __html: `if (/MSIE|Trident/.test(window.navigator.userAgent)) window.location.href = '/unsupported.html';`,
+            }}
+          ></script>
         </Head>
         <body>
           <Main />
