@@ -35,7 +35,7 @@
     "simple-oauth2": "^4.2.0"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^10.0.4",
+    "@next/eslint-plugin-next": "^10.0.5",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.14.16",
     "@types/react": "^17.0.0",
