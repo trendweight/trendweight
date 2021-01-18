@@ -23,7 +23,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "dayjs": "^1.10.3",
-    "firebase": "^8.2.2",
+    "firebase": "^8.2.3",
     "firebase-admin": "^9.4.2",
     "framer-motion": "^3.2.1",
     "jsonwebtoken": "^8.5.1",
