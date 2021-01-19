@@ -2,7 +2,7 @@
   "extends": ["config:js-app", ":dependencyDashboard", ":prHourlyLimit4", ":prConcurrentLimitNone"],
   "timezone": "America/Chicago",
   "labels": ["dependencies"],
-  "schedule": ["before 5am"],
+  "schedule": ["before 5am", "every weekend"],
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
