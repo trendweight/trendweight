@@ -1,22 +1,21 @@
 {
+  "extends": ["config:js-app", ":dependencyDashboard", ":prHourlyLimit4", ":prConcurrentLimitNone"],
   "timezone": "America/Chicago",
-  "extends": ["config:js-app", "schedule:daily", ":dependencyDashboard", ":prHourlyLimit4", ":prConcurrentLimitNone"],
+  "labels": ["dependencies"],
+  "schedule": ["before 5am"],
   "lockFileMaintenance": {
     "enabled": true,
-    "automerge": true,
-    "automergeType": "branch"
+    "automerge": true
   },
   "separateMinorPatch": true,
   "patch": {
-    "automerge": true,
-    "automergeType": "branch"
+    "automerge": true
   },
   "packageRules": [
     {
       "packagePatterns": ["eslint"],
       "groupName": "eslint",
-      "automerge": true,
-      "automergeType": "branch"
+      "automerge": true
     },
     {
       "packagePatterns": ["^@chakra-ui", "^@emotion", "^framer-motion"],
