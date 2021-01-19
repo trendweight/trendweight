@@ -1,6 +1,6 @@
 {
   "timezone": "America/Chicago",
-  "extends": ["config:js-app", "schedule:weekends"],
+  "extends": ["config:js-app", ":dependencyDashboard"],
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true
