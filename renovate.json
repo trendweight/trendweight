@@ -5,16 +5,19 @@
   "schedule": ["before 5am"],
   "lockFileMaintenance": {
     "enabled": true,
-    "automerge": true
+    "automerge": true,
+    "automergeType": "branch"
   },
   "separateMinorPatch": true,
   "patch": {
-    "automerge": true
+    "automerge": true,
+    "automergeType": "branch"
   },
   "packageRules": [
     {
       "packagePatterns": ["eslint"],
       "groupName": "eslint",
+      "automergeType": "branch",
       "automerge": true
     },
     {
