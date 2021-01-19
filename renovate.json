@@ -3,7 +3,8 @@
   "extends": ["config:js-app", "schedule:daily", ":dependencyDashboard", ":prHourlyLimit4", ":prConcurrentLimitNone"],
   "lockFileMaintenance": {
     "enabled": true,
-    "automerge": true
+    "automerge": true,
+    "automergeType": "branch"
   },
   "separateMinorPatch": true,
   "patch": {
