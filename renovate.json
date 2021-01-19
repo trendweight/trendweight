@@ -5,22 +5,17 @@
     "enabled": true,
     "automerge": true
   },
+  "separateMinorPatch": true,
+  "patch": {
+    "automerge": true,
+    "automergeType": "branch"
+  },
   "packageRules": [
     {
-      "updateTypes": ["patch"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true,
-      "automergeType": "branch"
-    },
-    {
-      "depTypeList": ["devDependencies"],
-      "updateTypes": ["minor", "patch"],
-      "automerge": true,
-      "automergeType": "branch"
-    },
-    {
       "packagePatterns": ["eslint"],
-      "groupName": "eslint"
+      "groupName": "eslint",
+      "automerge": true,
+      "automergeType": "branch"
     },
     {
       "packagePatterns": ["^@chakra-ui", "^@emotion", "^framer-motion"],
