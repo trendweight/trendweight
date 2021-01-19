@@ -1,19 +1,21 @@
 {
   "timezone": "America/Chicago",
-  "extends": ["config:js-app", ":dependencyDashboard"],
+  "extends": ["config:js-app", "schedule:daily", ":dependencyDashboard", ":prHourlyLimit4", ":prConcurrentLimitNone"],
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true
   },
   "separateMinorPatch": true,
   "patch": {
-    "automerge": true
+    "automerge": true,
+    "automergeType": "branch"
   },
   "packageRules": [
     {
       "packagePatterns": ["eslint"],
       "groupName": "eslint",
-      "automerge": true
+      "automerge": true,
+      "automergeType": "branch"
     },
     {
       "packagePatterns": ["^@chakra-ui", "^@emotion", "^framer-motion"],
