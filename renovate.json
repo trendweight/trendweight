@@ -1,5 +1,28 @@
 {
-  "extends": [
-    "config:base"
+  "timezone": "America/Chicago",
+  "extends": ["config:js-app", "schedule:weekends"],
+  "packageRules": [
+    {
+      "packagePatterns": ["eslint"],
+      "groupName": "eslint",
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "packagePatterns": ["^@chakra-ui", "^@emotion", "^framer-motion"],
+      "groupName": "chakra-ui"
+    },
+    {
+      "packagePatterns": ["^firebase"],
+      "groupName": "firebase"
+    },
+    {
+      "packageNames": ["@types/react"],
+      "groupName": "react monorepo"
+    },
+    {
+      "packageNames": ["jsonwebtoken", "@types/jsonwebtoken"],
+      "groupName": "jsonwebtoken"
+    }
   ]
 }
