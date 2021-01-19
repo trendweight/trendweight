@@ -7,15 +7,13 @@
   },
   "separateMinorPatch": true,
   "patch": {
-    "automerge": true,
-    "automergeType": "branch"
+    "automerge": true
   },
   "packageRules": [
     {
       "packagePatterns": ["eslint"],
       "groupName": "eslint",
-      "automerge": true,
-      "automergeType": "branch"
+      "automerge": true
     },
     {
       "packagePatterns": ["^@chakra-ui", "^@emotion", "^framer-motion"],
