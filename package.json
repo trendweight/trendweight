@@ -22,7 +22,7 @@
     "@fortawesome/free-regular-svg-icons": "5.15.2",
     "@fortawesome/free-solid-svg-icons": "5.15.2",
     "@fortawesome/react-fontawesome": "0.1.14",
-    "dayjs": "1.10.3",
+    "dayjs": "1.10.4",
     "firebase": "8.2.4",
     "firebase-admin": "9.4.2",
     "framer-motion": "3.2.1",
