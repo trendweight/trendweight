@@ -34,6 +34,10 @@
     {
       "packageNames": ["jsonwebtoken", "@types/jsonwebtoken"],
       "groupName": "jsonwebtoken"
+    },
+    {
+      "packageNames": ["qs", "@types/qs"],
+      "groupName": "qs"
     }
   ]
 }
