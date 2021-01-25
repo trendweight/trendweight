@@ -1,23 +1,26 @@
 import axios from "axios";
 import { NextApiRequest } from "next";
 import qs from "qs";
-import { VendorService } from "./vendor-service";
-
-const _authorizeHost = "https://account.withings.com";
-const _authorizePath = "/oauth2_user/authorize2";
-const _tokenHost = "https://wbsapi.withings.net";
-const _tokenPath = "/v2/oauth2";
+import { ApiError } from "../api/exceptions";
+import { AccessToken } from "./access-token";
+import { VendorService } from "./interfaces";
 
 export const getCallbackHostname = (req: NextApiRequest) => {
   let hostname = req.headers.host || "trendweight.io";
 
   // Withings doesn't allow use of localhost for the callback, so we use dev.trendweight.io
-  // which doesn't exist.  We then edit the URL in the browser when it fails to resolve.
+  // which doesn't exist.  That way when Withings redirect, the browser shows an error page and
+  // we can edit the URL in the browser to replace dev.trendweight.io with localhost:3000.
   if (hostname.startsWith("localhost")) {
     hostname = "dev.trendweight.io";
   }
   return hostname;
 };
+
+interface WithingsResponse {
+  status: number;
+  body: unknown;
+}
 
 class WithingsService implements VendorService {
   private clientId: string;
@@ -39,14 +42,7 @@ class WithingsService implements VendorService {
   }
 
   async exchangeAuthorizationCode(code: string, callbackUrl: string) {
-    // const data = new FormData();
-    // data.append("grant_type", "authorization_code");
-    // data.append("client_id", this.clientId);
-    // data.append("client_secret", this.clientSecret);
-    // data.append("code", code);
-    // data.append("redirect_url", callbackUrl);
-
-    const data = {
+    const params = {
       action: "requesttoken",
       client_id: this.clientId,
       client_secret: this.clientSecret,
@@ -55,20 +51,24 @@ class WithingsService implements VendorService {
       redirect_uri: callbackUrl,
     };
 
-    console.log(data);
+    const result = await axios.post<WithingsResponse>("https://wbsapi.withings.net/v2/oauth2", qs.stringify(params));
 
-    const result = await axios.post("https://wbsapi.withings.net/v2/oauth2", qs.stringify(data));
+    if (result.status !== 200) {
+      throw new ApiError("withings/http-error", `${result.status}: ${result.statusText}`);
+    }
 
-    //    console.log(result);
+    if (result.data.status !== 0) {
+      throw new ApiError("withings/api-error", `Withings API Error: ${result.data.status}`);
+    }
 
-    return result.data;
+    return new AccessToken(result.data.body);
   }
 
-  async refreshToken(token: string) {
+  async refreshToken(token: AccessToken) {
     return token;
   }
 
-  getMeasurements(_token: string) {
+  getMeasurements(_token: AccessToken) {
     return;
   }
 }

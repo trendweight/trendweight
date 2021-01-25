@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken";
 import type { NextApiResponse } from "next";
 import { ApiError } from "~/lib/api/exceptions";
 import { NextApiRequestWithAuth, verifyJWT } from "~/lib/api/middleware";
-import { OAuthState } from "~/lib/core/interfaces";
-import { getCallbackHostname, withingsService } from "~/lib/data-sources/withings";
+import { OAuthState } from "~/lib/vendors/interfaces";
+import { getCallbackHostname, withingsService } from "~/lib/vendors/withings";
 
 const link = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
   if (!req.userId) {

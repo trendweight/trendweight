@@ -12,17 +12,14 @@ const SampleChart = () => (
           lg: 285,
           xl: 370,
         }}
-        width={850}
+        width="auto"
         maxW="100%"
-        fit="contain"
       />
       <Image
         src="/assets/withings-scale-white.png"
         height={{ base: 120, md: 180 }}
         width={{ base: 120, md: 180 }}
         maxW="25%"
-        fit="contain"
-        objectPosition="right bottom"
         position="absolute"
         left={5}
         bottom={"-10%"}

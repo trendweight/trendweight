@@ -1,6 +1,6 @@
 import { Box, Flex, Image, Stack } from "@chakra-ui/react";
 import LinkButton from "~/components/shared/LinkButton";
-import { Page } from "~/lib/core/interfaces";
+import { Page } from "~/lib/core/page";
 
 const PageNotFound: Page = () => {
   return (

@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import PageWrapper from "~/components/layout/PageWrapper";
 import "~/lib/core/fa";
-import { Page } from "~/lib/core/interfaces";
+import { Page } from "~/lib/core/page";
 import theme from "~/lib/core/theme";
 import { AuthProvider } from "~/lib/hooks/auth";
 

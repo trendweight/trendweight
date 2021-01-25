@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { Page } from "~/lib/core/interfaces";
+import { Page } from "~/lib/core/page";
 import { useAuth } from "~/lib/hooks/auth";
 
 const Register: Page = () => {
