@@ -1,6 +1,7 @@
-import { Box, Flex, Image as ChakraImage, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import ResponsiveContainer from "~/components/layout/ResponsiveContainer";
+import Logo from "./Logo";
 
 const Banner = () => {
   const isNarrow = useBreakpointValue({ base: true, md: false });
@@ -26,12 +27,7 @@ const Banner = () => {
             >
               TrendWeight
             </Text>
-            <ChakraImage
-              src="/assets/logo-line.svg"
-              alt="logo"
-              height={{ base: "32px", md: "48px" }}
-              width={{ base: "77.13px", md: "115.7px" }}
-            />
+            <Logo height={{ base: "32px", md: "48px" }} width={{ base: "77.13px", md: "115.7px" }} />
           </Flex>
           <Text fontSize={{ base: "20px", md: "22px" }}>
             Automated Weight Tracking{isNarrow ? null : ", Hacker's Diet Style"}
