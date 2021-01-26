@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "~/lib/api/exceptions";
 import { handleErrors } from "~/lib/api/middleware";
+import dayjs from "~/lib/core/dayjs";
+import { db } from "~/lib/firebase/admin";
 import { OAuthState } from "~/lib/vendors/interfaces";
 import { getCallbackHostname, withingsService } from "~/lib/vendors/withings";
 
@@ -13,10 +15,10 @@ const getAuthUrl = async (req: NextApiRequest, res: NextApiResponse) => {
     throw new ApiError("config/jwt-secret", "JWT signing key not defined", 500);
   }
 
-  let parsed: OAuthState;
+  let linkDetails: OAuthState;
   try {
-    parsed = jwt.verify(state as string, process.env.JWT_SIGNING_KEY) as OAuthState;
-    if (!parsed.uid || !parsed.reason) {
+    linkDetails = jwt.verify(state as string, process.env.JWT_SIGNING_KEY) as OAuthState;
+    if (!linkDetails.uid || !linkDetails.reason) {
       throw new Error();
     }
   } catch {
@@ -28,7 +30,22 @@ const getAuthUrl = async (req: NextApiRequest, res: NextApiResponse) => {
     `https://${hostname}/api/withings/callback`
   );
 
-  res.status(200).json({ accessToken, parsed });
+  await db
+    .collection("links")
+    .doc(linkDetails.uid)
+    .set(
+      {
+        uid: linkDetails.uid,
+        withings: {
+          updateTime: dayjs().utc().toISOString(),
+          updateReason: linkDetails.reason,
+          token: accessToken.token,
+        },
+      },
+      { merge: true }
+    );
+
+  res.status(200).json({ linkDetails, accessToken });
 };
 
 export default handleErrors(getAuthUrl);

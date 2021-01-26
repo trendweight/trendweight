@@ -19,7 +19,9 @@ export const getCallbackHostname = (req: NextApiRequest) => {
 
 interface WithingsResponse {
   status: number;
-  body: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  body: any;
+  error?: string;
 }
 
 class WithingsService implements VendorService {
@@ -58,7 +60,8 @@ class WithingsService implements VendorService {
     }
 
     if (result.data.status !== 0) {
-      throw new ApiError("withings/api-error", `Withings API Error: ${result.data.status}`);
+      console.log(result.data);
+      throw new ApiError("withings/api-error", `${result.data.status}: ${result.data.error}`);
     }
 
     return new AccessToken(result.data.body);

@@ -1,28 +1,32 @@
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "../core/dayjs";
+
+export interface IToken {
+  user_id: string;
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  scope: string;
+  expires_at?: string;
+}
 
 export class AccessToken {
-  user_id?: string;
-  access_token?: string;
-  refresh_token?: string;
-  token_type?: string;
-  scope?: string;
-  expires_at?: Dayjs;
+  token: IToken;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(token: any) {
-    const { expires_in, ...props } = token;
-    Object.assign(this, props);
-    if (expires_in && !this.expires_at) {
-      this.expires_at = dayjs().add(expires_in, "seconds");
+  constructor(values: IToken & { expires_in?: number }) {
+    const { expires_in, ...token } = values;
+    if (expires_in) {
+      token.expires_at = dayjs().add(expires_in, "seconds").utc().toISOString();
     }
+    this.token = token;
   }
 
   expiresSoon = () => {
-    if (!this.expires_at) {
+    if (!this.token.expires_at) {
       return false;
     }
-    const cutoff = dayjs().subtract(5, "minutes");
-    if (this.expires_at.isAfter(cutoff)) {
+    const cutoff = dayjs().utc().subtract(5, "minutes");
+    if (dayjs(this.token.expires_at).isAfter(cutoff)) {
       return true;
     } else {
       return false;

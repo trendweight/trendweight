@@ -5,10 +5,10 @@ import React, { FC, PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import PageWrapper from "~/components/layout/PageWrapper";
+import { AuthProvider } from "~/lib/core/auth";
 import "~/lib/core/fa";
 import { Page } from "~/lib/core/page";
 import theme from "~/lib/core/theme";
-import { AuthProvider } from "~/lib/hooks/auth";
 
 const queryClient = new QueryClient();
 
