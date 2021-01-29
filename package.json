@@ -24,7 +24,7 @@
     "@fortawesome/react-fontawesome": "0.1.14",
     "axios": "0.21.1",
     "dayjs": "1.10.4",
-    "firebase": "8.2.4",
+    "firebase": "8.2.5",
     "firebase-admin": "9.4.2",
     "framer-motion": "3.2.1",
     "jsonwebtoken": "8.5.1",
