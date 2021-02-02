@@ -20,5 +20,6 @@
     ":maintainLockFilesMonthly",
     "schedule:weekends"
   ],
+  "timezone": "America/Chicago",
   "labels": ["dependencies"]
 }
