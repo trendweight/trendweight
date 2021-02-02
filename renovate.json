@@ -12,11 +12,13 @@
     ":dependencyDashboard",
     ":prHourlyLimitNone",
     ":prConcurrentLimitNone",
+    ":rebaseStalePrs",
     "group:monorepos",
     "group:recommended",
     "group:allNonMajor",
     "helpers:disableTypesNodeMajor",
-    ":maintainLockFilesMonthly"
+    ":maintainLockFilesMonthly",
+    "schedule:weekends"
   ],
   "labels": ["dependencies"]
 }
