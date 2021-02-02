@@ -1,43 +1,20 @@
 {
-  "extends": ["config:js-app", ":dependencyDashboard", ":prHourlyLimit4", ":prConcurrentLimitNone"],
-  "timezone": "America/Chicago",
+  "extends": [
+    "config:js-app",
+    ":dependencyDashboard",
+    ":prHourlyLimitNone",
+    ":prConcurrentLimitNone"
+  ],
   "labels": ["dependencies"],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "automerge": true,
-    "automergeType": "branch"
-  },
-  "separateMinorPatch": true,
-  "patch": {
-    "automerge": true,
-    "automergeType": "branch"
-  },
   "packageRules": [
     {
-      "packagePatterns": ["eslint"],
-      "groupName": "eslint",
-      "automergeType": "branch",
-      "automerge": true
-    },
-    {
-      "packagePatterns": ["^@chakra-ui", "^@emotion", "^framer-motion"],
-      "groupName": "chakra-ui"
-    },
-    {
-      "packagePatterns": ["^firebase"],
-      "groupName": "firebase"
-    },
-    {
-      "packageNames": ["@types/react"],
-      "groupName": "react monorepo"
-    },
-    {
-      "packageNames": ["jsonwebtoken", "@types/jsonwebtoken"],
-      "groupName": "jsonwebtoken"
-    },
-    {
-      "packageNames": ["qs", "@types/qs"],
-      "groupName": "qs"
+      "matchPackagePatterns": ["*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch"
     }
-  ]
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }
