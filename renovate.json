@@ -24,6 +24,6 @@
   "labels": ["dependencies"],
   "lockFileMaintenance": {
     "enabled": true,
-    "sechedule": ["before 3am on the first Saturday of the month"]
+    "schedule": ["before 3am on the first Saturday of the month"]
   }
 }
