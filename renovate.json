@@ -17,9 +17,13 @@
     "group:recommended",
     "group:allNonMajor",
     "helpers:disableTypesNodeMajor",
-    ":maintainLockFilesMonthly",
-    "schedule:weekends"
+    ":maintainLockFilesMonthly"
   ],
+  "schedule": ["before 3am on Saturday"],
   "timezone": "America/Chicago",
-  "labels": ["dependencies"]
+  "labels": ["dependencies"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "sechedule": ["before 3am on the first Saturday of the month"]
+  }
 }
