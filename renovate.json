@@ -15,15 +15,20 @@
     ":rebaseStalePrs",
     "group:monorepos",
     "group:recommended",
-    "group:allNonMajor",
-    "helpers:disableTypesNodeMajor",
-    ":maintainLockFilesMonthly"
+    "helpers:disableTypesNodeMajor"
   ],
   "schedule": ["before 3am on Saturday"],
   "timezone": "America/Chicago",
   "labels": ["dependencies"],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": ["every 1 month before 3am on Saturday"]
-  }
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch",
+      "lockFileMaintenance": {
+        "enabled": true
+      }
+    }
+  ]
 }
