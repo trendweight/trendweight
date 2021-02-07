@@ -19,7 +19,7 @@
     ":maintainLockFilesMonthly",
     "helpers:disableTypesNodeMajor"
   ],
-  "schedule": ["before 5am on Saturday"],
+  "schedule": ["before 5am on Monday"],
   "timezone": "America/Chicago",
   "labels": ["dependencies"]
 }
