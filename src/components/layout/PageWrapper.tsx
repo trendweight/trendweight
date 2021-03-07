@@ -6,12 +6,11 @@ import Layout from "./Layout";
 const PageWrapper: FC<PropsWithChildren<{ requireLogin?: boolean }>> = ({ requireLogin, children }) => {
   const auth = useAuth();
   const router = useRouter();
-
   if (requireLogin && !auth.user) {
     if (!auth.isInitializing) {
       router.push("/login");
     }
-    return <Layout />;
+    return null;
   }
 
   return <Layout>{children}</Layout>;
