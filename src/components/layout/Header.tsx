@@ -1,5 +1,6 @@
-import { Box, Flex, Image as ChakraImage, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import React from "react";
+import Logo from "~/components/shared/Logo";
 import Menu from "./Menu";
 import ResponsiveContainer from "./ResponsiveContainer";
 
@@ -19,7 +20,7 @@ const Header = () => {
             <Text fontFamily="'Zilla Slab', serif" fontWeight="700" fontSize="32px" lineHeight={1.2}>
               TrendWeight
             </Text>
-            <ChakraImage src="/assets/logo-line.svg" alt="logo" height="32px" width="77.13px" />
+            <Logo height="32px" width="77.13px" />
           </Stack>
           <Menu />
         </Flex>

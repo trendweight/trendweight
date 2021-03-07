@@ -32,8 +32,8 @@ const theme = extendTheme({
     },
   },
   fonts: {
-    heading: `"Roboto", sans-serif`,
-    body: `"Roboto", sans-serif`,
+    heading: `"Inter", sans-serif`,
+    body: `"Inter", sans-serif`,
   },
   fontWeights: {
     normal: 400,
