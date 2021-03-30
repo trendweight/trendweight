@@ -12,7 +12,7 @@ import "~/lib/core/fa";
 import { Page } from "~/lib/core/page";
 import progress from "~/lib/core/progress";
 import theme from "~/lib/core/theme";
-import "~/styles/fonts.css";
+import "~/styles/globals.css";
 
 const queryClient = new QueryClient();
 
