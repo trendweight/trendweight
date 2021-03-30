@@ -1,4 +1,3 @@
-import { Box, Stack, useDisclosure } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useAuth } from "~/lib/core/auth";
 import MenuItem from "./MenuItem";

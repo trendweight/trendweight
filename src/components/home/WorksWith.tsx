@@ -1,4 +1,3 @@
-import { Box, Center, Flex, Grid, Image, Link, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 

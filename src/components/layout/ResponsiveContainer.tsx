@@ -1,4 +1,3 @@
-import { Box, BoxProps, useTheme } from "@chakra-ui/react";
 import React, { FC, PropsWithChildren } from "react";
 
 const ResponsiveContainer: FC<PropsWithChildren<BoxProps>> = ({ children, ...props }) => {

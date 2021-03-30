@@ -1,4 +1,3 @@
-import { chakra, Spinner, SpinnerProps } from "@chakra-ui/react";
 import React, { FC } from "react";
 
 interface LoadingProps extends Pick<SpinnerProps, "size"> {

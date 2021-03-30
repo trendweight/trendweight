@@ -1,4 +1,3 @@
-import { Box, Heading, Image, Link, Text } from "@chakra-ui/react";
 import { Page } from "~/lib/core/page";
 
 const Privacy: Page = () => {

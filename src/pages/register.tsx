@@ -1,4 +1,3 @@
-import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useAuth } from "~/lib/core/auth";
 import { Page } from "~/lib/core/page";

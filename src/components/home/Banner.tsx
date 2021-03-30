@@ -1,4 +1,3 @@
-import { Box, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import ResponsiveContainer from "~/components/layout/ResponsiveContainer";
 import Logo from "~/components/shared/Logo";

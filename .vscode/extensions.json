@@ -5,6 +5,9 @@
     "jpoissonnier.vscode-styled-components",
     "humao.rest-client",
     "streetsidesoftware.code-spell-checker",
-    "visualstudioexptteam.vscodeintellicode"
-  ]
+    "visualstudioexptteam.vscodeintellicode",
+    "bradlc.vscode-tailwindcss",
+    "heybourn.headwind"
+  ],
+  "unwantedRecommendations": []
 }

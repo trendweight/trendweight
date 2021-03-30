@@ -1,4 +1,3 @@
-import { Flex } from "@chakra-ui/react";
 import { FC, PropsWithChildren } from "react";
 import Footer from "./Footer";
 import Header from "./Header";

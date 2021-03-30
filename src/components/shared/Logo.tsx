@@ -1,4 +1,3 @@
-import { chakra } from "@chakra-ui/react";
 import { FC } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

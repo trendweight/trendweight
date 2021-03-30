@@ -1,4 +1,3 @@
-import { Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { FC, PropsWithChildren } from "react";

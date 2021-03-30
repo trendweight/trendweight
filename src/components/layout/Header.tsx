@@ -1,4 +1,3 @@
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import Logo from "~/components/shared/Logo";
 import Menu from "./Menu";
