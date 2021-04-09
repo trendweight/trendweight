@@ -1,40 +1,39 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import RouteLink from "~/components/shared/RouteLink";
-import ResponsiveContainer from "./ResponsiveContainer";
+import Link from "../shared/Link";
 
 const Footer = () => {
   return (
-    <ResponsiveContainer as="footer" py={2} px={4}>
-      <Flex direction={{ base: "column", md: "row" }} color="gray.300" align="center" justify="space-between">
-        <Text>&copy; 2012-{new Date().getFullYear()} Erv Walter</Text>
-        <HStack spacing={{ base: 2, md: 4 }}>
-          <Box>
-            <Link href="https://twitter.com/trendweight" px={{ base: 1, md: 2 }} isExternal variant="footer">
+    <footer className="container mx-auto px-4 py-2">
+      <div className="flex flex-col items-center justify-between text-gray-300 md:flex-row">
+        <p>&copy; 2012-{new Date().getFullYear()} Erv Walter</p>
+        <div className="flex flex-row gap-2 md:gap-4">
+          <div className="flex flex-row gap-2 md:gap-4">
+            <Link href="https://twitter.com/trendweight" external variant="muted">
               <FontAwesomeIcon icon={["fab", "twitter"]} />
             </Link>
-            <Link href="https://facebook.com/trendweight" px={{ base: 1, md: 2 }} isExternal variant="footer">
+            <Link href="https://facebook.com/trendweight" external variant="muted">
               <FontAwesomeIcon icon={["fab", "facebook"]} />
             </Link>
-            <Link href="https://github.com/trendweight" px={{ base: 1, md: 2 }} isExternal variant="footer">
+            <Link href="https://github.com/trendweight" external variant="muted">
               <FontAwesomeIcon icon={["fab", "github"]} />
             </Link>
-            <Link href="https://blog.trendweight.com" px={{ base: 1, md: 2 }} isExternal variant="footer">
+            <Link href="https://blog.trendweight.com" external variant="muted">
               <FontAwesomeIcon icon="rss" />
             </Link>
-          </Box>
-          <Link href="mailto:erv@ewal.net" variant="footer">
+          </div>
+          <Link href="mailto:erv@ewal.net" external variant="muted">
             Contact
           </Link>
-          <RouteLink href="/donate" variant="footer">
+          <Link href="/donate" variant="muted">
             Donate
-          </RouteLink>
-          <RouteLink href="/privacy" variant="footer">
+          </Link>
+          <Link href="/privacy" variant="muted">
             Privacy
-          </RouteLink>
-        </HStack>
-      </Flex>
-    </ResponsiveContainer>
+          </Link>
+        </div>
+      </div>
+    </footer>
   );
 };
 

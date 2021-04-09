@@ -5,5 +5,8 @@
     },
     "editor.tabSize": 2,
     "git.pruneOnFetch": true,
-    "git.rebaseWhenSync": true
+    "git.rebaseWhenSync": true,
+    "cSpell.words": [
+        "clsx"
+    ]
 }

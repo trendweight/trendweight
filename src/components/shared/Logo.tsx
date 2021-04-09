@@ -1,7 +1,7 @@
-import { FC } from "react";
+import { FC, SVGProps } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Logo: FC<any> = (props) => {
+const Logo: FC<SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg viewBox="0 0 458 190" xmlns="http://www.w3.org/2000/svg" {...props}>
       <title>{"background"}</title>
@@ -20,4 +20,4 @@ const Logo: FC<any> = (props) => {
   );
 };
 
-export default chakra(Logo);
+export default Logo;

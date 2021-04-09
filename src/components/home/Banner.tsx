@@ -1,39 +1,21 @@
 import React from "react";
-import ResponsiveContainer from "~/components/layout/ResponsiveContainer";
 import Logo from "~/components/shared/Logo";
 
 const Banner = () => {
-  const isNarrow = useBreakpointValue({ base: true, md: false });
   return (
-    <Box as="header" bg="brand.500" color="white">
-      <ResponsiveContainer
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        flexWrap="wrap"
-        px={{ base: 4, md: 4 }}
-        py={12}
-      >
-        <Flex direction={"column"}>
-          <Flex direction={"row"} align="center">
-            <Text
-              fontFamily="'Zilla Slab', serif"
-              fontWeight="700"
-              fontSize={{ base: "42px", md: "64px" }}
-              pr={2}
-              lineHeight={1.2}
-            >
-              TrendWeight
-            </Text>
-            <Logo height={{ base: "32px", md: "48px" }} width={{ base: "77.13px", md: "115.7px" }} />
-          </Flex>
-          <Text fontSize={{ base: "20px", md: "22px" }}>
-            Automated Weight Tracking{isNarrow ? null : ", Hacker's Diet Style"}
-          </Text>
-        </Flex>
-      </ResponsiveContainer>
-    </Box>
+    <header className="text-white bg-brand-500">
+      <div className="container flex flex-row flex-wrap items-center justify-between mx-auto px-4 py-14">
+        <div className="flex flex-col">
+          <div className="flex flex-row items-center">
+            <div className="pr-2 font-serif text-4xl font-bold leading-5 md:text-6xl">TrendWeight</div>
+            <Logo className="w-[77.13px] h-[32px] md:w-[115.7px] md:h-[48px]" />
+          </div>
+          <div className="text-xl md:text-2xl">
+            Automated Weight Tracking<span className="hidden md:inline">, Hacker's Diet Style</span>
+          </div>
+        </div>
+      </div>
+    </header>
   );
 };
 

@@ -1,18 +1,9 @@
-import React from "react";
+import Image from "next/image";
 
 const SampleChart = () => (
-  <Center gridArea="chart">
-    <Box position="relative">
-      <Image
-        src="/assets/chart-home.png"
-        height={{
-          base: "auto",
-          xl: 400,
-        }}
-        width="auto"
-      />
-    </Box>
-  </Center>
+  <div className="grid-in-chart relative">
+    <Image src="/assets/chart-home.png" layout="responsive" objectFit="contain" height={894} width={1706} />
+  </div>
 );
 
 export default SampleChart;

@@ -1,29 +1,21 @@
 import React from "react";
-import LinkButton, { LinkButtonProps } from "~/components/shared/LinkButton";
 import { useAuth } from "~/lib/core/auth";
+import Link from "../shared/Link";
 
 const InfoButtons = () => {
   const { isInitializing, user } = useAuth();
 
-  const commonProps: Partial<LinkButtonProps> = {
-    as: "a",
-    fontSize: { base: 22, lg: 24 },
-    fontWeight: "normal",
-    width: { base: "100%", md: "320px" },
-    p: { base: 6, md: 7 },
-  };
-
   const getStartedUrl = isInitializing || !user ? "/register" : "/dashboard";
 
   return (
-    <Stack direction={{ base: "column", md: "row" }} spacing={4} align="center" width="100%" gridArea="buttons">
-      <LinkButton href="/about" colorScheme="green" {...commonProps}>
+    <div className="grid-in-buttons flex flex-col gap-4 items-center w-full md:flex-row">
+      <Link href="/about" variant="button" btnColor="green" size="xl">
         Learn More
-      </LinkButton>
-      <LinkButton href={getStartedUrl} colorScheme="brand" {...commonProps}>
+      </Link>
+      <Link href={getStartedUrl} variant="button" btnColor="brand" size="xl">
         Get Started
-      </LinkButton>
-    </Stack>
+      </Link>
+    </div>
   );
 };
 

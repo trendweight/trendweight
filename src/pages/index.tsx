@@ -5,30 +5,22 @@ import InfoButtons from "~/components/home/InfoButtons";
 import SampleChart from "~/components/home/SampleChart";
 import WorksWith from "~/components/home/WorksWith";
 import Footer from "~/components/layout/Footer";
-import ResponsiveContainer from "~/components/layout/ResponsiveContainer";
 import { Page } from "~/lib/core/page";
 
 const Home: Page = () => {
   return (
-    <Flex direction="column" minH="100vh">
+    <div className="flex flex-col min-h-screen">
       <Banner />
-      <ResponsiveContainer flexGrow={1} flexShrink={1} position="relative" p={{ base: 4, md: 4 }}>
-        <Grid
-          templateColumns="2fr 3fr"
-          templateAreas={{
-            base: '"blurb blurb" "buttons buttons" "chart chart" "works works" "evolution evolution"',
-            md: '"blurb chart" "buttons buttons" "works works" "evolution evolution"',
-          }}
-          rowGap={{ base: 6, md: 10 }}
-        >
+      <div className="container relative flex-grow flex-shrink mx-auto p-4">
+        <div className="grid-areas-home md:grid-cols-home md:grid-areas-home-wide grid gap-6 grid-cols-1 md:gap-10">
           <InfoButtons />
           <Blurb />
           <SampleChart />
           <WorksWith />
-        </Grid>
-      </ResponsiveContainer>
+        </div>
+      </div>
       <Footer />
-    </Flex>
+    </div>
   );
 };
 

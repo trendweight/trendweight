@@ -6,8 +6,7 @@
     "humao.rest-client",
     "streetsidesoftware.code-spell-checker",
     "visualstudioexptteam.vscodeintellicode",
-    "bradlc.vscode-tailwindcss",
-    "heybourn.headwind"
+    "bradlc.vscode-tailwindcss"
   ],
   "unwantedRecommendations": []
 }

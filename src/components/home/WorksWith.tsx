@@ -1,97 +1,73 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import React from "react";
 
 const vendors = [
   {
     name: "Withings",
+    logoText: "WITHINGS",
     app: {
       src: "/assets/withings-app.png",
       height: 140,
       width: 128,
     },
-    logo: {
-      src: "/assets/withings-logo.png",
-      height: 18,
-      width: "auto",
-    },
+    className: "font-semibold text-3xl tracking-wider",
     url: "https://www.withings.com/health-mate",
   },
   {
     name: "Fitbit",
+    logoText: "fitbit",
     app: {
       src: "/assets/fitbit-app.png",
       height: 140,
       width: 128,
     },
-    logo: {
-      src: "/assets/fitbit-logo.png",
-      height: 24.01,
-      width: "auto",
-    },
+    className: "font-semibold text-3xl",
     url: "https://www.fitbit.com/",
   },
 ];
 
 const WorksWith = () => {
   return (
-    <Grid
-      gridArea="works"
-      templateColumns="min-content min-content 1fr"
-      templateAreas={{
-        base: '"Text Text Text" "Withings Withings Withings" "Fitbit Fitbit Fitbit"',
-        md: '"Withings Fitbit Text"',
-      }}
-      gap={6}
-      alignItems="center"
-    >
+    <div className="grid-in-works flex flex-col flex-wrap md:flex-row">
       {vendors.map((vendor) => (
-        <Link
-          href={vendor.url}
-          gridArea={vendor.name}
-          _hover={{ textDecoration: "none" }}
+        <a
           target="_blank"
           key={vendor.name}
+          href={vendor.url}
+          rel="noreferrer"
+          className="order-2 pb-6 w-full md:pr-6 md:w-auto"
         >
-          <Center
-            boxSize={220}
-            borderRadius={20}
-            bg="gray.50"
-            borderColor="gray.200"
-            borderWidth={1}
-            borderStyle="solid"
-            _hover={{ backgroundColor: "gray.100" }}
-          >
-            <Flex direction="column" align="center" p={1}>
+          <div className="flex items-center justify-center w-56 h-56 hover:bg-gray-100 bg-gray-50 border border-gray-200 rounded-2xl">
+            <div className="flex flex-col items-center p-1">
               <Image
                 src={vendor.app.src}
                 alt={`${vendor.name} app logo`}
                 height={vendor.app.height}
                 width={vendor.app.width}
-                pb={3}
+                className=""
               />
-              <Flex direction="column">
-                <Text fontSize="16px" fontWeight="bold">
-                  Works with
-                </Text>
-                <Image src={vendor.logo.src} alt={vendor.name} height={vendor.logo.height} width={vendor.logo.width} />
-              </Flex>
-            </Flex>
-          </Center>
-        </Link>
+              <div className="flex flex-col">
+                <div className="text-brand-500 text-base font-bold">Works with</div>
+                <div className={vendor.className}>{vendor.logoText}</div>
+              </div>
+            </div>
+          </div>
+        </a>
       ))}
-      <Box fontSize="1.2rem" gridArea="Text">
-        <Box fontWeight="bold">Enter your daily weight how you like...</Box>
-        <Box>
+      <div className="order-1 pb-6 text-xl md:order-3">
+        <div className="font-bold">Enter your daily weight how you like...</div>
+        <div>
           <FontAwesomeIcon icon="check" color="green" /> Smart Scales / WiFi Scales
-        </Box>
-        <Box>
+        </div>
+        <div>
           <FontAwesomeIcon icon="check" color="green" /> Withings Health Mate App
-        </Box>
-        <Box>
+        </div>
+        <div>
           <FontAwesomeIcon icon="check" color="green" /> Fitbit App
-        </Box>
-      </Box>
-    </Grid>
+        </div>
+      </div>
+    </div>
   );
 };
 

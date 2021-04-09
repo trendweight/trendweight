@@ -1,30 +1,20 @@
 import React from "react";
 import Logo from "~/components/shared/Logo";
 import Menu from "./Menu";
-import ResponsiveContainer from "./ResponsiveContainer";
 
 const Header = () => {
   return (
-    <Box as="header" bg="brand.500" color="white">
-      <ResponsiveContainer
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        px={{ base: 0, md: 4 }}
-        as="nav"
-      >
-        <Flex direction={"row"} align="center" justify="space-between" width="100%" wrap="wrap">
-          <Stack direction="row" py={2} pl={{ base: 2, md: 0 }}>
-            <Text fontFamily="'Zilla Slab', serif" fontWeight="700" fontSize="32px" lineHeight={1.2}>
-              TrendWeight
-            </Text>
+    <header className="text-white bg-brand-500">
+      <nav className="container flex flex-row items-center justify-between mx-auto px-0 md:px-4">
+        <div className="flex flex-row flex-wrap items-center justify-between w-full">
+          <div className="flex flex-row pl-2 py-2 md:pl-0">
+            <div className="font-serif text-2xl font-bold leading-5">TrendWeight</div>
             <Logo height="32px" width="77.13px" />
-          </Stack>
+          </div>
           <Menu />
-        </Flex>
-      </ResponsiveContainer>
-    </Box>
+        </div>
+      </nav>
+    </header>
   );
 };
 

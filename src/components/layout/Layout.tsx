@@ -1,16 +1,13 @@
 import { FC, PropsWithChildren } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
-import ResponsiveContainer from "./ResponsiveContainer";
 
 const Layout: FC<PropsWithChildren<{ flex?: boolean }>> = ({ children }) => (
-  <Flex direction="column" minH="100vh">
+  <div className="flex flex-col min-h-screen">
     <Header />
-    <ResponsiveContainer as="main" flexGrow={1} flexShrink={1} p={{ base: 4, md: 4 }}>
-      {children}
-    </ResponsiveContainer>
+    <main className="container flex-grow flex-shrink mx-auto p-4">{children}</main>
     <Footer />
-  </Flex>
+  </div>
 );
 
 export default Layout;
