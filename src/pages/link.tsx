@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "~/components/shared/Button";
 import { get } from "~/lib/api/fetch";
 import { Page } from "~/lib/core/page";
 
@@ -10,11 +11,11 @@ const LinkAccount: Page = () => {
     window.location.assign(authorizationUrl);
   };
   return (
-    <Box>
+    <div>
       <Button onClick={onLinkWithings} isLoading={isLoading}>
         Link Withings Account
       </Button>
-    </Box>
+    </div>
   );
 };
 

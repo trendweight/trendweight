@@ -26,7 +26,7 @@ const Link: FC<LinkProps> = ({
   switch (variant) {
     case "button":
       variantClasses =
-        "text-center border border-transparent  focus:outline-none focus:ring-offset-2 focus:ring-2 flex-row justify-center";
+        "text-center border border-transparent focus:outline-none focus:ring-offset-2 focus:ring-2 flex-row justify-center";
       switch (size) {
         case "xl":
           sizeClasses = "min-w-[320px] px-8 py-3 w-full text-xl md:w-auto md:text-2xl inline-flex rounded-md";
@@ -48,7 +48,7 @@ const Link: FC<LinkProps> = ({
       }
       break;
     case "normal":
-      variantClasses = "text-brand-500 hover:text-brand-700 no-underline hover:underline cursor-pointer";
+      variantClasses = "text-brand-500 hover:text-brand-700 no-underline hover:underline cursor-pointer font-medium";
       break;
     case "muted":
       variantClasses = "text-gray-300 hover:text-black no-underline hover:underline cursor-pointer";

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Loading = () => {
+const Spinner = () => {
   return (
     <svg
       className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -18,4 +18,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default Spinner;
