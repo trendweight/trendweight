@@ -1,9 +1,10 @@
 import { useCallback } from "react";
 import { useAuth } from "~/lib/core/auth";
+import { useDisclosure } from "~/lib/core/utils";
 import MenuItem from "./MenuItem";
 
 const Menu = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, toggle, close } = useDisclosure();
   const auth = useAuth();
   const handleSignOut = useCallback(() => {
     auth.signOut();
@@ -17,24 +18,15 @@ const Menu = () => {
 
   return (
     <>
-      <Box display={{ base: "block", md: "none" }} onClick={isOpen ? onClose : onOpen} pr={4}>
+      <div className="block md:hidden pr-4" onClick={toggle}>
         <svg fill="white" width="1em" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <title>Menu</title>
           <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
         </svg>
-      </Box>
+      </div>
 
-      <Stack
-        bg={{ base: "white", md: "inherit" }}
-        direction={{ base: "column", md: "row" }}
-        display={{ base: isOpen ? "block" : "none", md: "flex" }}
-        alignSelf="stretch"
-        alignItems="stretch"
-        spacing={0}
-        width={{ base: "100%", md: "auto" }}
-        boxShadow={{ base: "0 4px 6px rgba(10,10,10,.1)", md: "none" }}
-        py={{ base: 2, md: 0 }}
-        onClick={isOpen ? onClose : undefined}
+      <div className={`flex flex-col md:flex-row bg-white md:bg-transparent ${isOpen ? "block" : "hidden"} md:flex self-stretch items-stretch w-full md:w-auto shadow-lg md:shadow-none py-2 md:py-0`}
+        onClick={close}
       >
         <MenuItem href="/">Home</MenuItem>
         <MenuItem href="/dashboard" show={isLoggedIn}>
@@ -53,7 +45,7 @@ const Menu = () => {
         <MenuItem onClick={handleSignOut} show={isLoggedIn}>
           Sign Out
         </MenuItem>
-      </Stack>
+      </div>
     </>
   );
 };

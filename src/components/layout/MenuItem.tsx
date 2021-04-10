@@ -8,45 +8,22 @@ interface MenuItemProps {
   show?: boolean;
 }
 
-const Item: FC<PropsWithChildren<MenuItemProps>> = React.forwardRef(({ children, ...rest }, ref) => {
+const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, onClick, show = true, children }) => {
   const { pathname } = useRouter();
-  const { href, onClick } = rest;
-  return (
-    <Link
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ref={ref as any}
-      as={href ? "a" : "div"}
-      bg={{ base: "white", md: pathname === href ? "brand.400" : "inherit" }}
-      color={{ base: pathname === href ? "brand.400" : "brand.900", md: "inherit" }}
-      fontWeight={{ base: pathname === href ? "medium" : "inherit", md: "inherit" }}
-      display="flex"
-      alignItems="center"
-      py={{ base: 2, md: 2 }}
-      px={3}
-      _hover={{ color: "brand.800", bg: "white", textDecoration: "none" }}
-      _focus={{ boxShadow: "none", fontWeight: "medium" }}
-      onClick={onClick}
-      {...rest}
-    >
-      {children}
-    </Link>
-  );
-});
+  const className = `bg-white ${pathname === href ? "md:bg-brand-400 text-brand-400 font-medium" : "md:bg-transparent text-brand-900 font-normal"} md:text-current md:font-normal flex items-center py-2 px-3 hover:text-brand-800 hover:bg-white hover:no-underline focus:shadow-none focus:font-medium`;
 
-Item.displayName = "Item";
-
-const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, show = true, ...rest }) => {
   if (!show) {
     return null;
   }
+
   if (href) {
     return (
-      <NextLink href={href} passHref>
-        <Item {...rest} />
+      <NextLink href={href}>
+        <a className={className}>{children}</a>
       </NextLink>
     );
   } else {
-    return <Item {...rest} />;
+    return <div className={className} onClick={onClick}>{children}</div>;
   }
 };
 

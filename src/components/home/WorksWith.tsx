@@ -11,7 +11,7 @@ const vendors = [
       height: 140,
       width: 128,
     },
-    className: "font-semibold text-3xl tracking-wider",
+    className: "font-medium text-3xl tracking-wider",
     url: "https://www.withings.com/health-mate",
   },
   {
@@ -22,7 +22,7 @@ const vendors = [
       height: 140,
       width: 128,
     },
-    className: "font-semibold text-3xl",
+    className: "font-normal text-4xl",
     url: "https://www.fitbit.com/",
   },
 ];
@@ -42,13 +42,15 @@ const WorksWith = () => {
             <div className="flex flex-col items-center p-1">
               <Image
                 src={vendor.app.src}
+                layout="fixed"
+                objectFit="contain"
                 alt={`${vendor.name} app logo`}
                 height={vendor.app.height}
                 width={vendor.app.width}
                 className=""
               />
-              <div className="flex flex-col">
-                <div className="text-brand-500 text-base font-bold">Works with</div>
+              <div className="flex flex-col items-center leading-none">
+                <div className="text-brand-500 font-bold">Works with</div>
                 <div className={vendor.className}>{vendor.logoText}</div>
               </div>
             </div>

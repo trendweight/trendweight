@@ -26,13 +26,13 @@ const Link: FC<LinkProps> = ({
   switch (variant) {
     case "button":
       variantClasses =
-        "text-center border border-transparent rounded focus:outline-none focus:ring-offset-2 focus:ring-2 flex-row justify-center";
+        "text-center border border-transparent  focus:outline-none focus:ring-offset-2 focus:ring-2 flex-row justify-center";
       switch (size) {
         case "xl":
-          sizeClasses = "min-w-[320px] px-8 py-2 w-full text-xl md:w-auto md:text-2xl inline-flex";
+          sizeClasses = "min-w-[320px] px-8 py-2 w-full text-xl md:w-auto md:text-2xl inline-flex rounded-md";
           break;
         case "auto":
-          sizeClasses = "px-4 py-2 font-bold inline-flex";
+          sizeClasses = "px-4 py-2 rounded font-bold inline-flex";
           break;
       }
       switch (btnColor) {

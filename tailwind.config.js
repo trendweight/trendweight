@@ -13,7 +13,7 @@ module.exports = {
         home: "2fr 3fr",
       },
       fontFamily: {
-        sans: ["Open Sans", "sans-serif"],
+        sans: ["Roboto", "sans-serif"],
         serif: ["Zilla Slab", "serif"],
       },
       colors: {
