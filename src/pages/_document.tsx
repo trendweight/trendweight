@@ -8,11 +8,11 @@ class Document extends BaseDocument {
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             rel="preload"
-            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Zilla+Slab:wght@700&display=block"
+            href="https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&family=Zilla+Slab:wght@700&display=block"
             as="style"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Zilla+Slab:wght@700&display=block"
+            href="https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&family=Zilla+Slab:wght@700&display=block"
             rel="stylesheet"
           />
           <script async defer data-domain="trendweight.io" src="https://plausible.io/js/plausible.js"></script>

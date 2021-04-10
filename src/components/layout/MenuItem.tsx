@@ -10,7 +10,9 @@ interface MenuItemProps {
 
 const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, onClick, show = true, children }) => {
   const { pathname } = useRouter();
-  const className = `bg-white ${pathname === href ? "md:bg-brand-400 text-brand-400 font-medium" : "md:bg-transparent text-brand-900 font-normal"} md:text-current md:font-normal flex items-center py-2 px-3 hover:text-brand-800 hover:bg-white hover:no-underline focus:shadow-none focus:font-medium`;
+  const className = `bg-white ${
+    pathname === href ? "md:bg-brand-400 text-brand-400 font-medium" : "md:bg-transparent text-brand-900 font-normal"
+  } md:text-current md:font-normal flex items-center py-2 px-3 hover:text-brand-800 hover:bg-white hover:no-underline focus:shadow-none focus:font-medium`;
 
   if (!show) {
     return null;
@@ -23,7 +25,11 @@ const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, onClick, show = 
       </NextLink>
     );
   } else {
-    return <div className={className} onClick={onClick}>{children}</div>;
+    return (
+      <div className={className} onClick={onClick}>
+        {children}
+      </div>
+    );
   }
 };
 

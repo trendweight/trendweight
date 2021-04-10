@@ -8,10 +8,10 @@
     "build": "run-s lint build:next",
     "build:next": "next build",
     "start": "next start",
-    "prettier": "prettier -w src/**/*.ts src/**/*.tsx",
+    "prettier": "prettier -w src public",
     "lint": "run-s lint:eslint lint:prettier",
     "lint:eslint": "eslint src",
-    "lint:prettier": "prettier -c src/**/*.ts src/**/*.tsx"
+    "lint:prettier": "prettier -c src public"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.35",
@@ -54,7 +54,6 @@
     "npm-run-all": "4.1.5",
     "postcss": "8.2.8",
     "prettier": "2.2.1",
-    "prettier-plugin-tailwind": "2.2.10",
     "tailwindcss": "2.1.1",
     "typescript": "4.2.3"
   }

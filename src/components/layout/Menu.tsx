@@ -25,7 +25,10 @@ const Menu = () => {
         </svg>
       </div>
 
-      <div className={`flex flex-col md:flex-row bg-white md:bg-transparent ${isOpen ? "block" : "hidden"} md:flex self-stretch items-stretch w-full md:w-auto shadow-lg md:shadow-none py-2 md:py-0`}
+      <div
+        className={`flex-col md:flex-row bg-white md:bg-transparent ${
+          isOpen ? "block" : "hidden"
+        } md:flex self-stretch items-stretch w-full md:w-auto shadow-md md:shadow-none py-2 md:py-0`}
         onClick={close}
       >
         <MenuItem href="/">Home</MenuItem>
