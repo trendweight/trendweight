@@ -15,7 +15,7 @@ const Blurb = () => (
         today than it was yesterday.
       </div>
       <div>
-        Our weight fluxuates—it just does. That's completely normal. TrendWeight is a tool that helps you focus on your
+        Our weight fluctuates—it just does. That's completely normal. TrendWeight is a tool that helps you focus on your
         weight <i>trend</i> over time instead of day to day changes.
       </div>
     </div>

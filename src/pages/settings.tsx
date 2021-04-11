@@ -1,4 +1,4 @@
-import RouteLink from "~/components/shared/RouteLink";
+import Link from "~/components/shared/Link";
 import { Page } from "~/lib/core/page";
 import { toJson } from "~/lib/core/utils";
 import { useSettings } from "~/lib/queries/settings";
@@ -11,19 +11,19 @@ const Settings: Page = () => {
   }
 
   if (isError) {
-    return <Box>Error: {toJson(error)}</Box>;
+    return <div>Error: {toJson(error)}</div>;
   }
 
   return (
     <>
-      <Box>
-        <RouteLink href="/link">Link an Account</RouteLink>
-      </Box>
-      <Box>
-        <Code>
+      <div>
+        <Link href="/link">Link an Account</Link>
+      </div>
+      <div>
+        <code>
           <pre>{toJson(data)}</pre>
-        </Code>
-      </Box>
+        </code>
+      </div>
     </>
   );
 };

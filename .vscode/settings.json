@@ -1,12 +1,42 @@
 {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": true
-    },
-    "editor.tabSize": 2,
-    "git.pruneOnFetch": true,
-    "git.rebaseWhenSync": true,
-    "cSpell.words": [
-        "clsx"
-    ]
+  "css.validate": false,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.tabSize": 2,
+  "git.pruneOnFetch": true,
+  "git.rebaseWhenSync": true,
+  "cSpell.ignorePaths": [
+    "**/package.json",
+    "**/package-lock.json",
+    "**/node_modules/**",
+    "**/vscode-extension/**",
+    "**/.git/objects/**",
+    ".vscode",
+    ".vscode-insiders",
+    ".vscode-server",
+    "*.config.js"
+  ],
+  "cSpell.words": [
+    "API's",
+    "Fitbit",
+    "Vercel",
+    "Withings",
+    "chainable",
+    "clsx",
+    "firestore",
+    "fontawesome",
+    "fortawesome",
+    "nprogress",
+    "preconnect",
+    "requesttoken",
+    "semibold",
+    "spatialization",
+    "spatialize",
+    "trendweight"
+  ]
 }

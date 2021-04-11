@@ -11,7 +11,7 @@ const Register: Page = () => {
     }
     return null;
   } else {
-    return <Box>Register Page</Box>;
+    return <div>Register Page</div>;
   }
 };
 

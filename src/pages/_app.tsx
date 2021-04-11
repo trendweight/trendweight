@@ -26,7 +26,12 @@ function App({ Component, pageProps }: AppProps) {
   const { title, bypassShell, requireLogin } = Component as Page;
   const Wrapper = bypassShell ? NoShell : PageWrapper;
 
-  if (process.env.NODE_ENV === "development" && title === undefined) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isMarkdown = (Component as any).isMDXComponent;
+
+  console.log(Component);
+
+  if (process.env.NODE_ENV === "development" && title === undefined && !isMarkdown) {
     throw new Error("'title' property is required on page component.");
   }
 
@@ -34,7 +39,7 @@ function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Head>
-          <title>{title === "TrendWeight" ? title : `${title} - TrendWeight`}</title>
+          {!isMarkdown && <title>{title === "TrendWeight" ? title : `${title} - TrendWeight`}</title>}
           <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
           <link rel="icon" href="/favicon.ico" />
         </Head>

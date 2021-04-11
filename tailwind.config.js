@@ -1,7 +1,7 @@
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
-  mode: "jit",
-  purge: ["./public/**/*.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  mode: process.env.__NEXT_PROCESSED_ENV ? "jit" : undefined,
+  purge: ["./public/**/*.html", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
@@ -30,10 +30,24 @@ module.exports = {
           900: "#2c466b",
         },
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            a: {
+              "text-decoration": "none",
+              "font-weight": "bold",
+            },
+          },
+        },
+      },
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [require("@savvywombat/tailwindcss-grid-areas"), require("@tailwindcss/forms")],
+  plugins: [
+    require("@savvywombat/tailwindcss-grid-areas"),
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
+  ],
 };

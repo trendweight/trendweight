@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "~/components/shared/Button";
+import Button from "~/components/forms/Button";
 import { get } from "~/lib/api/fetch";
 import { Page } from "~/lib/core/page";
 

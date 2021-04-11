@@ -12,7 +12,7 @@ const Home: Page = () => {
     <div className="flex flex-col min-h-screen">
       <Banner />
       <div className="container relative flex-grow flex-shrink mx-auto p-4">
-        <div className="grid-areas-home md:grid-cols-home md:grid-areas-home-wide grid gap-6 grid-cols-1 md:gap-10">
+        <div className="grid-areas-home md:grid-areas-home-wide grid gap-6 grid-cols-1 md:gap-10 md:grid-cols-home">
           <InfoButtons />
           <Blurb />
           <SampleChart />

@@ -48,7 +48,7 @@ const Link: FC<LinkProps> = ({
       }
       break;
     case "normal":
-      variantClasses = "text-brand-500 hover:text-brand-700 no-underline hover:underline cursor-pointer font-medium";
+      variantClasses = "text-brand-500 hover:text-brand-700 no-underline hover:underline cursor-pointer font-semibold";
       break;
     case "muted":
       variantClasses = "text-gray-300 hover:text-black no-underline hover:underline cursor-pointer";
