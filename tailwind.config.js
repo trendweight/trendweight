@@ -1,3 +1,5 @@
+console.log(process.env);
+
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
   mode: "jit",
