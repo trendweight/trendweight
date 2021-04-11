@@ -9,7 +9,8 @@
     "build:next": "next build",
     "start": "next start",
     "prettier": "prettier -w src public",
-    "lint": "run-s lint:eslint lint:prettier",
+    "lint": "run-p lint:eslint",
+    "lint:commit": "run-p lint:eslint lint:prettier",
     "lint:eslint": "eslint src",
     "lint:prettier": "prettier -c src public"
   },
