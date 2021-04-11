@@ -1,8 +1,6 @@
-console.log(process.env);
-
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
-  mode: "jit",
+  mode: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ? "jit" : undefined, // this is a workaround to a bug in prettier-plugin-tailwind
   purge: ["./public/**/*.html", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
   darkMode: false, // or 'media' or 'class'
   theme: {
