@@ -6,7 +6,7 @@ const Privacy: Page = () => {
   return (
     <div className="max-w-4xl">
       <h2 className="mt-4 text-xl">Our Privacy Policy</h2>
-      <img src="/assets/security.svg" className="float-right my-4 ml-4 h-28 md:h-48" />
+      <img src="/assets/security.svg" className="float-right ml-4 my-4 h-28 md:h-48" />
       <p className="mt-4">
         Your privacy is important. It is TrendWeight's policy to respect your privacy regarding any information we may
         collect from you across our web app, <Link href="https://trendweight.io">https://trendweight.io</Link>, and
@@ -38,7 +38,7 @@ const Privacy: Page = () => {
         we used and and the scope of the services they provide to us. Please see their respective privacy policies for
         details on how they protect any data they may receive about you.
       </p>
-      <ul className="px-6 mt-4 list-disc">
+      <ul className="mt-4 px-6 list-disc">
         <li>
           <Link href="https://firebase.google.com/products/auth">Firebase Authentication</Link>. Authenticating accounts
           e.g. email and password.

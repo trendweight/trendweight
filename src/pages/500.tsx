@@ -5,8 +5,8 @@ const Oops: Page = () => {
   return (
     <div className="min-h-[67vh] flex flex-col items-start justify-items-start md:items-center md:justify-center">
       <div className="flex flex-col items-start p-4 space-y-8 md:flex-row md:items-center md:space-x-8">
-        <div className="w-full max-w-xl py-4 pr-0 border-none md:pr-8 md:border md:border-solid md:border-gray-50">
-          <div className="pr-2 font-serif text-3xl font-bold leading-5 text-brand-500 md:text-5xl">TrendWeight</div>
+        <div className="pr-0 py-4 w-full max-w-xl border-none md:pr-8 md:border md:border-solid md:border-gray-50">
+          <div className="pr-2 text-brand-500 font-serif text-3xl font-bold leading-5 md:text-5xl">TrendWeight</div>
           <div className="mt-4">
             <b>Oops.</b> An error occurred in the application.
           </div>
