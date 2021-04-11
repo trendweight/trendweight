@@ -29,8 +29,6 @@ function App({ Component, pageProps }: AppProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isMarkdown = (Component as any).isMDXComponent;
 
-  console.log(Component);
-
   if (process.env.NODE_ENV === "development" && title === undefined && !isMarkdown) {
     throw new Error("'title' property is required on page component.");
   }
