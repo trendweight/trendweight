@@ -1,6 +1,6 @@
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
-  mode: process.env.__NEXT_PROCESSED_ENV ? "jit" : undefined,
+  mode: "jit",
   purge: ["./public/**/*.html", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
   darkMode: false, // or 'media' or 'class'
   theme: {
