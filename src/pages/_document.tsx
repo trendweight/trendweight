@@ -23,7 +23,7 @@ class Document extends BaseDocument {
             }}
           ></script>
         </Head>
-        <body className="overflow-y-scroll">
+        <body>
           <Main />
           <NextScript />
         </body>

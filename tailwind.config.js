@@ -11,6 +11,7 @@ module.exports = {
       },
       gridTemplateColumns: {
         home: "2fr 3fr",
+        sidebar: "1fr auto",
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
@@ -18,9 +19,9 @@ module.exports = {
       },
       colors: {
         brand: {
-          50: "#ddebff",
-          100: "#bed7f9",
-          200: "#9bbef3",
+          50: "#f6f9fd",
+          100: "#d5e5fb",
+          200: "#d1e1fa",
           300: "#81a9e2",
           400: "#6592d0",
           500: "#507fc3",

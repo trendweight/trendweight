@@ -8,7 +8,7 @@ const PageWrapper: FC<PropsWithChildren<{ requireLogin?: boolean }>> = ({ requir
   const router = useRouter();
   if (requireLogin && !auth.user) {
     if (!auth.isInitializing) {
-      router.push("/login");
+      router.replace("/login");
     }
     return null;
   }

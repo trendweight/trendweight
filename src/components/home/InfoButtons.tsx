@@ -12,9 +12,20 @@ const InfoButtons = () => {
       <Link href="/about" variant="button" btnColor="green" size="xl">
         Learn More
       </Link>
-      <Link href={getStartedUrl} variant="button" btnColor="brand" size="xl">
-        Get Started
-      </Link>
+      {!isInitializing && !user ? (
+        <>
+          <Link href="/register" variant="button" btnColor="brand" size="xl">
+            Register
+          </Link>
+          <Link href="/login" variant="button" btnColor="brand" size="xl">
+            Sign In
+          </Link>
+        </>
+      ) : (
+        <Link href="/dashboard" variant="button" btnColor="brand" size="xl">
+          Go To Dashboard
+        </Link>
+      )}
     </div>
   );
 };

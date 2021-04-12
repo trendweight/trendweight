@@ -23,7 +23,7 @@ const vendors = [
       width: 128,
     },
     className: "font-normal text-4xl",
-    url: "https://www.fitbit.com/",
+    url: "https://www.fitbit.com/sg/app",
   },
 ];
 

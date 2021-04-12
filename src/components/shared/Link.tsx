@@ -8,7 +8,7 @@ export interface LinkProps {
   external?: boolean;
   btnColor?: "brand" | "green" | "gray";
   variant?: "normal" | "muted" | "button";
-  size?: "auto" | "xl";
+  size?: "auto" | "lg" | "xl";
 }
 
 const Link: FC<LinkProps> = ({
@@ -31,6 +31,9 @@ const Link: FC<LinkProps> = ({
         case "xl":
           sizeClasses = "min-w-[320px] px-8 py-3 w-full text-xl md:w-auto md:text-2xl inline-flex rounded-md";
           break;
+        case "lg":
+          sizeClasses = "px-6 py-3 text-lg md:text-xl inline-flex rounded-md";
+          break;
         case "auto":
           sizeClasses = "px-4 py-2 rounded font-bold inline-flex";
           break;
@@ -48,7 +51,7 @@ const Link: FC<LinkProps> = ({
       }
       break;
     case "normal":
-      variantClasses = "text-brand-500 hover:text-brand-700 no-underline hover:underline cursor-pointer font-semibold";
+      variantClasses = "text-brand-600 hover:text-brand-700 no-underline hover:underline cursor-pointer font-medium";
       break;
     case "muted":
       variantClasses = "text-gray-300 hover:text-black no-underline hover:underline cursor-pointer";
