@@ -5,8 +5,6 @@ import Link from "../shared/Link";
 const InfoButtons = () => {
   const { isInitializing, user } = useAuth();
 
-  const getStartedUrl = isInitializing || !user ? "/register" : "/dashboard";
-
   return (
     <div className="grid-in-buttons flex flex-col gap-4 items-center w-full md:flex-row">
       <Link href="/about" variant="button" btnColor="green" size="xl">
@@ -22,9 +20,11 @@ const InfoButtons = () => {
           </Link>
         </>
       ) : (
-        <Link href="/dashboard" variant="button" btnColor="brand" size="xl">
-          Go To Dashboard
-        </Link>
+        !isInitializing && (
+          <Link href="/dashboard" variant="button" btnColor="brand" size="xl">
+            Go To Dashboard
+          </Link>
+        )
       )}
     </div>
   );
