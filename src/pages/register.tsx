@@ -18,11 +18,11 @@ const Register: Page = () => {
           <h2 className="text-brand-600 text-xl font-bold">Create an Account</h2>
           <div>
             Registration for the beta version of TrendWeight is not available yet. If you are interested in being an
-            early test, email me at <Link href="mailto:erv@ewal.net?subject=Beta Testing">erv@ewal.net</Link>.
+            early tester, email me at <Link href="mailto:erv@ewal.net?subject=Beta Testing">erv@ewal.net</Link>.
           </div>
           <div>
             If you just are interested in knowing when the beta is ready for general use, your best bet is to follow
-            TrendWeight <Link href="https://twitter.com/trendweight">Twitter</Link>,{" "}
+            TrendWeight on <Link href="https://twitter.com/trendweight">Twitter</Link>,{" "}
             <Link href="https://facebook.com/trendweight">Facebook</Link>, or subscribe to the{" "}
             <Link href="https://blog.trendweight.com">Blog</Link>.
           </div>
