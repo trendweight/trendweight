@@ -5,7 +5,7 @@ import { Page } from "~/lib/core/page";
 const FAQ: Page = () => {
   return (
     <div className="bg-white">
-      <div className="px-2 py-2 md:px-0 md:py-8">
+      <div className="md:px-0">
         <div className="lg:grid lg:gap-8 lg:grid-cols-4">
           <div>
             <h2 className="text-gray-200-900 text-2xl font-extrabold">Frequently asked questions</h2>
@@ -14,8 +14,8 @@ const FAQ: Page = () => {
               .
             </p>
           </div>
-          <div className="mt-8 lg:col-span-3 lg:mt-0">
-            <dl className="space-y-12">
+          <div className="mt-6 lg:col-span-3 lg:mt-0">
+            <dl className="space-y-6 md:space-y-8">
               <div>
                 <dt className="text-gray-900 text-lg font-semibold leading-6">
                   Do I need to have a Withings or Fitbit scale to use this site? Can I manually enter my weight data
@@ -56,22 +56,8 @@ const FAQ: Page = () => {
                 </dt>
                 <dd className="mt-2 text-gray-500 text-base space-y-4">
                   <p>
-                    No. The TrendWeight website is fully optimized for use on mobile devices. There are no plans for a
-                    native mobile app.
-                  </p>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-gray-900 text-lg font-semibold leading-6">What is the math behind TrendWeight?</dt>
-                <dd className="mt-2 text-gray-500 text-base space-y-4">
-                  <p>
-                    The techniques used on TrendWeight come from John Walker's The Hacker's Diet. I found it to be an
-                    interesting read (and it's free!). In particular, I recommend reading the "Signal and Noise" chapter
-                    for a better understanding of the weight tracking methodology used on this site.
-                  </p>
-                  <p>
-                    Additionally, there is a detailed walkthrough of the math of TrendWeight, specifically in this{" "}
-                    <Link href="#">blog post</Link>.
+                    No. The TrendWeight website works great on mobile sizes, and there are no plans for a native mobile
+                    app.
                   </p>
                 </dd>
               </div>
@@ -125,6 +111,20 @@ const FAQ: Page = () => {
                     Go to your <Link href="/settings">Settings</Link> page to find your private URL. You can also change
                     your private URL at any time in case you gave your URL to someone and later decide you don't want
                     them to see your stats anymore.
+                  </p>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-gray-900 text-lg font-semibold leading-6">What is the math behind TrendWeight?</dt>
+                <dd className="mt-2 text-gray-500 text-base space-y-4">
+                  <p>
+                    The techniques used on TrendWeight come from John Walker's The Hacker's Diet. I found it to be an
+                    interesting read (and it's free!). In particular, I recommend reading the "Signal and Noise" chapter
+                    for a better understanding of the weight tracking methodology used on this site.
+                  </p>
+                  <p>
+                    Additionally, there is a detailed walkthrough of the math of TrendWeight, specifically in this{" "}
+                    <Link href="#">blog post</Link>.
                   </p>
                 </dd>
               </div>

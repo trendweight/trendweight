@@ -13,7 +13,7 @@ const About: Page = () => {
       : { label: "Go to Dashboard", href: "/dashboard" };
 
   return (
-    <div className="mt-4">
+    <div>
       <div className="hidden float-right pb-4 pl-4 bg-white md:block">
         <Link href="demo">
           <Image src="/assets/screenshot-large.png" height={357} width={375} layout="intrinsic" />
@@ -118,7 +118,7 @@ const About: Page = () => {
               </div>
               <h3 className="mt-6 text-gray-900 text-lg font-medium tracking-tight">Get a Scale</h3>
               <p className="mt-5 text-gray-500 text-base">
-                <ul className="list-inside list-disc">
+                <ul className="pl-8 list-disc">
                   <li>
                     <Link href="https://amzn.to/2Rh8yH1">Withings Scales</Link>
                   </li>
@@ -151,7 +151,7 @@ const About: Page = () => {
               </div>
               <h3 className="mt-6 text-gray-900 text-lg font-medium tracking-tight">Stay Updated</h3>
               <p className="mt-5 text-gray-500 text-base">
-                <ul className="list-inside list-disc">
+                <ul className="pl-8 list-disc">
                   <li>
                     <Link href="https://twitter.com/trendweight">Twitter</Link>
                   </li>

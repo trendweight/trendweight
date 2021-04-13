@@ -5,20 +5,16 @@ import { FC, ReactNode } from "react";
 export interface LinkProps {
   href: string;
   children: ReactNode;
-  external?: boolean;
   btnColor?: "brand" | "green" | "gray";
   variant?: "normal" | "muted" | "button";
   size?: "auto" | "lg" | "xl";
 }
 
-const Link: FC<LinkProps> = ({
-  href,
-  children,
-  external = false,
-  variant = "normal",
-  btnColor = "gray",
-  size = "auto",
-}) => {
+const Link: FC<LinkProps> = ({ href, children, variant = "normal", btnColor = "gray", size = "auto" }) => {
+  let external = false;
+  if (href.startsWith("https://") || (href.startsWith("http://") && !href.startsWith("https://trendweight"))) {
+    external = true;
+  }
   let variantClasses = "",
     colorClasses = "",
     sizeClasses = "";

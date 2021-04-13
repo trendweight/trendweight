@@ -13,7 +13,7 @@ const InfoButtons = () => {
       {!isInitializing && !user ? (
         <>
           <Link href="/register" variant="button" btnColor="brand" size="xl">
-            Register
+            Sign Up
           </Link>
           <Link href="/login" variant="button" btnColor="brand" size="xl">
             Sign In

@@ -4,8 +4,8 @@ import { Page } from "~/lib/core/page";
 
 const Privacy: Page = () => {
   return (
-    <div className="max-w-4xl">
-      <h2 className="mt-4 text-xl">Our Privacy Policy</h2>
+    <div className="mt-4 max-w-4xl">
+      <h2 className="text-xl">Our Privacy Policy</h2>
       <img src="/assets/security.svg" className="float-right ml-4 my-4 h-28 md:h-48" />
       <p className="mt-4">
         Your privacy is important. It is TrendWeight's policy to respect your privacy regarding any information we may
@@ -33,6 +33,11 @@ const Privacy: Page = () => {
         <Link href="https://plausible.io/data-policy">here</Link>.
       </p>
       <p className="mt-4">
+        We also use <Link href="https://vercel.com/docs/analytics">Vercel Analytics</Link> to monitor the performance of
+        the app. Vercel also does not use cookies, does not track you, and does not collect any personally identifiable
+        information. Their privacy policy is <Link href="https://vercel.com/legal/privacy-policy">here</Link>.
+      </p>
+      <p className="mt-4">
         We use a number of service providers to make this site work. These service providers may receive some of your
         personal information as part of their normal operation. Below is a non-exhaustive list of the service providers
         we used and and the scope of the services they provide to us. Please see their respective privacy policies for
@@ -48,7 +53,8 @@ const Privacy: Page = () => {
           for storing your settings and most recent weight data.
         </li>
         <li>
-          <Link href="https://vercel.com/">Vercel</Link>. Website hosting and content distribution.
+          <Link href="https://vercel.com/">Vercel</Link>. Website hosting, content distribution, and performance
+          monitoring.
         </li>
       </ul>
       <p className="mt-4">

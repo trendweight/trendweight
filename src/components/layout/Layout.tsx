@@ -5,7 +5,7 @@ import Header from "./Header";
 const Layout: FC<PropsWithChildren<{ flex?: boolean }>> = ({ children }) => (
   <div className="flex flex-col min-h-screen">
     <Header />
-    <main className="container flex-grow flex-shrink mx-auto p-4">{children}</main>
+    <main className="container flex-grow flex-shrink mx-auto p-4 md:py-6">{children}</main>
     <Footer />
   </div>
 );

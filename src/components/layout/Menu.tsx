@@ -40,7 +40,7 @@ const Menu = () => {
         </MenuItem>
         <MenuItem href="/about">Learn</MenuItem>
         <MenuItem href="/register" show={!isLoggedIn}>
-          Register
+          Sign Up
         </MenuItem>
         <MenuItem href="/login" show={!isLoggedIn}>
           Sign In

@@ -9,20 +9,20 @@ const Footer = () => {
         <p>&copy; 2012-{new Date().getFullYear()} Erv Walter</p>
         <div className="flex flex-row gap-2 md:gap-4">
           <div className="flex flex-row gap-2 md:gap-4">
-            <Link href="https://twitter.com/trendweight" external variant="muted">
+            <Link href="https://twitter.com/trendweight" variant="muted">
               <FontAwesomeIcon icon={["fab", "twitter"]} />
             </Link>
-            <Link href="https://facebook.com/trendweight" external variant="muted">
+            <Link href="https://facebook.com/trendweight" variant="muted">
               <FontAwesomeIcon icon={["fab", "facebook"]} />
             </Link>
-            <Link href="https://github.com/trendweight" external variant="muted">
+            <Link href="https://github.com/trendweight" variant="muted">
               <FontAwesomeIcon icon={["fab", "github"]} />
             </Link>
-            <Link href="https://blog.trendweight.com" external variant="muted">
+            <Link href="https://blog.trendweight.com" variant="muted">
               <FontAwesomeIcon icon="rss" />
             </Link>
           </div>
-          <Link href="mailto:erv@ewal.net" external variant="muted">
+          <Link href="mailto:erv@ewal.net" variant="muted">
             Contact
           </Link>
           <Link href="/donate" variant="muted">
