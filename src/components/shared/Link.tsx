@@ -25,7 +25,8 @@ const Link: FC<LinkProps> = ({ href, children, variant = "normal", btnColor = "g
         "text-center border border-transparent focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-offset-white flex-row justify-center";
       switch (size) {
         case "xl":
-          sizeClasses = "min-w-[320px] px-8 py-3 w-full text-xl md:w-auto md:text-2xl inline-flex rounded-md";
+          sizeClasses =
+            "md:min-w-[230px] lg:min-w-[320px] lg:px-4 py-2 lg:py-3 w-full text-xl md:w-auto md:text-xl lg:text-2xl inline-flex rounded-md";
           break;
         case "lg":
           sizeClasses = "px-6 py-3 text-lg md:text-xl inline-flex rounded-md";

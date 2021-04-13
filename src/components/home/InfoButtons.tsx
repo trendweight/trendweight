@@ -12,11 +12,11 @@ const InfoButtons = () => {
       </Link>
       {!isInitializing && !user ? (
         <>
-          <Link href="/register" variant="button" btnColor="brand" size="xl">
-            Sign Up
+          <Link href="/signup" variant="button" btnColor="brand" size="xl">
+            Create an Account
           </Link>
           <Link href="/login" variant="button" btnColor="brand" size="xl">
-            Sign In
+            Log In
           </Link>
         </>
       ) : (

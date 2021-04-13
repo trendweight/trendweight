@@ -26,6 +26,10 @@ const Register: Page = () => {
             <Link href="https://facebook.com/trendweight">Facebook</Link>, or subscribe to the{" "}
             <Link href="https://blog.trendweight.com">Blog</Link>.
           </div>
+          <div>
+            In the mean time, you're welcome to use the live version of TrendWeight at{" "}
+            <Link href="https://trendweight.com">trendweight.com</Link>.
+          </div>
           <div className="flex flex-row items-center space-x-2">
             <Link href="/" variant="button" btnColor="brand">
               Return to Homepage

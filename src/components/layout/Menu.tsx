@@ -39,14 +39,14 @@ const Menu = () => {
           Settings
         </MenuItem>
         <MenuItem href="/about">Learn</MenuItem>
-        <MenuItem href="/register" show={!isLoggedIn}>
+        <MenuItem href="/signup" show={!isLoggedIn}>
           Sign Up
         </MenuItem>
         <MenuItem href="/login" show={!isLoggedIn}>
-          Sign In
+          Log In
         </MenuItem>
         <MenuItem onClick={handleSignOut} show={isLoggedIn}>
-          Sign Out
+          Log Out
         </MenuItem>
       </div>
     </>

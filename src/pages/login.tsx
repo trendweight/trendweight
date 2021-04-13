@@ -36,7 +36,7 @@ const Login: Page = () => {
       <form onSubmit={onSubmit}>
         <div className="flex items-center justify-center">
           <div className="max-w-[400px] flex flex-col my-4 w-full space-y-5 md:my-12 md:px-6 md:py-12 md:bg-gray-50 md:border md:border-gray-100 md:rounded-lg md:shadow-md">
-            <h2 className="text-brand-600 text-xl font-bold">Sign In</h2>
+            <h2 className="text-brand-600 text-xl font-bold">Log In</h2>
             <div>
               <label className="sr-only" htmlFor="email">
                 Email
@@ -67,10 +67,10 @@ const Login: Page = () => {
             </div>
             <div className="flex flex-row items-center space-x-2">
               <Button isLoading={formState.isSubmitting} type="submit">
-                Sign In
+                Login
               </Button>
               <div>
-                or <Link href="/register">create an account</Link>
+                or <Link href="/signup">create an account</Link>
               </div>
             </div>
             <div className="flex flex-col space-y-2">
@@ -84,7 +84,7 @@ const Login: Page = () => {
   }
 };
 
-Login.title = "Sign In";
+Login.title = "Log In";
 Login.requireLogin = false;
 
 export default Login;

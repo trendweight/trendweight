@@ -10,7 +10,7 @@ const About: Page = () => {
 
   const getStarted =
     isInitializing || !user
-      ? { label: "Create an Account", href: "/register" }
+      ? { label: "Create an Account", href: "/signup" }
       : { label: "Go to Dashboard", href: "/dashboard" };
 
   return (

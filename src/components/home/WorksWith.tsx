@@ -29,7 +29,7 @@ const vendors = [
 
 const WorksWith = () => {
   return (
-    <div className="grid-in-works flex flex-col flex-wrap md:flex-row">
+    <div className="grid-in-works flex flex-col flex-wrap items-center md:flex-row md:space-x-4">
       {vendors.map((vendor) => (
         <a
           target="_blank"
