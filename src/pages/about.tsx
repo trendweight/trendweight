@@ -1,3 +1,4 @@
+import { HeartIcon, LightBulbIcon, RssIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import React from "react";
 import Link from "~/components/shared/Link";
@@ -53,40 +54,13 @@ const About: Page = () => {
           and you need to go back to the techniques that helped you lose weight in the first place.
         </p>
       </div>
-      <div className="clear-both -mx-4 mt-6 bg-brand-50 sm:mx-0">
-        <div className="px-6 py-8 md:px-12 md:py-10 lg:py-12">
-          <h2 className="text-gray-900 text-xl font-extrabold tracking-tight sm:text-2xl">
-            <span className="block text-brand-900">Ready to dive in?</span>
-          </h2>
-          <div className="flex mt-2">
-            <div className="inline-flex rounded-md shadow">
-              <Link href={getStarted.href} variant="button" btnColor="brand" size="lg">
-                {getStarted.label}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="clear-both mt-8">
         <div className="grid gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 rounded-lg">
+          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 border border-brand-100 rounded-lg">
             <div className="-mt-6">
               <div>
                 <span className="inline-flex items-center justify-center p-3 text-white bg-brand-400 rounded-md shadow-lg">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                    />
-                  </svg>
+                  <LightBulbIcon className="w-6 h-6" />
                 </span>
               </div>
               <h3 className="mt-6 text-gray-900 text-lg font-medium tracking-tight">Questions?</h3>
@@ -96,24 +70,11 @@ const About: Page = () => {
               </p>
             </div>
           </div>
-          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 rounded-lg">
+          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 border border-brand-100 rounded-lg">
             <div className="-mt-6">
               <div>
                 <span className="inline-flex items-center justify-center p-3 text-white bg-brand-400 rounded-md shadow-lg">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
+                  <ShoppingCartIcon className="w-6 h-6" />
                 </span>
               </div>
               <h3 className="mt-6 text-gray-900 text-lg font-medium tracking-tight">Get a Scale</h3>
@@ -129,24 +90,11 @@ const About: Page = () => {
               </p>
             </div>
           </div>
-          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 rounded-lg">
+          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 border border-brand-100 rounded-lg">
             <div className="-mt-6">
               <div>
                 <span className="inline-flex items-center justify-center p-3 text-white bg-brand-400 rounded-md shadow-lg">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z"
-                    />
-                  </svg>
+                  <RssIcon className="w-6 h-6" />
                 </span>
               </div>
               <h3 className="mt-6 text-gray-900 text-lg font-medium tracking-tight">Stay Updated</h3>
@@ -165,24 +113,11 @@ const About: Page = () => {
               </p>
             </div>
           </div>
-          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 rounded-lg">
+          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 border border-brand-100 rounded-lg">
             <div className="-mt-6">
               <div>
                 <span className="inline-flex items-center justify-center p-3 text-white bg-brand-400 rounded-md shadow-lg">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
+                  <HeartIcon className="w-6 h-6" />
                 </span>
               </div>
               <h3 className="mt-6 text-gray-900 text-lg font-medium tracking-tight">Support TrendWeight</h3>
@@ -190,6 +125,20 @@ const About: Page = () => {
                 TrendWeight is free, forever. But if you want info about how you can help fund it,{" "}
                 <Link href="/donate">go here</Link>.
               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="clear-both -mx-4 mt-6 bg-brand-50 border border-brand-100 rounded-lg sm:mx-0">
+        <div className="px-6 py-8 md:px-12 md:py-10 lg:py-12">
+          <h2 className="text-gray-900 text-xl font-extrabold tracking-tight sm:text-2xl">
+            <span className="block text-brand-600">Ready to check it out?</span>
+          </h2>
+          <div className="flex mt-2">
+            <div className="inline-flex rounded-md shadow">
+              <Link href={getStarted.href} variant="button" btnColor="brand" size="lg">
+                {getStarted.label}
+              </Link>
             </div>
           </div>
         </div>

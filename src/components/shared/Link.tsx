@@ -5,7 +5,7 @@ import { FC, ReactNode } from "react";
 export interface LinkProps {
   href: string;
   children: ReactNode;
-  btnColor?: "brand" | "green" | "gray";
+  btnColor?: "brand" | "green" | "gray" | "inverted-brand";
   variant?: "normal" | "muted" | "button";
   size?: "auto" | "lg" | "xl";
 }
@@ -22,7 +22,7 @@ const Link: FC<LinkProps> = ({ href, children, variant = "normal", btnColor = "g
   switch (variant) {
     case "button":
       variantClasses =
-        "text-center border border-transparent focus:outline-none focus:ring-offset-2 focus:ring-2 flex-row justify-center";
+        "text-center border border-transparent focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-offset-white flex-row justify-center";
       switch (size) {
         case "xl":
           sizeClasses = "min-w-[320px] px-8 py-3 w-full text-xl md:w-auto md:text-2xl inline-flex rounded-md";
@@ -43,6 +43,10 @@ const Link: FC<LinkProps> = ({ href, children, variant = "normal", btnColor = "g
           break;
         case "gray":
           colorClasses = "text-black bg-gray-200 hover:bg-gray-300 focus:ring-gray-500";
+          break;
+        case "inverted-brand":
+          colorClasses =
+            "text-brand-700 bg-brand-50 font-bold hover:bg-brand-100 focus:ring-white focus:ring-offset-brand-700 ";
           break;
       }
       break;
