@@ -67,7 +67,7 @@ const Login: Page = () => {
             </div>
             <div className="flex flex-row items-center space-x-2">
               <Button isLoading={formState.isSubmitting} type="submit">
-                Login
+                Log In
               </Button>
               <div>
                 or <Link href="/signup">create an account</Link>
