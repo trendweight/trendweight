@@ -6,7 +6,7 @@ const InfoButtons = () => {
   const { isInitializing, user } = useAuth();
 
   return (
-    <div className="grid-in-buttons flex flex-col gap-4 items-center w-full md:flex-row">
+    <div className="grid-in-buttons flex flex-col items-center w-full space-y-4 md:flex-row md:space-x-4 md:space-y-0">
       <Link href="/about" variant="button" btnColor="green" size="xl">
         Learn More
       </Link>

@@ -7,8 +7,8 @@ const Footer = () => {
     <footer className="container mx-auto px-4 py-2">
       <div className="flex flex-col items-center justify-between text-gray-300 md:flex-row">
         <p>&copy; 2012-{new Date().getFullYear()} Erv Walter</p>
-        <div className="flex flex-row gap-2 md:gap-4">
-          <div className="flex flex-row gap-2 md:gap-4">
+        <div className="flex flex-row space-x-2 md:space-x-4">
+          <div className="flex flex-row space-x-2 md:space-x-4">
             <Link href="https://twitter.com/trendweight" variant="muted">
               <FontAwesomeIcon icon={["fab", "twitter"]} />
             </Link>
