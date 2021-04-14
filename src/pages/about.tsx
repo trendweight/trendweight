@@ -55,7 +55,7 @@ const About: Page = () => {
         </p>
       </div>
       <div className="clear-both mt-8">
-        <div className="grid gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+        <div className="xl grid gap-x-10 gap-y-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
           <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 border border-brand-100 rounded-lg">
             <div className="-mt-6">
               <div>
@@ -129,7 +129,7 @@ const About: Page = () => {
           </div>
         </div>
       </div>
-      <div className="clear-both -mx-4 mt-6 bg-brand-50 border border-brand-100 rounded-lg sm:mx-0">
+      <div className="clear-both mt-10 bg-brand-50 border border-brand-100 rounded-lg sm:mx-0 md:mt-10">
         <div className="px-6 py-8 md:px-12 md:py-10 lg:py-12">
           <h2 className="text-gray-900 text-xl font-extrabold tracking-tight sm:text-2xl">
             <span className="block text-brand-600">Ready to check it out?</span>

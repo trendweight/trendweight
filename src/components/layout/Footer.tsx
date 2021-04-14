@@ -4,7 +4,7 @@ import Link from "../shared/Link";
 
 const Footer = () => {
   return (
-    <footer className="container mx-auto px-4 py-2">
+    <footer className="container mx-auto px-4 py-4">
       <div className="flex flex-col items-center justify-between text-gray-300 md:flex-row">
         <p>&copy; 2012-{new Date().getFullYear()} Erv Walter</p>
         <div className="flex flex-row space-x-2 md:space-x-4">
