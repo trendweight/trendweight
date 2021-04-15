@@ -14,7 +14,7 @@ module.exports = {
         sidebar: "1fr auto",
       },
       fontFamily: {
-        sans: ["Inter var", "sans-serif"],
+        sans: ["Inter", "sans-serif"],
         brand: ["Zilla Slab", "serif"],
       },
       colors: {
