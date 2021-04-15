@@ -11,7 +11,7 @@ const Header = () => {
           <div className="flex flex-row items-center pl-2 py-3 space-x-2 md:pl-0">
             <NextLink href="/">
               <a>
-                <div className="text-[2rem] font-serif font-bold leading-5">TrendWeight</div>
+                <div className="text-[2rem] font-brand font-bold leading-5">TrendWeight</div>
               </a>
             </NextLink>
             <Logo height="32px" width="77.13px" />

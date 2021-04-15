@@ -1,6 +1,20 @@
+@import url(./inter.css);
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* zilla-slab-700 - latin */
+  @font-face {
+    font-family: "Zilla Slab";
+    font-style: normal;
+    font-weight: 700;
+    font-display: block;
+    src: local(""), url("/fonts/zilla-slab-v6-latin-700.woff2") format("woff2"),
+      url("/fonts/zilla-slab-v6-latin-700.woff") format("woff");
+  }
+}
 
 #__next {
   display: flex;
