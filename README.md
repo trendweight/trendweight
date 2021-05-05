@@ -5,7 +5,7 @@ This is the source code for the next version of https://trendweight.com
 [![Build status](https://img.shields.io/github/checks-status/trendweight/trendweight/main?label=build)](https://github.com/trendweight/trendweight/commits/main)
 [![NextJS Version](https://img.shields.io/github/package-json/dependency-version/trendweight/trendweight/next)](https://nextjs.org)
 [![React](https://img.shields.io/github/package-json/dependency-version/trendweight/trendweight/react)](https://reactjs.org)
-[![TypeScript](https://img.shields.io/github/package-json/dependency-version/trendweight/trendweight/dev/typescript)](https://www.typescriptlang.org)
+[![TypeScript](https://img.shields.io/github/package-json/dependency-version/trendweight/trendweight/typescript)](https://www.typescriptlang.org)
 
 ## License
 
