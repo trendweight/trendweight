@@ -7,5 +7,5 @@ const getSettings = async () => {
 };
 
 export const useSettings = () => {
-  return useQuery("get-settings", getSettings);
+  return useQuery("settings", getSettings);
 };

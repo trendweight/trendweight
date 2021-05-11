@@ -1,9 +1,8 @@
 import jwt from "jsonwebtoken";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "~/lib/api/exceptions";
-import { handleErrors } from "~/lib/api/middleware";
-import dayjs from "~/lib/core/dayjs";
-import { db } from "~/lib/firebase/admin";
+import { withMiddleware } from "~/lib/api/middleware";
+import { updateLinkToken } from "~/lib/data/links";
 import { OAuthState } from "~/lib/vendors/interfaces";
 import { getCallbackHostname, withingsService } from "~/lib/vendors/withings";
 
@@ -30,22 +29,9 @@ const getAuthUrl = async (req: NextApiRequest, res: NextApiResponse) => {
     `https://${hostname}/api/withings/callback`
   );
 
-  await db
-    .collection("links")
-    .doc(linkDetails.uid)
-    .set(
-      {
-        uid: linkDetails.uid,
-        withings: {
-          updateTime: dayjs().utc().toISOString(),
-          updateReason: linkDetails.reason,
-          token: accessToken.token,
-        },
-      },
-      { merge: true }
-    );
+  await updateLinkToken(linkDetails.uid, linkDetails.reason, accessToken);
 
   res.status(200).json({ linkDetails, accessToken });
 };
 
-export default handleErrors(getAuthUrl);
+export default withMiddleware(getAuthUrl, false);

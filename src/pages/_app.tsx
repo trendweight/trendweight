@@ -1,3 +1,4 @@
+import "@js-joda/timezone";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Router } from "next/router";

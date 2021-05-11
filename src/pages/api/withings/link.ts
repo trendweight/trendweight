@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import type { NextApiResponse } from "next";
 import { ApiError } from "~/lib/api/exceptions";
-import { NextApiRequestWithAuth, verifyJWT } from "~/lib/api/middleware";
+import { NextApiRequestWithAuth, withMiddleware } from "~/lib/api/middleware";
 import { OAuthState } from "~/lib/vendors/interfaces";
 import { getCallbackHostname, withingsService } from "~/lib/vendors/withings";
 
@@ -24,4 +24,4 @@ const link = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
   res.status(200).json({ authorizationUrl, state });
 };
 
-export default verifyJWT(link);
+export default withMiddleware(link, true);

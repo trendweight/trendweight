@@ -1,3 +1,4 @@
+import { Instant, nativeJs } from "@js-joda/core";
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
 import { setDefaultFetchOptions } from "~/lib/api/fetch";
 import firebase, { auth } from "~/lib/firebase";
@@ -5,7 +6,6 @@ import firebase, { auth } from "~/lib/firebase";
 interface User {
   uid: string;
   email: string | null;
-  token: string;
 }
 
 const authContext = createContext<ReturnType<typeof useCreateAuth> | undefined>(undefined);
@@ -30,15 +30,24 @@ export const useCreateAuth = () => {
   const handleUserChange = async (rawUser: firebase.User | null) => {
     if (rawUser) {
       const { uid, email } = rawUser;
-      const token = await rawUser.getIdToken();
-      const user: User = { uid, email, token };
-      console.log("user", user);
+      const user: User = { uid, email };
+      let { token, expirationTime } = await rawUser.getIdTokenResult();
+      const getToken = async () => {
+        const now = Instant.now();
+        const expiration = Instant.from(nativeJs(new Date(expirationTime)));
+        if (now.plusSeconds(300).isAfter(expiration)) {
+          const newTokenResult = await rawUser.getIdTokenResult();
+          token = newTokenResult.token;
+          expirationTime = newTokenResult.expirationTime;
+        }
+        return token;
+      };
+      setDefaultFetchOptions({ getToken }, true);
       setUser(user);
-      setDefaultFetchOptions({ token }, true);
       return user;
     } else {
+      setDefaultFetchOptions({ getToken: async () => null });
       setUser(null);
-      setDefaultFetchOptions({ token: null });
       return null;
     }
   };

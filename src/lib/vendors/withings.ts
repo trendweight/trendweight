@@ -1,8 +1,9 @@
 import axios from "axios";
 import { NextApiRequest } from "next";
 import qs from "qs";
-import { ApiError } from "../api/exceptions";
-import { AccessToken } from "./access-token";
+import { ApiError } from "~/lib/api/exceptions";
+import { AccessToken, SourceMeasurement } from "../data/interfaces";
+import { fromTokenValues } from "./access-token";
 import { VendorService } from "./interfaces";
 
 export const getCallbackHostname = (req: NextApiRequest) => {
@@ -22,6 +23,29 @@ interface WithingsResponse {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body: any;
   error?: string;
+}
+
+interface WithingsMeasure {
+  value: number;
+  type: number;
+  unit: number;
+}
+
+interface WithingsMeasureGroup {
+  grpid: number;
+  attrib: number;
+  date: number;
+  created: number;
+  category: number;
+  deviceid: string;
+  measures: WithingsMeasure[];
+}
+interface WithingsGetMeasuresResponse {
+  updatetime: string;
+  timezone: string;
+  measuregrps: WithingsMeasureGroup[];
+  more: number;
+  offset: number;
 }
 
 class WithingsService implements VendorService {
@@ -46,9 +70,9 @@ class WithingsService implements VendorService {
   async exchangeAuthorizationCode(code: string, callbackUrl: string) {
     const params = {
       action: "requesttoken",
+      grant_type: "authorization_code",
       client_id: this.clientId,
       client_secret: this.clientSecret,
-      grant_type: "authorization_code",
       code: code,
       redirect_uri: callbackUrl,
     };
@@ -60,19 +84,82 @@ class WithingsService implements VendorService {
     }
 
     if (result.data.status !== 0) {
-      console.log(result.data);
       throw new ApiError("withings/api-error", `${result.data.status}: ${result.data.error}`);
     }
 
-    return new AccessToken(result.data.body);
+    return fromTokenValues(result.data.body);
   }
 
   async refreshToken(token: AccessToken) {
-    return token;
+    const params = {
+      action: "requesttoken",
+      grant_type: "refresh_token",
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+      refresh_token: token.refresh_token,
+    };
+
+    const result = await axios.post<WithingsResponse>("https://wbsapi.withings.net/v2/oauth2", qs.stringify(params));
+
+    if (result.status !== 200) {
+      throw new ApiError("withings/http-error", `${result.status}: ${result.statusText}`);
+    }
+
+    if (result.data.status !== 0) {
+      throw new ApiError("withings/api-error", `${result.data.status}: ${result.data.error}`);
+    }
+
+    return fromTokenValues(result.data.body);
   }
 
-  getMeasurements(_token: AccessToken) {
-    return;
+  async getMeasurements(token: AccessToken, start: unknown, offset?: unknown) {
+    // const startTimestamp = start.atStartOfDay().atZone(ZoneId.UTC).toInstant().epochSecond();
+    // const endTimestamp = end.plusDays(1).atStartOfDay().minusSeconds(1).atZone(ZoneId.UTC).toInstant().epochSecond();
+
+    const params = {
+      action: "getmeas",
+      category: 1,
+      startdate: start,
+      offset: offset || undefined,
+    };
+
+    const response = await axios.post<WithingsResponse>("https://wbsapi.withings.net/measure", qs.stringify(params), {
+      headers: { Authorization: `Bearer ${token.access_token}` },
+    });
+
+    if (response.status !== 200) {
+      throw new ApiError("withings/http-error", `${response.status}: ${response.statusText}`);
+    }
+
+    if (response.data.status !== 0) {
+      throw new ApiError("withings/api-error", `${response.data.status}: ${response.data.error}`);
+    }
+
+    const body = response.data.body as WithingsGetMeasuresResponse;
+    const timezone = body.timezone;
+
+    const measureToDecimal = (measure?: WithingsMeasure) =>
+      measure ? measure.value * Math.pow(10, measure.unit) : undefined;
+
+    const measurements: SourceMeasurement[] = [];
+    for (const group of body.measuregrps) {
+      const timestamp = group.date;
+      const weight = measureToDecimal(group.measures.find((m) => m.type === 1));
+      const fatRatio = measureToDecimal(group.measures.find((m) => m.type === 6));
+      if (weight) {
+        const measurement: SourceMeasurement = {
+          id: group.grpid.toString(),
+          timestamp,
+          weight,
+        };
+        if (fatRatio) {
+          measurement.fatRatio = fatRatio;
+        }
+        measurements.push(measurement);
+      }
+    }
+
+    return { measurements, more: body.more > 0, offset: body.offset || null, timezone };
   }
 }
 

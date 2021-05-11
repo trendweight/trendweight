@@ -1,8 +1,8 @@
 interface Options extends RequestInit {
-  token?: string | null;
+  getToken?: () => Promise<string | null>;
 }
 
-let defaultOptions: Options = {};
+let defaultOptions: Options = { getToken: async () => null };
 
 export const setDefaultFetchOptions = (options: Options, merge = false) => {
   if (merge) {
@@ -14,7 +14,8 @@ export const setDefaultFetchOptions = (options: Options, merge = false) => {
 
 const http = async <T>(path: string, options: Options): Promise<T> => {
   const mergedOptions = { ...defaultOptions, ...options };
-  const { token, ...init } = mergedOptions;
+  const { getToken, ...init } = mergedOptions;
+  const token = getToken ? await getToken() : null;
   const request = new Request(path, init);
   if (init.method !== "get") {
     request.headers.append("Content-Type", "application/json");

@@ -1,10 +1,22 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "~/lib/api/exceptions";
+import "~/lib/core/time";
 import { auth } from "~/lib/firebase/admin";
 
 export type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+export interface NextApiRequestWithAuth extends NextApiRequest {
+  userId?: string;
+}
 
-export const handleErrors = (handler: ApiHandler) => {
+export const withMiddleware = (handler: ApiHandler, requireAuth: boolean) => {
+  let wrappedHandler = handler;
+  if (requireAuth) {
+    wrappedHandler = withVerifyJWT(wrappedHandler);
+  }
+  return withHandleErrors(wrappedHandler);
+};
+
+const withHandleErrors = (handler: ApiHandler) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       await handler(req, res);
@@ -15,13 +27,8 @@ export const handleErrors = (handler: ApiHandler) => {
   };
 };
 
-export type AuthenticatedHandler = (req: NextApiRequestWithAuth, res: NextApiResponse) => Promise<void>;
-export interface NextApiRequestWithAuth extends NextApiRequest {
-  userId?: string;
-}
-
-export const verifyJWT = (handler: AuthenticatedHandler) => {
-  return handleErrors(async (req: NextApiRequest, res: NextApiResponse) => {
+const withVerifyJWT = (handler: ApiHandler) => {
+  return async (req: NextApiRequest, res: NextApiResponse) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       throw new ApiError("auth/missing-token", "JWT is required", 401);
@@ -33,5 +40,5 @@ export const verifyJWT = (handler: AuthenticatedHandler) => {
       throw new ApiError(error.code, error.message, 403);
     }
     return await handler(req, res);
-  });
+  };
 };

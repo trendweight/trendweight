@@ -1,35 +1,23 @@
-import dayjs from "../core/dayjs";
+import { Instant } from "@js-joda/core";
+import { AccessToken } from "../data/interfaces";
 
-export interface IToken {
-  user_id: string;
-  access_token: string;
-  refresh_token: string;
-  token_type: string;
-  scope: string;
-  expires_at?: string;
-}
-
-export class AccessToken {
-  token: IToken;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(values: IToken & { expires_in?: number }) {
-    const { expires_in, ...token } = values;
-    if (expires_in) {
-      token.expires_at = dayjs().add(expires_in, "seconds").utc().toISOString();
-    }
-    this.token = token;
-  }
-
-  expiresSoon = () => {
-    if (!this.token.expires_at) {
-      return false;
-    }
-    const cutoff = dayjs().utc().subtract(5, "minutes");
-    if (dayjs(this.token.expires_at).isAfter(cutoff)) {
-      return true;
-    } else {
-      return false;
-    }
+export const fromTokenValues = (values: AccessToken & { expires_in?: number }) => {
+  const { expires_in, ...tokenValues } = values;
+  return {
+    ...tokenValues,
+    expires_at: expires_in ? Instant.now().plusSeconds(expires_in).toString() : undefined,
   };
-}
+};
+
+export const expiresSoon = (token: AccessToken) => {
+  if (!token.expires_at) {
+    return false;
+  }
+  const expiresAt = Instant.parse(token.expires_at);
+  const cutoff = Instant.now().minusSeconds(300); // 5 minutes before now
+  if (cutoff.isAfter(expiresAt)) {
+    return true;
+  } else {
+    return false;
+  }
+};
