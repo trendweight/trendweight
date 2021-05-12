@@ -22,7 +22,11 @@ const withHandleErrors = (handler: ApiHandler) => {
       await handler(req, res);
     } catch (error) {
       const { code, message, status } = error;
-      res.status(status || 500).json({ error: { code, message } });
+      let stack;
+      if (process.env.NODE_ENV !== "production") {
+        stack = error.stack;
+      }
+      res.status(status || 500).json({ error: { code, message, stack } });
     }
   };
 };

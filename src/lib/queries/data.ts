@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
 import { get } from "~/lib/api/fetch";
+import { ApiError } from "../api/exceptions";
 import { SettingsData } from "../settings";
 
 const getData = async () => {
@@ -7,5 +8,5 @@ const getData = async () => {
 };
 
 export const useData = () => {
-  return useQuery("data", getData, { staleTime: 60000 });
+  return useQuery<SettingsData, ApiError>("data", getData, { staleTime: 60000, retry: false });
 };

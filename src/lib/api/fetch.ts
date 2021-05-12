@@ -1,3 +1,5 @@
+import { ApiError } from "./exceptions";
+
 interface Options extends RequestInit {
   getToken?: () => Promise<string | null>;
 }
@@ -26,7 +28,13 @@ const http = async <T>(path: string, options: Options): Promise<T> => {
   }
   const response = await fetch(request);
   if (!response.ok) {
-    throw new Error(`${response.status}: ${response.statusText}`);
+    const { error } = (await response.json()) as { error?: ApiError };
+
+    if (error) {
+      throw new ApiError(error.code, error.message, response.status, error.stack);
+    } else {
+      throw new Error(`${response.status}: ${response.statusText}`);
+    }
   }
   // may error if there is no body, return empty array
   return response.json().catch(() => ({}));

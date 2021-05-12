@@ -1,36 +1,46 @@
 import { db } from "../firebase/admin";
-import { MeasurementData, SourceData } from "./interfaces";
+import { SourceData, SourceMeasurement, Sources } from "./interfaces";
 
-export const updateMeasurements = async (uid: string, data: MeasurementData) => {
+interface Metadata {
+  uid: string;
+  lastUpdates: Record<Sources, string>;
+}
+
+export const updateMeasurementData = async (uid: string, data: SourceData[]) => {
   const promises = [];
-  let vendor: keyof MeasurementData;
-  promises.push(db.collection("measurements").doc(uid).set({ uid }));
-  for (vendor in data) {
-    promises.push(
-      db
-        .collection("measurements")
-        .doc(uid)
-        .collection("sources")
-        .doc(vendor)
-        .set({ ...data[vendor] })
-    );
+  const updatedPaths = ["uid"].concat(data.map((value) => `lastUpdates.${value.source}`));
+  const lastUpdates = data.reduce((t, s) => {
+    t[s.source] = s.lastUpdate;
+    return t;
+  }, {} as Record<Sources, string>);
+  console.log(lastUpdates, updatedPaths);
+  promises.push(db.collection("measurements").doc(uid).set({ uid, lastUpdates }, { mergeFields: updatedPaths }));
+  for (const entry of data) {
+    if (entry.measurements) {
+      promises.push(
+        db
+          .collection("measurements")
+          .doc(uid)
+          .collection("sources")
+          .doc(entry.source)
+          .set({ measurements: entry.measurements })
+      );
+    }
   }
   await Promise.all(promises);
 };
 
-export const getMeasurementsForSource = async (uid: string, source: keyof MeasurementData) => {
-  const data = await db.collection("measurements").doc(uid).collection("sources").doc(source).get();
-  if (data.exists) {
-    return data.data() as SourceData;
-  }
-};
-
-export const getMeasurements = async (uid: string) => {
+export const getMeasurementData = async (uid: string) => {
+  const metadataDoc = await db.collection("measurements").doc(uid).get();
   const sources = await db.collection("measurements").doc(uid).collection("sources").get();
-  const data: MeasurementData = {};
-  if (!sources.empty) {
-    sources.docs.forEach((doc) => {
-      data[doc.id as keyof MeasurementData] = doc.data() as SourceData;
-    });
+  if (!metadataDoc.exists || sources.empty) {
+    return undefined;
   }
+  const metadata = metadataDoc.data() as Metadata;
+  const sourceData: SourceData[] = sources.docs.map((doc) => ({
+    source: doc.id as Sources,
+    lastUpdate: metadata.lastUpdates[doc.id as Sources],
+    measurements: doc.data().measurements as SourceMeasurement[],
+  }));
+  return sourceData;
 };

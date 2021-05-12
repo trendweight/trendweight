@@ -148,7 +148,6 @@ class WithingsService implements VendorService {
       const fatRatio = measureToDecimal(group.measures.find((m) => m.type === 6));
       if (weight) {
         const measurement: SourceMeasurement = {
-          id: group.grpid.toString(),
           timestamp,
           weight,
         };

@@ -1,37 +1,57 @@
 import { Instant } from "@js-joda/core";
-import _ from "lodash";
-import { MeasurementData, SourceMeasurement, VendorLink } from "../data/interfaces";
+import equal from "fast-deep-equal";
+import { SourceData, SourceMeasurement, VendorLink } from "../data/interfaces";
 import { getLinks, updateLinkToken } from "../data/links";
-import { getMeasurementsForSource, updateMeasurements } from "../data/measurements";
+import { getMeasurementData, updateMeasurementData } from "../data/measurements";
 import { expiresSoon } from "./access-token";
 import { withingsService } from "./withings";
 
-export const refreshMeasurementData = async (uid: string) => {
+export const refreshAndGetMeasurementData = async (uid: string) => {
   const links = await getLinks(uid);
 
   if (links) {
-    const updates: MeasurementData = {};
+    const existingData = await getMeasurementData(uid);
+    const dataToBeReturned: SourceData[] = [];
+    const dataToBeUpdated: SourceData[] = [];
     const { withings } = links;
+    const recently = Instant.now().minusSeconds(300);
 
     if (withings) {
-      if (expiresSoon(withings.token)) {
-        withings.token = await withingsService.refreshToken(withings.token);
-        await updateLinkToken(uid, "refresh", withings.token);
-      }
+      const existingWithingsData = existingData?.find((d) => d.source === "withings");
 
-      const withingsUpdate = await refreshWithings(uid, withings);
-      updates.withings = withingsUpdate;
+      if (
+        existingWithingsData &&
+        existingWithingsData.lastUpdate &&
+        Instant.parse(existingWithingsData?.lastUpdate).isAfter(recently)
+      ) {
+        dataToBeReturned.push(existingWithingsData);
+      } else {
+        if (expiresSoon(withings.token)) {
+          withings.token = await withingsService.refreshToken(withings.token);
+          await updateLinkToken(uid, "refresh", withings.token);
+        }
+
+        const updatedWithingsData = await refreshWithings(uid, withings, existingWithingsData);
+        dataToBeReturned.push(updatedWithingsData);
+        dataToBeUpdated.push({
+          source: "withings",
+          lastUpdate: updatedWithingsData.lastUpdate,
+          measurements:
+            updatedWithingsData.measurements !== existingWithingsData?.measurements
+              ? updatedWithingsData.measurements
+              : undefined,
+        });
+      }
     }
 
-    await updateMeasurements(uid, updates);
-    return updates;
+    await updateMeasurementData(uid, dataToBeUpdated);
+    return dataToBeReturned;
   }
 };
 
-const refreshWithings = async (uid: string, withings: VendorLink) => {
+const refreshWithings = async (uid: string, link: VendorLink, existingData?: SourceData): Promise<SourceData> => {
   let start: number;
-  const existingData = await getMeasurementsForSource(uid, "withings");
-  if (existingData) {
+  if (existingData && existingData.lastUpdate) {
     const lastUpdate = Instant.parse(existingData.lastUpdate);
     start = lastUpdate.minusSeconds(90 * 3600 * 24).epochSecond();
   } else {
@@ -41,18 +61,34 @@ const refreshWithings = async (uid: string, withings: VendorLink) => {
   const updateTimestamp = Instant.now();
   let more = true;
   let offset: unknown;
-  const newMeasurements: SourceMeasurement[][] = [];
+  const newMeasurements: SourceMeasurement[] = [];
   while (more) {
-    const newData = await withingsService.getMeasurements(withings.token, start, offset);
+    const newData = await withingsService.getMeasurements(link.token, start, offset);
     more = newData.more;
     offset = newData.offset;
-    newMeasurements.push(newData.measurements);
+    newMeasurements.push(...newData.measurements);
+  }
+  newMeasurements.sort((a, b) => b.timestamp - a.timestamp); // sort in descending order by timestamp
+
+  if (existingData) {
+    const existingMeasurementsToReplace = existingData?.measurements?.filter((m) => m.timestamp >= start) || [];
+    existingMeasurementsToReplace.sort((a, b) => b.timestamp - a.timestamp);
+    if (equal(existingMeasurementsToReplace, newMeasurements)) {
+      // data didn't change, return the old data
+      return {
+        source: "withings",
+        lastUpdate: updateTimestamp.toString(),
+        measurements: existingData.measurements,
+      };
+    }
   }
 
-  const existingMeasurements = existingData?.measurements.filter((m) => m.timestamp < start) || [];
-  const combinedMeasurements = _.orderBy(existingMeasurements.concat(...newMeasurements), "timestamp", "desc");
+  const existingMeasurementsToKeep = existingData?.measurements?.filter((m) => m.timestamp < start) || [];
+  const combinedMeasurements = ([] as SourceMeasurement[]).concat(newMeasurements, existingMeasurementsToKeep);
+  combinedMeasurements.sort((a, b) => b.timestamp - a.timestamp);
 
   return {
+    source: "withings",
     lastUpdate: updateTimestamp.toString(),
     measurements: combinedMeasurements,
   };

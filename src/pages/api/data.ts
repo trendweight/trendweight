@@ -1,7 +1,7 @@
 import { NextApiResponse } from "next";
 import { ApiError } from "~/lib/api/exceptions";
 import { NextApiRequestWithAuth, withMiddleware } from "~/lib/api/middleware";
-import { refreshMeasurementData } from "~/lib/vendors/refresh-data";
+import { refreshAndGetMeasurementData } from "~/lib/vendors/refresh-data";
 
 const getData = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
   const uid = req.userId;
@@ -10,7 +10,7 @@ const getData = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
     throw new ApiError("auth/unknown-user", "Unknown User");
   }
 
-  const data = await refreshMeasurementData(uid);
+  const data = await refreshAndGetMeasurementData(uid);
 
   res.status(200).json(data);
 };

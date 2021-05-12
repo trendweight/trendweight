@@ -1,18 +1,14 @@
 export interface SourceMeasurement {
-  id: string;
   timestamp: number;
   weight: number;
   fatRatio?: number;
 }
 
+export type Sources = "withings" | "fitbit";
 export interface SourceData {
+  source: Sources;
   lastUpdate: string;
-  measurements: SourceMeasurement[];
-}
-
-export interface MeasurementData {
-  withings?: SourceData;
-  fitbit?: SourceData;
+  measurements?: SourceMeasurement[];
 }
 
 export interface Measurement {

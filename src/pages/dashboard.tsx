@@ -9,7 +9,24 @@ const Dashboard: Page = () => {
   }
 
   if (isError) {
-    return <div>Error: {toJson(error)}</div>;
+    return (
+      <div>
+        <div>Error</div>
+        {error && (
+          <div>
+            <code>
+              <pre>
+                Code: {error.code}
+                <br />
+                Message: {error.message}
+                <br />
+                Stack: {error.remoteStack}
+              </pre>
+            </code>
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (
