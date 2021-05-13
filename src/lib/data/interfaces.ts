@@ -5,6 +5,7 @@ export interface SourceMeasurement {
 }
 
 export type Sources = "withings" | "fitbit";
+
 export interface SourceData {
   source: Sources;
   lastUpdate: string;

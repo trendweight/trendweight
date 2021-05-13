@@ -2,15 +2,15 @@ import { Instant } from "@js-joda/core";
 import equal from "fast-deep-equal";
 import { SourceData, SourceMeasurement, VendorLink } from "../data/interfaces";
 import { getLinks, updateLinkToken } from "../data/links";
-import { getMeasurementData, updateMeasurementData } from "../data/measurements";
+import { getSourceData, updateSourceData } from "../data/source-data";
 import { expiresSoon } from "./access-token";
 import { withingsService } from "./withings";
 
-export const refreshAndGetMeasurementData = async (uid: string) => {
+export const refreshAndGetSourceData = async (uid: string) => {
   const links = await getLinks(uid);
 
   if (links) {
-    const existingData = await getMeasurementData(uid);
+    const existingData = await getSourceData(uid);
     const dataToBeReturned: SourceData[] = [];
     const dataToBeUpdated: SourceData[] = [];
     const { withings } = links;
@@ -44,7 +44,7 @@ export const refreshAndGetMeasurementData = async (uid: string) => {
       }
     }
 
-    await updateMeasurementData(uid, dataToBeUpdated);
+    await updateSourceData(uid, dataToBeUpdated);
     return dataToBeReturned;
   }
 };

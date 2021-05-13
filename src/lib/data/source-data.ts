@@ -6,14 +6,13 @@ interface Metadata {
   lastUpdates: Record<Sources, string>;
 }
 
-export const updateMeasurementData = async (uid: string, data: SourceData[]) => {
+export const updateSourceData = async (uid: string, data: SourceData[]) => {
   const promises = [];
   const updatedPaths = ["uid"].concat(data.map((value) => `lastUpdates.${value.source}`));
   const lastUpdates = data.reduce((t, s) => {
     t[s.source] = s.lastUpdate;
     return t;
   }, {} as Record<Sources, string>);
-  console.log(lastUpdates, updatedPaths);
   promises.push(db.collection("measurements").doc(uid).set({ uid, lastUpdates }, { mergeFields: updatedPaths }));
   for (const entry of data) {
     if (entry.measurements) {
@@ -30,7 +29,7 @@ export const updateMeasurementData = async (uid: string, data: SourceData[]) => 
   await Promise.all(promises);
 };
 
-export const getMeasurementData = async (uid: string) => {
+export const getSourceData = async (uid: string) => {
   const metadataDoc = await db.collection("measurements").doc(uid).get();
   const sources = await db.collection("measurements").doc(uid).collection("sources").get();
   if (!metadataDoc.exists || sources.empty) {
