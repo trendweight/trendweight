@@ -2,7 +2,7 @@ import axios from "axios";
 import { NextApiRequest } from "next";
 import qs from "qs";
 import { ApiError } from "~/lib/api/exceptions";
-import { AccessToken, SourceMeasurement } from "../data/interfaces";
+import { AccessToken, RawMeasurement } from "../data/interfaces";
 import { fromTokenValues } from "./access-token";
 import { VendorService } from "./interfaces";
 
@@ -141,18 +141,18 @@ class WithingsService implements VendorService {
     const measureToDecimal = (measure?: WithingsMeasure) =>
       measure ? measure.value * Math.pow(10, measure.unit) : undefined;
 
-    const measurements: SourceMeasurement[] = [];
+    const measurements: RawMeasurement[] = [];
     for (const group of body.measuregrps) {
       const timestamp = group.date;
       const weight = measureToDecimal(group.measures.find((m) => m.type === 1));
-      const fatRatio = measureToDecimal(group.measures.find((m) => m.type === 6));
+      const fatPercent = measureToDecimal(group.measures.find((m) => m.type === 6));
       if (weight) {
-        const measurement: SourceMeasurement = {
+        const measurement: RawMeasurement = {
           timestamp,
           weight,
         };
-        if (fatRatio) {
-          measurement.fatRatio = fatRatio;
+        if (fatPercent) {
+          measurement.fatRatio = fatPercent / 100;
         }
         measurements.push(measurement);
       }

@@ -1,4 +1,4 @@
-import { AccessToken, SourceMeasurement } from "../data/interfaces";
+import { AccessToken, RawMeasurement } from "../data/interfaces";
 
 export interface OAuthState {
   uid: string;
@@ -6,7 +6,7 @@ export interface OAuthState {
 }
 
 export interface GetMeasurementsResult {
-  measurements: SourceMeasurement[];
+  measurements: RawMeasurement[];
   more: boolean;
   offset?: unknown;
 }

@@ -1,5 +1,5 @@
 import { db } from "../firebase/admin";
-import { SourceData, SourceMeasurement, Sources } from "./interfaces";
+import { RawMeasurement, SourceData, Sources } from "./interfaces";
 
 interface Metadata {
   uid: string;
@@ -39,7 +39,7 @@ export const getSourceData = async (uid: string) => {
   const sourceData: SourceData[] = sources.docs.map((doc) => ({
     source: doc.id as Sources,
     lastUpdate: metadata.lastUpdates[doc.id as Sources],
-    measurements: doc.data().measurements as SourceMeasurement[],
+    measurements: doc.data().measurements as RawMeasurement[],
   }));
   return sourceData;
 };

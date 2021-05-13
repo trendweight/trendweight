@@ -1,4 +1,6 @@
-export interface SourceMeasurement {
+import { LocalDate, LocalDateTime } from "@js-joda/core";
+
+export interface RawMeasurement {
   timestamp: number;
   weight: number;
   fatRatio?: number;
@@ -9,16 +11,31 @@ export type Sources = "withings" | "fitbit";
 export interface SourceData {
   source: Sources;
   lastUpdate: string;
-  measurements?: SourceMeasurement[];
+  measurements?: RawMeasurement[];
 }
 
-export interface Measurement {
-  date: string;
-  timestamp: string;
+export interface SourceMeasurement {
+  date: LocalDate;
+  timestamp: LocalDateTime;
+  source: string;
   weight: number;
   fatRatio?: number;
-  interpolated: boolean;
+  weightIsInterpolated?: boolean;
+  fatRatioIsInterpolated?: boolean;
+}
+export interface Measurement {
+  date: LocalDate;
   source: string;
+  actualWeight: number;
+  actualFatMass?: number;
+  actualFatPercent?: number;
+  actualLeanMass?: number;
+  trendWeight: number;
+  trendFatMass?: number;
+  trendFatPercent?: number;
+  trendLeanMass?: number;
+  weightIsInterpolated: boolean;
+  fatIsInterpolated: boolean;
 }
 
 export interface AccessToken {

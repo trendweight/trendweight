@@ -1,6 +1,6 @@
 import { Instant } from "@js-joda/core";
 import equal from "fast-deep-equal";
-import { SourceData, SourceMeasurement, VendorLink } from "../data/interfaces";
+import { RawMeasurement, SourceData, VendorLink } from "../data/interfaces";
 import { getLinks, updateLinkToken } from "../data/links";
 import { getSourceData, updateSourceData } from "../data/source-data";
 import { expiresSoon } from "./access-token";
@@ -61,7 +61,7 @@ const refreshWithings = async (uid: string, link: VendorLink, existingData?: Sou
   const updateTimestamp = Instant.now();
   let more = true;
   let offset: unknown;
-  const newMeasurements: SourceMeasurement[] = [];
+  const newMeasurements: RawMeasurement[] = [];
   while (more) {
     const newData = await withingsService.getMeasurements(link.token, start, offset);
     more = newData.more;
@@ -84,7 +84,7 @@ const refreshWithings = async (uid: string, link: VendorLink, existingData?: Sou
   }
 
   const existingMeasurementsToKeep = existingData?.measurements?.filter((m) => m.timestamp < start) || [];
-  const combinedMeasurements = ([] as SourceMeasurement[]).concat(newMeasurements, existingMeasurementsToKeep);
+  const combinedMeasurements = ([] as RawMeasurement[]).concat(newMeasurements, existingMeasurementsToKeep);
   combinedMeasurements.sort((a, b) => b.timestamp - a.timestamp);
 
   return {
