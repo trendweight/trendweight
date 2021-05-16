@@ -1,3 +1,4 @@
+import { ChakraProvider } from "@chakra-ui/react";
 import "@js-joda/timezone";
 import type { AppProps } from "next/app";
 import Head from "next/head";
@@ -11,6 +12,7 @@ import { AuthProvider } from "~/lib/core/auth";
 import "~/lib/core/fa";
 import { Page } from "~/lib/core/page";
 import progress from "~/lib/core/progress";
+import theme from "~/lib/core/theme";
 import "~/styles/globals.css";
 
 const queryClient = new QueryClient();
@@ -36,17 +38,19 @@ function App({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Head>
-          {!isMarkdown && <title>{title === "TrendWeight" ? title : `${title} - TrendWeight`}</title>}
-          <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <Wrapper requireLogin={requireLogin}>
-          <Component {...pageProps} />
-        </Wrapper>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </AuthProvider>
+      <ChakraProvider theme={theme}>
+        <AuthProvider>
+          <Head>
+            {!isMarkdown && <title>{title === "TrendWeight" ? title : `${title} - TrendWeight`}</title>}
+            <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <Wrapper requireLogin={requireLogin}>
+            <Component {...pageProps} />
+          </Wrapper>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </AuthProvider>
+      </ChakraProvider>
     </QueryClientProvider>
   );
 }

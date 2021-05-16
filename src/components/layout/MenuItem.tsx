@@ -1,3 +1,4 @@
+import { Box, Link as ChakraLink } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { FC, PropsWithChildren } from "react";
@@ -20,15 +21,39 @@ const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, onClick, show = 
 
   if (href) {
     return (
-      <NextLink href={href}>
-        <a className={className}>{children}</a>
+      <NextLink href={href} passHref>
+        <ChakraLink
+          bg={{ base: pathname === href ? "brand.900" : "inherit", md: pathname === href ? "brand.400" : "inherit" }}
+          rounded={{ base: 5, md: 0 }}
+          fontWeight={{ base: pathname === href ? "medium" : "inherit", md: "inherit" }}
+          display="flex"
+          alignItems="center"
+          py={{ base: 2, md: 2 }}
+          px={3}
+          _hover={{ color: "brand.800", bg: "white", textDecoration: "none" }}
+          _focus={{ boxShadow: "none", fontWeight: "medium" }}
+          onClick={onClick}
+        >
+          {children}
+        </ChakraLink>
       </NextLink>
     );
   } else {
     return (
-      <div className={className} onClick={onClick}>
+      <Box
+        bg={{ base: "white", md: pathname === href ? "brand.400" : "inherit" }}
+        color={{ base: pathname === href ? "brand.400" : "brand.900", md: "inherit" }}
+        fontWeight={{ base: pathname === href ? "medium" : "inherit", md: "inherit" }}
+        display="flex"
+        alignItems="center"
+        py={{ base: 2, md: 2 }}
+        px={3}
+        _hover={{ color: "brand.800", bg: "white", textDecoration: "none" }}
+        _focus={{ boxShadow: "none", fontWeight: "medium" }}
+        onClick={onClick}
+      >
         {children}
-      </div>
+      </Box>
     );
   }
 };

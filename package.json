@@ -15,6 +15,9 @@
     "lint:prettier": "prettier -c src public"
   },
   "dependencies": {
+    "@chakra-ui/react": "1.6.1",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-brands-svg-icons": "5.15.3",
     "@fortawesome/free-regular-svg-icons": "5.15.3",
@@ -31,6 +34,7 @@
     "fast-deep-equal": "3.1.3",
     "firebase": "8.5.0",
     "firebase-admin": "9.8.0",
+    "framer-motion": "^4",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.21",
     "next": "10.2.0",

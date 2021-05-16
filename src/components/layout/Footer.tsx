@@ -1,14 +1,16 @@
+import { Box, Flex, Stack } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import Link from "../shared/Link";
+import LayoutContainer from "./LayoutContainer";
 
 const Footer = () => {
   return (
-    <footer className="container mx-auto px-4 py-4">
-      <div className="flex flex-col items-center justify-between text-gray-300 md:flex-row">
-        <p>&copy; 2012-{new Date().getFullYear()} Erv Walter</p>
-        <div className="flex flex-row space-x-2 md:space-x-4">
-          <div className="flex flex-row space-x-2 md:space-x-4">
+    <LayoutContainer as="footer" p={4}>
+      <Flex direction={{ base: "column", md: "row" }} align="center" justifyContent="space-between" color="gray.300">
+        <Box>&copy; 2012-{new Date().getFullYear()} Erv Walter</Box>
+        <Stack direction="row" spacing={{ base: 2, md: 4 }}>
+          <Stack direction="row" spacing={{ base: 2, md: 4 }}>
             <Link href="https://twitter.com/trendweight" variant="muted">
               <FontAwesomeIcon icon={["fab", "twitter"]} />
             </Link>
@@ -21,7 +23,7 @@ const Footer = () => {
             <Link href="https://blog.trendweight.com" variant="muted">
               <FontAwesomeIcon icon="rss" />
             </Link>
-          </div>
+          </Stack>
           <Link href="mailto:erv@ewal.net" variant="muted">
             Contact
           </Link>
@@ -31,9 +33,9 @@ const Footer = () => {
           <Link href="/privacy" variant="muted">
             Privacy
           </Link>
-        </div>
-      </div>
-    </footer>
+        </Stack>
+      </Flex>
+    </LayoutContainer>
   );
 };
 

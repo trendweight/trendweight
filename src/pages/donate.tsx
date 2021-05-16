@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-sync-scripts */
-import Image from "next/image";
 import Link from "~/components/shared/Link";
 import { Page } from "~/lib/core/page";
 
@@ -7,11 +6,6 @@ const Donate: Page = () => {
   return (
     <>
       <div>
-        <div className="hidden float-right pb-4 pl-4 bg-white md:block">
-          <div className="w-72">
-            <Image src="/assets/programming.svg" width={600} height={400} layout="intrinsic" />
-          </div>
-        </div>
         <div className="space-y-4">
           <h2 className="text-xl font-bold">Want to help support TrendWeight?</h2>
           <p>
@@ -63,9 +57,6 @@ const Donate: Page = () => {
           `,
             }}
           />
-          <div className="inset-0 flex items-center pb-3 pt-4" aria-hidden="true">
-            <div className="w-full border-t border-gray-200"></div>
-          </div>
           <h2 className="text-xl font-bold">Or send a tip directly</h2>
           <p>If you like, you can also send me a small tip directly on PayPal or Venmo:</p>
           <ul className="pl-8 list-disc">

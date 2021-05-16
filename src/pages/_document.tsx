@@ -3,7 +3,7 @@ import BaseDocument, { Head, Html, Main, NextScript } from "next/document";
 class Document extends BaseDocument {
   render() {
     return (
-      <Html className="min-w-[360px] overflow-x-hidden overflow-y-scroll">
+      <Html>
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link

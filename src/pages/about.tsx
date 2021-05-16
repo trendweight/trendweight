@@ -56,10 +56,10 @@ const About: Page = () => {
       </div>
       <div className="clear-both mt-8">
         <div className="xl grid gap-x-10 gap-y-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 border border-brand-100 rounded-lg">
+          <div className="bg-brand-50 border-brand-100 flow-root mt-6 pb-8 px-6 border rounded-lg">
             <div className="-mt-6">
               <div>
-                <span className="inline-flex items-center justify-center p-3 text-white bg-brand-400 rounded-md shadow-lg">
+                <span className="bg-brand-400 inline-flex items-center justify-center p-3 text-white rounded-md shadow-lg">
                   <LightBulbIcon className="w-6 h-6" />
                 </span>
               </div>
@@ -70,10 +70,10 @@ const About: Page = () => {
               </p>
             </div>
           </div>
-          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 border border-brand-100 rounded-lg">
+          <div className="bg-brand-50 border-brand-100 flow-root mt-6 pb-8 px-6 border rounded-lg">
             <div className="-mt-6">
               <div>
-                <span className="inline-flex items-center justify-center p-3 text-white bg-brand-400 rounded-md shadow-lg">
+                <span className="bg-brand-400 inline-flex items-center justify-center p-3 text-white rounded-md shadow-lg">
                   <ShoppingCartIcon className="w-6 h-6" />
                 </span>
               </div>
@@ -90,10 +90,10 @@ const About: Page = () => {
               </p>
             </div>
           </div>
-          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 border border-brand-100 rounded-lg">
+          <div className="bg-brand-50 border-brand-100 flow-root mt-6 pb-8 px-6 border rounded-lg">
             <div className="-mt-6">
               <div>
-                <span className="inline-flex items-center justify-center p-3 text-white bg-brand-400 rounded-md shadow-lg">
+                <span className="bg-brand-400 inline-flex items-center justify-center p-3 text-white rounded-md shadow-lg">
                   <RssIcon className="w-6 h-6" />
                 </span>
               </div>
@@ -113,10 +113,10 @@ const About: Page = () => {
               </p>
             </div>
           </div>
-          <div className="flow-root mt-6 pb-8 px-6 bg-brand-50 border border-brand-100 rounded-lg">
+          <div className="bg-brand-50 border-brand-100 flow-root mt-6 pb-8 px-6 border rounded-lg">
             <div className="-mt-6">
               <div>
-                <span className="inline-flex items-center justify-center p-3 text-white bg-brand-400 rounded-md shadow-lg">
+                <span className="bg-brand-400 inline-flex items-center justify-center p-3 text-white rounded-md shadow-lg">
                   <HeartIcon className="w-6 h-6" />
                 </span>
               </div>
@@ -129,10 +129,10 @@ const About: Page = () => {
           </div>
         </div>
       </div>
-      <div className="clear-both mt-10 bg-brand-50 border border-brand-100 rounded-lg sm:mx-0 md:mt-10">
+      <div className="bg-brand-50 border-brand-100 clear-both mt-10 border rounded-lg sm:mx-0 md:mt-10">
         <div className="px-6 py-8 md:px-12 md:py-10 lg:py-12">
           <h2 className="text-gray-900 text-xl font-extrabold tracking-tight sm:text-2xl">
-            <span className="block text-brand-600">Ready to check it out?</span>
+            <span className="text-brand-600 block">Ready to check it out?</span>
           </h2>
           <div className="flex mt-2">
             <div className="inline-flex rounded-md shadow">
