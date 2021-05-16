@@ -46,5 +46,6 @@
     "spatialize",
     "trendweight",
     "walkthrough"
-  ]
+  ],
+  "references.preferredLocation": "view"
 }

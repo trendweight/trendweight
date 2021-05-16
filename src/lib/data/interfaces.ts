@@ -58,3 +58,15 @@ export interface Links {
   withings?: VendorLink;
   fitbit?: VendorLink;
 }
+
+export interface Profile {
+  firstName: string;
+  timezone: string;
+  goalStart?: LocalDate;
+  goalWeight?: number;
+  plannedPoundsPerWeek?: number;
+  dayStartOffset?: number;
+  useMetric: boolean;
+  showCalories?: boolean;
+  sharingToken?: string;
+}

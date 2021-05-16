@@ -1,5 +1,5 @@
+import { getTimeZones } from "@vvo/tzdb";
 import React, { FC, useMemo, useState } from "react";
-import { toJson } from "../../lib/core/utils";
 import { DashboardProvider } from "../../lib/dashboard/context";
 import { Mode, TimeRange } from "../../lib/dashboard/interfaces";
 import { useMeasurements } from "../../lib/queries/measurements";
@@ -14,17 +14,16 @@ const Dashboard: FC<{ user?: string }> = ({ user }) => {
     [measurements, mode, timeRange]
   );
 
+  const timezones = getTimeZones();
+  console.log(timezones);
+
   if (!measurements) {
     return null;
   }
 
   return (
     <DashboardProvider data={dashboardData}>
-      <div>
-        <code>
-          <pre>{toJson(measurements)}</pre>
-        </code>
-      </div>
+      <div></div>
     </DashboardProvider>
   );
 };
