@@ -1,4 +1,4 @@
-import { Box, Link as ChakraLink } from "@chakra-ui/react";
+import { Link as ChakraLink } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { FC, PropsWithChildren } from "react";
@@ -11,9 +11,6 @@ interface MenuItemProps {
 
 const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, onClick, show = true, children }) => {
   const { pathname } = useRouter();
-  const className = `bg-white ${
-    pathname === href ? "md:bg-brand-400 text-brand-400 font-medium" : "md:bg-transparent text-brand-900 font-normal"
-  } md:text-current md:font-normal flex items-center py-2 px-3 hover:text-brand-800 hover:bg-white hover:no-underline focus:shadow-none focus:font-medium`;
 
   if (!show) {
     return null;
@@ -31,7 +28,6 @@ const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, onClick, show = 
           py={{ base: 2, md: 2 }}
           px={3}
           _hover={{ color: "brand.800", bg: "white", textDecoration: "none" }}
-          _focus={{ boxShadow: "none", fontWeight: "medium" }}
           onClick={onClick}
         >
           {children}
@@ -40,7 +36,7 @@ const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, onClick, show = 
     );
   } else {
     return (
-      <Box
+      <ChakraLink
         bg={{ base: "white", md: pathname === href ? "brand.400" : "inherit" }}
         color={{ base: pathname === href ? "brand.400" : "brand.900", md: "inherit" }}
         fontWeight={{ base: pathname === href ? "medium" : "inherit", md: "inherit" }}
@@ -49,11 +45,10 @@ const MenuItem: FC<PropsWithChildren<MenuItemProps>> = ({ href, onClick, show = 
         py={{ base: 2, md: 2 }}
         px={3}
         _hover={{ color: "brand.800", bg: "white", textDecoration: "none" }}
-        _focus={{ boxShadow: "none", fontWeight: "medium" }}
         onClick={onClick}
       >
         {children}
-      </Box>
+      </ChakraLink>
     );
   }
 };
