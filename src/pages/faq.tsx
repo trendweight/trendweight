@@ -40,7 +40,8 @@ const FAQ: Page = () => {
                     record your weight everyday. You just step on the scale and your weight gets automatically uploaded.
                     If you don't have one and want to buy one, you can find them on Amazon:{" "}
                     <Link href="https://amzn.to/2Rh8yH1">Withings Scales</Link> or{" "}
-                    <Link href="https://amzn.to/3uEWUnS">Fitbit Scales</Link>.
+                    <Link href="https://amzn.to/3uEWUnS">Fitbit Scales</Link>. (P.S. I'm an Amazon affiliate and receive
+                    a small payment if you buy a scale with one of the links on this page)
                   </p>
                   <p>
                     If you don't have a connected scale, just use either the{" "}
@@ -168,8 +169,8 @@ const FAQ: Page = () => {
               </div>
               {/* 
               <div>
-                <dt className="text-gray-900 text-lg font-semibold leading-6">Question?</dt>
-                <dd className="mt-2 text-gray-500 text-base space-y-4">
+                <dt className="text-lg font-semibold leading-6 text-gray-900">Question?</dt>
+                <dd className="mt-2 space-y-4 text-base text-gray-500">
                   <p>Answer!</p>
                 </dd>
               </div>
