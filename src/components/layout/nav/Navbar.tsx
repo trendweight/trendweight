@@ -9,7 +9,7 @@ export const Navbar: React.FC = (props) => {
 
   return (
     <Flex p={0} wrap="wrap" align="center" justifyContent="space-between">
-      <Stack direction="row" spacing={2} pl={4} py={3} flexGrow={1}>
+      <Stack direction="row" spacing={2} pl={4} py={2} flexGrow={1}>
         {children.find((child) => child.type === Brand)?.props.children}
       </Stack>
       <Stack

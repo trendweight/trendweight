@@ -1,9 +1,10 @@
-import { FC, SVGProps } from "react";
+import Icon, { IconProps } from "@chakra-ui/icon";
+import { FC } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Logo: FC<SVGProps<SVGSVGElement>> = (props) => {
+const Logo: FC<IconProps> = (props) => {
   return (
-    <svg viewBox="0 0 458 190" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <Icon viewBox="0 0 458 190" xmlns="http://www.w3.org/2000/svg" {...props}>
       <title>{"background"}</title>
       <path fill="none" d="M-1-1h438.19v182.952H-1z" />
       <g>
@@ -16,7 +17,7 @@ const Logo: FC<SVGProps<SVGSVGElement>> = (props) => {
           strokeWidth={8}
         />
       </g>
-    </svg>
+    </Icon>
   );
 };
 

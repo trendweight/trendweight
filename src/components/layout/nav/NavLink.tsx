@@ -23,7 +23,7 @@ const NavLink: FC<NavLinkProps> = ({ href, show = true, ...rest }) => {
       rounded={{ base: 5, md: 0 }}
       color="white"
       transition="all 0.3s"
-      fontWeight="medium"
+      fontWeight="normal"
       lineHeight="1.25rem"
       alignItems="center"
       aria-current={isActive ? "page" : undefined}

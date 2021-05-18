@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/layout";
 import { getTimeZones } from "@vvo/tzdb";
 import React, { FC, useMemo, useState } from "react";
 import { DashboardProvider } from "../../lib/dashboard/context";
@@ -23,7 +24,7 @@ const Dashboard: FC<{ user?: string }> = ({ user }) => {
 
   return (
     <DashboardProvider data={dashboardData}>
-      <div></div>
+      <Box>Retrieved {measurements.length} readings.</Box>
     </DashboardProvider>
   );
 };

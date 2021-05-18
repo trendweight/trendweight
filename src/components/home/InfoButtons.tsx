@@ -1,32 +1,45 @@
-import React from "react";
+import { Stack } from "@chakra-ui/layout";
+import React, { FC } from "react";
 import { useAuth } from "~/lib/core/auth";
-import Link from "../shared/Link";
+import LinkButton, { LinkButtonProps } from "../shared/LinkButton";
+import { HomeWidgetProps } from "./MainContent";
 
-const InfoButtons = () => {
+const HomeLinkButton: FC<LinkButtonProps> = ({ ...props }) => (
+  <LinkButton
+    {...props}
+    as="a"
+    fontSize={{ base: 22, lg: 24 }}
+    fontWeight="normal"
+    width={{ base: "full", md: "320px" }}
+    p={{ base: 6, md: 7 }}
+  />
+);
+
+const InfoButtons: FC<HomeWidgetProps> = ({ area }) => {
   const { isInitializing, user } = useAuth();
 
   return (
-    <div className="grid-in-buttons flex flex-col items-center w-full space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-      <Link href="/about" variant="button" btnColor="green" size="xl">
+    <Stack gridArea={area} direction={{ base: "column", md: "row" }} spacing={4} align="center" width="full">
+      <HomeLinkButton href="/about" colorScheme="green">
         Learn More
-      </Link>
+      </HomeLinkButton>
       {!isInitializing && !user ? (
         <>
-          <Link href="/signup" variant="button" btnColor="brand" size="xl">
+          <HomeLinkButton href="/signup" colorScheme="brand">
             Create an Account
-          </Link>
-          <Link href="/login" variant="button" btnColor="brand" size="xl">
+          </HomeLinkButton>
+          <HomeLinkButton href="/login" colorScheme="brand">
             Log In
-          </Link>
+          </HomeLinkButton>
         </>
       ) : (
         !isInitializing && (
-          <Link href="/dashboard" variant="button" btnColor="brand" size="xl">
+          <HomeLinkButton href="/dashboard" colorScheme="brand">
             Go To Dashboard
-          </Link>
+          </HomeLinkButton>
         )
       )}
-    </div>
+    </Stack>
   );
 };
 

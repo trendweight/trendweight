@@ -1,26 +1,17 @@
+import { Flex } from "@chakra-ui/layout";
 import React from "react";
 import Banner from "~/components/home/Banner";
-import Blurb from "~/components/home/Blurb";
-import InfoButtons from "~/components/home/InfoButtons";
-import SampleChart from "~/components/home/SampleChart";
-import WorksWith from "~/components/home/WorksWith";
+import MainContent from "~/components/home/MainContent";
 import Footer from "~/components/layout/Footer";
 import { Page } from "~/lib/core/page";
 
 const Home: Page = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <Flex direction="column" minH="100vh">
       <Banner />
-      <div className="container relative flex-grow flex-shrink mx-auto p-4 md:py-6">
-        <div className="grid-areas-home md:grid-areas-home-wide md:grid-cols-home grid gap-6 grid-cols-1 md:gap-10">
-          <InfoButtons />
-          <Blurb />
-          <SampleChart />
-          <WorksWith />
-        </div>
-      </div>
+      <MainContent />
       <Footer />
-    </div>
+    </Flex>
   );
 };
 

@@ -1,6 +1,10 @@
+import { Stack, Text } from "@chakra-ui/layout";
+import { Box, Center } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
-import React from "react";
+import React, { FC } from "react";
+import Link from "../shared/Link";
+import { HomeWidgetProps } from "./MainContent";
 
 const vendors = [
   {
@@ -11,7 +15,11 @@ const vendors = [
       height: 140,
       width: 128,
     },
-    className: "font-medium text-3xl tracking-wider",
+    boxProps: {
+      fontWeight: "medium",
+      fontSize: "3xl",
+      letterSpacing: "wider",
+    },
     url: "https://www.withings.com/health-mate",
   },
   {
@@ -22,24 +30,43 @@ const vendors = [
       height: 140,
       width: 128,
     },
-    className: "font-normal text-4xl",
+    boxProps: {
+      fontWeight: "normal",
+      fontSize: "4xl",
+    },
     url: "https://www.fitbit.com/sg/app",
   },
 ];
 
-const WorksWith = () => {
+const WorksWith: FC<HomeWidgetProps> = ({ area }) => {
   return (
-    <div className="grid-in-works flex flex-col flex-wrap items-center md:flex-row md:space-x-4">
+    <Stack
+      gridArea={area}
+      direction={{ base: "column", md: "row" }}
+      wrap="wrap"
+      alignItems={{ base: "unset", md: "center" }}
+      // justifyContent={{ base: "center", md: "unset" }}
+      spacing={4}
+    >
       {vendors.map((vendor) => (
-        <a
-          target="_blank"
+        <Link
           key={vendor.name}
           href={vendor.url}
-          rel="noreferrer"
-          className="order-2 pb-6 w-full md:pr-6 md:w-auto"
+          w={{ base: "full", md: "auto" }}
+          order={2}
+          pr={{ md: 6 }}
+          color="black"
+          _hover={{ textDecoration: "none" }}
         >
-          <div className="flex items-center justify-center w-56 h-56 hover:bg-gray-100 bg-gray-50 border border-gray-200 rounded-2xl">
-            <div className="flex flex-col items-center p-1">
+          <Center
+            boxSize={56}
+            bg="gray.50"
+            _hover={{ bg: "gray.100" }}
+            borderWidth={1}
+            borderColor="gray.200"
+            rounded="2xl"
+          >
+            <Stack direction="column" alignItems="center" p={1}>
               <Image
                 src={vendor.app.src}
                 layout="fixed"
@@ -47,29 +74,30 @@ const WorksWith = () => {
                 alt={`${vendor.name} app logo`}
                 height={vendor.app.height}
                 width={vendor.app.width}
-                className=""
               />
-              <div className="flex flex-col items-center leading-none">
-                <div className="text-brand-500 font-bold">Works with</div>
-                <div className={vendor.className}>{vendor.logoText}</div>
-              </div>
-            </div>
-          </div>
-        </a>
+              <Stack direction="column" alignItems="center" lineHeight={1} spacing={0}>
+                <Text color="brand.500" fontWeight="bold">
+                  Works with
+                </Text>
+                <Box {...vendor.boxProps}>{vendor.logoText}</Box>
+              </Stack>
+            </Stack>
+          </Center>
+        </Link>
       ))}
-      <div className="order-1 pb-6 text-xl md:order-3">
-        <div className="font-bold">Enter your daily weight how you like...</div>
-        <div>
+      <Box order={{ base: 1, md: 3 }} pt={{ md: 6 }} pb={6} fontSize="xl">
+        <Box fontWeight="bold">Enter your daily weight how you like...</Box>
+        <Box>
           <FontAwesomeIcon icon="check" color="green" /> Smart Scales / WiFi Scales
-        </div>
-        <div>
+        </Box>
+        <Box>
           <FontAwesomeIcon icon="check" color="green" /> Withings Health Mate App
-        </div>
-        <div>
+        </Box>
+        <Box>
           <FontAwesomeIcon icon="check" color="green" /> Fitbit App
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Stack>
   );
 };
 
