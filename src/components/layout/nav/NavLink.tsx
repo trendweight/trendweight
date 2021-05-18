@@ -21,6 +21,7 @@ const NavLink: FC<NavLinkProps> = ({ href, show = true, ...rest }) => {
       py={2}
       px={3}
       rounded={{ base: 5, md: 0 }}
+      color="white"
       transition="all 0.3s"
       fontWeight="medium"
       lineHeight="1.25rem"
@@ -31,6 +32,7 @@ const NavLink: FC<NavLinkProps> = ({ href, show = true, ...rest }) => {
         bg: mode("blue.600", "blue.200"),
         color: mode("white", "gray.900"),
       }}
+      variant="header"
       {...rest}
     />
   );

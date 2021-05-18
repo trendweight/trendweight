@@ -2,7 +2,7 @@
 import Link from "~/components/shared/Link";
 import { Page } from "~/lib/core/page";
 
-const Donate: Page = () => {
+const TipJar: Page = () => {
   return (
     <>
       <div>
@@ -73,6 +73,6 @@ const Donate: Page = () => {
   );
 };
 
-Donate.title = "Donate";
+TipJar.title = "Tip Jar";
 
-export default Donate;
+export default TipJar;

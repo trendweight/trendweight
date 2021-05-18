@@ -11,26 +11,26 @@ const Footer = () => {
         <Box>&copy; 2012-{new Date().getFullYear()} Erv Walter</Box>
         <Stack direction="row" spacing={{ base: 2, md: 4 }}>
           <Stack direction="row" spacing={{ base: 2, md: 4 }}>
-            <Link href="https://twitter.com/trendweight" variant="muted">
+            <Link href="https://twitter.com/trendweight" variant="footer">
               <FontAwesomeIcon icon={["fab", "twitter"]} />
             </Link>
-            <Link href="https://facebook.com/trendweight" variant="muted">
+            <Link href="https://facebook.com/trendweight" variant="footer">
               <FontAwesomeIcon icon={["fab", "facebook"]} />
             </Link>
-            <Link href="https://github.com/trendweight" variant="muted">
+            <Link href="https://github.com/trendweight" variant="footer">
               <FontAwesomeIcon icon={["fab", "github"]} />
             </Link>
-            <Link href="https://blog.trendweight.com" variant="muted">
+            <Link href="https://blog.trendweight.com" variant="footer">
               <FontAwesomeIcon icon="rss" />
             </Link>
           </Stack>
-          <Link href="mailto:erv@ewal.net" variant="muted">
+          <Link href="mailto:erv@ewal.net" variant="footer">
             Contact
           </Link>
-          <Link href="/donate" variant="muted">
-            Donate
+          <Link href="/tipjar" variant="footer">
+            Tip Jar
           </Link>
-          <Link href="/privacy" variant="muted">
+          <Link href="/privacy" variant="footer">
             Privacy
           </Link>
         </Stack>

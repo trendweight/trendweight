@@ -27,6 +27,7 @@ export const Navbar: React.FC = (props) => {
       <IconButton
         display={{ base: "flex", md: "none" }}
         size="sm"
+        color="white"
         aria-label="Open menu"
         fontSize="20px"
         variant="ghost"

@@ -140,7 +140,7 @@ const FAQ: Page = () => {
                   </p>
                   <p>
                     TrendWeight is free. It will always be free, but if you'd like to know how to help support
-                    TrendWeight, you can read more <Link href="/donate">here</Link>.
+                    TrendWeight, you can read more <Link href="/tipjar">here</Link>.
                   </p>
                 </dd>
               </div>

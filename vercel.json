@@ -12,5 +12,11 @@
       ]
     }
   ],
-  "redirects": []
+  "redirects": [],
+  "rewrites": [
+    {
+      "source": "/u/:key/chart/:range*",
+      "destination": "/assets/chart-not-available.png"
+    }
+  ]
 }
