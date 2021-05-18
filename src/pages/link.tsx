@@ -1,5 +1,5 @@
-import { useState } from "react";
-import Button from "~/components/forms/Button";
+import { Button } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { get } from "~/lib/api/fetch";
 import { Page } from "~/lib/core/page";
 

@@ -1,5 +1,9 @@
+import { Flex, Heading, Stack } from "@chakra-ui/layout";
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import React from "react";
 import Link from "~/components/shared/Link";
+import LinkButton from "~/components/shared/LinkButton";
 import { useAuth } from "~/lib/core/auth";
 import { Page } from "~/lib/core/page";
 
@@ -13,30 +17,43 @@ const Register: Page = () => {
     return null;
   } else {
     return (
-      <div className="flex items-center justify-center">
-        <div className="max-w-[800px] flex flex-col my-4 w-full space-y-5 md:my-12 md:px-6 md:py-12 md:bg-gray-50 md:border md:border-gray-100 md:rounded-lg md:shadow-md">
-          <h2 className="text-brand-600 text-xl font-bold">Create an Account</h2>
-          <div>
+      <Flex align="center" justify="center">
+        <Stack
+          direction="column"
+          w="full"
+          maxW="800px"
+          spacing={5}
+          my={{ base: 4, md: 12 }}
+          py={{ md: 12 }}
+          px={{ md: 6 }}
+          bg={{ md: "gray.50" }}
+          borderWidth={{ md: 1 }}
+          borderColor={{ md: "gray.100" }}
+          rounded={{ md: "lg" }}
+          shadow={{ md: "md" }}
+        >
+          <Heading color="brand.600" fontSize="xl" fontWeight="bold">
+            Create an Account
+          </Heading>
+          <Box>
             Registration for the beta version of TrendWeight is not available yet. If you are interested in being an
             early tester, email me at <Link href="mailto:erv@ewal.net?subject=Beta Testing">erv@ewal.net</Link>.
-          </div>
-          <div>
+          </Box>
+          <Box>
             If you just are interested in knowing when the beta is ready for general use, your best bet is to follow
             TrendWeight on <Link href="https://twitter.com/trendweight">Twitter</Link>,{" "}
             <Link href="https://facebook.com/trendweight">Facebook</Link>, or subscribe to the{" "}
             <Link href="https://blog.trendweight.com">Blog</Link>.
-          </div>
-          <div>
+          </Box>
+          <Box>
             In the mean time, you're welcome to use the live version of TrendWeight at{" "}
             <Link href="https://trendweight.com">trendweight.com</Link>.
-          </div>
-          <div className="flex flex-row items-center space-x-2">
-            <Link href="/" variant="button" btnColor="brand">
-              Return to Homepage
-            </Link>
-          </div>
-        </div>
-      </div>
+          </Box>
+          <Box>
+            <LinkButton href="/">Return to Homepage</LinkButton>
+          </Box>
+        </Stack>
+      </Flex>
     );
   }
 };

@@ -1,4 +1,5 @@
-import { Box, Collapse, Flex } from "@chakra-ui/react";
+import { Box, Collapse, Flex, useOutsideClick } from "@chakra-ui/react";
+import { useRef } from "react";
 
 interface Props {
   isOpen?: boolean;
@@ -7,8 +8,13 @@ interface Props {
 
 const MobileNav: React.FC<Props> = (props) => {
   const { isOpen, onClose, children } = props;
+  const ref = useRef<HTMLDivElement>(null);
+  useOutsideClick({
+    ref,
+    handler: onClose,
+  });
   return (
-    <Box w="100%" onClick={onClose} display={{ md: "none" }}>
+    <Box w="100%" onClick={onClose} display={{ md: "none" }} ref={ref}>
       <Collapse in={isOpen}>
         {/* <AnimatePresence>
         {isOpen && (

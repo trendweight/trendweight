@@ -45,7 +45,8 @@
 
 @media (max-width: 768px) {
   #nprogress .spinner {
-    right: 50px;
+    right: 55px;
+    top: 20px;
   }
 }
 

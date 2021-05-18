@@ -41,7 +41,6 @@ const About: Page = () => {
         pr={{ base: 0, md: 8 }}
         pt={{ base: 0, md: 2 }}
         float={{ base: "unset", md: "left" }}
-        className="inline-block pb-2 space-y-2 md:float-left md:pb-4 md:pr-8 md:pt-2"
       >
         <Box fontSize="lg" pb={2}>
           <b>See it in action...</b>

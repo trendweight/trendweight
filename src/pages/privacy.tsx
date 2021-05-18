@@ -45,7 +45,7 @@ const Privacy: Page = () => {
         we used and and the scope of the services they provide to us. Please see their respective privacy policies for
         details on how they protect any data they may receive about you.
       </Text>
-      <UnorderedList mt={4} px={4} className="mt-4 px-6 list-disc">
+      <UnorderedList mt={4} px={4}>
         <ListItem>
           <Link href="https://firebase.google.com/products/auth">Firebase Authentication</Link>. Authenticating accounts
           e.g. email and password.

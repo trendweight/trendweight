@@ -13,7 +13,6 @@ import "~/lib/core/fa";
 import { Page } from "~/lib/core/page";
 import progress from "~/lib/core/progress";
 import theme from "~/lib/theme";
-import "~/styles/globals.css";
 
 const queryClient = new QueryClient();
 
