@@ -11,7 +11,6 @@ import { Page } from "~/lib/core/page";
 
 const About: Page = () => {
   const { isInitializing, user } = useAuth();
-
   const getStarted =
     isInitializing || !user
       ? { label: "Create an Account", href: "/signup" }
