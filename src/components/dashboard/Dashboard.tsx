@@ -1,30 +1,21 @@
 import { Box } from "@chakra-ui/layout";
+import { Spinner } from "@chakra-ui/spinner";
 import { getTimeZones } from "@vvo/tzdb";
-import React, { FC, useMemo, useState } from "react";
-import { DashboardProvider } from "../../lib/dashboard/context";
-import { Mode, TimeRange } from "../../lib/dashboard/interfaces";
-import { useMeasurements } from "../../lib/queries/measurements";
+import React, { FC } from "react";
+import { DashboardProvider, useComputeDashboardData } from "../../lib/dashboard/context";
 
 const Dashboard: FC<{ user?: string }> = ({ user }) => {
-  const [mode, setMode] = useState<Mode>("weight");
-  const [timeRange, setTimeRange] = useState<TimeRange>("4w");
-  const measurements = useMeasurements(user);
-
-  const dashboardData = useMemo(
-    () => ({ measurements, mode, setMode, timeRange, setTimeRange }),
-    [measurements, mode, timeRange]
-  );
-
+  const dashboardData = useComputeDashboardData(user);
   const timezones = getTimeZones();
   console.log(timezones);
 
-  if (!measurements) {
-    return null;
+  if (!dashboardData) {
+    return <Spinner />;
   }
 
   return (
     <DashboardProvider data={dashboardData}>
-      <Box>Retrieved {measurements.length} readings.</Box>
+      <Box>Retrieved {dashboardData.dataPoints.length} data points.</Box>
     </DashboardProvider>
   );
 };

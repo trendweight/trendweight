@@ -1,11 +1,11 @@
 import { ChronoUnit, Instant, ZoneId } from "@js-joda/core";
 import _ from "lodash";
-import { Measurement, SourceData, SourceMeasurement } from "../data/interfaces";
-import { SettingsData } from "../settings";
+import { Profile, SourceData, SourceMeasurement } from "../data/interfaces";
+import { Measurement } from "./interfaces";
 
-export const computeMeasurements = (data?: SourceData[], settings?: SettingsData) => {
+export const computeMeasurements = (data?: SourceData[], profile?: Profile) => {
   console.log("processSourceData");
-  if (!data || !settings) {
+  if (!data || !profile) {
     return undefined;
   }
 
@@ -17,7 +17,7 @@ export const computeMeasurements = (data?: SourceData[], settings?: SettingsData
       }
       return sourceData.measurements.map((sourceMeasurement) => {
         const timestamp = Instant.ofEpochSecond(sourceMeasurement.timestamp)
-          .atZone(ZoneId.of("America/Chicago"))
+          .atZone(ZoneId.of(profile.timezone))
           .toLocalDateTime();
         return {
           date: timestamp.toLocalDate(),

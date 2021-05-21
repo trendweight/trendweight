@@ -1,17 +1,18 @@
+import { useQuery } from "react-query";
 import Link from "~/components/shared/Link";
+import { settingsQuery } from "~/lib/api/queries";
 import { Page } from "~/lib/core/page";
 import { toJson } from "~/lib/core/utils";
-import { useSettings } from "~/lib/queries/settings";
 
 const Settings: Page = () => {
-  const { isLoading, data, isError, error } = useSettings();
-  useSettings();
-  if (isLoading) {
+  const query = useQuery(settingsQuery());
+
+  if (query.isLoading || query.isIdle) {
     return null;
   }
 
-  if (isError) {
-    return <div>Error: {toJson(error)}</div>;
+  if (query.isError) {
+    return <div>Error: {toJson(query.error)}</div>;
   }
 
   return (
@@ -21,7 +22,7 @@ const Settings: Page = () => {
       </div>
       <div>
         <code>
-          <pre>{toJson(data)}</pre>
+          <pre>{toJson(query.data)}</pre>
         </code>
       </div>
     </>

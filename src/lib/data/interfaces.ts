@@ -23,20 +23,6 @@ export interface SourceMeasurement {
   weightIsInterpolated?: boolean;
   fatRatioIsInterpolated?: boolean;
 }
-export interface Measurement {
-  date: LocalDate;
-  source: string;
-  actualWeight: number;
-  actualFatMass?: number;
-  actualFatPercent?: number;
-  actualLeanMass?: number;
-  trendWeight: number;
-  trendFatMass?: number;
-  trendFatPercent?: number;
-  trendLeanMass?: number;
-  weightIsInterpolated: boolean;
-  fatIsInterpolated: boolean;
-}
 
 export interface AccessToken {
   userid: string;
@@ -60,6 +46,7 @@ export interface Links {
 }
 
 export interface Profile {
+  id: string;
   firstName: string;
   timezone: string;
   goalStart?: LocalDate;
