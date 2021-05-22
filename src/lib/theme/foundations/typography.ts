@@ -1,6 +1,6 @@
 export default {
   fonts: {
-    body: "Inter, sans-serif",
-    heading: "Inter, sans-serif",
+    body: 'Inter, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    heading: 'Inter, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   },
 };

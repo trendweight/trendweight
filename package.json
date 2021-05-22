@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "postinstall": "husky install",
-    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
+    "dev": "next dev",
+    "dev-debug": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "run-s lint build:next",
     "build:next": "next build",
     "start": "next start",
