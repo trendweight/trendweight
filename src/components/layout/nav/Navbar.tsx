@@ -1,14 +1,15 @@
 import { Box, Flex, IconButton, Stack, useDisclosure } from "@chakra-ui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import React, { isValidElement, ReactElement } from "react";
+import React, { isValidElement, ReactElement, useRef } from "react";
 import MobileNav from "./MobileNav";
 
 export const Navbar: React.FC = (props) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const mobileNav = useDisclosure();
   const children = React.Children.toArray(props.children).filter<ReactElement>(isValidElement);
 
   return (
-    <Flex p={0} wrap="wrap" align="center" justifyContent="space-between">
+    <Flex p={0} wrap="wrap" align="center" justifyContent="space-between" ref={wrapperRef}>
       <Stack direction="row" spacing={2} pl={4} py={3} flexGrow={1} align="center">
         {children.find((child) => child.type === Brand)?.props.children}
       </Stack>
@@ -36,7 +37,7 @@ export const Navbar: React.FC = (props) => {
         icon={mobileNav.isOpen ? <XIcon /> : <MenuIcon />}
       />
       <Box flexBasis="100%" h={0} />
-      <MobileNav isOpen={mobileNav.isOpen} onClose={mobileNav.onClose}>
+      <MobileNav isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} wrapperRef={wrapperRef}>
         <Stack spacing={5}>
           <Stack>{children.find((child) => child.type === Links)?.props.children}</Stack>
         </Stack>
