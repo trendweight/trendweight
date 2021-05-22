@@ -8,7 +8,7 @@ class Document extends BaseDocument {
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&display=block"
+            href="https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&display=swap"
             rel="stylesheet"
           />
           <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&display=block" rel="stylesheet" />
