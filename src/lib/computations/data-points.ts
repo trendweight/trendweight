@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { logCall } from "../core/utils";
 import { DataPoint, Measurement, Mode } from "./interfaces";
 
 const propertyFromMode = {
@@ -9,6 +10,8 @@ const propertyFromMode = {
 };
 
 export const computeDataPoints = (mode: Mode, measurements?: Measurement[]) => {
+  logCall("computeDataPoints", `measurements.length: ${measurements?.length}, ${mode}`);
+
   if (!measurements) {
     return;
   }

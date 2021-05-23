@@ -1,10 +1,12 @@
 import { ChronoUnit, Instant, ZoneId } from "@js-joda/core";
 import _ from "lodash";
+import { logCall } from "../core/utils";
 import { Profile, SourceData, SourceMeasurement } from "../data/interfaces";
 import { Measurement } from "./interfaces";
 
 export const computeMeasurements = (data?: SourceData[], profile?: Profile) => {
-  console.log("processSourceData");
+  logCall("computeMeasurements", `data: ${!!data}`, `profile: ${!!profile}`);
+
   if (!data || !profile) {
     return undefined;
   }
@@ -170,10 +172,10 @@ export const computeMeasurements = (data?: SourceData[], profile?: Profile) => {
     }
 
     const measurement = measurementsByDate[sourceMeasurement.date.toString()];
-    measurement.actualFatPercent = fatRatio * 100;
+    measurement.actualFatPercent = fatRatio;
     measurement.actualFatMass = fatMass;
     measurement.actualLeanMass = leanMass;
-    measurement.trendFatPercent = trendFatRatio * 100;
+    measurement.trendFatPercent = trendFatRatio;
     measurement.trendFatMass = trendFatMass;
     measurement.trendLeanMass = trendLeanMass;
     measurement.fatIsInterpolated = sourceMeasurement.fatRatioIsInterpolated || false;

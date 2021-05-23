@@ -6,11 +6,13 @@ import { profileQuery, sourceDataQuery } from "../api/queries";
 import { computeDataPoints } from "../computations/data-points";
 import { DataPoint, Mode, TimeRange } from "../computations/interfaces";
 import { computeMeasurements } from "../computations/measurements";
+import { Profile } from "../data/interfaces";
 
 export interface DashboardData {
   dataPoints: DataPoint[];
   mode: [Mode, (mode: Mode) => void];
   timeRange: [TimeRange, (timeRange: TimeRange) => void];
+  profile: Profile;
 }
 
 const dashboardContext = createContext<DashboardData | undefined>(undefined);
@@ -43,6 +45,7 @@ export const useComputeDashboardData = (user?: string) => {
 
   const data: DashboardData = {
     dataPoints,
+    profile,
     mode: [mode, setMode],
     timeRange: [timeRange, setTimeRange],
   };

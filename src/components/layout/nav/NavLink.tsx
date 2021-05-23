@@ -1,4 +1,4 @@
-import { Link as ChakraLink, LinkProps, useColorModeValue as mode } from "@chakra-ui/react";
+import { Link as ChakraLink, LinkProps } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
@@ -29,8 +29,8 @@ const NavLink: FC<NavLinkProps> = ({ href, show = true, ...rest }) => {
       aria-current={isActive ? "page" : undefined}
       _hover={{ color: "brand.800", bg: "white", textDecoration: "none" }}
       _activeLink={{
-        bg: mode("blue.600", "blue.200"),
-        color: mode("white", "gray.900"),
+        bg: "blue.600",
+        color: "white",
       }}
       variant="header"
       {...rest}

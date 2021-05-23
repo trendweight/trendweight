@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Icon, Stack, useDisclosure } from "@chakra-ui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import React, { isValidElement, ReactElement, useRef } from "react";
+import { HiMenu, HiX } from "react-icons/hi";
 import MobileNav from "./MobileNav";
 
 export const Navbar: React.FC = (props) => {
@@ -35,7 +35,7 @@ export const Navbar: React.FC = (props) => {
         onClick={mobileNav.onToggle}
         mr={4}
       >
-        <Icon h={6} w={6} as={mobileNav.isOpen ? XIcon : MenuIcon}></Icon>
+        <Icon h={6} w={6} as={mobileNav.isOpen ? HiX : HiMenu}></Icon>
       </Button>
       <Box flexBasis="100%" h={0} />
       <MobileNav isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} wrapperRef={wrapperRef}>

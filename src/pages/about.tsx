@@ -1,9 +1,9 @@
 import Icon from "@chakra-ui/icon";
 import { Box, Flex, Grid, Heading, Text, UnorderedList } from "@chakra-ui/layout";
 import { ListItem } from "@chakra-ui/react";
-import { HeartIcon, LightBulbIcon, RssIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import React from "react";
+import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineRss, HiOutlineShoppingCart } from "react-icons/hi";
 import Link from "~/components/shared/Link";
 import LinkButton from "~/components/shared/LinkButton";
 import { useAuth } from "~/lib/core/auth";
@@ -82,7 +82,7 @@ const About: Page = () => {
                   rounded="md"
                   shadow="lg"
                 >
-                  <Icon h={6} w={6} as={LightBulbIcon} />
+                  <Icon h={6} w={6} as={HiOutlineLightBulb} />
                 </Box>
               </Box>
               <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight">
@@ -107,7 +107,7 @@ const About: Page = () => {
                   rounded="md"
                   shadow="lg"
                 >
-                  <Icon h={6} w={6} as={ShoppingCartIcon} />
+                  <Icon h={6} w={6} as={HiOutlineShoppingCart} />
                 </Box>
               </Box>
               <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight">
@@ -138,7 +138,7 @@ const About: Page = () => {
                   rounded="md"
                   shadow="lg"
                 >
-                  <Icon h={6} w={6} as={RssIcon} />
+                  <Icon h={6} w={6} as={HiOutlineRss} />
                 </Box>
               </Box>
               <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight">
@@ -172,7 +172,7 @@ const About: Page = () => {
                   rounded="md"
                   shadow="lg"
                 >
-                  <Icon h={6} w={6} as={HeartIcon} />
+                  <Icon h={6} w={6} as={HiOutlineHeart} />
                 </Box>
               </Box>
               <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight">

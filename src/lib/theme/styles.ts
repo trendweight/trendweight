@@ -2,7 +2,6 @@ export default {
   global: () => ({
     html: {
       minWidth: "360px",
-      scrollBehavior: "smooth",
       overflowY: "scroll",
       overflowX: "hidden",
     },

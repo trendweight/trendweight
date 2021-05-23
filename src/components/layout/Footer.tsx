@@ -1,6 +1,6 @@
 import { Box, Flex, Stack } from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { FaFacebook, FaGithub, FaRss, FaTwitter } from "react-icons/fa";
 import Link from "../shared/Link";
 import LayoutContainer from "./LayoutContainer";
 
@@ -10,18 +10,18 @@ const Footer = () => {
       <Flex direction={{ base: "column", md: "row" }} align="center" justifyContent="space-between" color="gray.300">
         <Box>&copy; 2012-{new Date().getFullYear()} Erv Walter</Box>
         <Stack direction="row" spacing={{ base: 2, md: 4 }}>
-          <Stack direction="row" spacing={{ base: 2, md: 4 }}>
+          <Stack direction="row" spacing={{ base: 2, md: 4 }} align="center">
             <Link href="https://twitter.com/trendweight" variant="footer">
-              <FontAwesomeIcon icon={["fab", "twitter"]} />
+              <FaTwitter />
             </Link>
             <Link href="https://facebook.com/trendweight" variant="footer">
-              <FontAwesomeIcon icon={["fab", "facebook"]} />
+              <FaFacebook />
             </Link>
             <Link href="https://github.com/trendweight" variant="footer">
-              <FontAwesomeIcon icon={["fab", "github"]} />
+              <FaGithub />
             </Link>
             <Link href="https://blog.trendweight.com" variant="footer">
-              <FontAwesomeIcon icon="rss" />
+              <FaRss />
             </Link>
           </Stack>
           <Link href="mailto:erv@ewal.net" variant="footer">

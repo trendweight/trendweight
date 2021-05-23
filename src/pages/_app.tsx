@@ -7,10 +7,10 @@ import { Router } from "next/router";
 import React, { FC, PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import "rsuite/lib/Placeholder/styles/index.less";
 import PageWrapper from "~/components/layout/PageWrapper";
 import "~/components/shared/nprogress.css";
 import { AuthProvider } from "~/lib/core/auth";
-import "~/lib/core/fa";
 import { Page } from "~/lib/core/page";
 import progress from "~/lib/core/progress";
 import theme from "~/lib/theme";
@@ -30,6 +30,7 @@ Router.events.on("routeChangeComplete", () => {
   document.body.setAttribute("tabIndex", "-1");
   document.body.focus();
   document.body.removeAttribute("tabIndex");
+  window.scrollTo(0, 0);
 });
 
 function App({ Component, pageProps }: AppProps) {
