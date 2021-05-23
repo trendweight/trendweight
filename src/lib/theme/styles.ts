@@ -11,5 +11,8 @@ export default {
       minHeight: "100vh",
       background: "white",
     },
+    "*": {
+      "-webkit-tap-highlight-color": "transparent",
+    },
   }),
 };
