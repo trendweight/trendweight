@@ -8,7 +8,12 @@ export interface ToggleButtonProps extends ButtonProps {
 
 export const ToggleButton = (props: ToggleButtonProps) => {
   const { radioProps, ...rest } = props;
-  const { getInputProps, getCheckboxProps, getLabelProps } = useRadio(radioProps);
+  const {
+    getInputProps,
+    getCheckboxProps,
+    getLabelProps,
+    state: { isChecked },
+  } = useRadio(radioProps);
   const id = useId(undefined, "toggle-button");
 
   const inputProps = getInputProps();
@@ -21,16 +26,29 @@ export const ToggleButton = (props: ToggleButtonProps) => {
         as="div"
         id={id}
         bg="white"
+        color="gray.800"
         px={{ base: 2, md: 3 }}
         fontWeight={450}
-        color="unset"
         borderWidth={1}
-        borderColor="gray.300"
         colorScheme="gray"
+        borderColor="gray.300"
         _checked={{
-          colorScheme: "brand",
           bg: "brand.500",
           color: "white",
+        }}
+        _hover={
+          isChecked
+            ? {
+                bg: { base: "inherit", md: "brand.800" },
+                color: "white",
+              }
+            : { bg: { base: "inherit", md: "gray.200" }, color: "gray.800" }
+        }
+        _active={{
+          bg: "inherit",
+        }}
+        _focus={{
+          bg: "inherit",
         }}
         {...checkboxProps}
         {...rest}
