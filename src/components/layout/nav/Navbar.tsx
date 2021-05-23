@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton, Stack, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, Stack, useDisclosure } from "@chakra-ui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import React, { isValidElement, ReactElement, useRef } from "react";
 import MobileNav from "./MobileNav";
@@ -25,17 +25,18 @@ export const Navbar: React.FC = (props) => {
         {children.find((child) => child.type === Links)?.props.children}
       </Stack>
 
-      <IconButton
+      <Button
         display={{ base: "flex", md: "none" }}
         size="sm"
+        colorScheme="brand"
         color="white"
         aria-label="Open menu"
         fontSize="20px"
-        variant="ghost"
         onClick={mobileNav.onToggle}
         mr={4}
-        icon={mobileNav.isOpen ? <XIcon /> : <MenuIcon />}
-      />
+      >
+        <Icon h={6} w={6} as={mobileNav.isOpen ? XIcon : MenuIcon}></Icon>
+      </Button>
       <Box flexBasis="100%" h={0} />
       <MobileNav isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} wrapperRef={wrapperRef}>
         <Stack spacing={5}>
