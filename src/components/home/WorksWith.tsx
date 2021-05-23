@@ -1,8 +1,8 @@
 import { Stack, Text } from "@chakra-ui/layout";
-import { Box, Center } from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Center, Icon } from "@chakra-ui/react";
 import Image from "next/image";
 import React, { FC } from "react";
+import { FaCheck } from "react-icons/fa";
 import Link from "../shared/Link";
 import { HomeWidgetProps } from "./MainContent";
 
@@ -88,13 +88,13 @@ const WorksWith: FC<HomeWidgetProps> = ({ area }) => {
       <Box order={{ base: 1, md: 3 }} pt={{ md: 6 }} pb={6} fontSize="xl">
         <Box fontWeight="bold">Enter your daily weight how you like...</Box>
         <Box>
-          <FontAwesomeIcon icon="check" color="green" /> Smart Scales / WiFi Scales
+          <Icon as={FaCheck} color="green.500" /> Smart Scales / WiFi Scales
         </Box>
         <Box>
-          <FontAwesomeIcon icon="check" color="green" /> Withings Health Mate App
+          <Icon as={FaCheck} color="green.500" /> Withings Health Mate App
         </Box>
         <Box>
-          <FontAwesomeIcon icon="check" color="green" /> Fitbit App
+          <Icon as={FaCheck} color="green.500" /> Fitbit App
         </Box>
       </Box>
     </Stack>
