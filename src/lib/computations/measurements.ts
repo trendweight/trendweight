@@ -1,8 +1,8 @@
 import { ChronoUnit, Instant, ZoneId } from "@js-joda/core";
 import _ from "lodash";
 import "~/lib/core/time";
-import { logCall } from "../core/utils/logging";
 import { Profile, SourceData, SourceMeasurement } from "../data/interfaces";
+import { logCall } from "../utils/logging";
 import { Measurement } from "./interfaces";
 
 export const computeMeasurements = (data?: SourceData[], profile?: Profile) => {

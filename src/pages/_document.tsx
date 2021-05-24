@@ -18,8 +18,17 @@ class Document extends BaseDocument {
               __html: `if (/MSIE|Trident/.test(window.navigator.userAgent)) window.location.href = '/unsupported.html';`,
             }}
           ></script>
+          <style>
+            {`
+            .fonts-loading {
+              font-family: Arial !important;
+              letter-spacing: 0.40px;
+              word-spacing: 0.2px;              
+            }
+            `}
+          </style>
         </Head>
-        <body>
+        <body className="fonts-loading">
           <Main />
           <NextScript />
         </body>

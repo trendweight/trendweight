@@ -1,9 +1,10 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import "focus-visible/dist/focus-visible";
+import FontFaceObserver from "fontfaceobserver";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Router } from "next/router";
-import React, { FC, PropsWithChildren } from "react";
+import React, { FC, PropsWithChildren, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import PageWrapper from "~/components/layout/PageWrapper";
@@ -33,6 +34,22 @@ Router.events.on("routeChangeComplete", () => {
 });
 
 function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    if (sessionStorage && sessionStorage.getItem("fontsLoaded")) {
+      document.body.className = document.body.className.replace("fonts-loading", "");
+      return;
+    }
+    const font = new FontFaceObserver("Inter");
+    if (typeof window !== "undefined") {
+      font.load().then(() => {
+        document.body.className = document.body.className.replace("fonts-loading", "");
+        if (sessionStorage) {
+          sessionStorage.setItem("fontsLoaded", "true");
+        }
+      });
+    }
+  }, []);
+
   const { title, bypassShell, requireLogin } = Component as Page;
   const Wrapper = bypassShell ? NoShell : PageWrapper;
 

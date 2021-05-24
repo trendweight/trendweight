@@ -3,9 +3,9 @@ import { Icon } from "@chakra-ui/react";
 import React from "react";
 import { ImArrowDown, ImArrowUp } from "react-icons/im";
 import { Modes } from "~/lib/computations/interfaces";
-import { shortDate } from "~/lib/core/utils/dates";
-import { formatMeasurement } from "~/lib/core/utils/numbers";
 import { useDashboardData } from "~/lib/dashboard/context";
+import { shortDate } from "~/lib/utils/dates";
+import { formatMeasurement } from "~/lib/utils/numbers";
 
 const Currently = () => {
   const {

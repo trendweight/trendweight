@@ -2,7 +2,7 @@ import { Link as ChakraLink, LinkProps } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
-import { useStartHidden } from "~/lib/core/utils/hooks";
+import { useStartHidden } from "~/lib/utils/hooks";
 
 export type NavLinkProps = LinkProps & { show?: boolean };
 

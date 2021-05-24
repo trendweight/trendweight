@@ -2,9 +2,9 @@ import { Box, Heading } from "@chakra-ui/layout";
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import _ from "lodash";
 import { Modes } from "~/lib/computations/interfaces";
-import { recentDate } from "~/lib/core/utils/dates";
-import { formatMeasurement } from "~/lib/core/utils/numbers";
 import { useDashboardData } from "~/lib/dashboard/context";
+import { recentDate } from "~/lib/utils/dates";
+import { formatMeasurement } from "~/lib/utils/numbers";
 
 const RecentReadings = () => {
   const {

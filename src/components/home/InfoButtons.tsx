@@ -1,8 +1,8 @@
 import { Stack } from "@chakra-ui/layout";
 import React, { FC } from "react";
 import { useAuth } from "~/lib/core/auth";
-import { useStartHidden } from "~/lib/core/utils/hooks";
-import { logCall } from "~/lib/core/utils/logging";
+import { useStartHidden } from "~/lib/utils/hooks";
+import { logCall } from "~/lib/utils/logging";
 import LinkButton, { LinkButtonProps } from "../shared/LinkButton";
 import { HomeWidgetProps } from "./MainContent";
 
