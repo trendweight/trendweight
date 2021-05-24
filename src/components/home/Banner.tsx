@@ -9,7 +9,7 @@ const Banner = () => {
       <LayoutContainer px={4} py={14}>
         <Stack direction="column" spacing={1}>
           <Stack direction="row" alignItems="center">
-            <Box fontFamily="Zilla Slab" pr={2} fontSize={{ base: "4xl", md: "6xl" }} fontWeight="bold" lineHeight={1}>
+            <Box fontFamily="Zilla Slab" pr={2} fontSize={{ base: "4xl", md: "6xl" }} fontWeight={700} lineHeight={1}>
               TrendWeight
             </Box>
             <Logo w={{ base: 77.13, md: 115.7 }} h={{ base: "32px", md: "48px" }} />
