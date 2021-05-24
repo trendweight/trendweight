@@ -55,4 +55,4 @@ const PlaceholderGrid: FC<PlaceholderGridProps> = ({
 
 PlaceholderGrid.displayName = "PlaceholderGrid";
 
-export default PlaceholderGrid;
+export default React.memo(PlaceholderGrid);

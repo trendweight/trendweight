@@ -2,11 +2,13 @@ import { Link as ChakraLink, LinkProps } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
+import { useStartHidden } from "~/lib/core/utils/hooks";
 
 export type NavLinkProps = LinkProps & { show?: boolean };
 
 const NavLink: FC<NavLinkProps> = ({ href, show = true, ...rest }) => {
   const { pathname } = useRouter();
+  const hideForSSR = useStartHidden();
 
   if (!show) {
     return null;
@@ -16,6 +18,7 @@ const NavLink: FC<NavLinkProps> = ({ href, show = true, ...rest }) => {
 
   const chakraLink = (
     <ChakraLink
+      visibility={hideForSSR}
       display="flex"
       bg={{ base: isActive ? "brand.900" : "inherit", md: isActive ? "brand.400" : "inherit" }}
       py={2}

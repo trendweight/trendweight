@@ -47,4 +47,4 @@ const PlaceholderParagraph: FC<PlaceholderParagraphProps> = ({
 
 PlaceholderParagraph.displayName = "PlaceholderParagraph";
 
-export default PlaceholderParagraph;
+export default React.memo(PlaceholderParagraph);
