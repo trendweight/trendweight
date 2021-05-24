@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { logCall } from "../core/utils";
+import { logCall } from "../core/utils/logging";
 import { DataPoint, Measurement, Mode } from "./interfaces";
 
 const propertyFromMode = {

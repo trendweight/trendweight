@@ -1,4 +1,3 @@
-import { Instant, nativeJs } from "@js-joda/core";
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
 import { setDefaultFetchOptions } from "~/lib/api/fetch";
 import firebase, { auth } from "~/lib/firebase";
@@ -33,9 +32,10 @@ export const useCreateAuth = () => {
       const user: User = { uid, email };
       let { token, expirationTime } = await rawUser.getIdTokenResult();
       const getToken = async () => {
-        const now = Instant.now();
-        const expiration = Instant.from(nativeJs(new Date(expirationTime)));
-        if (now.plusSeconds(300).isAfter(expiration)) {
+        const now = new Date().getTime();
+        const expiration = new Date(expirationTime).getTime();
+        // now + 300000 ms is 5 minutes from now
+        if (now + 300000 > expiration) {
           const newTokenResult = await rawUser.getIdTokenResult();
           token = newTokenResult.token;
           expirationTime = newTokenResult.expirationTime;

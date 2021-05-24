@@ -2,7 +2,6 @@ import { useQuery } from "react-query";
 import Link from "~/components/shared/Link";
 import { settingsQuery } from "~/lib/api/queries";
 import { Page } from "~/lib/core/page";
-import { toJson } from "~/lib/core/utils";
 
 const Settings: Page = () => {
   const query = useQuery(settingsQuery());
@@ -12,7 +11,7 @@ const Settings: Page = () => {
   }
 
   if (query.isError) {
-    return <div>Error: {toJson(query.error)}</div>;
+    return <div>Error: {JSON.stringify(query.error, undefined, 2)}</div>;
   }
 
   return (
@@ -22,7 +21,7 @@ const Settings: Page = () => {
       </div>
       <div>
         <code>
-          <pre>{toJson(query.data)}</pre>
+          <pre>{JSON.stringify(query.data, undefined, 2)}</pre>
         </code>
       </div>
     </>

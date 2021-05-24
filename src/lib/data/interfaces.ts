@@ -1,4 +1,4 @@
-import { LocalDate, LocalDateTime } from "@js-joda/core";
+import type { LocalDate, LocalDateTime } from "@js-joda/core";
 
 export interface RawMeasurement {
   timestamp: number;

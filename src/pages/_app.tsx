@@ -1,5 +1,4 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import "@js-joda/timezone";
 import "focus-visible/dist/focus-visible";
 import type { AppProps } from "next/app";
 import Head from "next/head";

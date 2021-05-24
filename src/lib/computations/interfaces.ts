@@ -1,4 +1,4 @@
-import { LocalDate } from "@js-joda/core";
+import type { LocalDate } from "@js-joda/core";
 
 export const Modes = {
   weight: "Weight",

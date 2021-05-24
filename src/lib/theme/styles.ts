@@ -12,7 +12,7 @@ export default {
       background: "white",
     },
     "*": {
-      "-webkit-tap-highlight-color": "transparent",
+      WebkitTapHighlightColor: "transparent",
     },
   }),
 };

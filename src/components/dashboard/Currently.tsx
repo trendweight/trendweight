@@ -3,7 +3,7 @@ import { Icon } from "@chakra-ui/react";
 import React from "react";
 import { ImArrowDown, ImArrowUp } from "react-icons/im";
 import { Modes } from "~/lib/computations/interfaces";
-import { shortDate } from "~/lib/core/utils";
+import { shortDate } from "~/lib/core/utils/dates";
 import { useDashboardData } from "~/lib/dashboard/context";
 
 const Currently = () => {

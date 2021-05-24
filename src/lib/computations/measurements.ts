@@ -1,6 +1,7 @@
 import { ChronoUnit, Instant, ZoneId } from "@js-joda/core";
 import _ from "lodash";
-import { logCall } from "../core/utils";
+import "~/lib/core/time";
+import { logCall } from "../core/utils/logging";
 import { Profile, SourceData, SourceMeasurement } from "../data/interfaces";
 import { Measurement } from "./interfaces";
 
