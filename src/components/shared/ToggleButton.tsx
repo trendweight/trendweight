@@ -30,10 +30,10 @@ export const ToggleButton = (props: ToggleButtonProps) => {
         px={{ base: 2, md: 3 }}
         fontWeight={450}
         borderWidth={1}
-        colorScheme="gray"
         borderColor="gray.300"
         _checked={{
           bg: "brand.500",
+          borderColor: "brand.500",
           color: "white",
         }}
         _hover={

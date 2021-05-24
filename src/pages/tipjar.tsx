@@ -50,7 +50,7 @@ const TipJar: Page = () => {
         <Heading fontSize="xl" fontWeight="bold">
           Tip with Ko-fi
         </Heading>
-        <Text>Ko-fi lets you support someone using a PayPal, a credit card, or Apple Pay.</Text>
+        <Text>Ko-fi lets you give a small amount to someone using a credit card, PayPal, or Apple Pay.</Text>
         <Box
           dangerouslySetInnerHTML={{
             __html: `
@@ -62,7 +62,7 @@ const TipJar: Page = () => {
         <Heading fontSize="xl" fontWeight="bold">
           Venmo / PayPal
         </Heading>
-        <Text>If you like, you can also send me a small amount directly on PayPal or Venmo:</Text>
+        <Text>If you like, you can also send small amounts directly via PayPal or Venmo:</Text>
         <UnorderedList pl={4}>
           <ListItem>
             Venmo: <Link href="https://venmo.com/code?user_id=2181966380138496050">ErvWalter</Link>
