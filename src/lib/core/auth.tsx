@@ -1,4 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
+import createPersistedState from "use-persisted-state";
 import { setDefaultFetchOptions } from "~/lib/api/fetch";
 import firebase, { getAuth } from "~/lib/firebase";
 
@@ -22,7 +23,10 @@ export const useAuth = () => {
   return auth;
 };
 
+const useProbableLoginState = createPersistedState("isLoggedIn");
+
 export const useCreateAuth = () => {
+  const [isProbablyLoggedIn, setIsProbablyLoggedIn] = useProbableLoginState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
 
@@ -44,10 +48,12 @@ export const useCreateAuth = () => {
       };
       setDefaultFetchOptions({ getToken }, true);
       setUser(user);
+      setIsProbablyLoggedIn(true);
       return user;
     } else {
       setDefaultFetchOptions({ getToken: async () => null });
       setUser(null);
+      setIsProbablyLoggedIn(false);
       return null;
     }
   };
@@ -87,6 +93,7 @@ export const useCreateAuth = () => {
   }, []);
 
   return {
+    isProbablyLoggedIn,
     isInitializing,
     user,
     signInWithPassword,

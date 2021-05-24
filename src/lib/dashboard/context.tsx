@@ -2,6 +2,7 @@
 
 import { createContext, FC, PropsWithChildren, useContext, useMemo, useState } from "react";
 import { useQuery } from "react-query";
+import createPersistedState from "use-persisted-state";
 import { profileQuery, sourceDataQuery } from "../api/queries";
 import { computeDataPoints } from "../computations/data-points";
 import { DataPoint, Mode, TimeRange } from "../computations/interfaces";
@@ -21,6 +22,8 @@ export const DashboardProvider: FC<PropsWithChildren<{ data: DashboardData }>> =
   <dashboardContext.Provider value={data}>{children}</dashboardContext.Provider>
 );
 
+const useTimeRangeState = createPersistedState("timeRange");
+
 export const useDashboardData = (): DashboardData => {
   const data = useContext(dashboardContext);
   if (!data) {
@@ -31,7 +34,7 @@ export const useDashboardData = (): DashboardData => {
 
 export const useComputeDashboardData = (user?: string) => {
   const [mode, setMode] = useState<Mode>("weight");
-  const [timeRange, setTimeRange] = useState<TimeRange>("4w");
+  const [timeRange, setTimeRange] = useTimeRangeState<TimeRange>("4w");
 
   const profile = useQuery(profileQuery(user)).data!;
   const sourceData = useQuery(sourceDataQuery(user)).data!;

@@ -13,8 +13,7 @@ const Header = () => {
     auth.signOut();
   }, [auth]);
 
-  const authLoaded = !auth.isInitializing;
-  const isLoggedIn = !!auth?.user;
+  const isProbablyLoggedIn = auth.isProbablyLoggedIn;
 
   return (
     <Box as="header" color="white" bg="brand.500">
@@ -31,27 +30,23 @@ const Header = () => {
             <Logo height="32px" width="77.13px" />
           </Navbar.Brand>
           <Navbar.Links>
-            {authLoaded && (
-              <>
-                <NavLink href="/">Home</NavLink>
-                <NavLink href="/dashboard" show={isLoggedIn}>
-                  Dashboard
-                </NavLink>
-                <NavLink href="/settings" show={isLoggedIn}>
-                  Settings
-                </NavLink>
-                <NavLink href="/about">Learn</NavLink>
-                <NavLink href="/signup" show={!isLoggedIn}>
-                  Sign Up
-                </NavLink>
-                <NavLink href="/login" show={!isLoggedIn}>
-                  Log In
-                </NavLink>
-                <NavLink onClick={handleSignOut} show={isLoggedIn}>
-                  Log Out
-                </NavLink>
-              </>
-            )}
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="/dashboard" show={isProbablyLoggedIn}>
+              Dashboard
+            </NavLink>
+            <NavLink href="/settings" show={isProbablyLoggedIn}>
+              Settings
+            </NavLink>
+            <NavLink href="/about">Learn</NavLink>
+            <NavLink href="/signup" show={!isProbablyLoggedIn}>
+              Sign Up
+            </NavLink>
+            <NavLink href="/login" show={!isProbablyLoggedIn}>
+              Log In
+            </NavLink>
+            <NavLink onClick={handleSignOut} show={isProbablyLoggedIn}>
+              Log Out
+            </NavLink>
           </Navbar.Links>
         </Navbar>
       </LayoutContainer>

@@ -4,6 +4,7 @@ import React from "react";
 import { ImArrowDown, ImArrowUp } from "react-icons/im";
 import { Modes } from "~/lib/computations/interfaces";
 import { shortDate } from "~/lib/core/utils/dates";
+import { formatMeasurement } from "~/lib/core/utils/numbers";
 import { useDashboardData } from "~/lib/dashboard/context";
 
 const Currently = () => {
@@ -12,20 +13,10 @@ const Currently = () => {
     mode: [mode],
     profile: { useMetric },
   } = useDashboardData();
+
   if (dataPoints.length === 0) {
     return null;
   }
-  const valueFormat = Intl.NumberFormat([], {
-    maximumFractionDigits: 1,
-    style: mode === "fatpercent" ? "percent" : "unit",
-    unit: mode === "fatpercent" ? undefined : useMetric ? "kilogram" : "pound",
-  });
-  const differenceFormat = Intl.NumberFormat([], {
-    maximumFractionDigits: 1,
-    style: mode === "fatpercent" ? "percent" : "unit",
-    unit: mode === "fatpercent" ? undefined : useMetric ? "kilogram" : "pound",
-    signDisplay: "always",
-  });
 
   const first = dataPoints[0];
   const last = dataPoints[dataPoints.length - 1];
@@ -37,10 +28,10 @@ const Currently = () => {
         Current {Modes[mode]}
       </Box>
       <Box fontSize={{ base: "4xl", md: "5xl" }} fontWeight="medium">
-        {valueFormat.format(last.trend)}
+        {formatMeasurement(last.trend, { type: mode, metric: useMetric })}
       </Box>
       <Stack direction="row" align="center" fontSize="2xl">
-        <Box>{differenceFormat.format(difference)}</Box>
+        <Box>{formatMeasurement(difference, { type: mode, metric: useMetric, sign: true })}</Box>
         <Box>{difference < 0 ? <Icon as={ImArrowDown} /> : <Icon as={ImArrowUp} />}</Box>
       </Stack>
       <Box color="gray.600" fontWeight={300} fontStyle="italic" fontSize="sm" pt={2}>

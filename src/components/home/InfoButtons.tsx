@@ -16,14 +16,18 @@ const HomeLinkButton: FC<LinkButtonProps> = ({ ...props }) => (
 );
 
 const InfoButtons: FC<HomeWidgetProps> = ({ area }) => {
-  const { isInitializing, user } = useAuth();
+  const { isProbablyLoggedIn } = useAuth();
 
   return (
     <Stack gridArea={area} direction={{ base: "column", md: "row" }} spacing={4} align="center" width="full">
-      <HomeLinkButton href="/about" colorScheme="green" visibility={isInitializing ? "hidden" : "visible"}>
+      <HomeLinkButton href="/about" colorScheme="green">
         Learn More
       </HomeLinkButton>
-      {!isInitializing && !user ? (
+      {isProbablyLoggedIn ? (
+        <HomeLinkButton href="/dashboard" colorScheme="brand">
+          Go To Dashboard
+        </HomeLinkButton>
+      ) : (
         <>
           <HomeLinkButton href="/signup" colorScheme="brand">
             Create an Account
@@ -32,12 +36,6 @@ const InfoButtons: FC<HomeWidgetProps> = ({ area }) => {
             Log In
           </HomeLinkButton>
         </>
-      ) : (
-        !isInitializing && (
-          <HomeLinkButton href="/dashboard" colorScheme="brand">
-            Go To Dashboard
-          </HomeLinkButton>
-        )
       )}
     </Stack>
   );

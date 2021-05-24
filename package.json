@@ -43,7 +43,8 @@
     "react-icons": "4.2.0",
     "react-query": "3.16.0",
     "sass": "1.34.0",
-    "typescript": "4.2.4"
+    "typescript": "4.2.4",
+    "use-persisted-state": "0.3.3"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "10.2.2",
@@ -54,6 +55,7 @@
     "@types/nprogress": "0.2.0",
     "@types/qs": "6.9.6",
     "@types/react": "17.0.6",
+    "@types/use-persisted-state": "0.3.0",
     "@typescript-eslint/eslint-plugin": "4.24.0",
     "@typescript-eslint/parser": "4.24.0",
     "cross-env": "7.0.3",
