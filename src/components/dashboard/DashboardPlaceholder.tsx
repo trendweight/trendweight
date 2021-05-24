@@ -2,12 +2,11 @@ import { Box } from "@chakra-ui/layout";
 import { Stack } from "@chakra-ui/react";
 import { Spinner } from "@chakra-ui/spinner";
 import React from "react";
-import Placeholder from "rsuite/lib/Placeholder";
+import PlaceholderGraph from "../shared/placeholder/PlaceholderGraph";
+import PlaceholderGrid from "../shared/placeholder/PlaceholderGrid";
+import PlaceholderParagraph from "../shared/placeholder/PlaceholderParagraph";
 
 const DashboardPlaceholder = () => {
-  const ParagraphPlaceholder = Placeholder.Paragraph;
-  const GraphPlaceholder = Placeholder.Graph;
-  const GridPlaceholder = Placeholder.Grid;
   return (
     <>
       <Stack direction="column" spacing={4}>
@@ -17,15 +16,15 @@ const DashboardPlaceholder = () => {
         </Stack>
         <Stack direction="row" spacing={4}>
           <Box h="240px" w="650px">
-            <GraphPlaceholder />
+            <PlaceholderGraph active />
           </Box>
         </Stack>
         <Stack direction="row" spacing={12}>
           <Box w="25%">
-            <GridPlaceholder columns={3} rows={14} />
+            <PlaceholderGrid columns={3} rows={14} active />
           </Box>
           <Box w="33%">
-            <ParagraphPlaceholder rows={8} />
+            <PlaceholderParagraph rows={8} active />
           </Box>
         </Stack>
       </Stack>

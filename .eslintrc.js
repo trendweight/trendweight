@@ -31,6 +31,8 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
+    "@next/next/google-font-display": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
   },

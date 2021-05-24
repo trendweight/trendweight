@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/missing-preload */
 import BaseDocument, { Head, Html, Main, NextScript } from "next/document";
 
 class Document extends BaseDocument {
