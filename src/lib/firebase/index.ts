@@ -1,5 +1,4 @@
 import firebase from "firebase/app";
-import "firebase/auth";
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,6 +13,12 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-export const auth = firebase.auth();
+export const getAuth = async () => {
+  if (!firebase.auth) {
+    await import("firebase/auth");
+  }
+
+  return firebase.auth();
+};
 
 export default firebase;

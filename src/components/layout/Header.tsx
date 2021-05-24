@@ -31,23 +31,27 @@ const Header = () => {
             <Logo height="32px" width="77.13px" />
           </Navbar.Brand>
           <Navbar.Links>
-            <NavLink href="/">Home</NavLink>
-            <NavLink href="/dashboard" show={authLoaded && isLoggedIn}>
-              Dashboard
-            </NavLink>
-            <NavLink href="/settings" show={authLoaded && isLoggedIn}>
-              Settings
-            </NavLink>
-            <NavLink href="/about">Learn</NavLink>
-            <NavLink href="/signup" show={authLoaded && !isLoggedIn}>
-              Sign Up
-            </NavLink>
-            <NavLink href="/login" show={authLoaded && !isLoggedIn}>
-              Log In
-            </NavLink>
-            <NavLink onClick={handleSignOut} show={authLoaded && isLoggedIn}>
-              Log Out
-            </NavLink>
+            {authLoaded && (
+              <>
+                <NavLink href="/">Home</NavLink>
+                <NavLink href="/dashboard" show={isLoggedIn}>
+                  Dashboard
+                </NavLink>
+                <NavLink href="/settings" show={isLoggedIn}>
+                  Settings
+                </NavLink>
+                <NavLink href="/about">Learn</NavLink>
+                <NavLink href="/signup" show={!isLoggedIn}>
+                  Sign Up
+                </NavLink>
+                <NavLink href="/login" show={!isLoggedIn}>
+                  Log In
+                </NavLink>
+                <NavLink onClick={handleSignOut} show={isLoggedIn}>
+                  Log Out
+                </NavLink>
+              </>
+            )}
           </Navbar.Links>
         </Navbar>
       </LayoutContainer>

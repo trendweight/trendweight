@@ -20,7 +20,7 @@ const InfoButtons: FC<HomeWidgetProps> = ({ area }) => {
 
   return (
     <Stack gridArea={area} direction={{ base: "column", md: "row" }} spacing={4} align="center" width="full">
-      <HomeLinkButton href="/about" colorScheme="green">
+      <HomeLinkButton href="/about" colorScheme="green" visibility={isInitializing ? "hidden" : "visible"}>
         Learn More
       </HomeLinkButton>
       {!isInitializing && !user ? (
