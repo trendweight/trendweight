@@ -7,7 +7,7 @@ class Document extends BaseDocument {
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&display=fallback"
             rel="stylesheet"
           />
           <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&display=block" rel="stylesheet" />
@@ -18,17 +18,8 @@ class Document extends BaseDocument {
               __html: `if (/MSIE|Trident/.test(window.navigator.userAgent)) window.location.href = '/unsupported.html';`,
             }}
           ></script>
-          <style>
-            {`
-            .fonts-loading {
-              font-family: Arial !important;
-              letter-spacing: 0.40px;
-              word-spacing: 0.2px;              
-            }
-            `}
-          </style>
         </Head>
-        <body className="fonts-loading">
+        <body>
           <Main />
           <NextScript />
         </body>
