@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@chakra-ui/react": "1.6.2",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
+    "@emotion/react": "11.4.0",
+    "@emotion/styled": "11.3.0",
     "@js-joda/core": "3.2.0",
     "@js-joda/timezone": "2.5.0",
     "@vvo/tzdb": "6.7.0",
