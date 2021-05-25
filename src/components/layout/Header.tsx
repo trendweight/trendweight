@@ -13,7 +13,7 @@ const Header = () => {
     auth.signOut();
   }, [auth]);
 
-  const isProbablyLoggedIn = auth.isProbablyLoggedIn;
+  const isLoggedIn = auth.isLoggedIn;
 
   return (
     <Box as="header" color="white" bg="brand.500">
@@ -31,20 +31,20 @@ const Header = () => {
           </Navbar.Brand>
           <Navbar.Links>
             <NavLink href="/">Home</NavLink>
-            <NavLink href="/dashboard" show={isProbablyLoggedIn}>
+            <NavLink href="/dashboard" show={isLoggedIn}>
               Dashboard
             </NavLink>
-            <NavLink href="/settings" show={isProbablyLoggedIn}>
+            <NavLink href="/settings" show={isLoggedIn}>
               Settings
             </NavLink>
             <NavLink href="/about">Learn</NavLink>
-            <NavLink href="/signup" show={!isProbablyLoggedIn}>
+            <NavLink href="/signup" show={!isLoggedIn}>
               Sign Up
             </NavLink>
-            <NavLink href="/login" show={!isProbablyLoggedIn}>
+            <NavLink href="/login" show={!isLoggedIn}>
               Log In
             </NavLink>
-            <NavLink onClick={handleSignOut} show={isProbablyLoggedIn}>
+            <NavLink onClick={handleSignOut} show={isLoggedIn}>
               Log Out
             </NavLink>
           </Navbar.Links>

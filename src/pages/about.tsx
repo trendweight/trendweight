@@ -83,7 +83,7 @@ const About: Page = () => {
                   <Icon h={6} w={6} as={HiOutlineLightBulb} />
                 </Box>
               </Box>
-              <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight">
+              <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight" pb={0}>
                 Questions?
               </Heading>
               <Text mt={5} color="gray.500" fontSize="md">
@@ -108,19 +108,17 @@ const About: Page = () => {
                   <Icon h={6} w={6} as={HiOutlineShoppingCart} />
                 </Box>
               </Box>
-              <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight">
+              <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight" pb={0}>
                 Get a Scale
               </Heading>
-              <Text mt={5} color="gray.500" fontSize="md">
-                <UnorderedList pl={4}>
-                  <ListItem>
-                    <Link href="https://amzn.to/2Rh8yH1">Withings Scales</Link>
-                  </ListItem>
-                  <ListItem>
-                    <Link href="https://amzn.to/3uEWUnS">Fitbit Scales</Link>
-                  </ListItem>
-                </UnorderedList>
-              </Text>
+              <UnorderedList pl={4} mt={5} color="gray.500" fontSize="md">
+                <ListItem>
+                  <Link href="https://amzn.to/2Rh8yH1">Withings Scales</Link>
+                </ListItem>
+                <ListItem>
+                  <Link href="https://amzn.to/3uEWUnS">Fitbit Scales</Link>
+                </ListItem>
+              </UnorderedList>
             </Box>
           </Box>
           <Box bg="brand.50" border="1px" borderColor="brand.100" mt={6} pb={8} px={6} rounded="lg" display="flow-root">
@@ -139,22 +137,20 @@ const About: Page = () => {
                   <Icon h={6} w={6} as={HiOutlineRss} />
                 </Box>
               </Box>
-              <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight">
+              <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight" pb={0}>
                 Stay Updated
               </Heading>
-              <Text mt={5} color="gray.500" fontSize="md">
-                <UnorderedList pl={4}>
-                  <ListItem>
-                    <Link href="https://twitter.com/trendweight">Twitter</Link>
-                  </ListItem>
-                  <ListItem>
-                    <Link href="https://github.com/trendweight/trendweight/releases">Release Notes</Link>
-                  </ListItem>
-                  <ListItem>
-                    <Link href="https://blog.trendweight.com">Blog</Link>
-                  </ListItem>
-                </UnorderedList>
-              </Text>
+              <UnorderedList pl={4} mt={5} color="gray.500" fontSize="md">
+                <ListItem>
+                  <Link href="https://twitter.com/trendweight">Twitter</Link>
+                </ListItem>
+                <ListItem>
+                  <Link href="https://github.com/trendweight/trendweight/releases">Release Notes</Link>
+                </ListItem>
+                <ListItem>
+                  <Link href="https://blog.trendweight.com">Blog</Link>
+                </ListItem>
+              </UnorderedList>
             </Box>
           </Box>
           <Box bg="brand.50" border="1px" borderColor="brand.100" mt={6} pb={8} px={6} rounded="lg" display="flow-root">
@@ -173,7 +169,7 @@ const About: Page = () => {
                   <Icon h={6} w={6} as={HiOutlineHeart} />
                 </Box>
               </Box>
-              <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight">
+              <Heading as="h3" mt={6} color="gray.900" fontSize="lg" fontWeight="medium" letterSpacing="tight" pb={0}>
                 Support TrendWeight
               </Heading>
               <Text mt={5} color="gray.500" fontSize="md">

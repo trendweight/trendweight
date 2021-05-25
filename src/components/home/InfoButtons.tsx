@@ -1,8 +1,6 @@
 import { Stack } from "@chakra-ui/layout";
 import React, { FC } from "react";
 import { useAuth } from "~/lib/core/auth";
-import { useStartHidden } from "~/lib/utils/hooks";
-import { logCall } from "~/lib/utils/logging";
 import LinkButton, { LinkButtonProps } from "../shared/LinkButton";
 import { HomeWidgetProps } from "./MainContent";
 
@@ -18,25 +16,24 @@ const HomeLinkButton: FC<LinkButtonProps> = ({ ...props }) => (
 );
 
 const InfoButtons: FC<HomeWidgetProps> = ({ area }) => {
-  const { isProbablyLoggedIn } = useAuth();
-  const hideForSSR = useStartHidden();
-  logCall("InfoButtons");
+  const { isInitializing, isLoggedIn } = useAuth();
+  const visibility = isInitializing ? "hidden" : "visible";
 
   return (
     <Stack gridArea={area} direction={{ base: "column", md: "row" }} spacing={4} align="center" width="full">
-      <HomeLinkButton href="/about" colorScheme="green">
+      <HomeLinkButton href="/about" colorScheme="green" key="learn">
         Learn More
       </HomeLinkButton>
-      {isProbablyLoggedIn ? (
-        <HomeLinkButton href="/dashboard" colorScheme="brand" visibility={hideForSSR}>
+      {isLoggedIn ? (
+        <HomeLinkButton href="/dashboard" colorScheme="brand" visibility={visibility} key="dashboard">
           Go To Dashboard
         </HomeLinkButton>
       ) : (
         <>
-          <HomeLinkButton href="/signup" colorScheme="brand" visibility={hideForSSR}>
+          <HomeLinkButton href="/signup" colorScheme="brand" visibility={visibility} key="create">
             Create an Account
           </HomeLinkButton>
-          <HomeLinkButton href="/login" colorScheme="brand" visibility={hideForSSR}>
+          <HomeLinkButton href="/login" colorScheme="brand" visibility={visibility} key="login">
             Log In
           </HomeLinkButton>
         </>
