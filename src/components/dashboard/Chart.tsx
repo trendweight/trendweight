@@ -1,7 +1,14 @@
-import { Box } from "@chakra-ui/layout";
+import HighchartsReact from "highcharts-react-official";
+import Highstock from "highcharts/highstock";
+import { useDashboardData } from "~/lib/dashboard/context";
+import { useChartOptions } from "~/lib/dashboard/use-chart-options";
+import { logRender } from "~/lib/utils/logging";
 
 const Chart = () => {
-  return <Box h="100%" w="100%" bg="gray.100"></Box>;
+  logRender("Chart");
+  const data = useDashboardData();
+  const options = useChartOptions(data);
+  return <HighchartsReact highcharts={Highstock} options={options} constructorType="stockChart" />;
 };
 
 export default Chart;

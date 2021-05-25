@@ -35,7 +35,7 @@ const Currently = () => {
   }
 
   return (
-    <Stack direction="column" spacing={0}>
+    <Stack direction="column" spacing={0} pb={{ md: 12 }}>
       <Box fontWeight={300} fontSize="lg">
         Current {Modes[mode]}
       </Box>

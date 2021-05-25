@@ -21,10 +21,7 @@ const Dashboard: FC<{ user?: string }> = ({ user }) => {
       <Stack direction="column" spacing={4}>
         <Buttons />
         <Stack direction={{ base: "column", md: "row" }} align={{ md: "center" }} spacing={{ base: 4, md: 12 }}>
-          <Box
-            h={{ base: "240px", md: "280px", lg: "325px", xl: "420px" }}
-            w={{ base: "full", md: "475px", lg: "650px", xl: "840px" }}
-          >
+          <Box w={{ base: "full", md: "475px", lg: "650px", xl: "840px" }}>
             <Chart />
           </Box>
           <Currently />

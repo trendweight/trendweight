@@ -17,8 +17,7 @@ export const computeDeltas = (mode: Mode, dataPoints?: DataPoint[]) => {
     return deltas;
   }
 
-  // const today = LocalDate.now();
-  const today = points[0].date;
+  const today = LocalDate.now();
 
   const daysSinceMostRecent = points[0].date.until(today, ChronoUnit.DAYS);
   if (daysSinceMostRecent > 2 || points.length <= 1) {
