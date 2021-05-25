@@ -1,5 +1,6 @@
-import { extendTheme } from "@chakra-ui/react";
+import { ChakraTheme, extendTheme } from "@chakra-ui/react";
 import Button from "./components/button";
+import Heading from "./components/heading";
 import Input from "./components/input";
 import Link from "./components/link";
 import breakpoints from "./foundations/breakpoints";
@@ -7,7 +8,7 @@ import colors from "./foundations/colors";
 import typography from "./foundations/typography";
 import styles from "./styles";
 
-const overrides = {
+const overrides: Partial<ChakraTheme> = {
   breakpoints,
   ...typography,
   colors,
@@ -16,6 +17,7 @@ const overrides = {
     Button,
     Link,
     Input,
+    Heading,
   },
 };
 

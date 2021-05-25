@@ -3,17 +3,21 @@
 import { createContext, FC, PropsWithChildren, useContext, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import createPersistedState from "use-persisted-state";
+import { DataPoint, Delta, Measurement, Mode, Profile, TimeRange } from "~/lib/interfaces";
 import { profileQuery, sourceDataQuery } from "../api/queries";
 import { computeDataPoints } from "../computations/data-points";
-import { DataPoint, Mode, TimeRange } from "../computations/interfaces";
 import { computeMeasurements } from "../computations/measurements";
-import { Profile } from "../data/interfaces";
+import { computeActiveSlope, computeDeltas, computeWeightSlope } from "../computations/stats";
 
 export interface DashboardData {
   dataPoints: DataPoint[];
+  measurements: Measurement[];
   mode: [Mode, (mode: Mode) => void];
   timeRange: [TimeRange, (timeRange: TimeRange) => void];
   profile: Profile;
+  weightSlope: number;
+  activeSlope: number;
+  deltas: Delta[];
 }
 
 const dashboardContext = createContext<DashboardData | undefined>(undefined);
@@ -41,6 +45,9 @@ export const useComputeDashboardData = (user?: string) => {
 
   const measurements = useMemo(() => computeMeasurements(sourceData, profile), [sourceData, profile]);
   const dataPoints = useMemo(() => computeDataPoints(mode, measurements), [measurements, mode]);
+  const weightSlope = useMemo(() => computeWeightSlope(measurements), [measurements]);
+  const activeSlope = useMemo(() => computeActiveSlope(mode, dataPoints), [mode, dataPoints]);
+  const deltas = useMemo(() => computeDeltas(mode, dataPoints), [mode, dataPoints]);
 
   if (!measurements || !dataPoints) {
     return undefined;
@@ -48,9 +55,13 @@ export const useComputeDashboardData = (user?: string) => {
 
   const data: DashboardData = {
     dataPoints,
+    measurements,
     profile,
     mode: [mode, setMode],
     timeRange: [timeRange, setTimeRange],
+    weightSlope,
+    activeSlope,
+    deltas,
   };
 
   return data;

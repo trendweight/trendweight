@@ -25,7 +25,7 @@ const FAQ: Page = () => {
             <Heading color="gray.900" fontSize="2xl" fontWeight="extrabold">
               Frequently asked questions
             </Heading>
-            <Text fontSize="md" mt={4} color="gray.500">
+            <Text fontSize="md" color="gray.500">
               Can’t find the answer you’re looking for? Email me at <Link href="mailto:erv@ewal.net">erv@ewal.net</Link>
               .
             </Text>

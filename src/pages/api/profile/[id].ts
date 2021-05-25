@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "~/lib/api/exceptions";
 import { withMiddleware } from "~/lib/api/middleware";
-import { Profile } from "~/lib/data/interfaces";
+import { Profile } from "~/lib/interfaces";
 
 const settings = async (req: NextApiRequest, res: NextApiResponse) => {
   const id = req.query.id;
@@ -16,6 +16,9 @@ const settings = async (req: NextApiRequest, res: NextApiResponse) => {
     timezone: "America/Chicago",
     useMetric: false,
     dayStartOffset: 3,
+    goalWeight: 100,
+    plannedPoundsPerWeek: 0,
+    showCalories: true,
   };
 
   res.status(200).json(sampleProfile);

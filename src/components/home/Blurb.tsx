@@ -5,9 +5,7 @@ import { HomeWidgetProps } from "./MainContent";
 const Blurb: FC<HomeWidgetProps> = ({ area }) => (
   <Flex gridArea={area} direction="column" alignItems="center" justifyContent="center" pr={{ md: 6 }}>
     <Box>
-      <Heading fontSize="2xl" fontWeight="bold" pb={4}>
-        Am I losing weight?
-      </Heading>
+      <Heading fontSize="2xl">Am I losing weight?</Heading>
       <Box pb={4}>TrendWeight can help answer that question by analyzing your day to day weight changes</Box>
       <Box pb={4}>
         <b>Step 1</b>: Weigh yourself every day.

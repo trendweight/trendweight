@@ -1,6 +1,6 @@
 import { Instant } from "@js-joda/core";
 import equal from "fast-deep-equal";
-import { RawMeasurement, SourceData, VendorLink } from "../data/interfaces";
+import { RawMeasurement, SourceData, VendorLink } from "~/lib/interfaces";
 import { getLinks, updateLinkToken } from "../data/links";
 import { getSourceData, updateSourceData } from "../data/source-data";
 import { expiresSoon } from "./access-token";

@@ -1,5 +1,5 @@
+import { RawMeasurement, SourceData, Sources } from "~/lib/interfaces";
 import { db } from "../firebase/admin";
-import { RawMeasurement, SourceData, Sources } from "./interfaces";
 
 interface Metadata {
   uid: string;

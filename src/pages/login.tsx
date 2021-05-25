@@ -55,7 +55,7 @@ const Login: Page = () => {
             spacing={[6, 6]}
             w="100%"
           >
-            <Heading size="md" color="brand.500">
+            <Heading color="brand.500" pb={0}>
               Sign In
             </Heading>
             <FormControl id="email" isInvalid={errors.email}>

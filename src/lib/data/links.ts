@@ -1,6 +1,6 @@
 import { Instant } from "@js-joda/core";
+import { AccessToken, Links } from "~/lib/interfaces";
 import { db } from "../firebase/admin";
-import { AccessToken, Links } from "./interfaces";
 
 export const updateLinkToken = async (uid: string, reason: string, token: AccessToken) => {
   await db

@@ -15,15 +15,18 @@ const DashboardPlaceholder = () => {
           <Box>Getting updated weight data...</Box>
         </Stack>
         <Stack direction="row" spacing={4}>
-          <Box h="240px" w="650px">
-            <PlaceholderGraph active />
+          <Box
+            h={{ base: "240px", md: "280px", lg: "325px", xl: "420px" }}
+            w={{ base: "full", md: "475px", lg: "650px", xl: "840px" }}
+          >
+            <PlaceholderGraph />
           </Box>
         </Stack>
-        <Stack direction="row" spacing={12}>
-          <Box w="25%">
+        <Stack direction={{ base: "column-reverse", md: "row" }} spacing={{ base: 4, md: 12, lg: 20 }}>
+          <Box w={{ base: "full", md: "280px" }}>
             <PlaceholderGrid columns={3} rows={14} active />
           </Box>
-          <Box w="33%">
+          <Box w={{ base: "full", md: "33%" }}>
             <PlaceholderParagraph rows={8} active />
           </Box>
         </Stack>

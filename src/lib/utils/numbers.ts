@@ -1,4 +1,4 @@
-import { Mode } from "~/lib/computations/interfaces";
+import { Mode } from "~/lib/interfaces";
 
 const numberFormatter = Intl.NumberFormat([], {
   maximumFractionDigits: 1,

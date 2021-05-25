@@ -1,6 +1,5 @@
 import { UseQueryOptions } from "react-query";
-import { Profile, SourceData } from "../data/interfaces";
-import { SettingsData } from "../settings";
+import { Profile, SettingsData, SourceData } from "~/lib/interfaces";
 import { ApiError } from "./exceptions";
 import { get } from "./fetch";
 

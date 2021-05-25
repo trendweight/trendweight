@@ -23,9 +23,7 @@ const About: Page = () => {
           <Image src="/assets/screenshot-large.png" height={357} width={375} layout="intrinsic" />
         </Link>
       </Box>
-      <Heading fontSize="xl" pb={4}>
-        What is TrendWeight, Exactly?
-      </Heading>
+      <Heading>What is TrendWeight, Exactly?</Heading>
       <Text pb={4}>
         TrendWeight is a free weight tracking web app that filters out the noise and focuses on longer term trends in
         weight change.

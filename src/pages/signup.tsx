@@ -32,7 +32,7 @@ const Register: Page = () => {
           rounded={{ md: "lg" }}
           shadow={{ md: "md" }}
         >
-          <Heading color="brand.600" fontSize="xl" fontWeight="bold">
+          <Heading color="brand.600" pb={0}>
             Create an Account
           </Heading>
           <Box>

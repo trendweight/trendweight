@@ -17,7 +17,7 @@
       height: 60px;
       border-radius: 2px;
       margin-right: 20px;
-      background-color: var(--chakra-colors-gray-200);
+      background-color: var(--chakra-colors-gray-100);
 
       &-circle {
         border-radius: 50%;
@@ -69,7 +69,7 @@
       width: 100%;
 
       & > p {
-        background-color: var(--chakra-colors-gray-200);
+        background-color: var(--chakra-colors-gray-100);
       }
     }
   }
@@ -82,7 +82,7 @@
       align-items: flex-end;
 
       & > p {
-        background-color: var(--chakra-colors-gray-200);
+        background-color: var(--chakra-colors-gray-100);
       }
 
       &:first-child {
@@ -94,7 +94,8 @@
   &-graph {
     display: inline-block;
     width: 100%;
-    background-color: var(--chakra-colors-gray-200);
+    height: 100% !important;
+    background-color: var(--chakra-colors-gray-100);
   }
 
   &-active {
@@ -104,9 +105,9 @@
     .placeholder-paragraph-rows > p {
       background: linear-gradient(
         -45deg,
-        var(--chakra-colors-gray-200) 25%,
-        var(--chakra-colors-gray-100) 37%,
-        var(--chakra-colors-gray-200) 63%
+        var(--chakra-colors-gray-100) 25%,
+        var(--chakra-colors-gray-50) 37%,
+        var(--chakra-colors-gray-100) 63%
       );
       background-size: 400% 100% !important;
       animation: placeholder-active 3s ease infinite;

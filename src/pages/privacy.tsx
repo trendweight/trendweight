@@ -7,9 +7,9 @@ import { Page } from "~/lib/core/page";
 const Privacy: Page = () => {
   return (
     <Box mt={4} maxW="4xl">
-      <Heading fontSize="xl">Our Privacy Policy</Heading>
+      <Heading>Our Privacy Policy</Heading>
       <Image src="/assets/security.svg" float="right" ml={4} my={4} h={{ base: 28, md: 48 }} />
-      <Text mt={4}>
+      <Text>
         Your privacy is important. It is TrendWeight's policy to respect your privacy regarding any information we may
         collect from you across our web app, <Link href="https://trendweight.io">https://trendweight.io</Link>, and
         other sites we operate.

@@ -7,9 +7,7 @@ const TipJar: Page = () => {
   return (
     <>
       <Box sx={{ "> * + *": { my: 4 } }}>
-        <Heading fontSize="xl" fontWeight="bold">
-          Want to help support TrendWeight?
-        </Heading>
+        <Heading pb={0}>Want to help support TrendWeight?</Heading>
         <Text>
           TrendWeight is a free app. I created it in my free time because I like tech gadgets and I wanted a better way
           to apply the concepts of the Hacker's Diet to my own day-to-day life. I didn't create it in order to make
@@ -47,9 +45,7 @@ const TipJar: Page = () => {
           really want to help, there are a few ways I can suggest...
         </Text>
         <Divider />
-        <Heading fontSize="xl" fontWeight="bold">
-          Tip with Ko-fi
-        </Heading>
+        <Heading pb={0}>Tip with Ko-fi</Heading>
         <Text>Ko-fi lets you give a small amount to someone using a credit card, PayPal, or Apple Pay.</Text>
         <Box
           dangerouslySetInnerHTML={{
@@ -59,9 +55,7 @@ const TipJar: Page = () => {
           }}
         />
         <Divider />
-        <Heading fontSize="xl" fontWeight="bold">
-          Venmo / PayPal
-        </Heading>
+        <Heading pb={0}>Venmo / PayPal</Heading>
         <Text>If you like, you can also send small amounts directly via PayPal or Venmo:</Text>
         <UnorderedList pl={4}>
           <ListItem>

@@ -2,7 +2,7 @@ import axios from "axios";
 import { NextApiRequest } from "next";
 import qs from "qs";
 import { ApiError } from "~/lib/api/exceptions";
-import { AccessToken, RawMeasurement } from "../data/interfaces";
+import { AccessToken, RawMeasurement } from "~/lib/interfaces";
 import { fromTokenValues } from "./access-token";
 import { VendorService } from "./interfaces";
 

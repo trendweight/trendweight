@@ -10,7 +10,7 @@ const Buttons = () => {
   } = useDashboardData();
 
   return (
-    <Stack direction={{ base: "column", md: "row" }} spacing={4}>
+    <Stack direction={{ base: "column-reverse", md: "row" }} spacing={4}>
       <ToggleButtonGroup value={timeRange} onChange={setTimeRange} defaultValue="4w" aria-label="Time Range">
         <ToggleButton value="4w">4 weeks</ToggleButton>
         <ToggleButton value="3m">3 months</ToggleButton>

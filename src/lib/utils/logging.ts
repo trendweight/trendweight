@@ -7,3 +7,7 @@ export const log = (message?: unknown, ...optionalParams: unknown[]) => {
 export const logCall = (methodName: string, ...optionalParams: unknown[]) => {
   log(`[${methodName}]`, ...optionalParams);
 };
+
+export const logRender = (componentName: string, ...optionalParams: unknown[]) => {
+  log(`<${componentName}>`, ...optionalParams);
+};

@@ -1,4 +1,4 @@
-import { AccessToken, RawMeasurement } from "../data/interfaces";
+import { AccessToken, RawMeasurement } from "~/lib/interfaces";
 
 export interface OAuthState {
   uid: string;

@@ -1,5 +1,5 @@
 import { Instant } from "@js-joda/core";
-import { AccessToken } from "../data/interfaces";
+import { AccessToken } from "~/lib/interfaces";
 
 export const fromTokenValues = (values: AccessToken & { expires_in?: number }) => {
   const { expires_in, ...tokenValues } = values;

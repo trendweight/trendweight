@@ -1,6 +1,6 @@
 import _ from "lodash";
+import { DataPoint, Measurement, Mode } from "~/lib/interfaces";
 import { logCall } from "../utils/logging";
-import { DataPoint, Measurement, Mode } from "./interfaces";
 
 const propertyFromMode = {
   weight: "Weight",
@@ -10,7 +10,7 @@ const propertyFromMode = {
 };
 
 export const computeDataPoints = (mode: Mode, measurements?: Measurement[]) => {
-  logCall("computeDataPoints", `measurements.length: ${measurements?.length}, ${mode}`);
+  logCall("computeDataPoints", mode);
 
   if (!measurements) {
     return;
