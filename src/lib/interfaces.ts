@@ -46,7 +46,6 @@ export interface Links {
 }
 
 export interface Profile {
-  id: string;
   firstName: string;
   timezone: string;
   goalStart?: LocalDate;
@@ -56,6 +55,11 @@ export interface Profile {
   useMetric: boolean;
   showCalories?: boolean;
   sharingToken?: string;
+}
+
+export interface Settings extends Profile {
+  uid: string;
+  email: string;
 }
 
 export enum Modes {
@@ -98,12 +102,6 @@ export interface DataPoint {
   actual: number;
   trend: number;
   isInterpolated: boolean;
-}
-
-export interface SettingsData {
-  uid: string;
-  email: string;
-  timezone: string;
 }
 
 export interface Delta {

@@ -2,14 +2,19 @@ import { Instant } from "@js-joda/core";
 import equal from "fast-deep-equal";
 import { RawMeasurement, SourceData, VendorLink } from "~/lib/interfaces";
 import { getLinks, updateLinkToken } from "../data/links";
+import { getSettingsByUserId } from "../data/settings";
 import { getSourceData, updateSourceData } from "../data/source-data";
 import { expiresSoon } from "./access-token";
 import { withingsService } from "./withings";
 
 export const refreshAndGetSourceData = async (uid: string) => {
-  const links = await getLinks(uid);
+  const linksQuery = getLinks(uid);
+  const settingsQuery = getSettingsByUserId(uid);
 
-  if (links) {
+  const [links, settings] = await Promise.all([linksQuery, settingsQuery]);
+
+  if (links && settings) {
+    const { useMetric } = settings;
     const existingData = await getSourceData(uid);
     const dataToBeReturned: SourceData[] = [];
     const dataToBeUpdated: SourceData[] = [];
@@ -31,7 +36,7 @@ export const refreshAndGetSourceData = async (uid: string) => {
           await updateLinkToken(uid, "refresh", withings.token);
         }
 
-        const updatedWithingsData = await refreshWithings(uid, withings, existingWithingsData);
+        const updatedWithingsData = await refreshWithings(uid, withings, useMetric, existingWithingsData);
         dataToBeReturned.push(updatedWithingsData);
         dataToBeUpdated.push({
           source: "withings",
@@ -49,7 +54,12 @@ export const refreshAndGetSourceData = async (uid: string) => {
   }
 };
 
-const refreshWithings = async (uid: string, link: VendorLink, existingData?: SourceData): Promise<SourceData> => {
+const refreshWithings = async (
+  uid: string,
+  link: VendorLink,
+  metric: boolean,
+  existingData?: SourceData
+): Promise<SourceData> => {
   let start: number;
   if (existingData && existingData.lastUpdate) {
     const lastUpdate = Instant.parse(existingData.lastUpdate);
@@ -63,7 +73,7 @@ const refreshWithings = async (uid: string, link: VendorLink, existingData?: Sou
   let offset: unknown;
   const newMeasurements: RawMeasurement[] = [];
   while (more) {
-    const newData = await withingsService.getMeasurements(link.token, start, offset);
+    const newData = await withingsService.getMeasurements(link.token, metric, start, offset);
     more = newData.more;
     offset = newData.offset;
     newMeasurements.push(...newData.measurements);

@@ -11,7 +11,6 @@ const settings = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const sampleProfile: Profile = {
-    id,
     firstName: "Erv",
     timezone: "America/Chicago",
     useMetric: false,

@@ -112,7 +112,7 @@ class WithingsService implements VendorService {
     return fromTokenValues(result.data.body);
   }
 
-  async getMeasurements(token: AccessToken, start: unknown, offset?: unknown) {
+  async getMeasurements(token: AccessToken, metric: boolean, start: unknown, offset?: unknown) {
     // const startTimestamp = start.atStartOfDay().atZone(ZoneId.UTC).toInstant().epochSecond();
     // const endTimestamp = end.plusDays(1).atStartOfDay().minusSeconds(1).atZone(ZoneId.UTC).toInstant().epochSecond();
 
@@ -149,7 +149,7 @@ class WithingsService implements VendorService {
       if (weight) {
         const measurement: RawMeasurement = {
           timestamp,
-          weight,
+          weight: metric ? weight : weight * 2.20462262185,
         };
         if (fatPercent) {
           measurement.fatRatio = fatPercent / 100;

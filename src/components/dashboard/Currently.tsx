@@ -1,7 +1,8 @@
 import { Box, Stack } from "@chakra-ui/layout";
+import _ from "lodash";
 import React from "react";
 import { useDashboardData } from "~/lib/dashboard/context";
-import { Modes } from "~/lib/interfaces";
+import { DataPoint, Modes } from "~/lib/interfaces";
 import { shortDate } from "~/lib/utils/dates";
 import { formatMeasurement } from "~/lib/utils/numbers";
 import ChangeArrow from "./ChangeArrow";
@@ -17,7 +18,11 @@ const Currently = () => {
     return null;
   }
 
-  const first = dataPoints[0];
+  let first: DataPoint = dataPoints[0];
+  if (goalStart) {
+    const cutoff = goalStart.minusDays(1);
+    first = _.find(dataPoints, (m) => m.date.isAfter(cutoff)) || first;
+  }
   const last = dataPoints[dataPoints.length - 1];
   const difference = last.trend - first.trend;
   let intendedDirection: number;
