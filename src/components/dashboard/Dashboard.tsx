@@ -16,6 +16,10 @@ const Dashboard: FC<{ user?: string }> = ({ user }) => {
     return <DashboardPlaceholder />;
   }
 
+  if (dashboardData.measurements.length === 0) {
+    return <Box>No data yet.</Box>;
+  }
+
   return (
     <DashboardProvider data={dashboardData}>
       <Stack direction="column" spacing={4}>

@@ -11,6 +11,8 @@ export const computeMeasurements = (data?: SourceData[], profile?: Profile) => {
     return undefined;
   }
 
+  const dayStartOffset = profile.dayStartOffset || 0;
+
   // combines measurements from all sources into a single array
   const rawData: SourceMeasurement[] = _.flatten(
     data.map((sourceData) => {
@@ -22,7 +24,7 @@ export const computeMeasurements = (data?: SourceData[], profile?: Profile) => {
           .atZone(ZoneId.of(profile.timezone))
           .toLocalDateTime();
         return {
-          date: timestamp.toLocalDate(),
+          date: timestamp.minusHours(dayStartOffset).toLocalDate(),
           timestamp,
           source: sourceData.source,
           weight: sourceMeasurement.weight,

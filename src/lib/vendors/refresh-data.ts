@@ -12,11 +12,11 @@ export const refreshAndGetSourceData = async (uid: string) => {
   const settingsQuery = getSettingsByUserId(uid);
 
   const [links, settings] = await Promise.all([linksQuery, settingsQuery]);
+  const dataToBeReturned: SourceData[] = [];
 
   if (links && settings) {
     const { useMetric } = settings;
     const existingData = await getSourceData(uid);
-    const dataToBeReturned: SourceData[] = [];
     const dataToBeUpdated: SourceData[] = [];
     const { withings } = links;
     const recently = Instant.now().minusSeconds(300);
@@ -50,8 +50,9 @@ export const refreshAndGetSourceData = async (uid: string) => {
     }
 
     await updateSourceData(uid, dataToBeUpdated);
-    return dataToBeReturned;
   }
+
+  return dataToBeReturned;
 };
 
 const refreshWithings = async (
