@@ -1,5 +1,8 @@
 import { Box, Stack } from "@chakra-ui/react";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
+import { useIsFetching } from "react-query";
+import progress from "~/lib/core/progress";
+import { logRender } from "~/lib/utils/logging";
 import { DashboardProvider, useComputeDashboardData } from "../../lib/dashboard/context";
 import Buttons from "./Buttons";
 import Chart from "./Chart";
@@ -11,6 +14,12 @@ import Stats from "./Stats";
 
 const Dashboard: FC<{ user?: string }> = ({ user }) => {
   const dashboardData = useComputeDashboardData(user);
+  const queryInProgress = useIsFetching();
+  logRender("Dashboard", queryInProgress);
+
+  useEffect(() => {
+    progress.setFetching(queryInProgress);
+  }, [queryInProgress]);
 
   if (!dashboardData) {
     return <DashboardPlaceholder />;
