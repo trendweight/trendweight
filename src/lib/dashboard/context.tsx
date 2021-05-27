@@ -43,7 +43,7 @@ export const useComputeDashboardData = (user?: string) => {
   const profile = useQuery(profileQuery(user)).data!;
   const sourceData = useQuery(sourceDataQuery(user)).data!;
 
-  const measurements = useMemo(() => computeMeasurements(sourceData, profile), [sourceData, profile]);
+  const measurements = useMemo(() => computeMeasurements(sourceData, profile), [profile, sourceData]);
   const dataPoints = useMemo(() => computeDataPoints(mode, measurements), [measurements, mode]);
   const weightSlope = useMemo(() => computeWeightSlope(measurements), [measurements]);
   const activeSlope = useMemo(() => computeActiveSlope(mode, dataPoints), [mode, dataPoints]);

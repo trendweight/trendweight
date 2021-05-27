@@ -21,7 +21,7 @@ const chartOptionsTemplate = () => {
       enabled: false,
     },
     legend: {
-      backgroundColor: "#f8f8f8",
+      backgroundColor: "#ffffff",
       enabled: true,
       y: 40,
     },

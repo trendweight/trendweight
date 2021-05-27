@@ -1,4 +1,5 @@
 import { Box, Stack } from "@chakra-ui/layout";
+import { LocalDate } from "@js-joda/core";
 import _ from "lodash";
 import React from "react";
 import { useDashboardData } from "~/lib/dashboard/context";
@@ -19,8 +20,9 @@ const Currently = () => {
   }
 
   let first: DataPoint = dataPoints[0];
-  if (goalStart) {
-    const cutoff = goalStart.minusDays(1);
+  const goalStartDate = goalStart && LocalDate.parse(goalStart);
+  if (goalStartDate) {
+    const cutoff = goalStartDate.minusDays(1);
     first = _.find(dataPoints, (m) => m.date.isAfter(cutoff)) || first;
   }
   const last = dataPoints[dataPoints.length - 1];
@@ -49,7 +51,7 @@ const Currently = () => {
         </Box>
       </Stack>
       <Box color="gray.600" fontWeight={300} fontStyle="italic" fontSize="sm" pt={2}>
-        {goalStart ? `since ${shortDate(goalStart)}` : `as of ${shortDate(last.date)}`}
+        {goalStartDate ? `since ${shortDate(goalStartDate)}` : `as of ${shortDate(last.date)}`}
       </Box>
     </Stack>
   );

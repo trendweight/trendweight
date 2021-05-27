@@ -31,6 +31,7 @@ export const useChartOptions = (data: DashboardData) => {
   } = data;
 
   return useMemo(() => {
+    logCall("useChartOptions recalculate");
     const options = chartOptionsTemplate();
 
     if (isNarrow && options.chart) {
