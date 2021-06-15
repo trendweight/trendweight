@@ -45,7 +45,7 @@ export interface Links {
   fitbit?: VendorLink;
 }
 
-export interface Profile {
+export interface ProfileData {
   firstName: string;
   timezone: string;
   goalStart?: string;
@@ -57,7 +57,7 @@ export interface Profile {
   sharingToken?: string;
 }
 
-export interface Settings extends Profile {
+export interface SettingsData extends ProfileData {
   uid: string;
   email: string;
 }

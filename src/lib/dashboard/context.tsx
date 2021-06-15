@@ -3,7 +3,7 @@
 import { createContext, FC, PropsWithChildren, useContext, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import createPersistedState from "use-persisted-state";
-import { DataPoint, Delta, Measurement, Mode, Profile, TimeRange } from "~/lib/interfaces";
+import { DataPoint, Delta, Measurement, Mode, ProfileData, TimeRange } from "~/lib/interfaces";
 import { profileQuery, sourceDataQuery } from "../api/queries";
 import { computeDataPoints } from "../computations/data-points";
 import { computeMeasurements } from "../computations/measurements";
@@ -14,7 +14,7 @@ export interface DashboardData {
   measurements: Measurement[];
   mode: [Mode, (mode: Mode) => void];
   timeRange: [TimeRange, (timeRange: TimeRange) => void];
-  profile: Profile;
+  profile: ProfileData;
   weightSlope: number;
   activeSlope: number;
   deltas: Delta[];

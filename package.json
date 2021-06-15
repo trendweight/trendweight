@@ -22,7 +22,6 @@
     "@emotion/styled": "11.3.0",
     "@js-joda/core": "3.2.0",
     "@js-joda/timezone": "2.5.0",
-    "@vvo/tzdb": "6.7.0",
     "axios": "0.21.1",
     "clsx": "1.1.1",
     "fast-deep-equal": "3.1.3",
@@ -45,6 +44,8 @@
     "react-icons": "4.2.0",
     "react-query": "3.16.1",
     "sass": "1.34.1",
+    "spacetime": "6.16.1",
+    "spacetime-informal": "0.6.1",
     "typescript": "4.3.2",
     "use-persisted-state": "0.3.3"
   },

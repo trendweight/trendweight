@@ -43,14 +43,12 @@ const Login: Page = () => {
       <form onSubmit={onSubmit}>
         <Center>
           <Stack
-            borderColor={["inherit", "gray.100"]}
-            bg={["inherit", "#f7f9fc"]}
-            borderWidth={[0, 1]}
+            bg={{ base: "inherit", md: "#f7f9fc" }}
             borderRadius={{ base: 0, md: 8 }}
             maxWidth="400px"
-            px={[0, 8]}
-            py={[0, 12]}
-            my={[4, 12]}
+            px={{ base: 0, md: 8 }}
+            py={{ base: 0, md: 12 }}
+            my={{ base: 4, md: 12 }}
             shadow={{ base: "none", md: "md" }}
             spacing={[6, 6]}
             w="100%"

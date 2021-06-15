@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "~/lib/api/exceptions";
 import { withMiddleware } from "~/lib/api/middleware";
-import { Profile } from "~/lib/interfaces";
+import { ProfileData } from "~/lib/interfaces";
 
 const settings = async (req: NextApiRequest, res: NextApiResponse) => {
   const id = req.query.id;
@@ -10,7 +10,7 @@ const settings = async (req: NextApiRequest, res: NextApiResponse) => {
     throw new ApiError("params/invalid", "ID parameter must be a single string");
   }
 
-  const sampleProfile: Profile = {
+  const sampleProfile: ProfileData = {
     firstName: "Erv",
     timezone: "America/Chicago",
     useMetric: false,

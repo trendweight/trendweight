@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/layout";
 import { Stack } from "@chakra-ui/react";
-import { Spinner } from "@chakra-ui/spinner";
 import React from "react";
+import Loading from "../shared/Loading";
 import PlaceholderGraph from "../shared/placeholder/PlaceholderGraph";
 import PlaceholderGrid from "../shared/placeholder/PlaceholderGrid";
 import PlaceholderParagraph from "../shared/placeholder/PlaceholderParagraph";
@@ -11,7 +11,7 @@ const DashboardPlaceholder = () => {
     <>
       <Stack direction="column" spacing={4}>
         <Stack direction="row">
-          <Spinner color="gray.200" thickness="3px" />
+          <Loading />
           <Box>Getting updated weight data...</Box>
         </Stack>
         <Stack direction="row" spacing={4}>
