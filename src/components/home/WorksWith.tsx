@@ -3,6 +3,8 @@ import { Box, Center, Icon } from "@chakra-ui/react";
 import Image from "next/image";
 import React, { FC } from "react";
 import { FaCheck } from "react-icons/fa";
+import fitbitAppLogo from "../../../public/assets/fitbit-app.png";
+import withingsAppLogo from "../../../public/assets/withings-app.png";
 import Link from "../shared/Link";
 import { HomeWidgetProps } from "./MainContent";
 
@@ -11,7 +13,7 @@ const vendors = [
     name: "Withings",
     logoText: "WITHINGS",
     app: {
-      src: "/assets/withings-app.png",
+      logo: withingsAppLogo,
       height: 140,
       width: 128,
     },
@@ -26,7 +28,7 @@ const vendors = [
     name: "Fitbit",
     logoText: "fitbit",
     app: {
-      src: "/assets/fitbit-app.png",
+      logo: fitbitAppLogo,
       height: 140,
       width: 128,
     },
@@ -68,7 +70,7 @@ const WorksWith: FC<HomeWidgetProps> = ({ area }) => {
           >
             <Stack direction="column" alignItems="center" p={1}>
               <Image
-                src={vendor.app.src}
+                src={vendor.app.logo}
                 layout="fixed"
                 objectFit="contain"
                 alt={`${vendor.name} app logo`}

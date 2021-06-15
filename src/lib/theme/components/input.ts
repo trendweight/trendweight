@@ -1,4 +1,4 @@
-export default {
+const input = {
   variants: {
     outline: {
       field: {
@@ -14,3 +14,5 @@ export default {
     },
   },
 };
+
+export default input;

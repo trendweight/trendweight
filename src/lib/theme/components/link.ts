@@ -1,4 +1,4 @@
-export default {
+const link = {
   baseStyle: {
     color: "brand.600",
     fontWeight: "medium",
@@ -11,3 +11,5 @@ export default {
     },
   },
 };
+
+export default link;

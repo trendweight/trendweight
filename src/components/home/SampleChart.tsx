@@ -1,11 +1,12 @@
 import { Box } from "@chakra-ui/layout";
 import Image from "next/image";
 import { FC } from "react";
+import chart from "../../../public/assets/chart-home.png";
 import { HomeWidgetProps } from "./MainContent";
 
 const SampleChart: FC<HomeWidgetProps> = ({ area }) => (
   <Box gridArea={area} position="relative">
-    <Image src="/assets/chart-home.png" layout="responsive" objectFit="contain" height={894} width={1706} />
+    <Image src={chart} placeholder="blur" layout="responsive" objectFit="contain" alt="sample chart" />
   </Box>
 );
 

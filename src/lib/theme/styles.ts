@@ -1,4 +1,4 @@
-export default {
+const styles = {
   global: () => ({
     html: {
       minWidth: "360px",
@@ -16,3 +16,5 @@ export default {
     },
   }),
 };
+
+export default styles;

@@ -1,4 +1,4 @@
-export default {
+const heading = {
   baseStyle: {
     pb: 4,
   },
@@ -6,3 +6,5 @@ export default {
     size: "md",
   },
 };
+
+export default heading;

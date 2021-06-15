@@ -1,4 +1,4 @@
-export default {
+const button = {
   baseStyle: {
     fontWeight: "normal",
   },
@@ -7,3 +7,5 @@ export default {
     colorScheme: "brand",
   },
 };
+
+export default button;

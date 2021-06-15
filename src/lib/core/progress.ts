@@ -54,8 +54,10 @@ const done = () => {
   }
 };
 
-export default {
+const progress = {
   start,
   done,
   setFetching,
 };
+
+export default progress;

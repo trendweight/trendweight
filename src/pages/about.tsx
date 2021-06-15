@@ -8,6 +8,7 @@ import Link from "~/components/shared/Link";
 import LinkButton from "~/components/shared/LinkButton";
 import { useAuth } from "~/lib/core/auth";
 import { Page } from "~/lib/core/page";
+import screenshot from "../../public/assets/screenshot-large.png";
 
 const About: Page = () => {
   const { isInitializing, user } = useAuth();
@@ -18,9 +19,9 @@ const About: Page = () => {
 
   return (
     <Box>
-      <Box display={{ base: "none", md: "block" }} float="right" pb={4} pl={4} bg="white">
+      <Box display={{ base: "none", md: "block" }} float="right" pb={4} pl={4} bg="white" width={400}>
         <Link href="demo">
-          <Image src="/assets/screenshot-large.png" height={357} width={375} layout="intrinsic" />
+          <Image src={screenshot} layout="intrinsic" alt="dashboard screenshot" />
         </Link>
       </Box>
       <Heading>What is TrendWeight, Exactly?</Heading>
