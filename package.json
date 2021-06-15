@@ -49,8 +49,8 @@
     "use-persisted-state": "0.3.3"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "10.2.3",
-    "@next/eslint-plugin-next": "10.2.3",
+    "@next/bundle-analyzer": "11.0.0",
+    "@next/eslint-plugin-next": "11.0.0",
     "@types/jsonwebtoken": "8.5.1",
     "@types/lodash": "4.14.170",
     "@types/node": "14.17.3",
