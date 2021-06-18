@@ -17,14 +17,12 @@ class Document extends BaseDocument {
             href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&text=TrendWeight&display=block"
             rel="stylesheet"
           />
-          <script async defer data-domain="trendweight.io" src="https://plausible.io/js/plausible.js"></script>
-          <script
-            type="application/javascript"
-            dangerouslySetInnerHTML={{
-              __html: `if (/MSIE|Trident/.test(window.navigator.userAgent)) window.location.href = '/unsupported.html';`,
-            }}
-          ></script>
         </Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if (/MSIE|Trident/.test(window.navigator.userAgent)) window.location.href = '/unsupported.html';`,
+          }}
+        />
         <body>
           <Main />
           <NextScript />

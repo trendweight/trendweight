@@ -3,6 +3,7 @@ import "focus-visible/dist/focus-visible";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Router } from "next/router";
+import Script from "next/script";
 import React, { FC, PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -52,6 +53,7 @@ function App({ Component, pageProps }: AppProps) {
             <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
             <link rel="icon" href="/favicon.ico" />
           </Head>
+          <Script strategy="afterInteractive" data-domain="trendweight.io" src="/js/script.js" />
           <Wrapper requireLogin={requireLogin}>
             <Component {...pageProps} />
           </Wrapper>
