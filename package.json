@@ -68,5 +68,10 @@
     "husky": "6.0.0",
     "npm-run-all": "4.1.5",
     "prettier": "2.3.1"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "tabWidth": 2,
+    "printWidth": 120
   }
 }
