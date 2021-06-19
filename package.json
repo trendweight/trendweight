@@ -31,8 +31,6 @@
     "highcharts": "9.1.1",
     "highcharts-react-official": "3.0.0",
     "jsonwebtoken": "8.5.1",
-    "less": "4.1.1",
-    "less-loader": "9.1.0",
     "lodash": "4.17.21",
     "next": "11.0.0",
     "nprogress": "0.2.0",
