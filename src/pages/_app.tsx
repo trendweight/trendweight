@@ -23,7 +23,7 @@ const NoShell: FC<PropsWithChildren<unknown>> = ({ children }) => {
 
 Router.events.on("routeChangeStart", progress.start);
 Router.events.on("routeChangeComplete", progress.done);
-Router.events.on("routerChangeError", progress.done);
+Router.events.on("routeChangeError", progress.done);
 
 Router.events.on("routeChangeComplete", () => {
   // reset focus on navigate
