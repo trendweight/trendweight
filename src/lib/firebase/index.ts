@@ -1,4 +1,6 @@
-import firebase from "firebase/app";
+import { getApps, initializeApp } from "firebase/app";
+export { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+export type { Unsubscribe, User } from "firebase/auth";
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -9,16 +11,6 @@ export const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+if (!getApps().length) {
+  initializeApp(firebaseConfig);
 }
-
-export const getAuth = async () => {
-  if (!firebase.auth) {
-    await import("firebase/auth");
-  }
-
-  return firebase.auth();
-};
-
-export default firebase;
