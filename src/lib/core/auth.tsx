@@ -1,6 +1,6 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
 import { setDefaultFetchOptions } from "~/lib/api/fetch";
-import firebase, { getAuth } from "~/lib/firebase";
+import { getAuth, signInWithEmailAndPassword, Unsubscribe, User as FirebaseUser } from "~/lib/firebase";
 
 interface User {
   uid: string;
@@ -26,7 +26,7 @@ export const useCreateAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
 
-  const handleUserChange = async (rawUser: firebase.User | null) => {
+  const handleUserChange = async (rawUser: FirebaseUser | null) => {
     if (rawUser) {
       const { uid, email } = rawUser;
       const user: User = { uid, email };
@@ -53,21 +53,21 @@ export const useCreateAuth = () => {
   };
 
   const signInWithPassword = async (email: string, password: string) => {
-    const auth = await getAuth();
-    const { user } = await auth.signInWithEmailAndPassword(email, password);
+    const auth = getAuth();
+    const { user } = await signInWithEmailAndPassword(auth, email, password);
     handleUserChange(user);
   };
 
   const signOut = async () => {
-    const auth = await getAuth();
+    const auth = getAuth();
     await auth.signOut();
     handleUserChange(null);
   };
 
   useEffect(() => {
-    let unsubscribe: firebase.Unsubscribe | undefined = undefined;
+    let unsubscribe: Unsubscribe | undefined = undefined;
     const subscribe = async () => {
-      const auth = await getAuth();
+      const auth = getAuth();
       unsubscribe = auth.onIdTokenChanged(async (user) => {
         if (user) {
           await handleUserChange(user);
