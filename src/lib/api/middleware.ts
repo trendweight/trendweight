@@ -20,8 +20,8 @@ const withHandleErrors = (handler: ApiHandler) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       await handler(req, res);
-    } catch (error) {
-      const { code, message, status } = error;
+    } catch (error: any) {
+      const { code, message, status } = error as ApiError;
       let stack;
       if (process.env.NODE_ENV !== "production") {
         stack = error.stack;
@@ -40,7 +40,7 @@ const withVerifyJWT = (handler: ApiHandler) => {
     try {
       const { uid } = await auth.verifyIdToken(token);
       (req as NextApiRequestWithAuth).userId = uid;
-    } catch (error) {
+    } catch (error: any) {
       throw new ApiError(error.code, error.message, 403);
     }
     return await handler(req, res);

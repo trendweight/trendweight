@@ -28,7 +28,7 @@ const Login: Page = () => {
     try {
       await auth.signInWithPassword(values.email, values.password);
       setLoginFailed(undefined);
-    } catch (error) {
+    } catch (error: any) {
       setLoginFailed(error.code);
     }
   });
