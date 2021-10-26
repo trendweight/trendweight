@@ -49,14 +49,12 @@ export const useChartOptions = (data: DashboardData) => {
 
     const actualSinkersData = _.map(dataPoints, (m) => [
       toEpoch(m.date),
-      null,
       m.isInterpolated ? null : m.actual,
       m.isInterpolated ? null : m.trend,
       null,
     ]);
     const interpolatedSinkersData = _.map(dataPoints, (m) => [
       toEpoch(m.date),
-      null,
       m.isInterpolated ? m.actual : null,
       m.isInterpolated ? m.trend : null,
       null,
