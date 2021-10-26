@@ -5,6 +5,10 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 module.exports = withBundleAnalyzer({
   webpack5: true,
   optimizeFonts: true,
+  swcMinify: true,
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
   async rewrites() {
     return [
       {
