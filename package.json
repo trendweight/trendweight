@@ -10,8 +10,6 @@
     "start": "next start",
     "prettier": "prettier -w src public",
     "lint": "next lint",
-    "lint:commit": "run-p lint lint:prettier",
-    "lint:prettier": "prettier -c src public",
     "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
@@ -67,6 +65,7 @@
     "eslint-plugin-react": "7.26.1",
     "eslint-plugin-react-hooks": "4.2.0",
     "husky": "7.0.4",
+    "jest": "27.3.1",
     "npm-run-all": "4.1.5",
     "prettier": "2.4.1",
     "pretty-quick": "3.1.1",
