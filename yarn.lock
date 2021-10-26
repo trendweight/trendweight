@@ -8476,6 +8476,8 @@ __metadata:
   resolution: "trendweight@workspace:."
   dependencies:
     "@chakra-ui/react": 1.6.10
+    "@chakra-ui/system": 1.7.4
+    "@chakra-ui/theme-tools": 1.2.2
     "@emotion/react": 11.5.0
     "@emotion/styled": 11.3.0
     "@js-joda/core": 4.3.1

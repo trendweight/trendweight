@@ -1,5 +1,4 @@
-import { Box } from "@chakra-ui/layout";
-import { Heading } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import React from "react";
 import { useDashboardData } from "~/lib/dashboard/context";
 import { Modes } from "~/lib/interfaces";

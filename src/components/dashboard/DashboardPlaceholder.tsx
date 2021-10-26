@@ -1,5 +1,4 @@
-import { Box } from "@chakra-ui/layout";
-import { Stack } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 import React from "react";
 import Loading from "../shared/Loading";
 import PlaceholderGraph from "../shared/placeholder/PlaceholderGraph";

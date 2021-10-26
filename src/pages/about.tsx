@@ -1,6 +1,4 @@
-import Icon from "@chakra-ui/icon";
-import { Box, Flex, Grid, Heading, Text, UnorderedList } from "@chakra-ui/layout";
-import { ListItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, Heading, Icon, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import Image from "next/image";
 import React from "react";
 import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineRss, HiOutlineShoppingCart } from "react-icons/hi";

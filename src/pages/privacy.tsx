@@ -1,5 +1,4 @@
-import { Image } from "@chakra-ui/image";
-import { Box, Heading, ListItem, Text, UnorderedList } from "@chakra-ui/layout";
+import { Box, Heading, Image, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import React from "react";
 import Link from "~/components/shared/Link";
 import { Page } from "~/lib/core/page";

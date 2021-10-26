@@ -1,4 +1,4 @@
-import { Grid } from "@chakra-ui/layout";
+import { Grid } from "@chakra-ui/react";
 import React from "react";
 import LayoutContainer from "../layout/LayoutContainer";
 import Blurb from "./Blurb";

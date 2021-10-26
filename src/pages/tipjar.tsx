@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-sync-scripts */
-import { Box, Divider, Heading, ListItem, Text, UnorderedList } from "@chakra-ui/layout";
+import { Box, Divider, Heading, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import Link from "~/components/shared/Link";
 import { Page } from "~/lib/core/page";
 

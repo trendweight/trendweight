@@ -1,5 +1,4 @@
-import { Flex, Heading, Stack } from "@chakra-ui/layout";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import Link from "~/components/shared/Link";

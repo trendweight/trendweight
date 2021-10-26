@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/layout";
+import { Stack } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { useAuth } from "~/lib/core/auth";
 import LinkButton, { LinkButtonProps } from "../shared/LinkButton";

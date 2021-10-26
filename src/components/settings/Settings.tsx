@@ -1,6 +1,4 @@
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { Stack, StackDivider, VStack } from "@chakra-ui/layout";
-import { Input, Select } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Select, Stack, StackDivider, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";

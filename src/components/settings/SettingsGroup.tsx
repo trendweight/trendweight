@@ -1,4 +1,4 @@
-import { Box, Heading, Stack } from "@chakra-ui/layout";
+import { Box, Heading, Stack } from "@chakra-ui/react";
 import { FC } from "react";
 
 const SettingsGroup: FC<{ title?: string }> = ({ title, children }) => {

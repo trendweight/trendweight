@@ -1,5 +1,4 @@
-import { Box, Heading } from "@chakra-ui/layout";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
+import { Box, Heading, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import _ from "lodash";
 import { useDashboardData } from "~/lib/dashboard/context";
 import { Modes } from "~/lib/interfaces";

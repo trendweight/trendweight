@@ -1,5 +1,4 @@
-import { Stack, Text } from "@chakra-ui/layout";
-import { Box, Center, Icon } from "@chakra-ui/react";
+import { Box, Center, Icon, Stack, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import React, { FC } from "react";
 import { FaCheck } from "react-icons/fa";

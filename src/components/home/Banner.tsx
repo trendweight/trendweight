@@ -1,4 +1,4 @@
-import { Box, Stack } from "@chakra-ui/layout";
+import { Box, Stack } from "@chakra-ui/react";
 import React from "react";
 import Logo from "~/components/shared/Logo";
 import LayoutContainer from "../layout/LayoutContainer";

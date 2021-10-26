@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/layout";
+import { Stack } from "@chakra-ui/react";
 import { useDashboardData } from "~/lib/dashboard/context";
 import { ToggleButton } from "../shared/ToggleButton";
 import { ToggleButtonGroup } from "../shared/ToggleButtonGroup";

@@ -1,4 +1,4 @@
-import { Box, Stack } from "@chakra-ui/layout";
+import { Box, Stack } from "@chakra-ui/react";
 import { LocalDate } from "@js-joda/core";
 import _ from "lodash";
 import React from "react";

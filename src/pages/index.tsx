@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/layout";
+import { Flex } from "@chakra-ui/react";
 import React from "react";
 import Banner from "~/components/home/Banner";
 import MainContent from "~/components/home/MainContent";

@@ -1,4 +1,4 @@
-import { Box, GridItem, Heading, Text } from "@chakra-ui/layout";
+import { Box, GridItem, Heading, Text } from "@chakra-ui/react";
 import React, { FC, PropsWithChildren } from "react";
 import Link from "~/components/shared/Link";
 import { Page } from "~/lib/core/page";
