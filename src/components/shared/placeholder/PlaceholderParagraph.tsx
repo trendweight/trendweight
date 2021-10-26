@@ -9,14 +9,7 @@ export interface PlaceholderParagraphProps {
   active?: boolean;
 }
 
-const PlaceholderParagraph: FC<PlaceholderParagraphProps> = ({
-  rows = 2,
-  rowHeight = 10,
-  rowMargin = 20,
-  graph,
-  active,
-  ...rest
-}) => {
+const PlaceholderParagraph: FC<PlaceholderParagraphProps> = ({ rows = 2, rowHeight = 10, rowMargin = 20, graph, active, ...rest }) => {
   const graphShape = graph === true ? "square" : graph;
 
   const rowElements = useMemo(() => {

@@ -13,12 +13,11 @@ const Blurb: FC<HomeWidgetProps> = ({ area }) => (
         <b>Step 2</b>: There is no Step 2!
       </Box>
       <Box pb={4}>
-        <i>Losing weight is hard</i>. Don't beat yourself just because your weight is higher today than it was
-        yesterday.
+        <i>Losing weight is hard</i>. Don't beat yourself just because your weight is higher today than it was yesterday.
       </Box>
       <Box>
-        Our weight fluctuates—it just does. That's completely normal. TrendWeight is a tool that helps you focus on your
-        weight <i>trend</i> over time instead of day to day changes.
+        Our weight fluctuates—it just does. That's completely normal. TrendWeight is a tool that helps you focus on your weight <i>trend</i> over time instead
+        of day to day changes.
       </Box>
     </Box>
   </Flex>

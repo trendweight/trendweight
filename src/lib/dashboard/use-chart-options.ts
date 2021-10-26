@@ -7,14 +7,7 @@ import { logCall } from "../utils/logging";
 import { useMediaQuery } from "../utils/use-media-query";
 import chartOptionsTemplate from "./chart-options-template";
 import { DashboardData } from "./context";
-import {
-  createDiamondsSeries,
-  createDotSeries,
-  createLineSeries,
-  createProjectionSeries,
-  createSinkersSeries,
-  createTrendSeries,
-} from "./create-chart-series";
+import { createDiamondsSeries, createDotSeries, createLineSeries, createProjectionSeries, createSinkersSeries, createTrendSeries } from "./create-chart-series";
 
 const toEpoch = (date: LocalDate) => date.toEpochDay() * 86400000;
 
@@ -47,18 +40,8 @@ export const useChartOptions = (data: DashboardData) => {
       [toEpoch(lastMeasurement.date.plusDays(6)), lastMeasurement.trend + activeSlope * 6],
     ];
 
-    const actualSinkersData = _.map(dataPoints, (m) => [
-      toEpoch(m.date),
-      m.isInterpolated ? null : m.actual,
-      m.isInterpolated ? null : m.trend,
-      null,
-    ]);
-    const interpolatedSinkersData = _.map(dataPoints, (m) => [
-      toEpoch(m.date),
-      m.isInterpolated ? m.actual : null,
-      m.isInterpolated ? m.trend : null,
-      null,
-    ]);
+    const actualSinkersData = _.map(dataPoints, (m) => [toEpoch(m.date), m.isInterpolated ? null : m.actual, m.isInterpolated ? null : m.trend, null]);
+    const interpolatedSinkersData = _.map(dataPoints, (m) => [toEpoch(m.date), m.isInterpolated ? m.actual : null, m.isInterpolated ? m.trend : null, null]);
 
     if (options.series && options.xAxis && !Array.isArray(options.xAxis)) {
       switch (timeRange) {
@@ -110,8 +93,7 @@ export const useChartOptions = (data: DashboardData) => {
           options.series.push(createTrendSeries(trendData, mode, modeText, isNarrow));
           options.series.push(createLineSeries(actualData, false));
           options.series.push(createProjectionSeries(projectionsData, mode, modeText, isNarrow));
-          options.xAxis.range =
-            86400000 * ((timeRange === "6m" ? 180 : timeRange === "1y" ? 365 : trendData.length) - 1 + 6);
+          options.xAxis.range = 86400000 * ((timeRange === "6m" ? 180 : timeRange === "1y" ? 365 : trendData.length) - 1 + 6);
           options.xAxis.plotBands = [];
           break;
       }

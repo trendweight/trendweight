@@ -20,9 +20,7 @@ export const computeMeasurements = (data?: SourceData[], profile?: ProfileData) 
         return [];
       }
       return sourceData.measurements.map((sourceMeasurement) => {
-        const timestamp = Instant.ofEpochSecond(sourceMeasurement.timestamp)
-          .atZone(ZoneId.of(profile.timezone))
-          .toLocalDateTime();
+        const timestamp = Instant.ofEpochSecond(sourceMeasurement.timestamp).atZone(ZoneId.of(profile.timezone)).toLocalDateTime();
         return {
           date: timestamp.minusHours(dayStartOffset).toLocalDate(),
           timestamp,

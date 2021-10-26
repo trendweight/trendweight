@@ -24,10 +24,7 @@ const getAuthUrl = async (req: NextApiRequest, res: NextApiResponse) => {
     throw new ApiError("auth/invalid-state", "invalid state", 500);
   }
 
-  const accessToken = await withingsService.exchangeAuthorizationCode(
-    code as string,
-    `https://${hostname}/api/withings/callback`
-  );
+  const accessToken = await withingsService.exchangeAuthorizationCode(code as string, `https://${hostname}/api/withings/callback`);
 
   await updateLinkToken(linkDetails.uid, linkDetails.reason, accessToken);
 

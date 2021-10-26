@@ -16,14 +16,7 @@ export const updateSourceData = async (uid: string, data: SourceData[]) => {
   promises.push(db.collection("source-data").doc(uid).set({ uid, lastUpdates }, { mergeFields: updatedPaths }));
   for (const entry of data) {
     if (entry.measurements) {
-      promises.push(
-        db
-          .collection("source-data")
-          .doc(uid)
-          .collection("sources")
-          .doc(entry.source)
-          .set({ measurements: entry.measurements })
-      );
+      promises.push(db.collection("source-data").doc(uid).collection("sources").doc(entry.source).set({ measurements: entry.measurements }));
     }
   }
   await Promise.all(promises);

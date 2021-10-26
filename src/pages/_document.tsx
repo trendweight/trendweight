@@ -9,14 +9,8 @@ class Document extends BaseDocument {
       <Html>
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&display=fallback"
-            rel="stylesheet"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&text=TrendWeight&display=block"
-            rel="stylesheet"
-          />
+          <link href="https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&display=fallback" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&text=TrendWeight&display=block" rel="stylesheet" />
         </Head>
         <script
           dangerouslySetInnerHTML={{

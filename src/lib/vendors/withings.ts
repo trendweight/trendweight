@@ -138,8 +138,7 @@ class WithingsService implements VendorService {
     const body = response.data.body as WithingsGetMeasuresResponse;
     const timezone = body.timezone;
 
-    const measureToDecimal = (measure?: WithingsMeasure) =>
-      measure ? measure.value * Math.pow(10, measure.unit) : undefined;
+    const measureToDecimal = (measure?: WithingsMeasure) => (measure ? measure.value * Math.pow(10, measure.unit) : undefined);
 
     const measurements: RawMeasurement[] = [];
     for (const group of body.measuregrps) {
@@ -162,7 +161,4 @@ class WithingsService implements VendorService {
   }
 }
 
-export const withingsService = new WithingsService(
-  process.env.WITHINGS_CLIENT_ID || "",
-  process.env.WITHINGS_CLIENT_SECRET || ""
-) as VendorService;
+export const withingsService = new WithingsService(process.env.WITHINGS_CLIENT_ID || "", process.env.WITHINGS_CLIENT_SECRET || "") as VendorService;

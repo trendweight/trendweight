@@ -10,10 +10,7 @@ import screenshot from "../../public/assets/screenshot-large.png";
 
 const About: Page = () => {
   const { isInitializing, user } = useAuth();
-  const getStarted =
-    isInitializing || !user
-      ? { label: "Create an Account", href: "/signup" }
-      : { label: "Go to Dashboard", href: "/dashboard" };
+  const getStarted = isInitializing || !user ? { label: "Create an Account", href: "/signup" } : { label: "Go to Dashboard", href: "/dashboard" };
 
   return (
     <Box>
@@ -23,22 +20,12 @@ const About: Page = () => {
         </Link>
       </Box>
       <Heading>What is TrendWeight, Exactly?</Heading>
+      <Text pb={4}>TrendWeight is a free weight tracking web app that filters out the noise and focuses on longer term trends in weight change.</Text>
       <Text pb={4}>
-        TrendWeight is a free weight tracking web app that filters out the noise and focuses on longer term trends in
-        weight change.
+        When you really want to track your weight loss, you probably know you should disregard day to day changes in weight and instead focus on the trend over
+        time. There are multiple ways to do this, but TrendWeight uses the methodology described by John Walker in his online book, <i>The Hacker's Diet</i>.
       </Text>
-      <Text pb={4}>
-        When you really want to track your weight loss, you probably know you should disregard day to day changes in
-        weight and instead focus on the trend over time. There are multiple ways to do this, but TrendWeight uses the
-        methodology described by John Walker in his online book, <i>The Hacker's Diet</i>.
-      </Text>
-      <Box
-        display="inline-block"
-        pb={{ base: 6, md: 4 }}
-        pr={{ base: 0, md: 8 }}
-        pt={{ base: 0, md: 2 }}
-        float={{ base: "unset", md: "left" }}
-      >
+      <Box display="inline-block" pb={{ base: 6, md: 4 }} pr={{ base: 0, md: 8 }} pt={{ base: 0, md: 2 }} float={{ base: "unset", md: "left" }}>
         <Box fontSize="lg" pb={2}>
           <b>See it in action...</b>
         </Box>
@@ -47,38 +34,24 @@ const About: Page = () => {
         </LinkButton>
       </Box>
       <Text pb={4}>
-        The idea is pretty simple. You weigh yourself each day and TrendWeight will plot a exponentially weighted moving
-        average for your weight alongside your daily scale weight. This gives you a better idea of your weight trend by
-        masking most of the day to day noise that variances in water weight introduce.
+        The idea is pretty simple. You weigh yourself each day and TrendWeight will plot a exponentially weighted moving average for your weight alongside your
+        daily scale weight. This gives you a better idea of your weight trend by masking most of the day to day noise that variances in water weight introduce.
       </Text>
       <Text pb={4}>
-        Your dashboard will also calculate some statistics that will help you understand how close you are to your
-        weight goal and if you are hitting your weekly desired rate of weight change.
+        Your dashboard will also calculate some statistics that will help you understand how close you are to your weight goal and if you are hitting your
+        weekly desired rate of weight change.
       </Text>
       <Text>
-        Once you reach your goal, keep weighing yourself every day. TrendWeight will show a goal range that is a bit
-        above and below your goal weight so that you can more easily see if your weight starts to creep up too high and
-        you need to go back to the techniques that helped you lose weight in the first place.
+        Once you reach your goal, keep weighing yourself every day. TrendWeight will show a goal range that is a bit above and below your goal weight so that
+        you can more easily see if your weight starts to creep up too high and you need to go back to the techniques that helped you lose weight in the first
+        place.
       </Text>
       <Box mt={8}>
-        <Grid
-          templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", xl: "repeat(4, 1fr)" }}
-          columnGap={10}
-          rowGap={4}
-        >
+        <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", xl: "repeat(4, 1fr)" }} columnGap={10} rowGap={4}>
           <Box bg="brand.50" border="1px" borderColor="brand.100" mt={6} pb={8} px={6} rounded="lg" display="flow-root">
             <Box mt={-6}>
               <Box>
-                <Box
-                  display="inline-flex"
-                  bg="brand.400"
-                  color="white"
-                  alignItems="center"
-                  justifyContent="center"
-                  p={3}
-                  rounded="md"
-                  shadow="lg"
-                >
+                <Box display="inline-flex" bg="brand.400" color="white" alignItems="center" justifyContent="center" p={3} rounded="md" shadow="lg">
                   <Icon h={6} w={6} as={HiOutlineLightBulb} />
                 </Box>
               </Box>
@@ -86,24 +59,14 @@ const About: Page = () => {
                 Questions?
               </Heading>
               <Text mt={5} color="gray.500" fontSize="md">
-                Take a look at these <Link href="/faq">FAQs</Link> or email{" "}
-                <Link href="mailto:erv@ewal.net">erv@ewal.net</Link>.
+                Take a look at these <Link href="/faq">FAQs</Link> or email <Link href="mailto:erv@ewal.net">erv@ewal.net</Link>.
               </Text>
             </Box>
           </Box>
           <Box bg="brand.50" border="1px" borderColor="brand.100" mt={6} pb={8} px={6} rounded="lg" display="flow-root">
             <Box mt={-6}>
               <Box>
-                <Box
-                  display="inline-flex"
-                  bg="brand.400"
-                  color="white"
-                  alignItems="center"
-                  justifyContent="center"
-                  p={3}
-                  rounded="md"
-                  shadow="lg"
-                >
+                <Box display="inline-flex" bg="brand.400" color="white" alignItems="center" justifyContent="center" p={3} rounded="md" shadow="lg">
                   <Icon h={6} w={6} as={HiOutlineShoppingCart} />
                 </Box>
               </Box>
@@ -123,16 +86,7 @@ const About: Page = () => {
           <Box bg="brand.50" border="1px" borderColor="brand.100" mt={6} pb={8} px={6} rounded="lg" display="flow-root">
             <Box mt={-6}>
               <Box>
-                <Box
-                  display="inline-flex"
-                  bg="brand.400"
-                  color="white"
-                  alignItems="center"
-                  justifyContent="center"
-                  p={3}
-                  rounded="md"
-                  shadow="lg"
-                >
+                <Box display="inline-flex" bg="brand.400" color="white" alignItems="center" justifyContent="center" p={3} rounded="md" shadow="lg">
                   <Icon h={6} w={6} as={HiOutlineRss} />
                 </Box>
               </Box>
@@ -155,16 +109,7 @@ const About: Page = () => {
           <Box bg="brand.50" border="1px" borderColor="brand.100" mt={6} pb={8} px={6} rounded="lg" display="flow-root">
             <Box mt={-6}>
               <Box>
-                <Box
-                  display="inline-flex"
-                  bg="brand.400"
-                  color="white"
-                  alignItems="center"
-                  justifyContent="center"
-                  p={3}
-                  rounded="md"
-                  shadow="lg"
-                >
+                <Box display="inline-flex" bg="brand.400" color="white" alignItems="center" justifyContent="center" p={3} rounded="md" shadow="lg">
                   <Icon h={6} w={6} as={HiOutlineHeart} />
                 </Box>
               </Box>
@@ -172,8 +117,7 @@ const About: Page = () => {
                 Support TrendWeight
               </Heading>
               <Text mt={5} color="gray.500" fontSize="md">
-                TrendWeight is free, forever. But if you want info about how you can help fund it,{" "}
-                <Link href="/tipjar">go here</Link>.
+                TrendWeight is free, forever. But if you want info about how you can help fund it, <Link href="/tipjar">go here</Link>.
               </Text>
             </Box>
           </Box>

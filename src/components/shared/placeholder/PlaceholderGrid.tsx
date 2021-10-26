@@ -9,14 +9,7 @@ export interface PlaceholderGridProps {
   active?: boolean;
 }
 
-const PlaceholderGrid: FC<PlaceholderGridProps> = ({
-  rows = 5,
-  columns = 5,
-  rowHeight = 10,
-  rowMargin = 20,
-  active,
-  ...rest
-}) => {
+const PlaceholderGrid: FC<PlaceholderGridProps> = ({ rows = 5, columns = 5, rowHeight = 10, rowMargin = 20, active, ...rest }) => {
   const colItems = [];
   const firstRowItemWidth = Math.random() * 30 + 30;
   const itemWidth = firstRowItemWidth / 2;

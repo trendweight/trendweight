@@ -1,15 +1,4 @@
-import {
-  Box,
-  Button,
-  Center,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  Input,
-  Stack,
-  VisuallyHidden,
-} from "@chakra-ui/react";
+import { Box, Button, Center, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VisuallyHidden } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -73,11 +62,7 @@ const Login: Page = () => {
               <VisuallyHidden>
                 <FormLabel>Password</FormLabel>
               </VisuallyHidden>
-              <Input
-                type="password"
-                placeholder="Password"
-                {...register("password", { required: "Please enter your password" })}
-              />
+              <Input type="password" placeholder="Password" {...register("password", { required: "Please enter your password" })} />
               <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
             </FormControl>
             <Stack direction="row" align="center">

@@ -61,10 +61,7 @@ const chartOptionsTemplate = () => {
             if (point.series.type === "ohlc") {
               return s;
             }
-            return (
-              s +
-              `<br/><span style="color: ${point.color};">${point.series.name}:</span> <b>${formatNumber(point.y)}</b>`
-            );
+            return s + `<br/><span style="color: ${point.color};">${point.series.name}:</span> <b>${formatNumber(point.y)}</b>`;
           }, `${Highstock.dateFormat("%a, %b %e, %Y", this.x)}`);
         } catch (e) {
           return "";

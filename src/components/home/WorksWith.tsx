@@ -50,23 +50,8 @@ const WorksWith: FC<HomeWidgetProps> = ({ area }) => {
       spacing={4}
     >
       {vendors.map((vendor) => (
-        <Link
-          key={vendor.name}
-          href={vendor.url}
-          w={{ base: "full", md: "auto" }}
-          order={2}
-          pr={{ md: 6 }}
-          color="black"
-          _hover={{ textDecoration: "none" }}
-        >
-          <Center
-            boxSize={56}
-            bg="gray.50"
-            _hover={{ bg: "gray.100" }}
-            borderWidth={1}
-            borderColor="gray.200"
-            rounded="2xl"
-          >
+        <Link key={vendor.name} href={vendor.url} w={{ base: "full", md: "auto" }} order={2} pr={{ md: 6 }} color="black" _hover={{ textDecoration: "none" }}>
+          <Center boxSize={56} bg="gray.50" _hover={{ bg: "gray.100" }} borderWidth={1} borderColor="gray.200" rounded="2xl">
             <Stack direction="column" alignItems="center" p={1}>
               <Image
                 src={vendor.app.logo}

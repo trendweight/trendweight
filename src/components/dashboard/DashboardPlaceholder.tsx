@@ -14,10 +14,7 @@ const DashboardPlaceholder = () => {
           <Box>Getting updated weight data...</Box>
         </Stack>
         <Stack direction="row" spacing={4}>
-          <Box
-            h={{ base: "240px", md: "280px", lg: "325px", xl: "420px" }}
-            w={{ base: "full", md: "475px", lg: "650px", xl: "840px" }}
-          >
+          <Box h={{ base: "240px", md: "280px", lg: "325px", xl: "420px" }} w={{ base: "full", md: "475px", lg: "650px", xl: "840px" }}>
             <PlaceholderGraph />
           </Box>
         </Stack>

@@ -35,18 +35,16 @@ const Register: Page = () => {
             Create an Account
           </Heading>
           <Box>
-            Registration for the beta version of TrendWeight is not available yet. If you are interested in being an
-            early tester, email me at <Link href="mailto:erv@ewal.net?subject=Beta Testing">erv@ewal.net</Link>.
+            Registration for the beta version of TrendWeight is not available yet. If you are interested in being an early tester, email me at{" "}
+            <Link href="mailto:erv@ewal.net?subject=Beta Testing">erv@ewal.net</Link>.
           </Box>
           <Box>
-            If you just are interested in knowing when the beta is ready for general use, your best bet is to follow
-            TrendWeight on <Link href="https://twitter.com/trendweight">Twitter</Link>,{" "}
-            <Link href="https://facebook.com/trendweight">Facebook</Link>, or subscribe to the{" "}
+            If you just are interested in knowing when the beta is ready for general use, your best bet is to follow TrendWeight on{" "}
+            <Link href="https://twitter.com/trendweight">Twitter</Link>, <Link href="https://facebook.com/trendweight">Facebook</Link>, or subscribe to the{" "}
             <Link href="https://blog.trendweight.com">Blog</Link>.
           </Box>
           <Box>
-            In the mean time, you're welcome to use the live version of TrendWeight at{" "}
-            <Link href="https://trendweight.com">trendweight.com</Link>.
+            In the mean time, you're welcome to use the live version of TrendWeight at <Link href="https://trendweight.com">trendweight.com</Link>.
           </Box>
           <Box>
             <LinkButton href="/">Return to Homepage</LinkButton>

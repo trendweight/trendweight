@@ -13,15 +13,7 @@ export const Navbar: React.FC = (props) => {
       <Stack direction="row" spacing={2} pl={4} py={3} flexGrow={1} align="center">
         {children.find((child) => child.type === Brand)?.props.children}
       </Stack>
-      <Stack
-        direction="row"
-        spacing={0}
-        display={{ base: "none", md: "flex" }}
-        alignSelf="stretch"
-        alignItems="stretch"
-        justifyContent="center"
-        pr={4}
-      >
+      <Stack direction="row" spacing={0} display={{ base: "none", md: "flex" }} alignSelf="stretch" alignItems="stretch" justifyContent="center" pr={4}>
         {children.find((child) => child.type === Links)?.props.children}
       </Stack>
 

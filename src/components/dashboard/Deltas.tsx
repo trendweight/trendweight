@@ -34,8 +34,7 @@ const Deltas = () => {
         {deltas.map((d) => {
           return (
             <Box key={d.period}>
-              Since {d.description}: <ChangeArrow change={d.delta} intendedDirection={intendedDirection} />{" "}
-              {formatMeasurement(d.delta, { type: mode })}
+              Since {d.description}: <ChangeArrow change={d.delta} intendedDirection={intendedDirection} /> {formatMeasurement(d.delta, { type: mode })}
             </Box>
           );
         })}

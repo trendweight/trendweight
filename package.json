@@ -74,7 +74,7 @@
   "prettier": {
     "arrowParens": "always",
     "tabWidth": 2,
-    "printWidth": 120
+    "printWidth": 160
   },
   "packageManager": "yarn@3.1.0"
 }

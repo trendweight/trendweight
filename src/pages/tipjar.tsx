@@ -9,15 +9,14 @@ const TipJar: Page = () => {
       <Box sx={{ "> * + *": { my: 4 } }}>
         <Heading pb={0}>Want to help support TrendWeight?</Heading>
         <Text>
-          TrendWeight is a free app. I created it in my free time because I like tech gadgets and I wanted a better way
-          to apply the concepts of the Hacker's Diet to my own day-to-day life. I didn't create it in order to make
-          money. However, from time to time, I get an email from someone asking if there is some way they can make a
-          donation to help support TrendWeight.
+          TrendWeight is a free app. I created it in my free time because I like tech gadgets and I wanted a better way to apply the concepts of the Hacker's
+          Diet to my own day-to-day life. I didn't create it in order to make money. However, from time to time, I get an email from someone asking if there is
+          some way they can make a donation to help support TrendWeight.
         </Text>
         <Text>
-          Since TrendWeight is a development project I work on in my free time, I don't have to pay employees to develop
-          or maintain the site. But there are some small fees I pay each month for the servers and software that power
-          TrendWeight. In the interest of transparency, let me tell you what those costs are.
+          Since TrendWeight is a development project I work on in my free time, I don't have to pay employees to develop or maintain the site. But there are
+          some small fees I pay each month for the servers and software that power TrendWeight. In the interest of transparency, let me tell you what those
+          costs are.
         </Text>
         <Text>
           In fact, <Link href="https://trendweight.io">trendweight.io</Link> pretty inexpensive to run:
@@ -32,17 +31,15 @@ const TipJar: Page = () => {
             /month
           </ListItem>
           <ListItem>
-            The database and authentication is on <Link href="https://firebase.google.com/pricing">Firebase</Link>:{" "}
-            <b>$0</b>/month
+            The database and authentication is on <Link href="https://firebase.google.com/pricing">Firebase</Link>: <b>$0</b>/month
           </ListItem>
         </UnorderedList>
         <Text>
           In total, my monthly expenses are <b>$30</b>/month.
         </Text>
         <Text>
-          Let me be <b>crystal clear</b>: I don't need help paying for TrendWeight. I can afford to run TrendWeight out
-          of my own pocket. I only have this page because people kept emailing me asking how to support the site. If you
-          really want to help, there are a few ways I can suggest...
+          Let me be <b>crystal clear</b>: I don't need help paying for TrendWeight. I can afford to run TrendWeight out of my own pocket. I only have this page
+          because people kept emailing me asking how to support the site. If you really want to help, there are a few ways I can suggest...
         </Text>
         <Divider />
         <Heading pb={0}>Tip with Ko-fi</Heading>

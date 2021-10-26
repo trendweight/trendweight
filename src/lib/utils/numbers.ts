@@ -92,10 +92,7 @@ export const formatNumber = (value: number, sign = false) => {
   }
 };
 
-export const formatMeasurement: (value: number, options: FormatOptions) => string = (
-  value: number,
-  { type, sign = false, units = true, metric = false }
-) => {
+export const formatMeasurement: (value: number, options: FormatOptions) => string = (value: number, { type, sign = false, units = true, metric = false }) => {
   if (type === "fatpercent") {
     if (units) {
       return formatPercent(value, sign);

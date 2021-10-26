@@ -30,8 +30,7 @@ const Stats = () => {
       <Heading>Overall Weight Statistics</Heading>
       <List>
         <ListItem>
-          You are {weightSlope > 0 ? "gaining" : "losing"} <b>{formatWeight(gainPerWeek, useMetric)}/week</b> of total
-          weight.{" "}
+          You are {weightSlope > 0 ? "gaining" : "losing"} <b>{formatWeight(gainPerWeek, useMetric)}/week</b> of total weight.{" "}
         </ListItem>
         <ListItem mt={4}>
           You have been tracking your weight for <b>{duration}</b>.
@@ -42,8 +41,7 @@ const Stats = () => {
           ) : (
             <>
               <ListItem>
-                You have <b>{formatWeight(Math.abs(distanceToGoal), useMetric)}</b> to{" "}
-                {distanceToGoal > 0 ? "lose" : "gain"} to reach your goal.
+                You have <b>{formatWeight(Math.abs(distanceToGoal), useMetric)}</b> to {distanceToGoal > 0 ? "lose" : "gain"} to reach your goal.
               </ListItem>
               {dateOfGoal && (
                 <ListItem>
@@ -55,8 +53,7 @@ const Stats = () => {
         {showCalories && ppw && ppw <= 0 && (
           <>
             <ListItem mt={4}>
-              You are burning <b>{formatNumber(caloriesPerDay)} cal/day</b> {weightSlope > 0 ? "less" : "more"} than you
-              are eat.
+              You are burning <b>{formatNumber(caloriesPerDay)} cal/day</b> {weightSlope > 0 ? "less" : "more"} than you are eat.
             </ListItem>
             <ListItem>
               {caloriesVsPlan < 0 ? (
@@ -112,12 +109,7 @@ const calculateDistanceToGoal = (measurements: Measurement[], metric: boolean, g
     return 0;
   }
 
-  if (
-    lastAboveMax &&
-    (!lastBelowMin || lastAboveMax.date.isAfter(lastBelowMin.date)) &&
-    lastBelowGoal &&
-    lastBelowGoal.date.isAfter(lastAboveMax.date)
-  ) {
+  if (lastAboveMax && (!lastBelowMin || lastAboveMax.date.isAfter(lastBelowMin.date)) && lastBelowGoal && lastBelowGoal.date.isAfter(lastAboveMax.date)) {
     // If was above max more recently the last time was below min,
     // and has been below the goal more recently then when it was above max.
     // In other words, weight is heading down and has passed the goal
@@ -126,12 +118,7 @@ const calculateDistanceToGoal = (measurements: Measurement[], metric: boolean, g
     return 0;
   }
 
-  if (
-    lastBelowMin &&
-    (!lastAboveMax || lastBelowMin.date.isAfter(lastAboveMax.date)) &&
-    lastAboveGoal &&
-    lastAboveGoal.date.isAfter(lastBelowMin.date)
-  ) {
+  if (lastBelowMin && (!lastAboveMax || lastBelowMin.date.isAfter(lastAboveMax.date)) && lastAboveGoal && lastAboveGoal.date.isAfter(lastBelowMin.date)) {
     // If was below min more recently the last time was above max,
     // and has been above the goal more recently then when it was below min.
     // In other words, weight is heading up and has passed the goal
@@ -144,18 +131,10 @@ const calculateDistanceToGoal = (measurements: Measurement[], metric: boolean, g
   return measurements[measurements.length - 1].trendWeight - goalWeight;
 };
 
-const calculateDateOfGoal = (
-  weightSlope: number,
-  lastMeasurement: Measurement,
-  goalWeight?: number,
-  distanceToGoal?: number
-) => {
+const calculateDateOfGoal = (weightSlope: number, lastMeasurement: Measurement, goalWeight?: number, distanceToGoal?: number) => {
   if (goalWeight && distanceToGoal) {
     const currentWeight = lastMeasurement.trendWeight;
-    if (
-      goalWeight &&
-      ((weightSlope > 0 && currentWeight < goalWeight) || (weightSlope <= 0 && currentWeight > goalWeight))
-    ) {
+    if (goalWeight && ((weightSlope > 0 && currentWeight < goalWeight) || (weightSlope <= 0 && currentWeight > goalWeight))) {
       return lastMeasurement.date.plusDays(Math.floor(Math.abs(distanceToGoal / weightSlope)));
     }
   }

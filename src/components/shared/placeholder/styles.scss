@@ -103,12 +103,7 @@
     .placeholder-paragraph-graph-image,
     .placeholder-grid-col > p,
     .placeholder-paragraph-rows > p {
-      background: linear-gradient(
-        -45deg,
-        var(--chakra-colors-gray-100) 25%,
-        var(--chakra-colors-gray-50) 37%,
-        var(--chakra-colors-gray-100) 63%
-      );
+      background: linear-gradient(-45deg, var(--chakra-colors-gray-100) 25%, var(--chakra-colors-gray-50) 37%, var(--chakra-colors-gray-100) 63%);
       background-size: 400% 100% !important;
       animation: placeholder-active 3s ease infinite;
     }

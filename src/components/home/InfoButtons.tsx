@@ -5,14 +5,7 @@ import LinkButton, { LinkButtonProps } from "../shared/LinkButton";
 import { HomeWidgetProps } from "./MainContent";
 
 const HomeLinkButton: FC<LinkButtonProps> = ({ ...props }) => (
-  <LinkButton
-    {...props}
-    as="a"
-    fontSize={{ base: 22, lg: 24 }}
-    fontWeight="normal"
-    width={{ base: "full", md: "320px" }}
-    p={{ base: 6, md: 7 }}
-  />
+  <LinkButton {...props} as="a" fontSize={{ base: 22, lg: 24 }} fontWeight="normal" width={{ base: "full", md: "320px" }} p={{ base: 6, md: 7 }} />
 );
 
 const InfoButtons: FC<HomeWidgetProps> = ({ area }) => {

@@ -16,10 +16,5 @@ export interface VendorService {
   getAuthorizationUrl: (state: string, callbackUrl: string) => string;
   exchangeAuthorizationCode: (code: string, callbackUrl: string) => Promise<AccessToken>;
   refreshToken: (token: AccessToken) => Promise<AccessToken>;
-  getMeasurements: (
-    token: AccessToken,
-    metric: boolean,
-    start: unknown,
-    offset?: unknown
-  ) => Promise<GetMeasurementsResult>;
+  getMeasurements: (token: AccessToken, metric: boolean, start: unknown, offset?: unknown) => Promise<GetMeasurementsResult>;
 }

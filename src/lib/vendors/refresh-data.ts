@@ -24,11 +24,7 @@ export const refreshAndGetSourceData = async (uid: string) => {
     if (withings) {
       const existingWithingsData = existingData?.find((d) => d.source === "withings");
 
-      if (
-        existingWithingsData &&
-        existingWithingsData.lastUpdate &&
-        Instant.parse(existingWithingsData?.lastUpdate).isAfter(recently)
-      ) {
+      if (existingWithingsData && existingWithingsData.lastUpdate && Instant.parse(existingWithingsData?.lastUpdate).isAfter(recently)) {
         dataToBeReturned.push(existingWithingsData);
       } else {
         if (expiresSoon(withings.token)) {
@@ -41,10 +37,7 @@ export const refreshAndGetSourceData = async (uid: string) => {
         dataToBeUpdated.push({
           source: "withings",
           lastUpdate: updatedWithingsData.lastUpdate,
-          measurements:
-            updatedWithingsData.measurements !== existingWithingsData?.measurements
-              ? updatedWithingsData.measurements
-              : undefined,
+          measurements: updatedWithingsData.measurements !== existingWithingsData?.measurements ? updatedWithingsData.measurements : undefined,
         });
       }
     }
@@ -55,12 +48,7 @@ export const refreshAndGetSourceData = async (uid: string) => {
   return dataToBeReturned;
 };
 
-const refreshWithings = async (
-  uid: string,
-  link: VendorLink,
-  metric: boolean,
-  existingData?: SourceData
-): Promise<SourceData> => {
+const refreshWithings = async (uid: string, link: VendorLink, metric: boolean, existingData?: SourceData): Promise<SourceData> => {
   let start: number;
   if (existingData && existingData.lastUpdate) {
     const lastUpdate = Instant.parse(existingData.lastUpdate);
