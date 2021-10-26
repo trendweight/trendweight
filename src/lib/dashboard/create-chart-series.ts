@@ -1,4 +1,4 @@
-import { SeriesLineOptions, SeriesOhlcOptions } from "highcharts/highstock";
+import { SeriesHlcOptions, SeriesLineOptions } from "highcharts/highstock";
 import { Mode } from "../interfaces";
 
 const colors = {
@@ -61,8 +61,8 @@ export const createDotSeries = (data: (number | null)[][], interpolated: boolean
 };
 
 export const createSinkersSeries = (data: (number | null)[][], interpolated: boolean) => {
-  const series: SeriesOhlcOptions = {
-    type: "ohlc",
+  const series: SeriesHlcOptions = {
+    type: "hlc",
     id: interpolated ? "estimated-sinkers" : "actual-sinkers",
     name: interpolated ? "Estimated Sinkers" : "Actual Sinkers",
     showInLegend: false,
