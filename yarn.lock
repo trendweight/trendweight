@@ -5214,7 +5214,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:<8.0.0":
+"eslint@npm:7.32.0":
   version: 7.32.0
   resolution: "eslint@npm:7.32.0"
   dependencies:
@@ -10426,7 +10426,7 @@ __metadata:
     clsx: 1.1.1
     cross-env: 7.0.3
     encoding: 0.1.13
-    eslint: <8.0.0
+    eslint: 7.32.0
     eslint-config-next: 12.0.0
     eslint-config-prettier: 8.3.0
     eslint-plugin-import: 2.25.2
