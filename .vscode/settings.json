@@ -27,5 +27,13 @@
     "**/.pnp.*": true
   },
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.exclude": {
+    ".next": true,
+    ".husky": true,
+    ".github": true,
+    ".yarn": true,
+    ".vscode": true,
+    "node_modules": true
+  }
 }
