@@ -1,26 +1,12 @@
-import { Box, Button, Center, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VisuallyHidden } from "@chakra-ui/react";
+import Login from "modules/auth/Login";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
 import { useAuth } from "../modules/auth/auth";
 import { Page } from "../modules/core/page";
-import Link from "../modules/shared/Link";
 
-const Login: Page = () => {
+const LoginPage: Page = () => {
   const auth = useAuth();
   const router = useRouter();
-  const [loginFailed, setLoginFailed] = useState<string | undefined>(undefined);
-  const { handleSubmit, formState, register } = useForm();
-  const { errors } = formState;
-
-  const onSubmit = handleSubmit(async (values) => {
-    try {
-      await auth.signInWithPassword(values.email, values.password);
-      setLoginFailed(undefined);
-    } catch (error: any) {
-      setLoginFailed(error.code);
-    }
-  });
 
   if (auth.isInitializing || auth.user) {
     if (auth.user) {
@@ -28,65 +14,11 @@ const Login: Page = () => {
     }
     return null;
   } else {
-    return (
-      <form onSubmit={onSubmit}>
-        <Center>
-          <Stack
-            bg={{ base: "inherit", md: "#f7f9fc" }}
-            borderRadius={{ base: 0, md: 8 }}
-            maxWidth="400px"
-            px={{ base: 0, md: 8 }}
-            py={{ base: 0, md: 12 }}
-            my={{ base: 4, md: 12 }}
-            shadow={{ base: "none", md: "md" }}
-            spacing={[6, 6]}
-            w="100%"
-          >
-            <Heading color="brand.500" pb={0}>
-              Sign In
-            </Heading>
-            <FormControl id="email" isInvalid={errors.email}>
-              <VisuallyHidden>
-                <FormLabel>Email</FormLabel>
-              </VisuallyHidden>
-              <Input
-                type="email"
-                placeholder="Email"
-                {...register("email", {
-                  required: "Please enter your email",
-                })}
-              />
-              <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
-            </FormControl>
-            <FormControl id="password" isInvalid={errors.password}>
-              <VisuallyHidden>
-                <FormLabel>Password</FormLabel>
-              </VisuallyHidden>
-              <Input type="password" placeholder="Password" {...register("password", { required: "Please enter your password" })} />
-              <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
-            </FormControl>
-            <Stack direction="row" align="center">
-              <Button isLoading={formState.isSubmitting} type="submit">
-                Sign In
-              </Button>
-              <Box>
-                or <Link href="/register">create an account</Link>
-              </Box>
-            </Stack>
-            <Stack>
-              <Link href="/resetpassword">forgot your password?</Link>
-              <Box hidden={!loginFailed} color="red.500">
-                Invalid email or password
-              </Box>
-            </Stack>
-          </Stack>
-        </Center>
-      </form>
-    );
+    return <Login />;
   }
 };
 
-Login.title = "Log In";
-Login.requireLogin = false;
+LoginPage.title = "Log In";
+LoginPage.requireLogin = false;
 
-export default Login;
+export default LoginPage;
