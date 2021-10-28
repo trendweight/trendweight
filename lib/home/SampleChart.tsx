@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import { FC } from "react";
-import chart from "../../../public/assets/chart-home.png";
+import chart from "../../public/assets/chart-home.png";
 import { HomeWidgetProps } from "./MainContent";
 
 const SampleChart: FC<HomeWidgetProps> = ({ area }) => (

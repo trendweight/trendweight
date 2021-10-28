@@ -1,8 +1,8 @@
-import Login from "modules/auth/Login";
+import Login from "lib/auth/Login";
 import { useRouter } from "next/router";
 import React from "react";
-import { useAuth } from "../modules/auth/auth";
-import { Page } from "../modules/core/page";
+import { useAuth } from "../lib/auth/auth";
+import { Page } from "../lib/core/page";
 
 const LoginPage: Page = () => {
   const auth = useAuth();

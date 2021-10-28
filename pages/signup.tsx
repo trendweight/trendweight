@@ -1,10 +1,10 @@
 import { Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
-import { useAuth } from "../modules/auth/auth";
-import { Page } from "../modules/core/page";
-import Link from "../modules/shared/Link";
-import LinkButton from "../modules/shared/LinkButton";
+import { useAuth } from "../lib/auth/auth";
+import { Page } from "../lib/core/page";
+import Link from "../lib/shared/Link";
+import LinkButton from "../lib/shared/LinkButton";
 
 const Register: Page = () => {
   const auth = useAuth();

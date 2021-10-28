@@ -8,7 +8,7 @@
     "dev-debug": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
-    "prettier": "prettier -w src public",
+    "prettier": "prettier -w pages lib public",
     "lint": "next lint",
     "analyze": "cross-env ANALYZE=true next build"
   },

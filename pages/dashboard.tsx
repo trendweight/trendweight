@@ -1,5 +1,5 @@
-import { Page } from "../modules/core/page";
-import Dashboard from "../modules/dashboard/Dashboard";
+import { Page } from "../lib/core/page";
+import Dashboard from "../lib/dashboard/Dashboard";
 
 const DashboardPage: Page = () => {
   return <Dashboard />;

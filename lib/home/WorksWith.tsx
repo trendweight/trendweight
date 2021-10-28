@@ -2,8 +2,8 @@ import { Box, Center, Icon, Stack, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import React, { FC } from "react";
 import { FaCheck } from "react-icons/fa";
-import fitbitAppLogo from "../../../public/assets/fitbit-app.png";
-import withingsAppLogo from "../../../public/assets/withings-app.png";
+import fitbitAppLogo from "../../public/assets/fitbit-app.png";
+import withingsAppLogo from "../../public/assets/withings-app.png";
 import Link from "../shared/Link";
 import { HomeWidgetProps } from "./MainContent";
 

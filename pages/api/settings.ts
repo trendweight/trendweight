@@ -1,7 +1,7 @@
 import type { NextApiResponse } from "next";
-import { ApiError } from "../../modules/api/exceptions";
-import { NextApiRequestWithAuth, withMiddleware } from "../../modules/api/middleware";
-import { db } from "../../modules/data/firebase/admin";
+import { ApiError } from "../../lib/api/exceptions";
+import { NextApiRequestWithAuth, withMiddleware } from "../../lib/api/middleware";
+import { db } from "../../lib/data/firebase/admin";
 
 const settings = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
   if (!req.userId) {

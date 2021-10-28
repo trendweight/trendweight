@@ -1,7 +1,7 @@
 import { Box, GridItem, Heading, Text } from "@chakra-ui/react";
 import React, { FC, PropsWithChildren } from "react";
-import { Page } from "../modules/core/page";
-import Link from "../modules/shared/Link";
+import { Page } from "../lib/core/page";
+import Link from "../lib/shared/Link";
 
 const proseSpacing = { "> * + *": { my: 4 } };
 

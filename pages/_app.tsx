@@ -7,13 +7,13 @@ import Script from "next/script";
 import React, { FC, PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { AuthProvider } from "../modules/auth/auth";
-import { Page } from "../modules/core/page";
-import PageWrapper from "../modules/layout/PageWrapper";
-import "../modules/shared/nprogress.css";
-import "../modules/shared/placeholder/styles.scss";
-import progress from "../modules/shared/progress";
-import theme from "../modules/theme";
+import { AuthProvider } from "../lib/auth/auth";
+import { Page } from "../lib/core/page";
+import PageWrapper from "../lib/layout/PageWrapper";
+import "../lib/shared/nprogress.css";
+import "../lib/shared/placeholder/styles.scss";
+import progress from "../lib/shared/progress";
+import theme from "../lib/theme";
 
 const queryClient = new QueryClient();
 

@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ApiError } from "../../../modules/api/exceptions";
-import { withMiddleware } from "../../../modules/api/middleware";
-import { updateLinkToken } from "../../../modules/data/links";
-import { OAuthState } from "../../../modules/vendors/vendor-interfaces";
-import { getCallbackHostname, withingsService } from "../../../modules/vendors/withings";
+import { ApiError } from "../../../lib/api/exceptions";
+import { withMiddleware } from "../../../lib/api/middleware";
+import { updateLinkToken } from "../../../lib/data/links";
+import { OAuthState } from "../../../lib/vendors/vendor-interfaces";
+import { getCallbackHostname, withingsService } from "../../../lib/vendors/withings";
 
 const getAuthUrl = async (req: NextApiRequest, res: NextApiResponse) => {
   const { code, state } = req.query;

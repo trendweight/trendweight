@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-sync-scripts */
 import { Box, Divider, Heading, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { Page } from "../modules/core/page";
-import Link from "../modules/shared/Link";
+import { Page } from "../lib/core/page";
+import Link from "../lib/shared/Link";
 
 const TipJar: Page = () => {
   return (

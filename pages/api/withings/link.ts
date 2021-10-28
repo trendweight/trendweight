@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import type { NextApiResponse } from "next";
-import { ApiError } from "../../../modules/api/exceptions";
-import { NextApiRequestWithAuth, withMiddleware } from "../../../modules/api/middleware";
-import { OAuthState } from "../../../modules/vendors/vendor-interfaces";
-import { getCallbackHostname, withingsService } from "../../../modules/vendors/withings";
+import { ApiError } from "../../../lib/api/exceptions";
+import { NextApiRequestWithAuth, withMiddleware } from "../../../lib/api/middleware";
+import { OAuthState } from "../../../lib/vendors/vendor-interfaces";
+import { getCallbackHostname, withingsService } from "../../../lib/vendors/withings";
 
 const link = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
   if (!req.userId) {
