@@ -2,11 +2,11 @@
 import { DayOfWeek, LocalDate } from "@js-joda/core";
 import _ from "lodash";
 import { useMemo } from "react";
-import { Modes } from "../core/interfaces";
-import { logCall } from "../core/logging";
-import { useMediaQuery } from "../shared/use-media-query";
+import { Modes } from "../../core/interfaces";
+import { logCall } from "../../core/logging";
+import { useMediaQuery } from "../../shared/use-media-query";
+import { DashboardData } from "../context";
 import chartOptionsTemplate from "./chart-options-template";
-import { DashboardData } from "./context";
 import { createDiamondsSeries, createDotSeries, createLineSeries, createProjectionSeries, createSinkersSeries, createTrendSeries } from "./create-chart-series";
 
 const toEpoch = (date: LocalDate) => date.toEpochDay() * 86400000;

@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { logRender } from "../core/logging";
 import BackgroundQueryProgress from "../shared/BackgroundQueryProgress";
 import Buttons from "./Buttons";
-import Chart from "./Chart";
+import Chart from "./chart/Chart";
 import { DashboardProvider, useComputeDashboardData } from "./context";
 import Currently from "./Currently";
 import DashboardPlaceholder from "./DashboardPlaceholder";
