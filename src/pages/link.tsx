@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { get } from "~/lib/api/fetch";
-import { Page } from "~/lib/core/page";
+import { get } from "../modules/api/fetch";
+import { Page } from "../modules/shared/page";
 
 const LinkAccount: Page = () => {
   const [isLoading, setIsLoading] = useState(false);

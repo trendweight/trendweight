@@ -1,7 +1,7 @@
 import { Box, Heading, Image, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import React from "react";
-import Link from "~/components/shared/Link";
-import { Page } from "~/lib/core/page";
+import Link from "../modules/shared/components/Link";
+import { Page } from "../modules/shared/page";
 
 const Privacy: Page = () => {
   return (

@@ -2,11 +2,11 @@ import { Box, Flex, Grid, Heading, Icon, ListItem, Text, UnorderedList } from "@
 import Image from "next/image";
 import React from "react";
 import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineRss, HiOutlineShoppingCart } from "react-icons/hi";
-import Link from "~/components/shared/Link";
-import LinkButton from "~/components/shared/LinkButton";
-import { useAuth } from "~/lib/core/auth";
-import { Page } from "~/lib/core/page";
 import screenshot from "../../public/assets/screenshot-large.png";
+import { useAuth } from "../modules/auth/auth";
+import Link from "../modules/shared/components/Link";
+import LinkButton from "../modules/shared/components/LinkButton";
+import { Page } from "../modules/shared/page";
 
 const About: Page = () => {
   const { isInitializing, user } = useAuth();

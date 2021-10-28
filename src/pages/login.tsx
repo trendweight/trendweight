@@ -2,9 +2,9 @@ import { Box, Button, Center, FormControl, FormErrorMessage, FormLabel, Heading,
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import Link from "~/components/shared/Link";
-import { useAuth } from "~/lib/core/auth";
-import { Page } from "~/lib/core/page";
+import { useAuth } from "../modules/auth/auth";
+import Link from "../modules/shared/components/Link";
+import { Page } from "../modules/shared/page";
 
 const Login: Page = () => {
   const auth = useAuth();

@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
-import Link from "~/components/shared/Link";
-import { settingsQuery } from "~/lib/api/queries";
-import { Page } from "~/lib/core/page";
+import { settingsQuery } from "../modules/api/queries";
+import Link from "../modules/shared/components/Link";
+import { Page } from "../modules/shared/page";
 
 const Settings: Page = () => {
   const query = useQuery(settingsQuery());

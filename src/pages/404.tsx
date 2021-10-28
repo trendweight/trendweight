@@ -1,6 +1,6 @@
 import { Box, Flex, Image, Stack } from "@chakra-ui/react";
-import LinkButton from "~/components/shared/LinkButton";
-import { Page } from "~/lib/core/page";
+import LinkButton from "../modules/shared/components/LinkButton";
+import { Page } from "../modules/shared/page";
 
 const PageNotFound: Page = () => (
   <Flex direction="column" minH="67vh" align={["flex-start", "center"]} justify={["flex-start", "center"]}>
