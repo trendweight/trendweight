@@ -1,9 +1,9 @@
 import { Flex } from "@chakra-ui/react";
 import React from "react";
-import Banner from "~/components/home/Banner";
-import MainContent from "~/components/home/MainContent";
-import Footer from "~/components/layout/Footer";
-import { Page } from "~/lib/core/page";
+import Banner from "../modules/home/Banner";
+import MainContent from "../modules/home/MainContent";
+import Footer from "../modules/layout/Footer";
+import { Page } from "../modules/shared/page";
 
 const Home: Page = () => {
   return (

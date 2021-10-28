@@ -1,7 +1,7 @@
 import { NextApiResponse } from "next";
-import { ApiError } from "~/lib/api/exceptions";
-import { NextApiRequestWithAuth, withMiddleware } from "~/lib/api/middleware";
-import { refreshAndGetSourceData } from "~/lib/vendors/refresh-data";
+import { ApiError } from "../../../modules/api/exceptions";
+import { NextApiRequestWithAuth, withMiddleware } from "../../../modules/api/middleware";
+import { refreshAndGetSourceData } from "../../../modules/vendors/refresh-data";
 
 const getData = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
   const uid = req.userId;

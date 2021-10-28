@@ -1,7 +1,7 @@
 import { Box, Flex, Image, Stack } from "@chakra-ui/react";
 import React from "react";
-import LinkButton from "~/components/shared/LinkButton";
-import { Page } from "~/lib/core/page";
+import LinkButton from "../modules/shared/components/LinkButton";
+import { Page } from "../modules/shared/page";
 
 const Oops: Page = () => {
   return (

@@ -1,5 +1,5 @@
-import Dashboard from "~/components/dashboard/Dashboard";
-import { Page } from "~/lib/core/page";
+import Dashboard from "../modules/dashboard/Dashboard";
+import { Page } from "../modules/shared/page";
 
 const DashboardPage: Page = () => {
   return <Dashboard />;
