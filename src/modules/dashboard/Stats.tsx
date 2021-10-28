@@ -2,9 +2,9 @@ import { Box, Heading, List, ListItem } from "@chakra-ui/react";
 import { ChronoUnit, LocalDate, Period } from "@js-joda/core";
 import _ from "lodash";
 import React from "react";
-import { shortDate } from "../shared/dates";
-import { Measurement } from "../shared/interfaces";
-import { formatNumber, formatWeight } from "../shared/numbers";
+import { shortDate } from "../core/dates";
+import { Measurement } from "../core/interfaces";
+import { formatNumber, formatWeight } from "../core/numbers";
 import { useDashboardData } from "./context";
 
 const Stats = () => {

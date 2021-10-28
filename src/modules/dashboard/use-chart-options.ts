@@ -2,8 +2,8 @@
 import { DayOfWeek, LocalDate } from "@js-joda/core";
 import _ from "lodash";
 import { useMemo } from "react";
-import { Modes } from "../shared/interfaces";
-import { logCall } from "../shared/logging";
+import { Modes } from "../core/interfaces";
+import { logCall } from "../core/logging";
 import { useMediaQuery } from "../shared/use-media-query";
 import chartOptionsTemplate from "./chart-options-template";
 import { DashboardData } from "./context";

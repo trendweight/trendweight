@@ -1,7 +1,7 @@
 import { Stack } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { useAuth } from "../auth/auth";
-import LinkButton, { LinkButtonProps } from "../shared/components/LinkButton";
+import LinkButton, { LinkButtonProps } from "../shared/LinkButton";
 import { HomeWidgetProps } from "./MainContent";
 
 const HomeLinkButton: FC<LinkButtonProps> = ({ ...props }) => (

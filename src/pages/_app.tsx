@@ -8,10 +8,10 @@ import React, { FC, PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { AuthProvider } from "../modules/auth/auth";
+import { Page } from "../modules/core/page";
 import PageWrapper from "../modules/layout/PageWrapper";
-import "../modules/shared/components/placeholder/styles.scss";
 import "../modules/shared/nprogress.css";
-import { Page } from "../modules/shared/page";
+import "../modules/shared/placeholder/styles.scss";
 import progress from "../modules/shared/progress";
 import theme from "../modules/theme";
 

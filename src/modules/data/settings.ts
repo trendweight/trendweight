@@ -1,4 +1,4 @@
-import { ProfileData, SettingsData } from "../shared/interfaces";
+import { ProfileData, SettingsData } from "../core/interfaces";
 import { db } from "./firebase/admin";
 
 export const getSettingsByUserId = async (uid: string) => {

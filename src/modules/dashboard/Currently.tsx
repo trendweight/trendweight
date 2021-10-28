@@ -2,9 +2,9 @@ import { Box, Stack } from "@chakra-ui/react";
 import { LocalDate } from "@js-joda/core";
 import _ from "lodash";
 import React from "react";
-import { shortDate } from "../shared/dates";
-import { DataPoint, Modes } from "../shared/interfaces";
-import { formatMeasurement } from "../shared/numbers";
+import { shortDate } from "../core/dates";
+import { DataPoint, Modes } from "../core/interfaces";
+import { formatMeasurement } from "../core/numbers";
 import ChangeArrow from "./ChangeArrow";
 import { useDashboardData } from "./context";
 

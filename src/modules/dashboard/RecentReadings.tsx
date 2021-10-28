@@ -1,8 +1,8 @@
 import { Box, Heading, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import _ from "lodash";
-import { recentDate } from "../shared/dates";
-import { Modes } from "../shared/interfaces";
-import { formatMeasurement } from "../shared/numbers";
+import { recentDate } from "../core/dates";
+import { Modes } from "../core/interfaces";
+import { formatMeasurement } from "../core/numbers";
 import { useDashboardData } from "./context";
 
 const RecentReadings = () => {

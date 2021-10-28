@@ -2,9 +2,9 @@ import axios from "axios";
 import { NextApiRequest } from "next";
 import qs from "qs";
 import { ApiError } from "../api/exceptions";
-import { AccessToken, RawMeasurement } from "../shared/interfaces";
+import { AccessToken, RawMeasurement } from "../core/interfaces";
 import { fromTokenValues } from "./access-token";
-import { VendorService } from "./interfaces";
+import { VendorService } from "./vendor-interfaces";
 
 export const getCallbackHostname = (req: NextApiRequest) => {
   let hostname = req.headers.host || "trendweight.io";

@@ -1,6 +1,6 @@
 import { Stack } from "@chakra-ui/react";
-import { ToggleButton } from "../shared/components/ToggleButton";
-import { ToggleButtonGroup } from "../shared/components/ToggleButtonGroup";
+import { ToggleButton } from "../shared/ToggleButton";
+import { ToggleButtonGroup } from "../shared/ToggleButtonGroup";
 import { useDashboardData } from "./context";
 
 const Buttons = () => {

@@ -1,9 +1,9 @@
 import { Instant } from "@js-joda/core";
 import equal from "fast-deep-equal";
+import { RawMeasurement, SourceData, VendorLink } from "../core/interfaces";
 import { getLinks, updateLinkToken } from "../data/links";
 import { getSettingsByUserId } from "../data/settings";
 import { getSourceData, updateSourceData } from "../data/source-data";
-import { RawMeasurement, SourceData, VendorLink } from "../shared/interfaces";
 import { expiresSoon } from "./access-token";
 import { withingsService } from "./withings";
 

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import "../core/time";
 import { auth } from "../data/firebase/admin";
-import "../shared/time";
 import { ApiError } from "./exceptions";
 
 export type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;

@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { DataPoint, Measurement, Mode } from "../../shared/interfaces";
-import { logCall } from "../../shared/logging";
+import { DataPoint, Measurement, Mode } from "../../core/interfaces";
+import { logCall } from "../../core/logging";
 
 const propertyFromMode = {
   weight: "Weight",

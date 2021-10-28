@@ -1,7 +1,7 @@
 import { ChronoUnit, LocalDate } from "@js-joda/core";
 import _ from "lodash";
-import { DataPoint, Delta, Measurement, Mode } from "../../shared/interfaces";
-import { log, logCall } from "../../shared/logging";
+import { DataPoint, Delta, Measurement, Mode } from "../../core/interfaces";
+import { log, logCall } from "../../core/logging";
 
 export const computeDeltas = (mode: Mode, dataPoints?: DataPoint[]) => {
   logCall("computeDeltas", mode);

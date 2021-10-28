@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../modules/auth/auth";
-import Link from "../modules/shared/components/Link";
-import { Page } from "../modules/shared/page";
+import { Page } from "../modules/core/page";
+import Link from "../modules/shared/Link";
 
 const Login: Page = () => {
   const auth = useAuth();

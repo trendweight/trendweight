@@ -1,5 +1,5 @@
 import { SeriesHlcOptions, SeriesLineOptions } from "highcharts/highstock";
-import { Mode } from "../shared/interfaces";
+import { Mode } from "../core/interfaces";
 
 const colors = {
   weight: "#8b0000",

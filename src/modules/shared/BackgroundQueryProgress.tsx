@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useIsFetching } from "react-query";
-import progress from "../progress";
+import progress from "./progress";
 
 const BackgroundQueryProgress = () => {
   const queryInProgress = useIsFetching();

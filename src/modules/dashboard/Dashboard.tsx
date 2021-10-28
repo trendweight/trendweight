@@ -1,7 +1,7 @@
 import { Box, Stack } from "@chakra-ui/react";
 import React, { FC } from "react";
-import BackgroundQueryProgress from "../shared/components/BackgroundQueryProgress";
-import { logRender } from "../shared/logging";
+import { logRender } from "../core/logging";
+import BackgroundQueryProgress from "../shared/BackgroundQueryProgress";
 import Buttons from "./Buttons";
 import Chart from "./Chart";
 import { DashboardProvider, useComputeDashboardData } from "./context";

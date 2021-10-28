@@ -3,8 +3,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import { settingsQuery } from "../api/queries";
-import Loading from "../shared/components/Loading";
-import { useTimezones } from "../shared/timezones";
+import { useTimezones } from "../core/timezones";
+import Loading from "../shared/Loading";
 import SettingsGroup from "./SettingsGroup";
 
 const Settings = () => {

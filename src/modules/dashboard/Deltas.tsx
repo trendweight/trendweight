@@ -1,7 +1,7 @@
 import { Box, Heading } from "@chakra-ui/react";
 import React from "react";
-import { Modes } from "../shared/interfaces";
-import { formatMeasurement } from "../shared/numbers";
+import { Modes } from "../core/interfaces";
+import { formatMeasurement } from "../core/numbers";
 import ChangeArrow from "./ChangeArrow";
 import { useDashboardData } from "./context";
 
