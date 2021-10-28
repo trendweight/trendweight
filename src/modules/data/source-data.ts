@@ -1,4 +1,4 @@
-import { RawMeasurement, SourceData, Sources } from "../shared/interfaces";
+import { RawMeasurement, SourceData, Sources } from "../core/interfaces";
 import { db } from "./firebase/admin";
 
 interface Metadata {

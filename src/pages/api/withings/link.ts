@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import type { NextApiResponse } from "next";
 import { ApiError } from "../../../modules/api/exceptions";
 import { NextApiRequestWithAuth, withMiddleware } from "../../../modules/api/middleware";
-import { OAuthState } from "../../../modules/vendors/interfaces";
+import { OAuthState } from "../../../modules/vendors/vendor-interfaces";
 import { getCallbackHostname, withingsService } from "../../../modules/vendors/withings";
 
 const link = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {

@@ -1,5 +1,5 @@
+import { Page } from "../modules/core/page";
 import Dashboard from "../modules/dashboard/Dashboard";
-import { Page } from "../modules/shared/page";
 
 const DashboardPage: Page = () => {
   return <Dashboard />;

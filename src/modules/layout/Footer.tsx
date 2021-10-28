@@ -1,7 +1,7 @@
 import { Box, Flex, Stack } from "@chakra-ui/react";
 import React from "react";
 import { FaFacebook, FaGithub, FaRss, FaTwitter } from "react-icons/fa";
-import Link from "../shared/components/Link";
+import Link from "../shared/Link";
 import LayoutContainer from "./LayoutContainer";
 
 const Footer = () => {

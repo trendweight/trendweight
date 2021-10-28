@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "../../../modules/api/exceptions";
 import { withMiddleware } from "../../../modules/api/middleware";
 import { updateLinkToken } from "../../../modules/data/links";
-import { OAuthState } from "../../../modules/vendors/interfaces";
+import { OAuthState } from "../../../modules/vendors/vendor-interfaces";
 import { getCallbackHostname, withingsService } from "../../../modules/vendors/withings";
 
 const getAuthUrl = async (req: NextApiRequest, res: NextApiResponse) => {

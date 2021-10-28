@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React, { useCallback } from "react";
 import { useAuth } from "../auth/auth";
-import Logo from "../shared/components/Logo";
+import Logo from "../shared/Logo";
 import LayoutContainer from "./LayoutContainer";
 import Navbar from "./nav/Navbar";
 import NavLink from "./nav/NavLink";

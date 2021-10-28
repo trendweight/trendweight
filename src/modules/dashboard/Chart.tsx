@@ -1,6 +1,6 @@
 import HighchartsReact from "highcharts-react-official";
 import Highstock from "highcharts/highstock";
-import { logRender } from "../shared/logging";
+import { logRender } from "../core/logging";
 import { useDashboardData } from "./context";
 import { useChartOptions } from "./use-chart-options";
 

@@ -1,6 +1,6 @@
 import equal from "fast-deep-equal";
 import { UseQueryOptions } from "react-query";
-import { ProfileData, SettingsData, SourceData } from "../shared/interfaces";
+import { ProfileData, SettingsData, SourceData } from "../core/interfaces";
 import { ApiError } from "./exceptions";
 import { get } from "./fetch";
 

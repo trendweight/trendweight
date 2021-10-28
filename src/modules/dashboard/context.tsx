@@ -4,7 +4,7 @@ import { createContext, FC, PropsWithChildren, useContext, useMemo, useState } f
 import { useQuery } from "react-query";
 import createPersistedState from "use-persisted-state";
 import { profileQuery, sourceDataQuery } from "../api/queries";
-import { DataPoint, Delta, Measurement, Mode, ProfileData, TimeRange } from "../shared/interfaces";
+import { DataPoint, Delta, Measurement, Mode, ProfileData, TimeRange } from "../core/interfaces";
 import { computeDataPoints } from "./computations/data-points";
 import { computeMeasurements } from "./computations/measurements";
 import { computeActiveSlope, computeDeltas, computeWeightSlope } from "./computations/stats";

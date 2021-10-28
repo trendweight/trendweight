@@ -1,9 +1,9 @@
 import { Box, Stack } from "@chakra-ui/react";
 import React from "react";
-import Loading from "../shared/components/Loading";
-import PlaceholderGraph from "../shared/components/placeholder/PlaceholderGraph";
-import PlaceholderGrid from "../shared/components/placeholder/PlaceholderGrid";
-import PlaceholderParagraph from "../shared/components/placeholder/PlaceholderParagraph";
+import Loading from "../shared/Loading";
+import PlaceholderGraph from "../shared/placeholder/PlaceholderGraph";
+import PlaceholderGrid from "../shared/placeholder/PlaceholderGrid";
+import PlaceholderParagraph from "../shared/placeholder/PlaceholderParagraph";
 
 const DashboardPlaceholder = () => {
   return (

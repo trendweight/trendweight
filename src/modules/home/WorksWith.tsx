@@ -4,7 +4,7 @@ import React, { FC } from "react";
 import { FaCheck } from "react-icons/fa";
 import fitbitAppLogo from "../../../public/assets/fitbit-app.png";
 import withingsAppLogo from "../../../public/assets/withings-app.png";
-import Link from "../shared/components/Link";
+import Link from "../shared/Link";
 import { HomeWidgetProps } from "./MainContent";
 
 const vendors = [

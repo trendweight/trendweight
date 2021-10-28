@@ -1,7 +1,7 @@
 import { Box, Stack } from "@chakra-ui/react";
 import React from "react";
 import LayoutContainer from "../layout/LayoutContainer";
-import Logo from "../shared/components/Logo";
+import Logo from "../shared/Logo";
 
 const Banner = () => {
   return (

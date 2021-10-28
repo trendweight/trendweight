@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "../../../modules/api/exceptions";
 import { withMiddleware } from "../../../modules/api/middleware";
-import { ProfileData } from "../../../modules/shared/interfaces";
+import { ProfileData } from "../../../modules/core/interfaces";
 
 const settings = async (req: NextApiRequest, res: NextApiResponse) => {
   const id = req.query.id;

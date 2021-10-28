@@ -1,5 +1,5 @@
 import Highstock from "highcharts/highstock";
-import { formatNumber } from "../shared/numbers";
+import { formatNumber } from "../core/numbers";
 
 const chartOptionsTemplate = () => {
   const options: Highstock.Options = {

@@ -4,9 +4,9 @@ import React from "react";
 import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineRss, HiOutlineShoppingCart } from "react-icons/hi";
 import screenshot from "../../public/assets/screenshot-large.png";
 import { useAuth } from "../modules/auth/auth";
-import Link from "../modules/shared/components/Link";
-import LinkButton from "../modules/shared/components/LinkButton";
-import { Page } from "../modules/shared/page";
+import { Page } from "../modules/core/page";
+import Link from "../modules/shared/Link";
+import LinkButton from "../modules/shared/LinkButton";
 
 const About: Page = () => {
   const { isInitializing, user } = useAuth();
