@@ -61,7 +61,7 @@ const BuildDetails: Page = () => {
             </Tr>
             <Tr>
               <Td>Build Time</Td>
-              <Td>{new Date().toISOString()}</Td>
+              <Td>{new Date().toUTCString()}</Td>
             </Tr>
           </Tbody>
         </Table>
