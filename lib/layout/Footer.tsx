@@ -12,10 +12,12 @@ const Footer = () => {
           &copy; 2012-{new Date().getFullYear()} Erv Walter
           {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA && (
             <>
-              , build{" "}
-              <Link href="/build" variant="footer">
+              {" "}
+              [build{" "}
+              <Link href="/build" variant="footer" fontWeight="normal">
                 {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 7)}
               </Link>
+              ]
             </>
           )}
         </Box>
