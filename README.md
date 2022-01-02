@@ -1,6 +1,6 @@
 # TrendWeight
 
-This is the source code for the next version of https://trendweight.io
+This is the source code for https://trendweight.io
 
 [![Build status](https://img.shields.io/github/checks-status/trendweight/trendweight/main?label=build)](https://github.com/trendweight/trendweight/commits/main)
 [![NextJS Version](https://img.shields.io/github/package-json/dependency-version/trendweight/trendweight/next)](https://nextjs.org)
