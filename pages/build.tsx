@@ -23,6 +23,13 @@ const BuildDetails: Page = () => {
       </>
     );
   } else {
+    const branch = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF;
+    let branchUrl;
+    if (branch === "main" || branch === "master") {
+      branchUrl = `https://github.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}`;
+    } else {
+      branchUrl = `https://github.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/tree/${branch}`;
+    }
     return (
       <>
         <Table variant="simple">
@@ -38,12 +45,18 @@ const BuildDetails: Page = () => {
               <Td>{process.env.NEXT_PUBLIC_VERCEL_ENV}</Td>
             </Tr>
             <Tr>
-              <Td>URL</Td>
-              <Td>{process.env.NEXT_PUBLIC_VERCEL_URL}</Td>
+              <Td>Repo</Td>
+              <Td>
+                <Link href={`https://github.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}`}>
+                  {process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/{process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}
+                </Link>
+              </Td>
             </Tr>
             <Tr>
               <Td>Branch</Td>
-              <Td>{process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF}</Td>
+              <Td>
+                <Link href={branchUrl}>{branch}</Link>
+              </Td>
             </Tr>
             <Tr>
               <Td>Commit</Td>
