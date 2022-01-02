@@ -9,9 +9,14 @@ const Footer = () => {
     <LayoutContainer as="footer" p={4}>
       <Flex direction={{ base: "column", md: "row" }} align="center" justifyContent="space-between" color="gray.300">
         <Box>
-          &copy; 2012-{new Date().getFullYear()} Erv Walter{" "}
+          &copy; 2012-{new Date().getFullYear()} Erv Walter
           {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA && (
-            <Link href="/build" variant="footer">{`(build ${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 7)})`}</Link>
+            <>
+              , build{" "}
+              <Link href="/build" variant="footer">
+                {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 7)}
+              </Link>
+            </>
           )}
         </Box>
         <Stack direction="row" spacing={{ base: 2, md: 4 }}>
