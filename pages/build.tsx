@@ -49,15 +49,19 @@ const BuildDetails: Page = () => {
               <Td>Commit</Td>
               <Td>
                 <Link
-                  href={`https://github.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/tree/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`}
+                  href={`https://github.com/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_OWNER}/${process.env.NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG}/commit/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`}
                 >
-                  {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 6)}
+                  {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 7)}
                 </Link>
               </Td>
             </Tr>
             <Tr>
               <Td>Commit Message</Td>
               <Td>{process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_MESSAGE}</Td>
+            </Tr>
+            <Tr>
+              <Td>Build Time</Td>
+              <Td>{new Date().toISOString()}</Td>
             </Tr>
           </Tbody>
         </Table>
