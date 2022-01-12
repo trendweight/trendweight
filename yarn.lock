@@ -9962,10 +9962,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"spacetime@npm:6.16.3":
-  version: 6.16.3
-  resolution: "spacetime@npm:6.16.3"
-  checksum: e5281f86bb328ca20387d92eb0e013c04f8a8602d7c10b6e73e7356544c5f8bdddf889f1f36bcbe8c16187b68fab5c8e2a68e6e6fcdb93aee3e167ae0ac72464
+"spacetime@npm:7.1.0":
+  version: 7.1.0
+  resolution: "spacetime@npm:7.1.0"
+  checksum: 65bda81341f0ef0b27181046eb8d455b3ad3ea76095f8067e22c8bb03ca1363d4d6c2fdd9c4895f786d7120c0a1fc880923606fbeb8ebb9b87e4cb3a834b8bed
   languageName: node
   linkType: hard
 
@@ -10564,7 +10564,7 @@ __metadata:
     react-query: 3.34.7
     regenerator-runtime: 0.13.9
     sass: 1.45.2
-    spacetime: 6.16.3
+    spacetime: 7.1.0
     spacetime-informal: 0.6.1
     typescript: 4.5.4
     use-persisted-state: 0.3.3
