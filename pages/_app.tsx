@@ -14,6 +14,7 @@ import "../lib/shared/nprogress.css";
 import "../lib/shared/placeholder/styles.scss";
 import progress from "../lib/shared/progress";
 import theme from "../lib/theme";
+import "../lib/theme/fonts.scss";
 
 const queryClient = new QueryClient();
 

@@ -1,7 +1,7 @@
 const typography = {
   fonts: {
-    body: "Inter, Roboto, Helvetica, Arial, sans-serif",
-    heading: "Inter, Roboto, Helvetica, Arial, sans-serif",
+    body: "InterVariable, Roboto, Helvetica, Arial, sans-serif",
+    heading: "InterVariable, Roboto, Helvetica, Arial, sans-serif",
   },
 };
 

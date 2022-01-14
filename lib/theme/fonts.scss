@@ -1,0 +1,5 @@
+@use "@fontsource/inter/scss/mixins" as Inter;
+@use "@fontsource/zilla-slab/scss/mixins" as ZillaSlab;
+
+@include ZillaSlab.fontFace($weight: 700, $display: block);
+@include Inter.fontFaceVariable($display: fallback);
