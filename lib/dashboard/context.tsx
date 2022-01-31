@@ -26,7 +26,7 @@ export const DashboardProvider: FC<PropsWithChildren<{ data: DashboardData }>> =
   <dashboardContext.Provider value={data}>{children}</dashboardContext.Provider>
 );
 
-const useTimeRangeState = createPersistedState("timeRange");
+const useTimeRangeState = createPersistedState<TimeRange>("timeRange");
 
 export const useDashboardData = (): DashboardData => {
   const data = useContext(dashboardContext);
@@ -38,7 +38,7 @@ export const useDashboardData = (): DashboardData => {
 
 export const useComputeDashboardData = (user?: string) => {
   const [mode, setMode] = useState<Mode>("weight");
-  const [timeRange, setTimeRange] = useTimeRangeState<TimeRange>("4w");
+  const [timeRange, setTimeRange] = useTimeRangeState("4w");
 
   const profile = useQuery(profileQuery(user)).data!;
   const sourceData = useQuery(sourceDataQuery(user)).data!;
