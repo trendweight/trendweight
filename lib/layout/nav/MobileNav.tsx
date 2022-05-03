@@ -1,5 +1,5 @@
 import { Box, Collapse, Flex, useOutsideClick } from "@chakra-ui/react";
-import { RefObject } from "react";
+import { FC, PropsWithChildren, RefObject } from "react";
 
 interface Props {
   isOpen?: boolean;
@@ -7,7 +7,7 @@ interface Props {
   wrapperRef: RefObject<HTMLElement>;
 }
 
-const MobileNav: React.FC<Props> = (props) => {
+const MobileNav: FC<PropsWithChildren<Props>> = (props) => {
   const { isOpen, onClose, children, wrapperRef } = props;
   useOutsideClick({
     ref: wrapperRef,

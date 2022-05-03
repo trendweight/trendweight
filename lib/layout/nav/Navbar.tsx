@@ -1,9 +1,9 @@
 import { Box, Button, Flex, Icon, Stack, useDisclosure } from "@chakra-ui/react";
-import React, { isValidElement, ReactElement, useRef } from "react";
+import React, { FC, isValidElement, ReactElement, ReactNode, useRef } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 import MobileNav from "./MobileNav";
 
-export const Navbar: React.FC = (props) => {
+export const Navbar: FC<{ children: ReactNode }> = (props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const mobileNav = useDisclosure();
   const children = React.Children.toArray(props.children).filter<ReactElement>(isValidElement);
@@ -39,7 +39,7 @@ export const Navbar: React.FC = (props) => {
   );
 };
 
-const Brand: React.FC = () => null;
-const Links: React.FC = () => null;
+const Brand: FC<{ children: ReactNode }> = () => null;
+const Links: FC<{ children: ReactNode }> = () => null;
 
 export default Object.assign(Navbar, { Brand, Links });
