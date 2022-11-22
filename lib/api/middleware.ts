@@ -44,6 +44,7 @@ const withVerifyJWT = (handler: ApiHandler) => {
     try {
       const { uid } = await auth.verifyIdToken(token);
       (req as NextApiRequestWithAuth).userId = uid;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new ApiError(error.code, error.message, 403);
     }

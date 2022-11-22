@@ -1,6 +1,4 @@
 import { FormControl, FormLabel, Input, Select, Stack, StackDivider, VStack } from "@chakra-ui/react";
-import React from "react";
-import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import { settingsQuery } from "../api/queries";
 import { useTimezones } from "../core/timezones";
@@ -10,7 +8,7 @@ import SettingsGroup from "./SettingsGroup";
 const Settings = () => {
   const query = useQuery(settingsQuery());
   const timezones = useTimezones();
-  const form = useForm();
+  // const form = useForm();
 
   if (query.isLoading || query.isIdle) {
     return <Loading />;

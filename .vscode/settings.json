@@ -35,5 +35,6 @@
     ".yarn": true,
     ".vscode": true,
     "node_modules": true
-  }
+  },
+  "cSpell.words": ["automerge", "chakra", "ervwalter", "highcharts", "Highstock", "ohlc", "resetpassword"]
 }

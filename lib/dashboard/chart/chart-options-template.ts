@@ -92,7 +92,8 @@ const chartOptionsTemplate = () => {
     yAxis: {
       allowDecimals: false,
       showFirstLabel: false,
-      showLastLabel: false,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      showLastLabel: false as any,
       endOnTick: true,
       startOnTick: true,
       lineWidth: 0,

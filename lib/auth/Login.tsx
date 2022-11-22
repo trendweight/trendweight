@@ -1,5 +1,5 @@
 import { Box, Button, Center, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VisuallyHidden } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../auth/auth";
 import Link from "../shared/Link";
@@ -14,6 +14,7 @@ const Login = () => {
     try {
       await auth.signInWithPassword(values.email, values.password);
       setLoginFailed(undefined);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setLoginFailed(error.code);
     }
@@ -36,7 +37,7 @@ const Login = () => {
           <Heading color="brand.500" pb={0}>
             Sign In
           </Heading>
-          <FormControl id="email" isInvalid={errors.email}>
+          <FormControl id="email" isInvalid={!!errors.email}>
             <VisuallyHidden>
               <FormLabel>Email</FormLabel>
             </VisuallyHidden>
@@ -47,14 +48,14 @@ const Login = () => {
                 required: "Please enter your email",
               })}
             />
-            <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
+            <FormErrorMessage>{errors?.email?.message as string}</FormErrorMessage>
           </FormControl>
-          <FormControl id="password" isInvalid={errors.password}>
+          <FormControl id="password" isInvalid={!!errors.password}>
             <VisuallyHidden>
               <FormLabel>Password</FormLabel>
             </VisuallyHidden>
             <Input type="password" placeholder="Password" {...register("password", { required: "Please enter your password" })} />
-            <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
+            <FormErrorMessage>{errors?.password?.message as string}</FormErrorMessage>
           </FormControl>
           <Stack direction="row" align="center">
             <Button isLoading={formState.isSubmitting} type="submit">
