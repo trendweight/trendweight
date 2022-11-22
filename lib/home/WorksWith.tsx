@@ -1,6 +1,6 @@
 import { Box, Center, Icon, Stack, Text } from "@chakra-ui/react";
 import Image from "next/image";
-import React, { FC } from "react";
+import { FC } from "react";
 import { FaCheck } from "react-icons/fa";
 import fitbitAppLogo from "../../public/assets/fitbit-app.png";
 import withingsAppLogo from "../../public/assets/withings-app.png";
@@ -53,14 +53,7 @@ const WorksWith: FC<HomeWidgetProps> = ({ area }) => {
         <Link key={vendor.name} href={vendor.url} w={{ base: "full", md: "auto" }} order={2} pr={{ md: 6 }} color="black" _hover={{ textDecoration: "none" }}>
           <Center boxSize={56} bg="gray.50" _hover={{ bg: "gray.100" }} borderWidth={1} borderColor="gray.200" rounded="2xl">
             <Stack direction="column" alignItems="center" p={1}>
-              <Image
-                src={vendor.app.logo}
-                layout="fixed"
-                objectFit="contain"
-                alt={`${vendor.name} app logo`}
-                height={vendor.app.height}
-                width={vendor.app.width}
-              />
+              <Image src={vendor.app.logo} objectFit="contain" alt={`${vendor.name} app logo`} height={vendor.app.height} width={vendor.app.width} />
               <Stack direction="column" alignItems="center" lineHeight={1} spacing={0}>
                 <Text color="brand.500" fontWeight="bold">
                   Works with

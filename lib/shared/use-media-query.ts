@@ -13,7 +13,7 @@ export const useMediaQuery = (query: string) => {
     }
   }, []);
 
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     const media = window.matchMedia(query);
     media.addEventListener("change", updateTarget);
 
@@ -23,7 +23,7 @@ export const useMediaQuery = (query: string) => {
     }
 
     return () => media.removeEventListener("change", updateTarget);
-  }, []);
+  }, [query, updateTarget]);
 
   return targetReached;
 };

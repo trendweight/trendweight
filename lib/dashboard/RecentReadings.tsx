@@ -29,7 +29,9 @@ const RecentReadings = () => {
         <Tbody>
           {readings.map((m) => (
             <Tr key={m.date.toEpochDay()}>
-              <Td pl={0}>{recentDate(m.date)}</Td>
+              <Td pl={0} suppressHydrationWarning>
+                {recentDate(m.date)}
+              </Td>
               <Td color="gray.400" textAlign="right">
                 {formatMeasurement(m.actual, { type: mode, metric: useMetric, units: false })}
               </Td>
