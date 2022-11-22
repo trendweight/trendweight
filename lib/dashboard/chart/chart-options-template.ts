@@ -3,6 +3,9 @@ import { formatNumber } from "../../core/numbers";
 
 const chartOptionsTemplate = () => {
   const options: Highstock.Options = {
+    accessibility: {
+      enabled: false,
+    },
     chart: {
       plotBorderWidth: 0.25,
       plotBorderColor: "#999999",

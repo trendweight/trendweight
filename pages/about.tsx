@@ -1,6 +1,5 @@
 import { Box, Flex, Grid, Heading, Icon, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import Image from "next/image";
-import React from "react";
 import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineRss, HiOutlineShoppingCart } from "react-icons/hi";
 import { useAuth } from "../lib/auth/auth";
 import { Page } from "../lib/core/page";
@@ -16,7 +15,14 @@ const About: Page = () => {
     <Box>
       <Box display={{ base: "none", md: "block" }} float="right" pb={4} pl={4} bg="white" width={400}>
         <Link href="demo">
-          <Image src={screenshot} layout="intrinsic" alt="dashboard screenshot" />
+          <Image
+            src={screenshot}
+            alt="dashboard screenshot"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+            }}
+          />
         </Link>
       </Box>
       <Heading>What is TrendWeight, Exactly?</Heading>

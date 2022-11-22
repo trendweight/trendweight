@@ -1,9 +1,6 @@
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
-});
-
-module.exports = withBundleAnalyzer({
-  optimizeFonts: true,
+module.exports = {
+  reactStrictMode: true,
+  swcMinify: false, // required for now to avoid bug with minifying js-joda
   images: {
     formats: ["image/avif", "image/webp"],
   },
@@ -19,4 +16,4 @@ module.exports = withBundleAnalyzer({
       },
     ];
   },
-});
+};
