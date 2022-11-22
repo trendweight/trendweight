@@ -1,5 +1,5 @@
 import { Box, Center, Icon, Stack, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React, { FC } from "react";
 import { FaCheck } from "react-icons/fa";
 import fitbitAppLogo from "../../public/assets/fitbit-app.png";

@@ -1,5 +1,5 @@
 import { Box, Flex, Grid, Heading, Icon, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React from "react";
 import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineRss, HiOutlineShoppingCart } from "react-icons/hi";
 import { useAuth } from "../lib/auth/auth";
