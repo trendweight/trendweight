@@ -1,25 +1,23 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
+    "config:base",
+    "group:allNonMajor",
+    "helpers:disableTypesNodeMajor",
     ":separateMajorReleases",
     ":combinePatchMinorReleases",
     ":ignoreUnstable",
-    ":prImmediately",
-    ":semanticPrefixFixDepsChoreOthers",
-    ":updateNotScheduled",
-    ":automergeDisabled",
-    ":ignoreModulesAndTests",
-    ":autodetectPinVersions",
-    ":dependencyDashboard",
+    ":prNotPending",
     ":prHourlyLimitNone",
     ":prConcurrentLimitNone",
+    ":updateNotScheduled",
+    ":automergeDisabled",
     ":rebaseStalePrs",
-    "group:monorepos",
-    "group:recommended",
-    "group:allNonMajor",
-    ":maintainLockFilesMonthly",
-    "helpers:disableTypesNodeMajor"
+    ":pinVersions",
+    ":maintainLockFilesMonthly"
   ],
-  "schedule": ["before 5am on Monday"],
   "timezone": "America/Chicago",
+  "schedule": ["before 6am on Saturday"],
+  "assignees": ["ervwalter"],
   "labels": ["dependencies"]
 }
