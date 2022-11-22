@@ -7,7 +7,7 @@ export interface LinkButtonProps extends ButtonProps {
 }
 
 const LinkButton: FC<LinkButtonProps> = ({ href, ...rest }) => (
-  <NextLink href={href} passHref legacyBehavior>
+  <NextLink href={href} passHref>
     <Button as="a" {...rest} />
   </NextLink>
 );

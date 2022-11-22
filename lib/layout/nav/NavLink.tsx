@@ -43,7 +43,7 @@ const NavLink: FC<NavLinkProps> = ({ href, show = true, ...rest }) => {
 
   if (href) {
     return (
-      <NextLink href={href} passHref legacyBehavior>
+      <NextLink href={href} passHref>
         {chakraLink}
       </NextLink>
     );

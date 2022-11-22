@@ -57,7 +57,7 @@ const Link: FC<Props> = ({ href, children, ...rest }) => {
     );
   } else {
     return (
-      <NextLink href={href} legacyBehavior>
+      <NextLink href={href}>
         <ChakraLink {...rest}>{children}</ChakraLink>
       </NextLink>
     );
