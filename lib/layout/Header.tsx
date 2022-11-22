@@ -21,11 +21,9 @@ const Header = () => {
         <Navbar>
           <Navbar.Brand>
             <NextLink href="/">
-              <a>
-                <Box fontFamily="Zilla Slab" fontSize="2rem" fontWeight={700} lineHeight="1.25rem">
-                  TrendWeight
-                </Box>
-              </a>
+              <Box fontFamily="Zilla Slab" fontSize="2rem" fontWeight={700} lineHeight="1.25rem">
+                TrendWeight
+              </Box>
             </NextLink>
             <Logo height="32px" width="77.13px" />
           </Navbar.Brand>
