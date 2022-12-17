@@ -1,6 +1,5 @@
 module.exports = {
   reactStrictMode: true,
-  swcMinify: false, // required for now to avoid bug with minifying js-joda
   images: {
     formats: ["image/avif", "image/webp"],
   },
