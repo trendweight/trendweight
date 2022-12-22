@@ -41,7 +41,7 @@ specifiers:
   highcharts-react-official: 3.1.0
   husky: 8.0.2
   jest: 29.3.1
-  jsonwebtoken: 8.5.1
+  jsonwebtoken: 9.0.0
   lodash: 4.17.21
   next: 13.0.7
   npm-run-all: 4.1.5
@@ -82,7 +82,7 @@ dependencies:
   framer-motion: 7.10.2_biqbaboplfbrettd7655fr4n2y
   highcharts: 10.3.2
   highcharts-react-official: 3.1.0_te4ewwxaxwecf5nz7fx3ln6n5m
-  jsonwebtoken: 8.5.1
+  jsonwebtoken: 9.0.0
   lodash: 4.17.21
   next: 13.0.7_ufbfruihzbho6n4jkpynvghrd4
   nprogress: 0.2.0
@@ -5880,6 +5880,16 @@ packages:
       lodash.once: 4.1.1
       ms: 2.1.3
       semver: 5.7.1
+    dev: false
+
+  /jsonwebtoken/9.0.0:
+    resolution: {integrity: sha512-tuGfYXxkQGDPnLJ7SibiQgVgeDgfbPq2k2ICcbgqW8WxWLBAxKQM/ZCu/IT8SOSwmaYl4dpTFCW5xZv7YbbWUw==}
+    engines: {node: '>=12', npm: '>=6'}
+    dependencies:
+      jws: 3.2.2
+      lodash: 4.17.21
+      ms: 2.1.3
+      semver: 7.3.8
     dev: false
 
   /jsx-ast-utils/3.3.3:
