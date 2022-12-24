@@ -12,7 +12,7 @@ specifiers:
   '@js-joda/timezone': 2.15.0
   '@next/bundle-analyzer': 13.0.7
   '@next/eslint-plugin-next': 13.0.7
-  '@types/jsonwebtoken': 8.5.9
+  '@types/jsonwebtoken': 9.0.0
   '@types/lodash': 4.14.191
   '@types/node': 18.11.16
   '@types/nprogress': 0.2.0
@@ -101,7 +101,7 @@ dependencies:
 devDependencies:
   '@next/bundle-analyzer': 13.0.7
   '@next/eslint-plugin-next': 13.0.7
-  '@types/jsonwebtoken': 8.5.9
+  '@types/jsonwebtoken': 9.0.0
   '@types/lodash': 4.14.191
   '@types/node': 18.11.16
   '@types/nprogress': 0.2.0
@@ -3001,6 +3001,13 @@ packages:
     resolution: {integrity: sha512-272FMnFGzAVMGtu9tkr29hRL6bZj4Zs1KZNeHLnKqAvp06tAIcarTMwOh8/8bz4FmKRcMxZhZNeUAQsNLoiPhg==}
     dependencies:
       '@types/node': 18.11.16
+    dev: false
+
+  /@types/jsonwebtoken/9.0.0:
+    resolution: {integrity: sha512-mM4TkDpA9oixqg1Fv2vVpOFyIVLJjm5x4k0V+K/rEsizfjD7Tk7LKk3GTtbB7KCfP0FEHQtsZqFxYA0+sijNVg==}
+    dependencies:
+      '@types/node': 18.11.16
+    dev: true
 
   /@types/linkify-it/3.0.2:
     resolution: {integrity: sha512-HZQYqbiFVWufzCwexrvh694SOim8z2d+xJl5UNamcvQFejLY/2YUtzXHYi3cHdI7PMlS8ejH2slRAOJQ32aNbA==}
