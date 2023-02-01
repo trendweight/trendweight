@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-
-const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+import { useCallback, useLayoutEffect, useState } from "react";
 
 export const useMediaQuery = (query: string) => {
   const [targetReached, setTargetReached] = useState(false);
