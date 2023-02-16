@@ -62,7 +62,7 @@ const Login = () => {
               Sign In
             </Button>
             <Box>
-              or <Link href="/register">create an account</Link>
+              or <Link href="/signup">create an account</Link>
             </Box>
           </Stack>
           <Stack>
