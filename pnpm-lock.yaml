@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
   '@chakra-ui/react':
@@ -20,8 +24,8 @@ dependencies:
     specifier: 4.5.15
     version: 4.5.15
   '@fontsource/zilla-slab':
-    specifier: 4.5.9
-    version: 4.5.9
+    specifier: 5.0.3
+    version: 5.0.3
   '@js-joda/core':
     specifier: 5.5.3
     version: 5.5.3
@@ -2231,8 +2235,8 @@ packages:
     resolution: {integrity: sha512-FzleM9AxZQK2nqsTDtBiY0PMEVWvnKnuu2i09+p6DHvrHsuucoV2j0tmw+kAT3L4hvsLdAIDv6MdGehsPIdT+Q==}
     dev: false
 
-  /@fontsource/zilla-slab@4.5.9:
-    resolution: {integrity: sha512-gTZSx1DEribXaB1uDEddqr6DhEoikUuM5SAOx1OwdSmg+Im2y97fAYxbJzFUZ+AX8seLCAIP2uT5RS4J3nOG4g==}
+  /@fontsource/zilla-slab@5.0.3:
+    resolution: {integrity: sha512-E/iDNeYBFP2E3j082e9UDZRfHpt4a0yEPhiB9NDzvLZ1di7VVxLKOjth80m0/cDhj3Z/10f5TRYMFyZ1i6M+WA==}
     dev: false
 
   /@google-cloud/firestore@6.6.0(encoding@0.1.13):
