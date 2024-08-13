@@ -22,7 +22,7 @@
     "@fontsource/zilla-slab": "4.5.9",
     "@js-joda/core": "5.5.3",
     "@js-joda/timezone": "2.18.0",
-    "axios": "1.4.0",
+    "axios": "1.7.4",
     "clsx": "1.2.1",
     "encoding": "0.1.13",
     "fast-deep-equal": "3.1.3",
