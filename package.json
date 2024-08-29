@@ -30,7 +30,7 @@
     "firebase-admin": "11.8.0",
     "focus-visible": "5.2.0",
     "framer-motion": "10.12.16",
-    "highcharts": "10.3.3",
+    "highcharts": "11.4.8",
     "highcharts-react-official": "3.2.0",
     "jsonwebtoken": "9.0.0",
     "lodash": "4.17.21",
