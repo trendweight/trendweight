@@ -49,8 +49,8 @@
     "use-persisted-state": "0.3.3"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "13.4.4",
-    "@next/eslint-plugin-next": "13.4.4",
+    "@next/bundle-analyzer": "14.2.13",
+    "@next/eslint-plugin-next": "14.2.13",
     "@types/jsonwebtoken": "9.0.2",
     "@types/lodash": "4.14.195",
     "@types/node": "18.16.16",
@@ -62,7 +62,7 @@
     "@typescript-eslint/parser": "5.59.7",
     "cross-env": "7.0.3",
     "eslint": "8.41.0",
-    "eslint-config-next": "13.4.4",
+    "eslint-config-next": "14.2.13",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-jsx-a11y": "6.7.1",
