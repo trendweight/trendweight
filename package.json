@@ -29,7 +29,7 @@
     "firebase": "9.22.1",
     "firebase-admin": "11.8.0",
     "focus-visible": "5.2.0",
-    "framer-motion": "10.12.16",
+    "framer-motion": "11.9.0",
     "highcharts": "10.3.3",
     "highcharts-react-official": "3.2.0",
     "jsonwebtoken": "9.0.0",
