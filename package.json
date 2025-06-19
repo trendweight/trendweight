@@ -13,7 +13,10 @@
     "analyze": "cross-env ANALYZE=true next build",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@chakra-ui/react": "2.6.1",
@@ -54,6 +57,7 @@
   "devDependencies": {
     "@next/bundle-analyzer": "13.4.4",
     "@next/eslint-plugin-next": "13.4.4",
+    "@playwright/test": "1.53.1",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
