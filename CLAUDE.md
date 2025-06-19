@@ -14,6 +14,12 @@ TrendWeight is a Next.js web application for tracking weight trends by integrati
 - The project name is **TrendWeight** (capital T, capital W, no space)
 - Use this capitalization consistently in code, namespaces, and project names
 
+### Note on Compatibility
+- **The legacy system is NOT live and has NO active users**
+- We are NOT maintaining backward compatibility
+- This is a greenfield rebuild with freedom to modernize
+- Use modern patterns and libraries rather than mimicking legacy approaches
+
 The new architecture:
 - **Backend**: C# ASP.NET Core API (replacing Next.js API routes)
 - **Frontend**: Vite + React SPA (replacing Next.js)

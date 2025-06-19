@@ -7,6 +7,12 @@ Instead of migrating the existing Next.js app in place, we'll build a new Vite +
 **Architecture**: Vite React SPA + C# ASP.NET Core API + Firebase  
 **Status**: Phase 1 Complete ✅
 
+### Important Context
+- **The legacy system is NOT live and has NO active users**
+- This is a greenfield rebuild with freedom to modernize
+- We should use modern patterns rather than copying legacy approaches
+- See `apps/api/TrendWeight/MODERNIZATION_NOTES.md` for specific improvements
+
 ## Previous Modernization Progress
 
 ### Test Infrastructure (Phase 1 - 90% Complete)
