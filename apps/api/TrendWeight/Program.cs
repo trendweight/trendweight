@@ -1,9 +1,18 @@
+using TrendWeight.Infrastructure.Extensions;
+using TrendWeight.Infrastructure.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add Firebase authentication
+builder.Services.AddFirebaseAuthentication(builder.Configuration);
+
+// Add TrendWeight services
+builder.Services.AddTrendWeightServices();
 
 // Add CORS for development
 builder.Services.AddCors(options =>
@@ -21,6 +30,8 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
