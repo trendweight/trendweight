@@ -1,0 +1,80 @@
+import { Link } from '@tanstack/react-router'
+import { Logo } from './Logo'
+import { Container } from './Container'
+
+export function Header() {
+  // TODO: Add auth logic when implemented
+  const isLoggedIn = false
+  const isInitializing = false
+  const visibility = isInitializing ? 'invisible' : 'visible'
+
+  return (
+    <header className="bg-brand-500 text-white">
+      <Container>
+        <nav className="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-2 py-3">
+            <Link to="/" className="font-logo text-3xl font-bold leading-tight">
+              TrendWeight
+            </Link>
+            <Logo className="h-8 w-auto" />
+          </div>
+          <div className="flex flex-wrap gap-x-1">
+            <NavLink to="/" visibility={visibility}>
+              Home
+            </NavLink>
+            {isLoggedIn && (
+              <>
+                <NavLink to="/dashboard" visibility={visibility}>
+                  Dashboard
+                </NavLink>
+                <NavLink to="/settings" visibility={visibility}>
+                  Settings
+                </NavLink>
+              </>
+            )}
+            <NavLink to="/about" visibility={visibility}>
+              Learn
+            </NavLink>
+            {!isLoggedIn ? (
+              <>
+                <NavLink to="/signup" visibility={visibility}>
+                  Sign Up
+                </NavLink>
+                <NavLink to="/login" visibility={visibility}>
+                  Log In
+                </NavLink>
+              </>
+            ) : (
+              <button 
+                className={`flex items-center py-2 px-3 rounded md:rounded-none hover:bg-white hover:text-brand-800 transition-colors ${visibility}`}
+                onClick={() => {/* TODO: implement sign out */}}
+              >
+                Log Out
+              </button>
+            )}
+          </div>
+        </nav>
+      </Container>
+    </header>
+  )
+}
+
+interface NavLinkProps {
+  to: string
+  children: React.ReactNode
+  visibility?: string
+}
+
+function NavLink({ to, children, visibility = 'visible' }: NavLinkProps) {
+  return (
+    <Link 
+      to={to} 
+      className={`flex items-center py-2 px-3 rounded md:rounded-none hover:bg-white hover:text-brand-800 transition-colors ${visibility}`}
+      activeProps={{
+        className: "bg-brand-900 md:bg-brand-400"
+      }}
+    >
+      {children}
+    </Link>
+  )
+}

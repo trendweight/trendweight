@@ -185,3 +185,22 @@ Required environment variables (see `.env.local.example`):
 - Jest is already configured
 - Place tests next to source files as `*.test.ts(x)`
 - Focus on core business logic first
+
+# important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
+
+## Migration Rules
+When migrating from the legacy Next.js app to the new Vite app:
+1. **Preserve React component structure** - Keep the same component hierarchy and file organization as the legacy app
+2. **Exact UI reproduction** - The new app must look EXACTLY the same as the legacy app, changing only what's necessary for framework differences
+3. **Minimize changes** - Only change what's required for:
+   - Chakra UI → Tailwind CSS (use exact same styling/spacing)
+   - Next.js → Vite/TanStack Router (routing and imports)
+   - Keep all other patterns, naming, and structure identical
+4. **Component-by-component migration** - Don't consolidate multiple components into single files
+5. **Preserve all functionality** - Including auth checks, loading states, and conditional rendering
+6. **Use icons properly** - Use react-icons library matching the legacy app's icon usage
+7. **Active states** - Ensure navigation links highlight correctly when on the active page
