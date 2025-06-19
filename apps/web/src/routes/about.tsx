@@ -24,7 +24,7 @@ function AboutPage() {
             />
           </Link>
         </div>
-        <h1 className="text-4xl font-bold">What is TrendWeight, Exactly?</h1>
+        <h1 className="text-4xl font-bold pb-4">What is TrendWeight, Exactly?</h1>
         <p className="pb-4">TrendWeight is a free weight tracking web app that filters out the noise and focuses on longer term trends in weight change.</p>
         <p className="pb-4">
           When you really want to track your weight loss, you probably know you should disregard day to day changes in weight and instead focus on the trend over

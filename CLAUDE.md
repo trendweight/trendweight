@@ -193,14 +193,42 @@ ALWAYS prefer editing an existing file to creating a new one.
 NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
 
 ## Migration Rules
-When migrating from the legacy Next.js app to the new Vite app:
-1. **Preserve React component structure** - Keep the same component hierarchy and file organization as the legacy app
-2. **Exact UI reproduction** - The new app must look EXACTLY the same as the legacy app, changing only what's necessary for framework differences
-3. **Minimize changes** - Only change what's required for:
-   - Chakra UI → Tailwind CSS (use exact same styling/spacing)
-   - Next.js → Vite/TanStack Router (routing and imports)
-   - Keep all other patterns, naming, and structure identical
-4. **Component-by-component migration** - Don't consolidate multiple components into single files
-5. **Preserve all functionality** - Including auth checks, loading states, and conditional rendering
-6. **Use icons properly** - Use react-icons library matching the legacy app's icon usage
-7. **Active states** - Ensure navigation links highlight correctly when on the active page
+
+### 1. UI Fidelity
+- **EXACT REPRODUCTION**: The new UI must match the legacy UI exactly unless explicitly told otherwise
+- This is NOT a redesign opportunity - reproduce the existing UI faithfully
+- Match colors, spacing, typography, and layout precisely
+- Use screenshots to verify visual accuracy before considering any UI task complete
+- Be self-critical about UI quality - if it "looks like ass", fix it
+
+### 2. Component Structure
+- **PRESERVE REACT STRUCTURE**: Maintain the same component hierarchy as the legacy app
+- If the legacy has separate components (e.g., Blurb, SampleChart, InfoButtons), create separate components
+- Don't consolidate multiple components into one file unless explicitly instructed
+- Match the legacy's component organization and naming conventions
+
+### 3. Container and Layout
+- **CONSISTENT WIDTHS**: Use the same Container component for both header and main content
+- Container max-widths match legacy breakpoints: sm:640px, md:768px, lg:1024px, xl:1280px
+- The Layout component wraps all standard pages with Header + Container + Footer
+- Special layouts (like home page) bypass the standard Layout
+
+### 4. Development Approach
+- **THINK BEFORE ACTING**: Always analyze the legacy code before implementing
+- Don't make assumptions about data structures or UI patterns - verify first
+- Check if libraries/plugins are installed and configured before using them (e.g., Tailwind Typography)
+- Use proper Tailwind classes, not raw CSS
+- Read documentation for new tools (e.g., Tailwind v4) before making assumptions
+- Don't act like a "crappy junior dev" - think through problems properly
+
+### 5. Static Pages First
+- Complete all static pages before moving to dynamic/authenticated features
+- Static pages include: Home, About, FAQ, Privacy, Tip Jar, etc.
+- Leave complex features like Dashboard, Settings, and authentication for last
+
+### 6. Typography and Styling
+- Use appropriate text sizes (text-lg for body text on content pages)
+- Ensure proper line height (leading-relaxed) for readability
+- Headers should be prominent (text-4xl for h1, text-3xl for h2)
+- Links use brand colors (text-brand-600 hover:text-brand-700 underline)
+- Maintain consistent spacing between elements
