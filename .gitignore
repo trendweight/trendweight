@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -17,11 +17,13 @@
 /playwright/.cache
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
 /build
+dist/
+out/
 
 # misc
 .DS_Store
@@ -57,7 +59,6 @@ nupkg/
 
 # Visual Studio
 .vs/
-.vscode/
 
 # Rider
 .idea/
@@ -88,5 +89,33 @@ project.fragment.lock.json
 artifacts/
 
 # Vite
-apps/web/dist
-apps/web/.vite
+.vite/
+*.local
+
+# pnpm
+.pnpm-debug.log*
+
+# Editor directories and files
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# direnv
+.envrc
+
+# OS
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# TanStack Router
+routeTree.gen.ts
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
