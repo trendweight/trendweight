@@ -98,6 +98,30 @@ Required environment variables (see `.env.local.example`):
 
 ## Development Notes
 
+### IMPORTANT: Always Reference Legacy Code
+
+**Before implementing ANY feature in the new architecture (C# API or Vite app), you MUST:**
+
+1. **Read and understand the legacy implementation first**
+   - Never guess or assume how features work
+   - Always examine the existing code to understand the complete implementation
+   - Pay attention to edge cases and business logic nuances
+
+2. **Key areas to examine before implementing:**
+   - `lib/core/interfaces.ts` for TypeScript interfaces and data models
+   - `lib/dashboard/computations/` for calculation logic and algorithms
+   - `lib/data/` for Firebase data access patterns and storage structure
+   - `pages/api/` for API endpoint implementations and contracts
+   - Component files for UI behavior and user interactions
+
+3. **Understand the full context:**
+   - How data flows through the system
+   - What validations are performed
+   - How errors are handled
+   - What the user experience expectations are
+
+**This is not optional. Making assumptions about functionality without reading the legacy code is a critical error.**
+
 ### Adding New Features
 
 1. API routes go in `pages/api/`
