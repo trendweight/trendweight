@@ -6,20 +6,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 TrendWeight is a Next.js web application for tracking weight trends by integrating with Withings and Fitbit devices. The app uses TypeScript, React, and Chakra UI for the frontend, with Firebase for authentication and data storage.
 
-## IMPORTANT: Active Modernization Initiative
+## IMPORTANT: Architecture Migration in Progress
 
-**There is an active modernization effort in progress. See `MODERNIZATION_PLAN.md` for the detailed plan and current status.**
+**The application is being rebuilt with a new architecture. See `MIGRATION_PLAN_V2.md` for details.**
 
-The modernization includes:
+The new architecture:
+- **Backend**: C# ASP.NET Core API (replacing Next.js API routes)
+- **Frontend**: Vite + React SPA (replacing Next.js)
+- **Styling**: Tailwind CSS v4 + Radix UI (replacing Chakra UI)
+- **Auth**: Google/Apple/Magic Link (replacing username/password)
 
-- Migrating from pnpm to npm
-- Upgrading from Chakra UI to Tailwind CSS v4 + Radix UI
-- Upgrading to latest Next.js and React 19
-- Migrating from Pages Router to App Router
-- Modernizing authentication (social logins + magic links)
-- Adding comprehensive test coverage
-
-Always check the modernization plan for the current phase and follow the established patterns when making changes.
+The current Next.js app will remain as a reference implementation during development.
 
 ## Essential Commands
 
