@@ -38,16 +38,22 @@ test.describe('Authentication', () => {
   });
 
   test('should display signup page', async ({ page }) => {
-    await page.goto('/');
-    
-    // Click on Sign Up link
-    await page.click('text="Sign Up"');
+    // Navigate directly to signup page
+    await page.goto('/signup');
     
     // Should be on signup page
     await expect(page).toHaveURL(/.*\/signup/);
     
-    // Check for signup form elements
-    const emailInput = page.locator('input[type="email"]');
-    await expect(emailInput).toBeVisible();
+    // Check for page content (signup is not available yet)
+    const heading = page.locator('text="Create an Account"');
+    await expect(heading).toBeVisible();
+    
+    // Check for beta message
+    const betaMessage = page.locator('text=/beta version.*not available/');
+    await expect(betaMessage).toBeVisible();
+    
+    // Check for return to homepage button
+    const returnButton = page.locator('text="Return to Homepage"');
+    await expect(returnButton).toBeVisible();
   });
 });

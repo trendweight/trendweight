@@ -12,15 +12,15 @@ test.describe('Home Page', () => {
     await expect(banner).toBeVisible();
   });
 
-  test('should have navigation links', async ({ page }) => {
+  test('should have call to action buttons', async ({ page }) => {
     await page.goto('/');
     
-    // Check for key navigation elements
-    const logInLink = page.locator('text="Log In"');
-    await expect(logInLink).toBeVisible();
+    // Check for Learn More button
+    const learnMore = page.locator('text="Learn More"');
+    await expect(learnMore).toBeVisible();
     
-    const signUpLink = page.locator('text="Sign Up"');
-    await expect(signUpLink).toBeVisible();
+    // Check for Works with Withings/Fitbit
+    await expect(page.locator('text="Works with"').first()).toBeVisible();
   });
 
   test('should be responsive', async ({ page }) => {

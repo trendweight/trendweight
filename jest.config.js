@@ -56,7 +56,7 @@ const customJestConfig = {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
 
   // Ignore patterns
-  testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/"],
+  testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/", "<rootDir>/e2e/"],
 
   // Module directories
   modulePaths: ["<rootDir>"],
