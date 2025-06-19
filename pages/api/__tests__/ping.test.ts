@@ -1,5 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createMocks } from 'node-mocks-http';
+
+// Mock Firebase admin before importing handler
+jest.mock('../../../lib/data/firebase/admin', () => ({
+  auth: {
+    verifyIdToken: jest.fn(),
+  },
+  db: {
+    collection: jest.fn(),
+  },
+}));
+
 import handler from '../ping';
 
 describe('/api/ping', () => {

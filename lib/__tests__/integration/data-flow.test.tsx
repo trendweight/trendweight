@@ -3,6 +3,53 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ChakraProvider } from '@chakra-ui/react';
 import Dashboard from '../../dashboard/Dashboard';
+// Mock queries module before import
+jest.mock('../../api/queries', () => ({
+  profileQuery: jest.fn(),
+  sourceDataQuery: jest.fn(),
+}));
+
+// Mock Dashboard subcomponents
+jest.mock('../../dashboard/DashboardPlaceholder', () => ({
+  __esModule: true,
+  default: () => <div data-testid="dashboard-placeholder">Loading...</div>,
+}));
+
+jest.mock('../../dashboard/chart/Chart', () => ({
+  __esModule: true,
+  default: () => <div data-testid="mock-chart">Chart</div>,
+}));
+
+jest.mock('../../dashboard/Currently', () => ({
+  __esModule: true,
+  default: () => <div data-testid="mock-currently">Currently</div>,
+}));
+
+jest.mock('../../dashboard/RecentReadings', () => ({
+  __esModule: true,
+  default: () => <div data-testid="mock-recent-readings">Recent Readings</div>,
+}));
+
+jest.mock('../../dashboard/Buttons', () => ({
+  __esModule: true,
+  default: () => <div data-testid="mock-buttons">Buttons</div>,
+}));
+
+jest.mock('../../dashboard/Deltas', () => ({
+  __esModule: true,
+  default: () => <div data-testid="mock-deltas">Deltas</div>,
+}));
+
+jest.mock('../../dashboard/Stats', () => ({
+  __esModule: true,
+  default: () => <div data-testid="mock-stats">Stats</div>,
+}));
+
+jest.mock('../../shared/BackgroundQueryProgress', () => ({
+  __esModule: true,
+  default: () => null,
+}));
+
 import * as queries from '../../api/queries';
 
 // Mock API responses
@@ -44,15 +91,15 @@ describe('Data Flow Integration', () => {
     });
 
     // Mock API queries
-    jest.spyOn(queries, 'profileQuery').mockImplementation(() => ({
+    (queries.profileQuery as jest.Mock).mockReturnValue({
       queryKey: ['profile'],
       queryFn: async () => mockProfileData,
-    }));
+    });
 
-    jest.spyOn(queries, 'sourceDataQuery').mockImplementation(() => ({
+    (queries.sourceDataQuery as jest.Mock).mockReturnValue({
       queryKey: ['sourceData'],
       queryFn: async () => mockSourceData,
-    }));
+    });
   });
 
   afterEach(() => {
@@ -90,12 +137,12 @@ describe('Data Flow Integration', () => {
 
   it('handles API errors gracefully', async () => {
     // Mock API error
-    jest.spyOn(queries, 'profileQuery').mockImplementation(() => ({
+    (queries.profileQuery as jest.Mock).mockReturnValue({
       queryKey: ['profile'],
       queryFn: async () => {
         throw new Error('API Error');
       },
-    }));
+    });
 
     const consoleError = jest.spyOn(console, 'error').mockImplementation();
 
@@ -122,10 +169,10 @@ describe('Data Flow Integration', () => {
   });
 
   it('handles empty data gracefully', async () => {
-    jest.spyOn(queries, 'sourceDataQuery').mockImplementation(() => ({
+    (queries.sourceDataQuery as jest.Mock).mockReturnValue({
       queryKey: ['sourceData'],
       queryFn: async () => [],
-    }));
+    });
 
     renderWithProviders(<Dashboard />);
 
@@ -144,10 +191,10 @@ describe('Data Flow Integration', () => {
       },
     };
 
-    jest.spyOn(queries, 'profileQuery').mockImplementation(() => ({
+    (queries.profileQuery as jest.Mock).mockReturnValue({
       queryKey: ['profile'],
       queryFn: async () => profileWithDifferentTimezone,
-    }));
+    });
 
     renderWithProviders(<Dashboard />);
 
