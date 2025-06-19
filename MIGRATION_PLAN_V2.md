@@ -5,7 +5,7 @@ Instead of migrating the existing Next.js app in place, we'll build a new Vite +
 
 **Start Date**: June 19, 2025  
 **Architecture**: Vite React SPA + C# ASP.NET Core API + Firebase  
-**Status**: Planning
+**Status**: Phase 1 Complete ✅
 
 ## Previous Modernization Progress
 
@@ -65,7 +65,7 @@ trendweight/
 ├── apps/
 │   ├── legacy-nextjs/      # Current app (reference)
 │   ├── api/                # New C# API
-│   │   └── TrendWeight.Api/
+│   │   └── TrendWeight/    # Note: Named TrendWeight, not TrendWeight.Api
 │   │       ├── Features/   # Feature-based organization
 │   │       ├── Infrastructure/
 │   │       └── Program.cs
@@ -80,7 +80,8 @@ trendweight/
 
 ## Implementation Phases
 
-### Phase 1: Repository Restructure & Foundation
+### Phase 1: Repository Restructure & Foundation ✅
+**Status**: COMPLETE (commit: af72561)
 **Goal**: Set up monorepo structure and basic projects
 
 #### Step 1: Create new directory structure
@@ -211,14 +212,13 @@ EOF
 cd apps/api
 
 # Create the API project
-dotnet new webapi -n TrendWeight.Api -f net8.0
-cd TrendWeight.Api
+dotnet new webapi -n TrendWeight -f net9.0
+cd TrendWeight
 
 # Add required packages
 dotnet add package FirebaseAdmin
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
-dotnet add package Microsoft.AspNetCore.Authentication.Google
-dotnet add package Swashbuckle.AspNetCore
+# Note: No Google auth package needed - Firebase handles all auth providers
 
 # Create feature folder structure
 mkdir -p Features/{Auth,Measurements,Profile,Settings,Vendors/Withings,Vendors/Fitbit}
@@ -242,11 +242,11 @@ npm create vite@latest . -- --template react-ts
 npm install
 
 # Install additional packages
-npm install -D @types/react @types/react-dom
 npm install @tanstack/react-router @tanstack/react-query
 npm install @radix-ui/themes @radix-ui/react-icons
 npm install tailwindcss@next @tailwindcss/postcss@next
-npm install clsx tailwind-merge
+npm install clsx
+# Note: tailwind-merge would be useful but requires Tailwind configuration first
 
 # Create feature folder structure
 mkdir -p src/features/{auth,dashboard,settings}/components
@@ -269,6 +269,25 @@ git commit -m "refactor: Reorganize repository as monorepo
 
 The legacy app remains fully functional as a reference implementation."
 ```
+
+#### Phase 1 Completion Notes
+
+**What was actually completed:**
+- ✅ Monorepo structure created
+- ✅ Legacy Next.js app moved with git history preserved
+- ✅ C# API project initialized with .NET 9
+- ✅ Vite React project initialized
+- ✅ Basic folder structures created
+- ✅ Dependencies installed (but not configured)
+- ✅ .gitignore updated for C# and monorepo
+
+**What still needs configuration:**
+- ⏳ Tailwind CSS v4 setup (postcss config, imports, etc.)
+- ⏳ Firebase Admin SDK configuration in C# API
+- ⏳ JWT authentication middleware setup
+- ⏳ React Router configuration
+- ⏳ API client setup in web app
+- ⏳ Development proxy configuration
 
 ### Phase 2: C# API Core Features
 **Goal**: Implement core API functionality with Firebase
@@ -293,12 +312,12 @@ Features/Auth/
 ├── AuthService.cs
 ├── AuthController.cs
 ├── Models/
-│   ├── LoginRequest.cs
+│   ├── LoginRequest.cs  
 │   └── AuthResponse.cs
-└── Handlers/
-    ├── GoogleAuthHandler.cs
-    ├── AppleAuthHandler.cs
-    └── MagicLinkHandler.cs
+└── Middleware/
+    └── FirebaseAuthMiddleware.cs
+// Note: All auth providers (Google, Apple, Magic Link) are handled by Firebase
+// The API only validates Firebase ID tokens
 ```
 
 #### 2.3 Measurements Feature
