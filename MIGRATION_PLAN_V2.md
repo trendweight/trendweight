@@ -295,8 +295,58 @@ The legacy app remains fully functional as a reference implementation."
 - ⏳ API client setup in web app
 - ⏳ Development proxy configuration
 
-### Phase 2: C# API Core Features
-**Goal**: Implement core API functionality with Firebase
+### Phase 2: Frontend Foundation (Revised Approach)
+**Status**: Not started (incorrectly started with API first)
+**Goal**: Build the Vite React frontend with faithful UI reproduction
+
+**Key Principle**: The UI must be as faithful to the legacy UI as possible. This is NOT a redesign.
+
+**Note**: We incorrectly started building the API first. The API work done so far provides:
+- Firebase authentication setup (can be reused later)
+- Basic infrastructure (will need revision based on frontend needs)
+- Model definitions (may need adjustment based on actual API requirements)
+
+#### 2.1 Development Approach
+1. Run legacy app locally to capture screenshots
+2. Use Playwright to interact with legacy app for reference
+3. Build new components to match exactly
+4. Compare side-by-side frequently
+5. Start with static pages before authenticated features
+
+#### 2.2 Implementation Order
+1. **Basic Setup**
+   - Configure Tailwind CSS v4 properly
+   - Set up routing with TanStack Router
+   - Configure development environment
+
+2. **Layout Foundation**
+   - Header/Navigation (matching legacy exactly)
+   - Footer
+   - Page container/wrapper components
+   - Responsive breakpoints matching legacy
+
+3. **Static Pages** (easiest to verify correctness)
+   - Home page (marketing/landing)
+   - About page
+   - FAQ page  
+   - Privacy policy page
+   - Tip jar page
+   - 404/500 error pages
+
+4. **Auth Pages** (still mostly static)
+   - Login page
+   - Signup page
+   - Link account page (for Withings/Fitbit)
+
+5. **Authenticated Pages** (requires API)
+   - Dashboard (complex - do last)
+   - Settings page
+   - Profile viewing
+
+### Phase 3: C# API Development
+**Goal**: Build API to support frontend needs
+
+**Important**: Only build API endpoints after frontend needs them. The frontend drives API design.
 
 #### 2.1 Infrastructure Setup
 ```csharp
