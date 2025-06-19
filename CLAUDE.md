@@ -104,6 +104,37 @@ Required environment variables (see `.env.local.example`):
 
 ## Development Notes
 
+### CRITICAL: Thorough Analysis Before Implementation
+
+**You MUST follow this process for EVERY architectural decision:**
+
+1. **Deep Analysis Phase** (BEFORE writing any code)
+   - Read ALL relevant legacy code, not just snippets
+   - Understand WHY things were done a certain way
+   - Document what you learn
+   - Consider multiple implementation approaches
+   - Think through implications and edge cases
+   - Research best practices for the specific problem
+
+2. **Planning Phase**
+   - Write out your analysis and reasoning
+   - Compare alternatives with pros/cons
+   - Consider long-term maintenance implications
+   - Think about performance, scalability, and user experience
+   - Document your decision rationale
+
+3. **Implementation Phase**
+   - Only start coding after thorough analysis
+   - Refer back to your analysis frequently
+   - Be willing to revise if you discover new information
+
+**Red Flags to Avoid:**
+- Making quick decisions without analysis
+- Flip-flopping between approaches
+- Implementing without understanding the domain
+- Assuming "modern is better" without considering context
+- Writing code before fully understanding the problem
+
 ### IMPORTANT: Always Reference Legacy Code
 
 **Before implementing ANY feature in the new architecture (C# API or Vite app), you MUST:**
