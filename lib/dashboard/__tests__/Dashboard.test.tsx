@@ -2,6 +2,14 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ChakraProvider } from '@chakra-ui/react';
+
+// Mock dashboard context before importing Dashboard
+jest.mock('../context', () => ({
+  ...jest.requireActual('../context'),
+  useComputeDashboardData: jest.fn(),
+  DashboardProvider: ({ children, data }: any) => <div>{children}</div>,
+}));
+
 import Dashboard from '../Dashboard';
 import * as dashboardContext from '../context';
 
@@ -41,7 +49,7 @@ jest.mock('../DashboardPlaceholder', () => ({
   default: () => <div data-testid="dashboard-placeholder">Loading...</div>,
 }));
 
-jest.mock('../shared/BackgroundQueryProgress', () => ({
+jest.mock('../../shared/BackgroundQueryProgress', () => ({
   __esModule: true,
   default: () => null,
 }));
@@ -69,7 +77,7 @@ describe('Dashboard', () => {
   });
 
   it('shows placeholder when data is loading', () => {
-    jest.spyOn(dashboardContext, 'useComputeDashboardData').mockReturnValue(null);
+    (dashboardContext.useComputeDashboardData as jest.Mock).mockReturnValue(null);
     
     renderWithProviders(<Dashboard />);
     
@@ -77,7 +85,7 @@ describe('Dashboard', () => {
   });
 
   it('shows "No data yet" when measurements array is empty', () => {
-    jest.spyOn(dashboardContext, 'useComputeDashboardData').mockReturnValue({
+    (dashboardContext.useComputeDashboardData as jest.Mock).mockReturnValue({
       measurements: [],
       profile: { id: '123', username: 'test' },
       settings: { metric: false },
@@ -100,7 +108,7 @@ describe('Dashboard', () => {
       vendors: [],
     };
     
-    jest.spyOn(dashboardContext, 'useComputeDashboardData').mockReturnValue(mockData as any);
+    (dashboardContext.useComputeDashboardData as jest.Mock).mockReturnValue(mockData as any);
     
     renderWithProviders(<Dashboard />);
     
@@ -114,7 +122,7 @@ describe('Dashboard', () => {
   });
 
   it('uses user prop when provided', () => {
-    const mockComputeData = jest.spyOn(dashboardContext, 'useComputeDashboardData');
+    const mockComputeData = dashboardContext.useComputeDashboardData as jest.Mock;
     mockComputeData.mockReturnValue(null);
     
     renderWithProviders(<Dashboard user="testuser123" />);
@@ -130,7 +138,7 @@ describe('Dashboard', () => {
       vendors: ['withings'],
     };
     
-    jest.spyOn(dashboardContext, 'useComputeDashboardData').mockReturnValue(mockData as any);
+    (dashboardContext.useComputeDashboardData as jest.Mock).mockReturnValue(mockData as any);
     
     const { container } = renderWithProviders(<Dashboard />);
     
@@ -148,7 +156,7 @@ describe('Dashboard', () => {
         vendors: [],
       };
       
-      jest.spyOn(dashboardContext, 'useComputeDashboardData').mockReturnValue(mockData as any);
+      (dashboardContext.useComputeDashboardData as jest.Mock).mockReturnValue(mockData as any);
       
       const { container } = renderWithProviders(<Dashboard />);
       
