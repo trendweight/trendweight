@@ -325,22 +325,37 @@ The legacy app remains fully functional as a reference implementation."
 - ✅ Responsive container widths matching legacy breakpoints
 - ✅ react-icons library integration
 - ✅ All UI components match legacy styling (typography, spacing, colors)
+- ✅ Authentication implementation:
+  - ✅ Single "Log In" link in header (replacing dual Sign Up/Log In)
+  - ✅ Single login button on home page
+  - ✅ Login page with email and social auth options
+  - ✅ Firebase integration (Auth, Firestore, Analytics)
+  - ✅ AuthContext with social login support (Google, Microsoft, Apple)
+  - ✅ Email link authentication (passwordless)
+  - ✅ Check-email page for email verification flow
+  - ✅ Auth verify page with proper loader pattern (no React StrictMode issues)
+  - ✅ Placeholder dashboard page
+- ✅ Development tooling:
+  - ✅ Linting scripts (typecheck, lint, lint:fix, check)
+  - ✅ Fixed TypeScript errors and ESLint warnings
+  - ✅ Font dependencies properly configured
+
+**Fixed Issues:**
+- ✅ Firebase User type import (changed to type import)
+- ✅ React StrictMode double execution in auth flow (using route loader)
+- ✅ Missing @fontsource-variable/inter dependency
+- ✅ TypeScript and linting errors cleaned up
 
 **In Progress:**
-- ⏳ Authentication page (single login flow)
 - ⏳ Settings page
 - ⏳ Dashboard (complex - saved for last)
 
-**Authentication Approach Change:**
-The new app will use a simplified authentication flow:
-- Single login page (no separate signup)
-- Email link authentication (no passwords)
-- Social logins: Google, Microsoft, Apple
-- Firebase automatically creates accounts on first login
-- UI updates needed:
-  - Header: Change "Sign Up" and "Log In" to single "Log In" link
-  - Home page: Change dual buttons to single login button
-  - About page: Update "Create an account" to "Get started" or similar
+**Authentication Implementation Notes:**
+- Using Firebase's email link authentication (no passwords)
+- Social logins configured: Google, Microsoft, Apple (pending OAuth setup)
+- Auth state managed via React Context
+- Route loaders handle auth verification outside of React lifecycle
+- Clean error handling for expired/invalid links
 
 #### 2.1 Development Approach
 1. Run legacy app locally to capture screenshots

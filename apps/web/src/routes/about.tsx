@@ -1,16 +1,15 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineRss, HiOutlineShoppingCart } from 'react-icons/hi'
 import { Layout } from '../components/Layout'
+import { useAuth } from '../lib/auth/AuthContext'
 
 export const Route = createFileRoute('/about')({
   component: AboutPage,
 })
 
 function AboutPage() {
-  // TODO: Add auth logic when implemented
-  const isInitializing = false
-  const user = null
-  const getStarted = isInitializing || !user ? { label: "Create an Account", href: "/signup" } : { label: "Go to Dashboard", href: "/dashboard" }
+  const { isInitializing, user } = useAuth()
+  const getStarted = isInitializing || !user ? { label: "Get Started", href: "/login" } : { label: "Go to Dashboard", href: "/dashboard" }
 
   return (
     <Layout>

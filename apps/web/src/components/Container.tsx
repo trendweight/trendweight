@@ -1,4 +1,4 @@
-import { ElementType, ReactNode } from 'react'
+import type { ElementType, ReactNode } from 'react'
 import clsx from 'clsx'
 
 interface ContainerProps {
