@@ -25,11 +25,10 @@ export function useSettings() {
   })
 }
 
-// Chart data query (without suspense for demo)
+// Chart data query
 export function useChartData(days: number = 30) {
   return useQuery({
     queryKey: queryKeys.chart(days),
     queryFn: () => apiRequest<ChartData>(`/data/chart?days=${days}`),
-    suspense: false,
   })
 }

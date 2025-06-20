@@ -1,11 +1,10 @@
 import { Link } from '@tanstack/react-router'
 import { Logo } from './Logo'
 import { Container } from './Container'
+import { useAuth } from '../lib/auth/AuthContext'
 
 export function Header() {
-  // TODO: Add auth logic when implemented
-  const isLoggedIn = false
-  const isInitializing = false
+  const { isInitializing, isLoggedIn, signOut } = useAuth()
   const visibility = isInitializing ? 'invisible' : 'visible'
 
   return (
@@ -36,18 +35,13 @@ export function Header() {
               Learn
             </NavLink>
             {!isLoggedIn ? (
-              <>
-                <NavLink to="/signup" visibility={visibility}>
-                  Sign Up
-                </NavLink>
-                <NavLink to="/login" visibility={visibility}>
-                  Log In
-                </NavLink>
-              </>
+              <NavLink to="/login" visibility={visibility}>
+                Log In
+              </NavLink>
             ) : (
               <button 
                 className={`flex items-center py-2 px-3 rounded md:rounded-none hover:bg-white hover:text-brand-800 transition-colors ${visibility}`}
-                onClick={() => {/* TODO: implement sign out */}}
+                onClick={() => signOut()}
               >
                 Log Out
               </button>

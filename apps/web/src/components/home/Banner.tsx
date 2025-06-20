@@ -1,5 +1,3 @@
-import { Link } from '@tanstack/react-router'
-
 export function Banner() {
   return (
     <div className="bg-brand-500 text-white">
