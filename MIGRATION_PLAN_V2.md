@@ -306,7 +306,7 @@ The legacy app remains fully functional as a reference implementation."
 - Basic infrastructure (will need revision based on frontend needs)
 - Model definitions (may need adjustment based on actual API requirements)
 
-#### Progress Update (December 19, 2024)
+#### Progress Update (December 20, 2024)
 **Completed:**
 - ✅ Tailwind CSS v4 configured with @theme directive
 - ✅ Inter Variable font setup as default
@@ -324,11 +324,23 @@ The legacy app remains fully functional as a reference implementation."
   - ✅ Tip Jar page with Ko-fi integration
 - ✅ Responsive container widths matching legacy breakpoints
 - ✅ react-icons library integration
+- ✅ All UI components match legacy styling (typography, spacing, colors)
 
 **In Progress:**
-- ⏳ Authentication pages (Login, Signup)
+- ⏳ Authentication page (single login flow)
 - ⏳ Settings page
 - ⏳ Dashboard (complex - saved for last)
+
+**Authentication Approach Change:**
+The new app will use a simplified authentication flow:
+- Single login page (no separate signup)
+- Email link authentication (no passwords)
+- Social logins: Google, Microsoft, Apple
+- Firebase automatically creates accounts on first login
+- UI updates needed:
+  - Header: Change "Sign Up" and "Log In" to single "Log In" link
+  - Home page: Change dual buttons to single login button
+  - About page: Update "Create an account" to "Get started" or similar
 
 #### 2.1 Development Approach
 1. Run legacy app locally to capture screenshots
