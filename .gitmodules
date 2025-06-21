@@ -1,0 +1,3 @@
+[submodule "trendweight-classic"]
+	path = trendweight-classic
+	url = https://github.com/ervwalter/trendweight-classic
