@@ -37,32 +37,26 @@ public class FirebaseAuthenticationHandler : AuthenticationHandler<FirebaseAuthe
         var token = authHeader.Substring("Bearer ".Length).Trim();
         if (string.IsNullOrEmpty(token))
         {
-            return AuthenticateResult.Fail("Invalid token");
+            return AuthenticateResult.Fail("Token is empty");
         }
 
         try
         {
             var firebaseToken = await _firebaseService.VerifyIdTokenAsync(token);
-            
             var claims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, firebaseToken.Uid),
-                new("firebase_uid", firebaseToken.Uid)
+                new("firebase:uid", firebaseToken.Uid)
             };
 
-            // Add email if present
             if (firebaseToken.Claims.TryGetValue("email", out var email) && email != null)
             {
-                claims.Add(new Claim(ClaimTypes.Email, email.ToString()!));
+                claims.Add(new Claim(ClaimTypes.Email, email.ToString() ?? string.Empty));
             }
 
-            // Add any custom claims
-            foreach (var claim in firebaseToken.Claims)
+            if (firebaseToken.Claims.TryGetValue("name", out var name) && name != null)
             {
-                if (claim.Key != "email" && claim.Value != null)
-                {
-                    claims.Add(new Claim($"firebase_{claim.Key}", claim.Value.ToString()!));
-                }
+                claims.Add(new Claim(ClaimTypes.Name, name.ToString() ?? string.Empty));
             }
 
             var identity = new ClaimsIdentity(claims, Scheme.Name);
@@ -74,7 +68,7 @@ public class FirebaseAuthenticationHandler : AuthenticationHandler<FirebaseAuthe
         catch (Exception ex)
         {
             Logger.LogError(ex, "Firebase authentication failed");
-            return AuthenticateResult.Fail("Invalid token");
+            return AuthenticateResult.Fail(ex);
         }
     }
 }

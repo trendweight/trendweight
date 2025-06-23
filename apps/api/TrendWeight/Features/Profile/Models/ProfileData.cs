@@ -1,9 +1,12 @@
+using Google.Cloud.Firestore;
+
 namespace TrendWeight.Features.Profile.Models;
 
 /// <summary>
 /// User profile data
 /// Corresponds to ProfileData in legacy TypeScript code
 /// </summary>
+[FirestoreData]
 public class ProfileData
 {
     public string FirstName { get; set; } = string.Empty;

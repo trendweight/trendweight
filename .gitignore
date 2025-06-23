@@ -87,6 +87,8 @@ bld/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+obj/
+bin/
 
 # Vite
 .vite/

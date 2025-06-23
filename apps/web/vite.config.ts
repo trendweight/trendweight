@@ -10,4 +10,15 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  server: {
+    proxy: {
+      // Proxy all /api requests to the C# backend
+      '/api': {
+        target: 'http://localhost:5199',
+        changeOrigin: true,
+        secure: false,
+        // Remove this if you're not using https
+      }
+    }
+  }
 })

@@ -49,6 +49,10 @@
               "target": "Package",
               "version": "[3.2.0, )"
             },
+            "Google.Cloud.Firestore": {
+              "target": "Package",
+              "version": "[3.10.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[9.0.6, )"
@@ -56,6 +60,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.6, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[9.0.1, )"
             }
           },
           "imports": [
