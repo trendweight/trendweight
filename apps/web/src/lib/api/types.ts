@@ -18,6 +18,12 @@ export interface SettingsData {
   modified: string
 }
 
+// Response structure from the settings API endpoint
+export interface SettingsResponse {
+  user: SettingsData
+  timestamp: string
+}
+
 export interface Measurement {
   date: string
   weight: number
@@ -31,4 +37,11 @@ export interface ChartData {
   endDate: string
   currentWeight?: number
   currentTrend?: number
+}
+
+// Test endpoint data for authentication verification
+export interface TestData {
+  userId: string
+  email: string
+  claims: Record<string, string | number | boolean>
 }

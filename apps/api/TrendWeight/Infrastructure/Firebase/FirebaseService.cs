@@ -15,11 +15,27 @@ public class FirebaseService : IFirebaseService
         
         if (FirebaseApp.DefaultInstance == null)
         {
+            // Build service account JSON string from individual components
+            var serviceAccountJson = $@"{{                
+                ""type"": ""service_account"",
+                ""project_id"": ""{config.ProjectId}"",
+                ""private_key_id"": """",
+                ""private_key"": ""{config.PrivateKey}"",
+                ""client_email"": ""{config.ClientEmail}"",
+                ""client_id"": """",
+                ""auth_uri"": ""https://accounts.google.com/o/oauth2/auth"",
+                ""token_uri"": ""https://oauth2.googleapis.com/token"",
+                ""auth_provider_x509_cert_url"": ""https://www.googleapis.com/oauth2/v1/certs"",
+                ""client_x509_cert_url"": ""https://www.googleapis.com/robot/v1/metadata/x509/{config.ClientEmail.Replace("@", "%40")}""            
+            }}";
+            
             FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromJson(config.ServiceAccountKeyJson),
+                Credential = GoogleCredential.FromJson(serviceAccountJson),
                 ProjectId = config.ProjectId
             });
+            
+            _logger.LogInformation("Firebase app initialized with project ID: {ProjectId}", config.ProjectId);
         }
 
         _firebaseAuth = FirebaseAuth.DefaultInstance;
