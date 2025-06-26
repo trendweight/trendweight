@@ -46,12 +46,26 @@ public class CamelCaseFirestoreConverter<T> : IFirestoreConverter<T> where T : c
         
         if (value is Dictionary<string, object> dictionary)
         {
-            // Serialize the dictionary to JSON
-            var json = JsonSerializer.Serialize(dictionary);
-            
-            // Deserialize to the target type, which will map camelCase JSON to PascalCase properties
-            return JsonSerializer.Deserialize<T>(json, _jsonOptions) ?? 
-                throw new InvalidOperationException($"Failed to deserialize {typeof(T).Name}");
+            try
+            {
+                // Create a new options instance with type handling
+                var options = new JsonSerializerOptions(_jsonOptions)
+                {
+                    // Add converter to handle numeric to string conversions
+                    Converters = { new JsonStringNumberConverter() }
+                };
+                
+                // Serialize the dictionary to JSON
+                var json = JsonSerializer.Serialize(dictionary);
+                
+                // Deserialize to the target type, which will map camelCase JSON to PascalCase properties
+                return JsonSerializer.Deserialize<T>(json, options) ?? 
+                    throw new InvalidOperationException($"Failed to deserialize {typeof(T).Name}");
+            }
+            catch (JsonException ex)
+            {
+                throw new JsonException($"Error deserializing {typeof(T).Name}: {ex.Message}", ex);
+            }
         }
         
         throw new ArgumentException($"Cannot convert {value.GetType()} to {typeof(T)}");

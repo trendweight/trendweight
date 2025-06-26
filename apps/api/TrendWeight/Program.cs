@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddFirebaseAuthentication(builder.Configuration);
 
 // Add TrendWeight services
-builder.Services.AddTrendWeightServices();
+builder.Services.AddTrendWeightServices(builder.Configuration);
 
 // Add CORS for development
 builder.Services.AddCors(options =>
@@ -28,7 +28,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("DevelopmentCors", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173", "http://localhost:3000") // Vite and Next.js ports
+            .WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:3000") // Vite and Next.js ports
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();

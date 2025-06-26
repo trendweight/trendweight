@@ -1,6 +1,6 @@
 import { useQuery, useSuspenseQuery, type UseQueryOptions } from '@tanstack/react-query'
 import { apiRequest } from './client'
-import type { ProfileData, SettingsData, SettingsResponse, ChartData, TestData } from './types'
+import type { ProfileData, SettingsData, SettingsResponse, ChartData, TestData, WithingsTestResponse } from './types'
 
 // Query keys
 export const queryKeys = {
@@ -8,6 +8,7 @@ export const queryKeys = {
   settings: ['settings'] as const,
   chart: (days: number) => ['chart', days] as const,
   test: ['test'] as const,
+  withingsTest: ['withingsTest'] as const,
 }
 
 // Profile query (with suspense)
@@ -45,6 +46,17 @@ export function useTestData(
   return useQuery({
     queryKey: queryKeys.test,
     queryFn: () => apiRequest<TestData>('/Test'),
+    ...options,
+  })
+}
+
+// Withings test endpoint query
+export function useWithingsTest(
+  options?: Omit<UseQueryOptions<WithingsTestResponse, Error, WithingsTestResponse, typeof queryKeys.withingsTest>, 'queryKey' | 'queryFn'>
+) {
+  return useQuery({
+    queryKey: queryKeys.withingsTest,
+    queryFn: () => apiRequest<WithingsTestResponse>('/withings/test'),
     ...options,
   })
 }
