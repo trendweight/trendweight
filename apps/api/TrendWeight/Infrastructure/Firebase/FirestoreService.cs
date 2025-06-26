@@ -38,7 +38,11 @@ public class FirestoreService : IFirestoreService
                 // Register our CamelCaseFirestoreConverter for specific model types
                 // We'll add more types as needed
                 new CamelCaseFirestoreConverter<Features.Profile.Models.ProfileData>(),
-                new CamelCaseFirestoreConverter<Features.Settings.Models.SettingsData>()
+                new CamelCaseFirestoreConverter<Features.Settings.Models.SettingsData>(),
+                // Add converters for Withings integration models
+                new CamelCaseFirestoreConverter<Features.Vendors.Models.Links>(),
+                new CamelCaseFirestoreConverter<Features.Vendors.Models.VendorLink>(),
+                new CamelCaseFirestoreConverter<Features.Vendors.Models.AccessToken>()
             };
             
             // Initialize Firestore with credentials and custom converter registry

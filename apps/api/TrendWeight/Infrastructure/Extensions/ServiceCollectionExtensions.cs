@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using TrendWeight.Infrastructure.Firebase;
 using TrendWeight.Infrastructure.Middleware;
 using Google.Cloud.Firestore;
+using TrendWeight.Features.Vendors.Withings;
 
 namespace TrendWeight.Infrastructure.Extensions;
 
@@ -32,10 +33,16 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddTrendWeightServices(this IServiceCollection services)
+    public static IServiceCollection AddTrendWeightServices(this IServiceCollection services, IConfiguration configuration)
     {
         // Register Firestore service
         services.AddSingleton<IFirestoreService, FirestoreService>();
+        
+        // Register Withings service
+        var withingsConfig = new WithingsConfig();
+        configuration.GetSection("Withings").Bind(withingsConfig);
+        services.AddSingleton(withingsConfig);
+        services.AddHttpClient<IWithingsService, WithingsService>();
         
         // Add feature services as we implement them
         // services.AddScoped<IMeasurementService, MeasurementService>();

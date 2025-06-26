@@ -45,3 +45,24 @@ export interface TestData {
   email: string
   claims: Record<string, string | number | boolean>
 }
+
+// Withings test endpoint response
+export interface WithingsTestResponse {
+  measurements: Array<{
+    date: string
+    weight: number
+    fatMass?: number
+    fatFreeMass?: number
+    fatRatio?: number
+  }>
+  pagination: {
+    more: boolean
+    offset: number
+  }
+  timezone: string
+  tokenInfo: {
+    userId: string
+    expiresAt: string
+    isRefreshed: boolean
+  }
+}
