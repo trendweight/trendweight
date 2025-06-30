@@ -33,13 +33,28 @@ The current Next.js app (`apps/legacy-nextjs`) remains as a reference implementa
 
 ### Development
 
+#### Frontend (Vite React)
 ```bash
+cd apps/web
 pnpm dev          # Start development server on http://localhost:3000
 pnpm build        # Build for production
-pnpm start        # Start production server
+pnpm preview      # Preview production build
 pnpm lint         # Run ESLint
 pnpm prettier     # Format code with Prettier
-pnpm analyze      # Analyze bundle size
+```
+
+#### Backend (C# API)
+```bash
+cd apps/api/TrendWeight
+dotnet run        # Start API on http://localhost:5199
+dotnet build      # Build the project
+dotnet watch      # Run with hot reload
+```
+
+#### Legacy Reference
+```bash
+cd apps/legacy-nextjs
+pnpm dev          # Start on http://localhost:3001
 ```
 
 ### Code Quality
@@ -220,6 +235,17 @@ NEVER create files unless they're absolutely necessary for achieving your goal.
 ALWAYS prefer editing an existing file to creating a new one.
 NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
 
+### IMPORTANT: Keep CLAUDE.md Updated
+**You MUST automatically update this CLAUDE.md file whenever you learn something new that is likely important for future sessions.** This includes:
+- Project-specific patterns, conventions, or architecture decisions
+- User's personal coding preferences or approaches
+- Important technical discoveries (e.g., library quirks, API behaviors)
+- Lessons learned from debugging or problem-solving
+- Clarifications about business logic or domain concepts
+- Any other information that would help future Claude instances work more effectively on this codebase
+
+Add these updates in the appropriate section or create a new section if needed. This ensures knowledge is preserved across sessions.
+
 ## Migration Rules
 
 ### 1. UI Fidelity
@@ -313,7 +339,7 @@ The backend C# code underwent a comprehensive cleanup with the following changes
 #### 5. **Production Endpoints**
 - Replaced test controllers with production-ready endpoints
 - Created proper OAuth flow controllers for providers
-- Implemented DataRefreshController for syncing provider data
+- Implemented MeasurementsController for data refresh with proper caching
 
 #### 6. **Code Organization**
 - Organized code into feature-specific modules
@@ -321,7 +347,20 @@ The backend C# code underwent a comprehensive cleanup with the following changes
 - Cleaned up outdated markdown and plan files
 - Fixed all namespace and import issues
 
-#### 7. **What Remains**
+#### 7. **Timestamp Handling**
+- **IMPORTANT**: All timestamp columns are stored as `text` with ISO 8601 format
+- This avoids Supabase C# client timezone conversion issues
+- Use `DateTime.UtcNow.ToString("o")` when storing timestamps
+- Parse with `DateTime.Parse(timestamp, null, DateTimeStyles.RoundtripKind).ToUniversalTime()`
+
+#### 8. **Data Refresh and Merging**
+- Implements proper data merging (not replacement) when refreshing from providers
+- Fetches data from 90 days before last sync to catch late-arriving/edited measurements
+- Only updates database when measurements actually change
+- Preserves historical data outside the refresh window
+- 5-minute cache prevents unnecessary API calls
+
+#### 9. **What Remains**
 - **Firebase Infrastructure**: Still used for authentication (JWT validation)
   - FirebaseAuthenticationHandler.cs - Validates Firebase JWT tokens
   - FirebaseConfig.cs - Configuration for Firebase project
