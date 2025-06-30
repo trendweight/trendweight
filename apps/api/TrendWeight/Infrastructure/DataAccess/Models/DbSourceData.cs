@@ -1,6 +1,6 @@
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
-using System.Text.Json;
+using TrendWeight.Features.Measurements.Models;
 
 namespace TrendWeight.Infrastructure.DataAccess.Models;
 
@@ -16,11 +16,11 @@ public class DbSourceData : BaseModel
     public string Provider { get; set; } = string.Empty;
     
     [Column("measurements")]
-    public JsonDocument Measurements { get; set; } = JsonDocument.Parse("[]");
+    public List<RawMeasurement> Measurements { get; set; } = new List<RawMeasurement>();
     
     [Column("last_sync")]
-    public DateTime? LastSync { get; set; }
+    public string? LastSync { get; set; }
     
     [Column("updated_at")]
-    public DateTime UpdatedAt { get; set; }
+    public string UpdatedAt { get; set; } = string.Empty;
 }

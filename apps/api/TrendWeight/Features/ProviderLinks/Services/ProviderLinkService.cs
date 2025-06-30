@@ -50,13 +50,13 @@ public class ProviderLinkService : IProviderLinkService
 
     public async Task<DbProviderLink> CreateAsync(DbProviderLink providerLink)
     {
-        providerLink.UpdatedAt = DateTime.UtcNow;
+        providerLink.UpdatedAt = DateTime.UtcNow.ToString("o");
         return await _supabaseService.InsertAsync(providerLink);
     }
 
     public async Task<DbProviderLink> UpdateAsync(DbProviderLink providerLink)
     {
-        providerLink.UpdatedAt = DateTime.UtcNow;
+        providerLink.UpdatedAt = DateTime.UtcNow.ToString("o");
         return await _supabaseService.UpdateAsync(providerLink);
     }
 
@@ -99,7 +99,7 @@ public class ProviderLinkService : IProviderLinkService
                 Provider = provider,
                 Token = token,
                 UpdateReason = updateReason,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.UtcNow.ToString("o")
             };
             await CreateAsync(newLink);
         }

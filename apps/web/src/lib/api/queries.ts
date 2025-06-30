@@ -1,6 +1,6 @@
 import { useQuery, useSuspenseQuery, type UseQueryOptions } from '@tanstack/react-query'
 import { apiRequest } from './client'
-import type { ProfileData, SettingsData, SettingsResponse, ChartData, TestData, WithingsTestResponse } from './types'
+import type { ProfileData, SettingsData, SettingsResponse, ChartData, TestData, SourceData } from './types'
 
 // Query keys
 export const queryKeys = {
@@ -8,7 +8,7 @@ export const queryKeys = {
   settings: ['settings'] as const,
   chart: (days: number) => ['chart', days] as const,
   test: ['test'] as const,
-  withingsTest: ['withingsTest'] as const,
+  data: ['data'] as const,
 }
 
 // Profile query (with suspense)
@@ -50,13 +50,14 @@ export function useTestData(
   })
 }
 
-// Withings test endpoint query
-export function useWithingsTest(
-  options?: Omit<UseQueryOptions<WithingsTestResponse, Error, WithingsTestResponse, typeof queryKeys.withingsTest>, 'queryKey' | 'queryFn'>
+// Measurement data query (matches legacy behavior - refresh handled server-side)
+export function useMeasurementData(
+  options?: Omit<UseQueryOptions<SourceData[], Error, SourceData[], typeof queryKeys.data>, 'queryKey' | 'queryFn'>
 ) {
   return useQuery({
-    queryKey: queryKeys.withingsTest,
-    queryFn: () => apiRequest<WithingsTestResponse>('/withings/test'),
+    queryKey: queryKeys.data,
+    queryFn: () => apiRequest<SourceData[]>('/data'),
+    staleTime: 60000, // 1 minute (matching legacy React Query config)
     ...options,
   })
 }

@@ -12,9 +12,9 @@ public class SourceData
     public string Source { get; set; } = string.Empty;
     
     /// <summary>
-    /// ISO 8601 timestamp of last update from this source
+    /// Last update timestamp from this source (UTC)
     /// </summary>
-    public string LastUpdate { get; set; } = string.Empty;
+    public DateTime LastUpdate { get; set; }
     
     /// <summary>
     /// Array of measurements from this source
