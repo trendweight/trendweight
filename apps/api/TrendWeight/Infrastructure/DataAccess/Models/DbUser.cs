@@ -20,8 +20,8 @@ public class DbUser : BaseModel
     public ProfileData Profile { get; set; } = new();
     
     [Column("created_at")]
-    public DateTime CreatedAt { get; set; }
+    public string CreatedAt { get; set; } = string.Empty;
     
     [Column("updated_at")]
-    public DateTime UpdatedAt { get; set; }
+    public string UpdatedAt { get; set; } = string.Empty;
 }

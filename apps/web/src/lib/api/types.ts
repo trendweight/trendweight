@@ -46,23 +46,13 @@ export interface TestData {
   claims: Record<string, string | number | boolean>
 }
 
-// Withings test endpoint response
-export interface WithingsTestResponse {
-  measurements: Array<{
-    date: string
+// Source data from /api/data endpoint
+export interface SourceData {
+  source: string  // "withings" or "fitbit"
+  lastUpdate: string  // ISO timestamp
+  measurements?: Array<{
+    timestamp: number  // Unix timestamp
     weight: number
-    fatMass?: number
-    fatFreeMass?: number
     fatRatio?: number
   }>
-  pagination: {
-    more: boolean
-    offset: number
-  }
-  timezone: string
-  tokenInfo: {
-    userId: string
-    expiresAt: string
-    isRefreshed: boolean
-  }
 }

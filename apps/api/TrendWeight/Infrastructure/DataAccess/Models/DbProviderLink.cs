@@ -22,5 +22,5 @@ public class DbProviderLink : BaseModel
     public string? UpdateReason { get; set; }
     
     [Column("updated_at")]
-    public DateTime UpdatedAt { get; set; }
+    public string UpdatedAt { get; set; } = string.Empty;
 }

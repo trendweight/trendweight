@@ -1,0 +1,146 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using TrendWeight.Features.Users.Services;
+using TrendWeight.Features.Providers;
+using TrendWeight.Features.Measurements.Models;
+
+namespace TrendWeight.Features.Measurements;
+
+/// <summary>
+/// Controller for fetching measurement data
+/// Based on legacy pages/api/data/index.ts
+/// </summary>
+[ApiController]
+[Route("api/data")]
+[Authorize]
+public class MeasurementsController : ControllerBase
+{
+    private readonly IUserService _userService;
+    private readonly IProviderIntegrationService _providerIntegrationService;
+    private readonly ISourceDataService _sourceDataService;
+    private readonly ILogger<MeasurementsController> _logger;
+    
+    // Data is considered fresh for 5 minutes (matching legacy behavior)
+    private const int CACHE_DURATION_SECONDS = 300;
+
+    public MeasurementsController(
+        IUserService userService,
+        IProviderIntegrationService providerIntegrationService,
+        ISourceDataService sourceDataService,
+        ILogger<MeasurementsController> logger)
+    {
+        _userService = userService;
+        _providerIntegrationService = providerIntegrationService;
+        _sourceDataService = sourceDataService;
+        _logger = logger;
+    }
+
+    /// <summary>
+    /// Gets measurement data, refreshing from providers if needed
+    /// Matches legacy /api/data endpoint behavior
+    /// </summary>
+    /// <returns>Array of SourceData objects</returns>
+    [HttpGet]
+    public async Task<IActionResult> GetMeasurements()
+    {
+        try
+        {
+            // Get Firebase UID from JWT
+            var firebaseUid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(firebaseUid))
+            {
+                return Unauthorized(new { error = "User ID not found in token" });
+            }
+            
+            _logger.LogInformation("Getting measurements for Firebase UID: {FirebaseUid}", firebaseUid);
+            
+            // Get user by Firebase UID
+            var user = await _userService.GetByFirebaseUidAsync(firebaseUid);
+            if (user == null)
+            {
+                return NotFound(new { error = "User not found" });
+            }
+            
+            // Get active providers
+            var activeProviders = await _providerIntegrationService.GetActiveProvidersAsync(user.Uid);
+            
+            // For each active provider, check if refresh is needed
+            var refreshTasks = new List<Task<(string provider, bool success)>>();
+            var now = DateTime.UtcNow;
+            
+            // Check each provider's last sync time directly from the database
+            foreach (var provider in activeProviders)
+            {
+                // Check last sync time for this provider
+                var lastSync = await _sourceDataService.GetLastSyncTimeAsync(user.Uid, provider);
+                var needsRefresh = lastSync == null || (now - lastSync.Value).TotalSeconds > CACHE_DURATION_SECONDS;
+                
+                if (lastSync != null)
+                {
+                    _logger.LogInformation("Provider {Provider} - Now: {Now}, LastSync: {LastSync}, Age: {Age}s, CacheDuration: {CacheDuration}s", 
+                        provider, now.ToString("o"), lastSync.Value.ToString("o"), (now - lastSync.Value).TotalSeconds, CACHE_DURATION_SECONDS);
+                }
+                
+                if (needsRefresh)
+                {
+                    _logger.LogInformation("Provider {Provider} needs refresh (last sync: {LastSync})", 
+                        provider, lastSync?.ToString("o") ?? "never");
+                    
+                    // Add refresh task
+                    refreshTasks.Add(RefreshProviderAsync(user.Uid, provider, user.Profile.UseMetric));
+                }
+                else
+                {
+                    _logger.LogInformation("Provider {Provider} data is fresh (last sync: {LastSync})", 
+                        provider, lastSync!.Value.ToString("o"));
+                }
+            }
+            
+            // Wait for all refresh tasks to complete
+            if (refreshTasks.Any())
+            {
+                var refreshResults = await Task.WhenAll(refreshTasks);
+                foreach (var (provider, success) in refreshResults)
+                {
+                    if (!success)
+                    {
+                        _logger.LogWarning("Failed to refresh data for provider {Provider}", provider);
+                    }
+                }
+                
+            }
+            
+            // Get the current data (whether refreshed or cached)
+            var currentData = await _sourceDataService.GetSourceDataAsync(firebaseUid) ?? new List<SourceData>();
+            
+            // Return the current data
+            return Ok(currentData);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting measurements");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+    
+    private async Task<(string provider, bool success)> RefreshProviderAsync(Guid userId, string provider, bool useMetric)
+    {
+        try
+        {
+            var providerService = _providerIntegrationService.GetProviderService(provider);
+            if (providerService == null)
+            {
+                return (provider, false);
+            }
+            
+            var success = await providerService.SyncMeasurementsAsync(userId, useMetric);
+            return (provider, success);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error refreshing {Provider} data", provider);
+            return (provider, false);
+        }
+    }
+}

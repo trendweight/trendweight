@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
-import { useTestData, useSettings, useWithingsTest } from '../lib/api/queries'
+import { useTestData, useSettings, useMeasurementData } from '../lib/api/queries'
 import { useAuth } from '../lib/auth/AuthContext'
 
 export const Route = createFileRoute('/dashboard')({
@@ -22,13 +22,13 @@ function DashboardPage() {
     enabled: !isInitializing
   })
   
-  // Withings test query
+  // Measurement data query
   const { 
-    data: withingsData, 
-    isLoading: isWithingsLoading, 
-    isError: isWithingsError, 
-    error: withingsError 
-  } = useWithingsTest({
+    data: measurementData, 
+    isLoading: isMeasurementLoading, 
+    isError: isMeasurementError, 
+    error: measurementError 
+  } = useMeasurementData({
     // This will prevent the query from running until auth is initialized
     enabled: !isInitializing
   })
@@ -80,50 +80,49 @@ function DashboardPage() {
           )}
         </div>
         
-        {/* Withings API Test Section */}
+        {/* Measurement Data Section */}
         <div className="bg-white shadow rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Withings API Test</h2>
+          <h2 className="text-xl font-semibold mb-4">Measurement Data</h2>
           
-          {isWithingsLoading && (
+          {isMeasurementLoading && (
             <div className="bg-blue-50 border border-blue-200 text-blue-700 p-4 rounded">
-              <p className="font-medium">Loading Withings data...</p>
+              <p className="font-medium">Loading measurement data...</p>
             </div>
           )}
           
-          {isWithingsError && (
+          {isMeasurementError && (
             <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded">
-              <p className="font-medium">Error fetching Withings data:</p>
-              <p>{withingsError instanceof Error ? withingsError.message : 'Unknown error'}</p>
+              <p className="font-medium">Error fetching measurement data:</p>
+              <p>{measurementError instanceof Error ? measurementError.message : 'Unknown error'}</p>
             </div>
           )}
           
-          {withingsData && (
+          {measurementData && (
             <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded">
-              <p className="font-medium">Withings API test successful!</p>
+              <p className="font-medium">Measurement data retrieved successfully!</p>
               <div className="mt-2">
-                <p><strong>Token Info:</strong> User ID: {withingsData.tokenInfo.userId.substring(0, 10)}...</p>
-                <p><strong>Measurements:</strong> {withingsData.measurements.length} records</p>
-                <p><strong>Timezone:</strong> {withingsData.timezone}</p>
+                <p><strong>Sources:</strong> {measurementData.length} provider(s)</p>
+                {measurementData.map((sourceData) => (
+                  <div key={sourceData.source} className="mt-2">
+                    <p><strong>{sourceData.source}:</strong></p>
+                    <p>Last Update: {new Date(sourceData.lastUpdate).toLocaleString()}</p>
+                    <p>Measurements: {sourceData.measurements?.length || 0} records</p>
+                  </div>
+                ))}
               </div>
-              <pre className="mt-2 bg-green-100 p-2 rounded overflow-x-auto max-h-48 text-xs">
+              <pre className="mt-2 bg-green-100 p-2 rounded overflow-x-auto max-h-96 text-xs">
                 <code>
-                  {JSON.stringify({
-                    tokenInfo: {
-                      userId: withingsData.tokenInfo.userId.substring(0, 10) + '...',
-                      expiresAt: withingsData.tokenInfo.expiresAt,
-                      isRefreshed: withingsData.tokenInfo.isRefreshed
-                    },
-                    measurements: withingsData.measurements.slice(0, 3).map(m => ({
-                      date: m.date,
+                  {JSON.stringify(measurementData.map(source => ({
+                    source: source.source,
+                    lastUpdate: source.lastUpdate,
+                    measurementCount: source.measurements?.length || 0,
+                    recentMeasurements: source.measurements?.slice(0, 5).map(m => ({
+                      timestamp: m.timestamp,
+                      date: new Date(m.timestamp * 1000).toISOString(),
                       weight: m.weight,
-                      // Include other properties if available
-                      ...(m.fatMass ? { fatMass: m.fatMass } : {}),
-                      ...(m.fatFreeMass ? { fatFreeMass: m.fatFreeMass } : {}),
-                      ...(m.fatRatio ? { fatRatio: m.fatRatio } : {})
-                    })),
-                    pagination: withingsData.pagination,
-                    timezone: withingsData.timezone
-                  }, null, 2)}
+                      ...(m.fatRatio !== undefined ? { fatRatio: m.fatRatio } : {})
+                    }))
+                  })), null, 2)}
                 </code>
               </pre>
             </div>

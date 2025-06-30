@@ -53,9 +53,9 @@ public class SourceDataService : ISourceDataService
                     {
                         Uid = user.Uid,
                         Provider = sourceData.Source,
-                        Measurements = JsonDocument.Parse(JsonSerializer.Serialize(sourceData.Measurements ?? new List<RawMeasurement>())),
-                        LastSync = DateTime.Parse(sourceData.LastUpdate),
-                        UpdatedAt = DateTime.UtcNow
+                        Measurements = sourceData.Measurements ?? new List<RawMeasurement>(),
+                        LastSync = sourceData.LastUpdate.ToUniversalTime().ToString("o"),
+                        UpdatedAt = DateTime.UtcNow.ToString("o")
                     };
                     
                     await _supabaseService.InsertAsync(dbSourceData);
@@ -63,10 +63,58 @@ public class SourceDataService : ISourceDataService
                 }
                 else
                 {
-                    // Update existing source data
-                    dbSourceData.Measurements = JsonDocument.Parse(JsonSerializer.Serialize(sourceData.Measurements ?? new List<RawMeasurement>()));
-                    dbSourceData.LastSync = DateTime.Parse(sourceData.LastUpdate);
-                    dbSourceData.UpdatedAt = DateTime.UtcNow;
+                    // Merge measurements instead of replacing
+                    var newMeasurements = sourceData.Measurements ?? new List<RawMeasurement>();
+                    var existingMeasurements = dbSourceData.Measurements ?? new List<RawMeasurement>();
+                    
+                    // Calculate the cutoff timestamp (90 days before last sync)
+                    var lastSyncTime = string.IsNullOrEmpty(dbSourceData.LastSync) 
+                        ? DateTime.UtcNow 
+                        : DateTime.Parse(dbSourceData.LastSync, null, System.Globalization.DateTimeStyles.RoundtripKind).ToUniversalTime();
+                    var cutoffTimestamp = ((DateTimeOffset)lastSyncTime.AddDays(-90)).ToUnixTimeSeconds();
+                    
+                    // Sort new measurements in descending order by timestamp
+                    newMeasurements.Sort((a, b) => b.Timestamp.CompareTo(a.Timestamp));
+                    
+                    // Get existing measurements that should be replaced (within the refresh window)
+                    var existingMeasurementsToReplace = existingMeasurements
+                        .Where(m => m.Timestamp >= cutoffTimestamp)
+                        .OrderByDescending(m => m.Timestamp)
+                        .ToList();
+                    
+                    // Check if data actually changed by comparing overlapping measurements
+                    bool dataChanged = !AreMeasurementsEqual(existingMeasurementsToReplace, newMeasurements);
+                    
+                    if (dataChanged)
+                    {
+                        // Keep older measurements (before the refresh window)
+                        var existingMeasurementsToKeep = existingMeasurements
+                            .Where(m => m.Timestamp < cutoffTimestamp)
+                            .ToList();
+                        
+                        // Combine: new measurements + older kept measurements
+                        var mergedMeasurements = newMeasurements.Concat(existingMeasurementsToKeep).ToList();
+                        
+                        // Sort merged measurements in descending order
+                        mergedMeasurements.Sort((a, b) => b.Timestamp.CompareTo(a.Timestamp));
+                        
+                        // Update the measurements
+                        dbSourceData.Measurements = mergedMeasurements;
+                        
+                        _logger.LogInformation("Merged measurements for user {Uid} provider {Provider}: " +
+                            "{NewCount} new + {KeptCount} kept = {TotalCount} total", 
+                            user.Uid, sourceData.Source, newMeasurements.Count, 
+                            existingMeasurementsToKeep.Count, mergedMeasurements.Count);
+                    }
+                    else
+                    {
+                        _logger.LogInformation("No measurement changes detected for user {Uid} provider {Provider}", 
+                            user.Uid, sourceData.Source);
+                    }
+                    
+                    // Always update LastSync timestamp
+                    dbSourceData.LastSync = sourceData.LastUpdate.ToUniversalTime().ToString("o");
+                    dbSourceData.UpdatedAt = DateTime.UtcNow.ToString("o");
                     
                     await _supabaseService.UpdateAsync(dbSourceData);
                     _logger.LogInformation("Updated source data for user {Uid} provider {Provider}", user.Uid, sourceData.Source);
@@ -108,13 +156,17 @@ public class SourceDataService : ISourceDataService
             var result = new List<FeatureSourceData>();
             foreach (var dbSourceData in sourceDataList)
             {
-                var measurements = JsonSerializer.Deserialize<List<RawMeasurement>>(
-                    dbSourceData.Measurements.RootElement.GetRawText());
+                var measurements = dbSourceData.Measurements;
+                
+                // Parse ISO timestamp string as UTC
+                var lastSync = string.IsNullOrEmpty(dbSourceData.LastSync) 
+                    ? DateTime.UtcNow 
+                    : DateTime.Parse(dbSourceData.LastSync, null, System.Globalization.DateTimeStyles.RoundtripKind).ToUniversalTime();
                 
                 result.Add(new FeatureSourceData
                 {
                     Source = dbSourceData.Provider,
-                    LastUpdate = dbSourceData.LastSync?.ToString("o") ?? DateTime.UtcNow.ToString("o"),
+                    LastUpdate = lastSync,
                     Measurements = measurements
                 });
             }
@@ -126,5 +178,54 @@ public class SourceDataService : ISourceDataService
             _logger.LogError(ex, "Error getting source data for user {Uid}", uid);
             throw;
         }
+    }
+
+    /// <inheritdoc />
+    public async Task<DateTime?> GetLastSyncTimeAsync(Guid userId, string provider)
+    {
+        try
+        {
+            var sourceData = await _supabaseService.QueryAsync<DbSourceData>(q => 
+                q.Where(sd => sd.Uid == userId && sd.Provider == provider));
+                
+            var data = sourceData.FirstOrDefault();
+            if (data == null)
+                return null;
+                
+            // Parse ISO timestamp string as UTC
+            if (string.IsNullOrEmpty(data.LastSync))
+                return null;
+                
+            return DateTime.Parse(data.LastSync, null, System.Globalization.DateTimeStyles.RoundtripKind).ToUniversalTime();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting last sync time for user {UserId} provider {Provider}", userId, provider);
+            return null;
+        }
+    }
+    
+    /// <summary>
+    /// Compares two lists of measurements for equality
+    /// </summary>
+    private bool AreMeasurementsEqual(List<RawMeasurement> list1, List<RawMeasurement> list2)
+    {
+        if (list1.Count != list2.Count)
+            return false;
+            
+        for (int i = 0; i < list1.Count; i++)
+        {
+            var m1 = list1[i];
+            var m2 = list2[i];
+            
+            if (m1.Timestamp != m2.Timestamp || 
+                m1.Weight != m2.Weight || 
+                m1.FatRatio != m2.FatRatio)
+            {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }

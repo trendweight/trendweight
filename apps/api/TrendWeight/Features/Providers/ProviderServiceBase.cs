@@ -87,8 +87,27 @@ public abstract class ProviderServiceBase : IProviderService
     {
         try
         {
-            // Get all measurements
-            var measurements = await GetMeasurementsAsync(userId, metric, null);
+            // Get the last sync time to determine fetch window
+            var lastSyncTime = await _sourceDataService.GetLastSyncTimeAsync(userId, ProviderName);
+            
+            // Calculate start date: 90 days before last sync, or all time if no previous sync
+            DateTime startDate;
+            if (lastSyncTime.HasValue)
+            {
+                // Fetch from 90 days before last sync to catch any late-arriving or edited measurements
+                startDate = lastSyncTime.Value.AddDays(-90);
+                _logger.LogInformation("Fetching {Provider} measurements from {StartDate} (90 days before last sync)", 
+                    ProviderName, startDate.ToString("o"));
+            }
+            else
+            {
+                // No previous sync - fetch all data
+                startDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                _logger.LogInformation("No previous sync for {Provider}, fetching all measurements", ProviderName);
+            }
+            
+            // Get measurements from the provider
+            var measurements = await GetMeasurementsAsync(userId, metric, startDate);
             if (measurements == null)
             {
                 return false;
@@ -98,7 +117,7 @@ public abstract class ProviderServiceBase : IProviderService
             var sourceData = new SourceData
             {
                 Source = ProviderName,
-                LastUpdate = DateTime.UtcNow.ToString("o"),
+                LastUpdate = DateTime.UtcNow,
                 Measurements = measurements
             };
 
@@ -110,7 +129,7 @@ public abstract class ProviderServiceBase : IProviderService
                 return false;
             }
             
-            // Store in database
+            // Store in database (UpdateSourceDataAsync will handle merging)
             await _sourceDataService.UpdateSourceDataAsync(user.FirebaseUid, new List<SourceData> { sourceData });
             
             _logger.LogInformation("Successfully synced {Count} {Provider} measurements for user {UserId}", 

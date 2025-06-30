@@ -17,4 +17,12 @@ public interface ISourceDataService
     /// Gets all source data for a user
     /// </summary>
     Task<List<SourceData>?> GetSourceDataAsync(string uid);
+    
+    /// <summary>
+    /// Get the last sync time for a specific provider
+    /// </summary>
+    /// <param name="userId">User's Supabase UID</param>
+    /// <param name="provider">Provider name (e.g., "withings", "fitbit")</param>
+    /// <returns>Last sync DateTime in UTC, or null if no data exists</returns>
+    Task<DateTime?> GetLastSyncTimeAsync(Guid userId, string provider);
 }
