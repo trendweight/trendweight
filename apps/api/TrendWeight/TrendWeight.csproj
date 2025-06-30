@@ -8,9 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="3.2.0" />
-    <PackageReference Include="Google.Cloud.Firestore" Version="3.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6" />
+    <PackageReference Include="Supabase" Version="1.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
   </ItemGroup>
 

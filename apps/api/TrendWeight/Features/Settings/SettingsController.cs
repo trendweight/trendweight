@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TrendWeight.Features.Settings.Models;
-using TrendWeight.Infrastructure.Firebase;
+using TrendWeight.Infrastructure.DataAccess;
+using TrendWeight.Infrastructure.DataAccess.Models;
 
 namespace TrendWeight.Features.Settings;
 
@@ -11,14 +12,14 @@ namespace TrendWeight.Features.Settings;
 [Authorize]
 public class SettingsController : ControllerBase
 {
-    private readonly IFirestoreService _firestoreDb;
+    private readonly ISupabaseService _supabaseService;
     private readonly ILogger<SettingsController> _logger;
 
     public SettingsController(
-        IFirestoreService firestoreDb,
+        ISupabaseService supabaseService,
         ILogger<SettingsController> logger)
     {
-        _firestoreDb = firestoreDb;
+        _supabaseService = supabaseService;
         _logger = logger;
     }
 
@@ -39,16 +40,32 @@ public class SettingsController : ControllerBase
                 return Unauthorized(new { error = "User ID not found" });
             }
 
-            // Get user from Firestore
-            var userSettings = await _firestoreDb.GetDocumentAsync<SettingsData>("users", userId);
-            if (userSettings == null)
+            // Get user from Supabase by Firebase UID
+            var users = await _supabaseService.QueryAsync<DbUser>(query => 
+                query.Where(u => u.FirebaseUid == userId));
+            
+            var user = users.FirstOrDefault();
+            if (user == null)
             {
-                _logger.LogWarning("User document not found for user ID: {UserId}", userId);
+                _logger.LogWarning("User document not found for Firebase UID: {UserId}", userId);
                 return NotFound(new { error = "User not found" });
             }
 
-            // Add user ID and timestamp to response (matching legacy behavior)
-            userSettings.Uid = userId;
+            // Map to SettingsData (matching legacy behavior)
+            var userSettings = new SettingsData
+            {
+                Uid = userId, // Firebase UID for compatibility
+                Email = user.Email,
+                FirstName = user.Profile.FirstName,
+                Timezone = user.Profile.Timezone,
+                GoalStart = user.Profile.GoalStart,
+                GoalWeight = user.Profile.GoalWeight,
+                PlannedPoundsPerWeek = user.Profile.PlannedPoundsPerWeek,
+                DayStartOffset = user.Profile.DayStartOffset,
+                UseMetric = user.Profile.UseMetric,
+                ShowCalories = user.Profile.ShowCalories,
+                SharingToken = user.Profile.SharingToken
+            };
 
             // Return user settings with current timestamp
             return Ok(new
