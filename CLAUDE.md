@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-TrendWeight is a Next.js web application for tracking weight trends by integrating with Withings and Fitbit devices. The app uses TypeScript, React, and Chakra UI for the frontend, with Firebase for authentication and data storage.
+TrendWeight is a web application for tracking weight trends by integrating with Withings and Fitbit devices. The application is being rebuilt as a C# ASP.NET Core API backend with a Vite + React frontend.
 
 ## IMPORTANT: Architecture Migration in Progress
 
@@ -24,9 +24,10 @@ The new architecture:
 - **Backend**: C# ASP.NET Core API (replacing Next.js API routes)
 - **Frontend**: Vite + React SPA (replacing Next.js)
 - **Styling**: Tailwind CSS v4 + Radix UI (replacing Chakra UI)
-- **Auth**: Google/Apple/Magic Link (replacing username/password)
+- **Auth**: Firebase Auth (current), planned migration to Supabase Auth
+- **Storage**: Supabase (PostgreSQL with JSONB) replacing Firestore
 
-The current Next.js app will remain as a reference implementation during development.
+The current Next.js app (`apps/legacy-nextjs`) remains as a reference implementation during development.
 
 ## Essential Commands
 
@@ -47,25 +48,49 @@ The project uses Husky pre-commit hooks that automatically run pretty-quick to f
 
 ## Architecture Overview
 
-### Core Technologies
+### Current Stack
 
-- **Next.js 13.4.4** with Pages Router (not App Router)
-- **TypeScript** with strict mode enabled
-- **Chakra UI** for component library with custom theme
-- **React Query** for server state management
-- **Firebase** for auth and data persistence
+#### Backend (C# API - `apps/api`)
+- **ASP.NET Core 9.0** Web API
+- **Firebase Admin SDK** for JWT authentication
+- **Supabase** for data storage (PostgreSQL with JSONB)
+- **System.Text.Json** for JSON serialization
+
+#### Frontend (Vite React - `apps/web`)
+- **Vite** with React and TypeScript
+- **Tailwind CSS v4** + Radix UI
+- **TanStack Query** (React Query) for server state
+- **TanStack Router** for routing
+- **Firebase JS SDK** for authentication
+
+#### Legacy Reference (`apps/legacy-nextjs`)
+- **Next.js 13.4.4** with Pages Router
+- **Chakra UI** component library
+- **Firebase/Firestore** for data
 
 ### Key Directory Structure
 
-- `pages/` - Next.js pages and API routes
-  - `pages/api/` - Backend API endpoints for data operations, settings, and vendor integrations
-- `lib/` - Core application code organized by feature:
-  - `lib/api/` - API middleware and utilities (auth checking, error handling)
-  - `lib/auth/` - Authentication components and hooks
-  - `lib/core/` - Core interfaces and business logic
-  - `lib/dashboard/` - Dashboard feature components
-  - `lib/data/` - Data access layer with Firebase integration
-  - `lib/vendors/` - Withings and Fitbit integration code
+```
+/apps/
+  /api/                    # C# ASP.NET Core API
+    /TrendWeight/
+      /Features/           # Feature-based organization
+        /Users/            # User management
+        /ProviderLinks/    # Provider OAuth tokens (renamed from VendorLinks)
+        /Providers/        # Withings, Fitbit integrations (renamed from Vendors)
+        /Measurements/     # Measurement data management
+        /Settings/         # User settings
+      /Infrastructure/     # Cross-cutting concerns
+        /Firebase/         # Firebase Auth (still used for authentication)
+        /DataAccess/       # Supabase data access layer
+  /web/                    # Vite React frontend
+    /src/
+      /components/         # Shared UI components
+      /features/           # Feature modules
+      /lib/                # Utilities and API client
+      /routes/             # TanStack Router pages
+  /legacy-nextjs/          # Reference implementation
+```
 
 ### API Route Pattern
 
@@ -96,11 +121,14 @@ The app uses multiple date libraries:
 
 ### Environment Variables
 
-Required environment variables (see `.env.local.example`):
-
-- Firebase configuration (NEXT*PUBLIC_FIREBASE*\*)
+C# API (`appsettings.Development.json`):
+- Firebase project configuration
+- Supabase connection (URL, keys)
 - Withings OAuth credentials
-- JWT signing key
+
+Frontend:
+- Firebase configuration (public keys)
+- API endpoint URL
 
 ## Development Notes
 
@@ -232,3 +260,71 @@ NEVER proactively create documentation files (*.md) or README files. Only create
 - Headers should be prominent (text-4xl for h1, text-3xl for h2)
 - Links use brand colors (text-brand-600 hover:text-brand-700 underline)
 - Maintain consistent spacing between elements
+
+## Supabase Migration (Completed)
+
+### Overview
+The C# API has been fully migrated from Firestore to Supabase for data storage. This migration was completed due to JSON serialization challenges with the C# Firestore client. Supabase provides native PostgreSQL JSONB support, making it ideal for document-style storage.
+
+### Database Schema
+- **users**: Stores user profiles with UUID primary key and Firebase UID mapping
+- **provider_links**: OAuth tokens for provider integrations (renamed from vendor_links)
+- **source_data**: Raw measurement data from providers
+
+### UID Strategy
+- **Supabase UUID**: Primary key for all tables (future-compatible with Supabase Auth)
+- **Firebase UID**: Stored as `firebase_uid` for current auth system
+- When handling requests, map Firebase UID from JWT to Supabase UUID
+
+### Key Benefits
+- No JSON serialization issues (native JSONB support)
+- Better performance with PostgreSQL indexes
+- Easier future migration to Supabase Auth
+- Cleaner code without complex Firestore converters
+
+### Recent Backend Cleanup (December 2024)
+
+The backend C# code underwent a comprehensive cleanup with the following changes:
+
+#### 1. **Complete Firestore Removal**
+- All Firestore dependencies and services removed
+- Migrated SettingsController from Firestore to Supabase
+- Removed obsolete Firestore-related code and configuration
+
+#### 2. **Provider Abstraction Layer**
+- Created `IProviderService` interface for common provider operations
+- Implemented `ProviderServiceBase` abstract class with token refresh logic
+- Created `ProviderIntegrationService` orchestrator for multi-provider support
+- Refactored WithingsService to use the new abstraction
+
+#### 3. **Vendor → Provider Renaming**
+- Renamed all "vendor" references to "provider" throughout the codebase
+- Updated database schema: `vendor_links` → `provider_links`
+- Updated column names: `vendor` → `provider` in both tables
+- Updated all namespaces, classes, and method names accordingly
+
+#### 4. **Database Model Consistency**
+- All database models now have `Db` prefix for clarity:
+  - `User` → `DbUser`
+  - `ProviderLink` → `DbProviderLink`
+  - `SourceData` → `DbSourceData`
+- Clear separation between database models and domain models
+
+#### 5. **Production Endpoints**
+- Replaced test controllers with production-ready endpoints
+- Created proper OAuth flow controllers for providers
+- Implemented DataRefreshController for syncing provider data
+
+#### 6. **Code Organization**
+- Organized code into feature-specific modules
+- Removed duplicate Data/ folder (kept Measurements/)
+- Cleaned up outdated markdown and plan files
+- Fixed all namespace and import issues
+
+#### 7. **What Remains**
+- **Firebase Infrastructure**: Still used for authentication (JWT validation)
+  - FirebaseAuthenticationHandler.cs - Validates Firebase JWT tokens
+  - FirebaseConfig.cs - Configuration for Firebase project
+  - FirebaseService.cs - Service for Firebase Admin SDK
+  - IFirebaseService.cs - Interface for Firebase service
+- This is intentional as the app uses Firebase Auth for user authentication while storing data in Supabase

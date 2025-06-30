@@ -1,13 +1,13 @@
 namespace TrendWeight.Features.Measurements.Models;
 
 /// <summary>
-/// Data from a specific vendor source (Withings or Fitbit)
+/// Data from a specific provider source (Withings or Fitbit)
 /// Corresponds to SourceData in legacy TypeScript code
 /// </summary>
 public class SourceData
 {
     /// <summary>
-    /// Source vendor: "withings" or "fitbit"
+    /// Source provider: "withings" or "fitbit"
     /// </summary>
     public string Source { get; set; } = string.Empty;
     

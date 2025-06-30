@@ -1,4 +1,3 @@
-using Google.Cloud.Firestore;
 using TrendWeight.Features.Profile.Models;
 
 namespace TrendWeight.Features.Settings.Models;
@@ -7,7 +6,6 @@ namespace TrendWeight.Features.Settings.Models;
 /// User settings data (extends ProfileData with auth info)
 /// Corresponds to SettingsData in legacy TypeScript code
 /// </summary>
-[FirestoreData]
 public class SettingsData : ProfileData
 {
     public string Uid { get; set; } = string.Empty;
