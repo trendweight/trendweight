@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -b --noEmit",
-    "check": "pnpm typecheck && pnpm lint",
+    "check": "npm run typecheck && npm run lint",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -24,7 +24,6 @@
     "@tanstack/react-router": "^1.121.24",
     "@tanstack/router-devtools": "^1.121.24",
     "clsx": "^2.1.1",
-    "firebase": "^11.9.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",

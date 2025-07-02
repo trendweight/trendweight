@@ -3,15 +3,18 @@
   "private": true,
   "scripts": {
     "dev": "concurrently -n \"api,web\" -c \"yellow,blue\" \"npm run dev:api\" \"npm run dev:web\"",
-    "dev:all": "concurrently -n \"legacy,api,web\" -c \"gray,yellow,blue\" \"npm run dev:legacy\" \"npm run dev:api\" \"npm run dev:web\"",
-    "dev:legacy": "cd apps/legacy-nextjs && pnpm dev",
-    "dev:api": "cd apps/api && dotnet watch run",
+    "dev:api": "cd apps/api/TrendWeight && dotnet watch",
     "dev:web": "cd apps/web && npm run dev",
-    "test": "npm run test:legacy && npm run test:api && npm run test:web",
-    "test:legacy": "cd apps/legacy-nextjs && pnpm test",
+    "build": "npm run build:api && npm run build:web",
+    "build:api": "cd apps/api && dotnet build",
+    "build:web": "cd apps/web && npm run build",
+    "test": "npm run test:api",
     "test:api": "cd apps/api && dotnet test",
-    "test:web": "cd apps/web && npm test",
-    "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && find . -name 'bin' -type d -prune -exec rm -rf '{}' + && find . -name 'obj' -type d -prune -exec rm -rf '{}' +"
+    "check": "cd apps/web && npm run check",
+    "lint": "cd apps/web && npm run lint",
+    "clean": "npm run clean:deps && npm run clean:build",
+    "clean:deps": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
+    "clean:build": "find . -name 'bin' -type d -prune -exec rm -rf '{}' + && find . -name 'obj' -type d -prune -exec rm -rf '{}' + && find . -name 'dist' -type d -prune -exec rm -rf '{}' +"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"

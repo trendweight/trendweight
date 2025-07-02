@@ -31,29 +31,41 @@ The current Next.js app (`apps/legacy-nextjs`) remains as a reference implementa
 
 ## Essential Commands
 
-**IMPORTANT: This project uses pnpm, NOT npm. Always use pnpm commands.**
+**IMPORTANT: The frontend (apps/web) uses npm. The legacy app (apps/legacy-nextjs) uses pnpm.**
+
+### Monorepo Commands (from root)
+```bash
+npm run dev       # Start both API and frontend in dev mode
+npm run build     # Build both API and frontend
+npm run test      # Run all tests (currently just API)
+npm run check     # Run TypeScript and lint checks on frontend
+npm run clean     # Clean all build artifacts and dependencies
+```
 
 ### Development
 
-#### Frontend (Vite React)
+#### Frontend (Vite React) - uses npm
 ```bash
 cd apps/web
-pnpm dev          # Start development server on http://localhost:3000
-pnpm build        # Build for production
-pnpm preview      # Preview production build
-pnpm lint         # Run ESLint
-pnpm prettier     # Format code with Prettier
+npm run dev       # Start development server on http://localhost:3000
+npm run build     # Build for production
+npm run preview   # Preview production build
+npm run lint      # Run ESLint
+npm run check     # Run typecheck and lint
 ```
 
 #### Backend (C# API)
 ```bash
+cd apps/api
+dotnet build      # Build entire solution
+dotnet test       # Run all tests (when tests are added)
+
 cd apps/api/TrendWeight
 dotnet run        # Start API on http://localhost:5199
-dotnet build      # Build the project
 dotnet watch      # Run with hot reload
 ```
 
-#### Legacy Reference
+#### Legacy Reference (uses pnpm)
 ```bash
 cd apps/legacy-nextjs
 pnpm dev          # Start on http://localhost:3001
@@ -61,7 +73,7 @@ pnpm dev          # Start on http://localhost:3001
 
 ### Code Quality
 
-The project uses Husky pre-commit hooks that automatically run pretty-quick to format staged files. Manual formatting can be done with `pnpm prettier`.
+The project uses Husky pre-commit hooks that automatically run pretty-quick to format staged files.
 
 ## Architecture Overview
 
@@ -89,8 +101,9 @@ The project uses Husky pre-commit hooks that automatically run pretty-quick to f
 
 ```
 /apps/
-  /api/                    # C# ASP.NET Core API
-    /TrendWeight/
+  /api/                    # C# ASP.NET Core solution
+    TrendWeight.sln        # Solution file
+    /TrendWeight/          # Main API project
       /Features/           # Feature-based organization
         /Users/            # User management
         /ProviderLinks/    # Provider OAuth tokens (renamed from VendorLinks)
@@ -225,11 +238,19 @@ Frontend:
 
 ### Testing
 
-**Note**: No test suite currently exists. When adding tests:
-
+**Frontend**: No test suite currently exists. When adding tests:
 - Jest is already configured
 - Place tests next to source files as `*.test.ts(x)`
 - Focus on core business logic first
+
+**Backend**: Solution structure prepared for tests. To add tests:
+```bash
+cd apps/api
+dotnet new xunit -n TrendWeight.Tests
+dotnet sln add TrendWeight.Tests/TrendWeight.Tests.csproj
+cd TrendWeight.Tests
+dotnet add reference ../TrendWeight/TrendWeight.csproj
+```
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
