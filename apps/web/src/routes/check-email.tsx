@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import { Layout } from '../components/Layout'
 import { HiOutlineMail } from 'react-icons/hi'
-import { useAuth } from '../lib/auth/AuthContext'
+import { useAuth } from '../lib/auth/UnifiedAuthContext'
 
 export const Route = createFileRoute('/check-email')({
   component: CheckEmailPage,

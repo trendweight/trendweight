@@ -1,8 +1,7 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Layout } from '../components/Layout'
-import { FaGoogle, FaMicrosoft, FaApple } from 'react-icons/fa'
-import { useAuth } from '../lib/auth/AuthContext'
+import { useAuth } from '../lib/auth/UnifiedAuthContext'
 
 export const Route = createFileRoute('/login')({
   component: LoginPage,
@@ -57,8 +56,9 @@ function LoginPage() {
 
   return (
     <Layout>
-      <div className="max-w-md mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8">Log In</h1>
+      <div className="max-w-md mx-auto py-12">
+        <h1 className="text-4xl font-bold text-center mb-4">Welcome</h1>
+        <p className="text-center text-gray-600 mb-8">Log in to your account or create a new one</p>
         
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md">
@@ -66,33 +66,26 @@ function LoginPage() {
           </div>
         )}
         
-        {/* Email login section */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <form onSubmit={handleEmailSubmit}>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Enter your email to log in or create an account
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                placeholder="you@example.com"
-                required
-                disabled={isSubmitting}
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-brand-600 text-white py-2 px-4 rounded-md hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting ? 'Sending...' : 'Email me a login link'}
-            </button>
-          </form>
-        </div>
+        {/* Email login form */}
+        <form onSubmit={handleEmailSubmit} className="mb-6">
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent mb-4"
+            placeholder="Email address"
+            required
+            disabled={isSubmitting}
+          />
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-brand-600 text-white py-3 px-6 rounded-md text-base font-medium hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? 'Sending...' : 'Continue'}
+          </button>
+        </form>
 
         {/* Divider */}
         <div className="relative my-8">
@@ -100,7 +93,7 @@ function LoginPage() {
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-gray-50 text-gray-500">Or continue with</span>
+            <span className="px-4 bg-gray-50 text-gray-700 uppercase font-medium">or</span>
           </div>
         </div>
 
@@ -108,26 +101,26 @@ function LoginPage() {
         <div className="space-y-3">
           <button
             onClick={() => handleSocialLogin('google')}
-            className="w-full flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+            className="w-full flex items-center justify-start gap-4 px-4 py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
           >
-            <FaGoogle className="w-5 h-5 text-red-600" />
-            <span>Google</span>
+            <img src="/google-logo-NePEveMl.svg" alt="Google" className="w-5 h-5" />
+            <span className="flex-1 text-left text-base">Continue with Google</span>
           </button>
           
           <button
             onClick={() => handleSocialLogin('microsoft')}
-            className="w-full flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+            className="w-full flex items-center justify-start gap-4 px-4 py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
           >
-            <FaMicrosoft className="w-5 h-5 text-blue-600" />
-            <span>Microsoft</span>
+            <img src="/microsoft-logo-BUXxQnXH.svg" alt="Microsoft" className="w-5 h-5" />
+            <span className="flex-1 text-left text-base">Continue with Microsoft Account</span>
           </button>
           
           <button
             onClick={() => handleSocialLogin('apple')}
-            className="w-full flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+            className="w-full flex items-center justify-start gap-4 px-4 py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
           >
-            <FaApple className="w-5 h-5" />
-            <span>Apple</span>
+            <img src="/apple-logo-vertically-balanced-rwLdlt8P.svg" alt="Apple" className="w-5 h-5" />
+            <span className="flex-1 text-left text-base">Continue with Apple</span>
           </button>
         </div>
 

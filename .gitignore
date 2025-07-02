@@ -33,6 +33,7 @@ out/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
 
 # local env files
 .env.local
@@ -94,8 +95,9 @@ bin/
 .vite/
 *.local
 
-# pnpm
+# pnpm (this project uses pnpm exclusively)
 .pnpm-debug.log*
+package-lock.json
 
 # Editor directories and files
 .idea/
@@ -116,8 +118,13 @@ Thumbs.db
 
 # TanStack Router
 routeTree.gen.ts
+.tanstack/
 
 # Temporary files
 *.tmp
 *.temp
 .cache/
+
+# Debug logs
+firebase-debug.log
+pglite-debug.log

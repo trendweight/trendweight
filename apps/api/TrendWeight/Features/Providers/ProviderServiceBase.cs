@@ -121,16 +121,8 @@ public abstract class ProviderServiceBase : IProviderService
                 Measurements = measurements
             };
 
-            // Get Firebase UID for source data service
-            var user = await _userService.GetByIdAsync(userId);
-            if (user == null || string.IsNullOrEmpty(user.FirebaseUid))
-            {
-                _logger.LogError("Failed to find Firebase UID for user {UserId}", userId);
-                return false;
-            }
-            
             // Store in database (UpdateSourceDataAsync will handle merging)
-            await _sourceDataService.UpdateSourceDataAsync(user.FirebaseUid, new List<SourceData> { sourceData });
+            await _sourceDataService.UpdateSourceDataAsync(userId, new List<SourceData> { sourceData });
             
             _logger.LogInformation("Successfully synced {Count} {Provider} measurements for user {UserId}", 
                 measurements.Count, ProviderName, userId);

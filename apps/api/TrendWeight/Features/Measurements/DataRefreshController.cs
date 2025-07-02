@@ -37,17 +37,17 @@ public class DataRefreshController : ControllerBase
     {
         try
         {
-            // Get Firebase UID from JWT
-            var firebaseUid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(firebaseUid))
+            // Get Supabase UID from JWT
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { error = "User ID not found in token" });
             }
             
-            _logger.LogInformation("Refreshing data for Firebase UID: {FirebaseUid}", firebaseUid);
+            _logger.LogInformation("Refreshing data for user ID: {UserId}", userId);
             
-            // Get user by Firebase UID
-            var user = await _userService.GetByFirebaseUidAsync(firebaseUid);
+            // Get user by Supabase UID
+            var user = await _userService.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound(new { error = "User not found" });
@@ -104,15 +104,15 @@ public class DataRefreshController : ControllerBase
     {
         try
         {
-            // Get Firebase UID from JWT
-            var firebaseUid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(firebaseUid))
+            // Get Supabase UID from JWT
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { error = "User ID not found in token" });
             }
             
-            // Get user by Firebase UID
-            var user = await _userService.GetByFirebaseUidAsync(firebaseUid);
+            // Get user by Supabase UID
+            var user = await _userService.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound(new { error = "User not found" });

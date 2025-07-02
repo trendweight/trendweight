@@ -31,6 +31,8 @@ The current Next.js app (`apps/legacy-nextjs`) remains as a reference implementa
 
 ## Essential Commands
 
+**IMPORTANT: This project uses pnpm, NOT npm. Always use pnpm commands.**
+
 ### Development
 
 #### Frontend (Vite React)
@@ -293,14 +295,14 @@ Add these updates in the appropriate section or create a new section if needed. 
 The C# API has been fully migrated from Firestore to Supabase for data storage. This migration was completed due to JSON serialization challenges with the C# Firestore client. Supabase provides native PostgreSQL JSONB support, making it ideal for document-style storage.
 
 ### Database Schema
-- **users**: Stores user profiles with UUID primary key and Firebase UID mapping
+- **profiles**: Stores user profiles with UUID primary key (renamed from users table to avoid confusion with Supabase auth.users)
 - **provider_links**: OAuth tokens for provider integrations (renamed from vendor_links)
 - **source_data**: Raw measurement data from providers
 
 ### UID Strategy
-- **Supabase UUID**: Primary key for all tables (future-compatible with Supabase Auth)
-- **Firebase UID**: Stored as `firebase_uid` for current auth system
-- When handling requests, map Firebase UID from JWT to Supabase UUID
+- **Supabase UUID**: Primary key for all tables
+- Uses Supabase Auth JWTs directly - no Firebase UIDs anymore
+- User's Supabase Auth UID is used as the primary key in profiles table
 
 ### Key Benefits
 - No JSON serialization issues (native JSONB support)
@@ -331,7 +333,7 @@ The backend C# code underwent a comprehensive cleanup with the following changes
 
 #### 4. **Database Model Consistency**
 - All database models now have `Db` prefix for clarity:
-  - `User` → `DbUser`
+  - `User` → `DbProfile` (table renamed from users to profiles to avoid confusion with auth.users)
   - `ProviderLink` → `DbProviderLink`
   - `SourceData` → `DbSourceData`
 - Clear separation between database models and domain models
@@ -367,3 +369,44 @@ The backend C# code underwent a comprehensive cleanup with the following changes
   - FirebaseService.cs - Service for Firebase Admin SDK
   - IFirebaseService.cs - Interface for Firebase service
 - This is intentional as the app uses Firebase Auth for user authentication while storing data in Supabase
+
+### Auth Migration to Supabase (December 2024)
+
+The application is transitioning from Firebase Auth to Supabase Auth to unify authentication and data storage under a single platform.
+
+#### Backend Auth Configuration
+- **Dual Auth Support**: The backend temporarily supports both Firebase and Supabase JWTs during transition
+- **SupabaseAuthenticationHandler**: New handler in Infrastructure/Auth validates Supabase JWTs using the JWT secret
+- **Unified User Service**: UserService.GetByIdAsync() accepts both Supabase UUIDs and Firebase UIDs
+
+#### Frontend Auth Configuration
+- **Supabase Client**: Configured in `src/lib/supabase/client.ts`
+- **Unified Auth Context**: `UnifiedAuthContext` wraps Supabase auth to maintain API compatibility
+- **Social Logins**: Google, Microsoft (Azure), and Apple OAuth providers
+- **Magic Links**: Email-based passwordless authentication
+
+#### Environment Variables
+Frontend (.env.local):
+```
+VITE_SUPABASE_URL=https://[project-ref].supabase.co
+VITE_SUPABASE_ANON_KEY=[anon-key]
+```
+
+Backend (appsettings.json):
+```json
+{
+  "Supabase": {
+    "Url": "https://[project-ref].supabase.co",
+    "AnonKey": "[anon-key]",
+    "ServiceKey": "[service-key]",
+    "JwtSecret": "[jwt-secret]"
+  }
+}
+```
+
+#### Migration Status
+- ✅ Backend supports Supabase JWTs
+- ✅ Frontend uses Supabase Auth
+- ✅ All auth methods implemented (email, Google, Microsoft, Apple)
+- ⏳ Remove Firebase dependencies after testing
+- ⏳ Update database schema to remove firebase_uid column

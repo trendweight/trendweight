@@ -6,7 +6,7 @@ namespace TrendWeight.Features.Providers.Models;
 public class OAuthState
 {
     /// <summary>
-    /// User ID (Firebase UID)
+    /// User ID (Supabase UID)
     /// </summary>
     public string Uid { get; set; } = string.Empty;
     

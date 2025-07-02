@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { Logo } from './Logo'
 import { Container } from './Container'
-import { useAuth } from '../lib/auth/AuthContext'
+import { useAuth } from '../lib/auth/UnifiedAuthContext'
 
 export function Header() {
   const { isInitializing, isLoggedIn, signOut } = useAuth()

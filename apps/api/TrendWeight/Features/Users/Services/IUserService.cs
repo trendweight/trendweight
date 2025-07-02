@@ -4,9 +4,9 @@ namespace TrendWeight.Features.Users.Services;
 
 public interface IUserService
 {
-    Task<DbUser?> GetByFirebaseUidAsync(string firebaseUid);
-    Task<DbUser?> GetByIdAsync(Guid id);
-    Task<DbUser?> GetByEmailAsync(string email);
-    Task<DbUser> CreateAsync(DbUser user);
-    Task<DbUser> UpdateAsync(DbUser user);
+    Task<DbProfile?> GetByIdAsync(Guid id);
+    Task<DbProfile?> GetByIdAsync(string id); // Overload for string IDs (Supabase UIDs)
+    Task<DbProfile?> GetByEmailAsync(string email);
+    Task<DbProfile> CreateAsync(DbProfile profile);
+    Task<DbProfile> UpdateAsync(DbProfile profile);
 }

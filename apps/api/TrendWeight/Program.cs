@@ -20,8 +20,8 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add Firebase authentication
-builder.Services.AddFirebaseAuthentication(builder.Configuration);
+// Add Supabase authentication
+builder.Services.AddSupabaseAuthentication(builder.Configuration);
 
 // Add TrendWeight services
 builder.Services.AddTrendWeightServices(builder.Configuration);

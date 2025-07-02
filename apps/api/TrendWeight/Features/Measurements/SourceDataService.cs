@@ -23,26 +23,17 @@ public class SourceDataService : ISourceDataService
     }
 
     /// <inheritdoc />
-    public async Task UpdateSourceDataAsync(string uid, List<FeatureSourceData> data)
+    public async Task UpdateSourceDataAsync(Guid userId, List<FeatureSourceData> data)
     {
         try
         {
-            // First, get the user to find their Supabase UID from Firebase UID
-            var users = await _supabaseService.QueryAsync<DbUser>(q => q.Where(u => u.FirebaseUid == uid));
-            var user = users.FirstOrDefault();
-            
-            if (user == null)
-            {
-                _logger.LogWarning("User not found for Firebase UID: {FirebaseUid}", uid);
-                throw new InvalidOperationException($"User not found for Firebase UID: {uid}");
-            }
 
             // Update each source data
             foreach (var sourceData in data)
             {
                 // Check if source data already exists
                 var existingData = await _supabaseService.QueryAsync<DbSourceData>(q => 
-                    q.Where(sd => sd.Uid == user.Uid && sd.Provider == sourceData.Source));
+                    q.Where(sd => sd.Uid == userId && sd.Provider == sourceData.Source));
                 
                 var dbSourceData = existingData.FirstOrDefault();
                 
@@ -51,7 +42,7 @@ public class SourceDataService : ISourceDataService
                     // Create new source data
                     dbSourceData = new DbSourceData
                     {
-                        Uid = user.Uid,
+                        Uid = userId,
                         Provider = sourceData.Source,
                         Measurements = sourceData.Measurements ?? new List<RawMeasurement>(),
                         LastSync = sourceData.LastUpdate.ToUniversalTime().ToString("o"),
@@ -59,7 +50,7 @@ public class SourceDataService : ISourceDataService
                     };
                     
                     await _supabaseService.InsertAsync(dbSourceData);
-                    _logger.LogInformation("Created new source data for user {Uid} provider {Provider}", user.Uid, sourceData.Source);
+                    _logger.LogInformation("Created new source data for user {Uid} provider {Provider}", userId, sourceData.Source);
                 }
                 else
                 {
@@ -103,13 +94,13 @@ public class SourceDataService : ISourceDataService
                         
                         _logger.LogInformation("Merged measurements for user {Uid} provider {Provider}: " +
                             "{NewCount} new + {KeptCount} kept = {TotalCount} total", 
-                            user.Uid, sourceData.Source, newMeasurements.Count, 
+                            userId, sourceData.Source, newMeasurements.Count, 
                             existingMeasurementsToKeep.Count, mergedMeasurements.Count);
                     }
                     else
                     {
                         _logger.LogInformation("No measurement changes detected for user {Uid} provider {Provider}", 
-                            user.Uid, sourceData.Source);
+                            userId, sourceData.Source);
                     }
                     
                     // Always update LastSync timestamp
@@ -117,35 +108,25 @@ public class SourceDataService : ISourceDataService
                     dbSourceData.UpdatedAt = DateTime.UtcNow.ToString("o");
                     
                     await _supabaseService.UpdateAsync(dbSourceData);
-                    _logger.LogInformation("Updated source data for user {Uid} provider {Provider}", user.Uid, sourceData.Source);
+                    _logger.LogInformation("Updated source data for user {Uid} provider {Provider}", userId, sourceData.Source);
                 }
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating source data for user {Uid}", uid);
+            _logger.LogError(ex, "Error updating source data for user {Uid}", userId);
             throw;
         }
     }
 
     /// <inheritdoc />
-    public async Task<List<FeatureSourceData>?> GetSourceDataAsync(string uid)
+    public async Task<List<FeatureSourceData>?> GetSourceDataAsync(Guid userId)
     {
         try
         {
-            // First, get the user to find their Supabase UID from Firebase UID
-            var users = await _supabaseService.QueryAsync<DbUser>(q => q.Where(u => u.FirebaseUid == uid));
-            var user = users.FirstOrDefault();
-            
-            if (user == null)
-            {
-                _logger.LogWarning("User not found for Firebase UID: {FirebaseUid}", uid);
-                return null;
-            }
-
             // Get all source data for the user
             var sourceDataList = await _supabaseService.QueryAsync<DbSourceData>(q => 
-                q.Where(sd => sd.Uid == user.Uid));
+                q.Where(sd => sd.Uid == userId));
 
             if (!sourceDataList.Any())
             {
@@ -175,7 +156,7 @@ public class SourceDataService : ISourceDataService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting source data for user {Uid}", uid);
+            _logger.LogError(ex, "Error getting source data for user {Uid}", userId);
             throw;
         }
     }
