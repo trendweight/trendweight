@@ -4,6 +4,7 @@ using System.Security.Claims;
 using TrendWeight.Features.Settings.Models;
 using TrendWeight.Infrastructure.DataAccess;
 using TrendWeight.Infrastructure.DataAccess.Models;
+using TrendWeight.Features.Users.Services;
 
 namespace TrendWeight.Features.Settings;
 
@@ -13,13 +14,16 @@ namespace TrendWeight.Features.Settings;
 public class SettingsController : ControllerBase
 {
     private readonly ISupabaseService _supabaseService;
+    private readonly IUserService _userService;
     private readonly ILogger<SettingsController> _logger;
 
     public SettingsController(
         ISupabaseService supabaseService,
+        IUserService userService,
         ILogger<SettingsController> logger)
     {
         _supabaseService = supabaseService;
+        _userService = userService;
         _logger = logger;
     }
 
@@ -40,21 +44,18 @@ public class SettingsController : ControllerBase
                 return Unauthorized(new { error = "User ID not found" });
             }
 
-            // Get user from Supabase by Firebase UID
-            var users = await _supabaseService.QueryAsync<DbUser>(query => 
-                query.Where(u => u.FirebaseUid == userId));
-            
-            var user = users.FirstOrDefault();
+            // Get user from Supabase by UID
+            var user = await _userService.GetByIdAsync(userId);
             if (user == null)
             {
-                _logger.LogWarning("User document not found for Firebase UID: {UserId}", userId);
+                _logger.LogWarning("User document not found for Supabase UID: {UserId}", userId);
                 return NotFound(new { error = "User not found" });
             }
 
             // Map to SettingsData (matching legacy behavior)
             var userSettings = new SettingsData
             {
-                Uid = userId, // Firebase UID for compatibility
+                Uid = userId, // Supabase UID
                 Email = user.Email,
                 FirstName = user.Profile.FirstName,
                 Timezone = user.Profile.Timezone,

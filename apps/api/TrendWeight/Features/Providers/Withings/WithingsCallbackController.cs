@@ -93,11 +93,11 @@ public class WithingsCallbackController : ControllerBase
                 return StatusCode(500, new { error = "Invalid state" });
             }
 
-            // Get user by Firebase UID
-            var user = await _userService.GetByFirebaseUidAsync(linkDetails.Uid);
+            // Get user by Supabase UID
+            var user = await _userService.GetByIdAsync(linkDetails.Uid);
             if (user == null)
             {
-                _logger.LogError("User not found for Firebase UID: {FirebaseUid}", linkDetails.Uid);
+                _logger.LogError("User not found for user ID: {UserId}", linkDetails.Uid);
                 return NotFound(new { error = "User not found" });
             }
 

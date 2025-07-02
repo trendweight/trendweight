@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { useAuth } from '../../lib/auth/AuthContext'
+import { useAuth } from '../../lib/auth/UnifiedAuthContext'
 
 export function InfoButtons() {
   const { isInitializing, isLoggedIn } = useAuth()

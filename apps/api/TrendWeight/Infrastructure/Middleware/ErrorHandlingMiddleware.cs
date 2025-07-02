@@ -1,6 +1,5 @@
 using System.Net;
 using System.Text.Json;
-using FirebaseAdmin.Auth;
 
 namespace TrendWeight.Infrastructure.Middleware;
 
@@ -36,11 +35,6 @@ public class ErrorHandlingMiddleware
 
         switch (exception)
         {
-            case FirebaseAuthException:
-                response.Message = "Authentication failed";
-                response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                break;
-                
             case ArgumentNullException:
             case ArgumentException:
                 response.Message = exception.Message;

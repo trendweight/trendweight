@@ -4,14 +4,11 @@ using TrendWeight.Features.Profile.Models;
 
 namespace TrendWeight.Infrastructure.DataAccess.Models;
 
-[Table("users")]
-public class DbUser : BaseModel
+[Table("profiles")]
+public class DbProfile : BaseModel
 {
     [PrimaryKey("uid")]
     public Guid Uid { get; set; }
-    
-    [Column("firebase_uid")]
-    public string? FirebaseUid { get; set; }
     
     [Column("email")]
     public string Email { get; set; } = string.Empty;

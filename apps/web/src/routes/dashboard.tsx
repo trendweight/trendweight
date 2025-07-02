@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { useTestData, useSettings, useMeasurementData } from '../lib/api/queries'
-import { useAuth } from '../lib/auth/AuthContext'
+import { useAuth } from '../lib/auth/UnifiedAuthContext'
 
 export const Route = createFileRoute('/dashboard')({
   component: DashboardPage,

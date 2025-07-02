@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
-using TrendWeight.Infrastructure.Firebase;
+using TrendWeight.Infrastructure.Auth;
 using TrendWeight.Infrastructure.Middleware;
 using TrendWeight.Features.Providers;
 using TrendWeight.Features.Providers.Withings;
@@ -12,19 +12,18 @@ namespace TrendWeight.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddFirebaseAuthentication(
+
+    public static IServiceCollection AddSupabaseAuthentication(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Configure Firebase
-        var firebaseConfig = new FirebaseConfig();
-        configuration.GetSection("Firebase").Bind(firebaseConfig);
-        services.AddSingleton(firebaseConfig);
-        services.AddSingleton<IFirebaseService, FirebaseService>();
+        // Get Supabase config (already registered in AddTrendWeightServices)
+        var supabaseConfig = new SupabaseConfig();
+        configuration.GetSection("Supabase").Bind(supabaseConfig);
 
-        // Configure authentication
-        services.AddAuthentication("Firebase")
-            .AddScheme<FirebaseAuthenticationSchemeOptions, FirebaseAuthenticationHandler>("Firebase", null);
+        // Configure authentication - Supabase only
+        services.AddAuthentication("Supabase")
+            .AddScheme<SupabaseAuthenticationSchemeOptions, SupabaseAuthenticationHandler>("Supabase", null);
 
         // Configure authorization
         services.AddAuthorization(options =>

@@ -11,12 +11,12 @@ public interface ISourceDataService
     /// <summary>
     /// Updates source data for a user
     /// </summary>
-    Task UpdateSourceDataAsync(string uid, List<SourceData> data);
+    Task UpdateSourceDataAsync(Guid userId, List<SourceData> data);
     
     /// <summary>
     /// Gets all source data for a user
     /// </summary>
-    Task<List<SourceData>?> GetSourceDataAsync(string uid);
+    Task<List<SourceData>?> GetSourceDataAsync(Guid userId);
     
     /// <summary>
     /// Get the last sync time for a specific provider

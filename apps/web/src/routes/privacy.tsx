@@ -41,10 +41,10 @@ function PrivacyPage() {
         </p>
         <ul className="mt-4 px-4 list-disc">
           <li>
-            <a href="https://firebase.google.com/products/auth" className="text-brand-600 hover:text-brand-700 underline">Firebase Authentication</a>. Authenticating accounts e.g. email and password.
+            <a href="https://supabase.com/auth" className="text-brand-600 hover:text-brand-700 underline">Supabase Auth</a>. Authenticating accounts e.g. email and password.
           </li>
           <li>
-            <a href="https://firebase.google.com/products/firestore" className="text-brand-600 hover:text-brand-700 underline">Firebase Cloud Firestore</a>. Cloud database for storing your settings and your synced
+            <a href="https://supabase.com/database" className="text-brand-600 hover:text-brand-700 underline">Supabase Database</a>. Cloud database for storing your settings and your synced
             weight data.
           </li>
           <li>

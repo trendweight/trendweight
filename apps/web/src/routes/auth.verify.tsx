@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate, Link, redirect } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Layout } from '../components/Layout'
-import { useAuth } from '../lib/auth/AuthContext'
-import { auth, isSignInWithEmailLink, signInWithEmailLink } from '../lib/firebase'
+import { useAuth } from '../lib/auth/UnifiedAuthContext'
+import { supabase } from '../lib/supabase/client'
 
 export const Route = createFileRoute('/auth/verify')({
   // This runs BEFORE the component renders, outside of React's lifecycle
@@ -10,116 +10,95 @@ export const Route = createFileRoute('/auth/verify')({
     console.log('loader: Checking email verification link')
     
     // Check if already logged in
-    if (auth.currentUser) {
+    const { data: { session } } = await supabase.auth.getSession()
+    if (session) {
       console.log('loader: User already logged in, redirecting')
       throw redirect({ to: '/dashboard' })
     }
     
-    // Check if this is a valid email link
-    if (!isSignInWithEmailLink(auth, location.href)) {
+    // Check if this is a Supabase magic link
+    const url = new URL(location.href)
+    const token = url.searchParams.get('token')
+    const type = url.searchParams.get('type')
+    
+    if (!token || type !== 'email') {
       console.log('loader: Not a valid email link')
       return { error: 'Invalid login link', needsEmail: false }
     }
     
-    // Get email from localStorage
-    const email = window.localStorage.getItem('emailForSignIn')
-    if (!email) {
-      console.log('loader: No email in localStorage, need to ask user')
-      return { error: null, needsEmail: true }
-    }
-    
-    // Try to sign in
-    try {
-      console.log('loader: Attempting sign in with email link')
-      await signInWithEmailLink(auth, email, location.href)
-      window.localStorage.removeItem('emailForSignIn')
-      console.log('loader: Sign in successful, redirecting')
-      throw redirect({ to: '/dashboard' })
-    } catch (error) {
-      console.error('loader: Sign in failed', error)
-      
-      // Check if it's a Firebase auth error
-      const authError = error as { code?: string }
-      
-      // If already signed in despite error, redirect
-      if (auth.currentUser) {
-        throw redirect({ to: '/dashboard' })
-      }
-      
-      // If the error is specifically about invalid action code, provide a better message
-      if (authError.code === 'auth/invalid-action-code') {
-        return { 
-          error: 'This login link has already been used or has expired. Please request a new one.', 
-          needsEmail: false 
-        }
-      }
-      
-      return { 
-        error: 'Invalid or expired login link. Please try logging in again.', 
-        needsEmail: false 
-      }
-    }
+    // For Supabase, we handle the verification in the component
+    return { error: null, needsEmail: false, token }
   },
   component: VerifyEmailPage,
 })
 
 function VerifyEmailPage() {
   const navigate = useNavigate()
-  const { completeEmailLogin } = useAuth()
+  const { isLoggedIn } = useAuth()
   const routeData = Route.useLoaderData()
-  const [emailInput, setEmailInput] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState('')
+  const [isVerifying, setIsVerifying] = useState(true)
+  const [error, setError] = useState('')
   
-  // Get data from the route loader
-  const error = routeData.error || ''
-  const needsEmail = routeData.needsEmail || false
+  const token = routeData.token
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!emailInput.trim() || isSubmitting) return
-    
-    setIsSubmitting(true)
-    setSubmitError('')
-    
-    try {
-      await completeEmailLogin(emailInput, window.location.href)
+  useEffect(() => {
+    // If already logged in, redirect
+    if (isLoggedIn) {
       navigate({ to: '/dashboard' })
-    } catch (error) {
-      console.error('Error completing email login:', error)
-      setSubmitError('Invalid or expired login link. Please try logging in again.')
-      setIsSubmitting(false)
+      return
     }
-  }
+
+    // If we have a token, verify it
+    if (token && isVerifying) {
+      (async () => {
+        try {
+          console.log('Verifying magic link token...')
+          
+          // Supabase will handle the verification automatically when we call getSession
+          // after the URL contains the proper parameters
+          const { data, error } = await supabase.auth.getSession()
+          
+          if (error) {
+            console.error('Error verifying token:', error)
+            setError('Invalid or expired login link. Please try logging in again.')
+            setIsVerifying(false)
+            return
+          }
+          
+          if (data.session) {
+            console.log('Verification successful, redirecting...')
+            navigate({ to: '/dashboard' })
+          } else {
+            // Try to exchange the token manually
+            const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(window.location.href)
+            
+            if (exchangeError) {
+              console.error('Error exchanging code:', exchangeError)
+              setError('Invalid or expired login link. Please try logging in again.')
+            } else {
+              navigate({ to: '/dashboard' })
+            }
+          }
+        } catch (err) {
+          console.error('Unexpected error:', err)
+          setError('An unexpected error occurred. Please try logging in again.')
+        } finally {
+          setIsVerifying(false)
+        }
+      })()
+    } else if (!token) {
+      setIsVerifying(false)
+      setError(routeData.error || 'Invalid login link')
+    }
+  }, [token, isLoggedIn, navigate, isVerifying])
 
   return (
     <Layout>
       <div className="max-w-md mx-auto text-center">
-        {needsEmail ? (
+        {isVerifying ? (
           <>
-            <h1 className="text-4xl font-bold mb-4">Confirm Your Email</h1>
-            <p className="text-gray-600 mb-6">
-              For security reasons, please confirm the email address you used to request this login link.
-            </p>
-            <form onSubmit={handleEmailSubmit} className="space-y-4">
-              <input
-                type="email"
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                placeholder="you@example.com"
-                required
-                disabled={isSubmitting}
-              />
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-brand-600 text-white py-2 px-4 rounded-md hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? 'Signing in...' : 'Complete Sign In'}
-              </button>
-            </form>
-            {submitError && <p className="text-red-600 mt-4">{submitError}</p>}
+            <h1 className="text-4xl font-bold mb-4">Verifying...</h1>
+            <p className="text-gray-600">Please wait while we verify your login link.</p>
           </>
         ) : error ? (
           <>

@@ -1,4 +1,4 @@
-import { auth } from '../firebase'
+import { supabase } from '../supabase/client'
 
 export class ApiError extends Error {
   status: number
@@ -14,8 +14,9 @@ export async function apiRequest<T>(
   path: string,
   options?: RequestInit
 ): Promise<T> {
-  // Get the current user's token if authenticated
-  const token = auth.currentUser ? await auth.currentUser.getIdToken() : null
+  // Get the current session's access token if authenticated
+  const { data: { session } } = await supabase.auth.getSession()
+  const token = session?.access_token || null
   
   // Use a relative path for the API base URL to work with the Vite proxy
   const apiBaseUrl = '/api'

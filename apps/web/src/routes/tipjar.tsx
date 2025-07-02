@@ -37,7 +37,7 @@ function TipJarPage() {
             /month
           </li>
           <li>
-            The database and authentication is on <a href="https://firebase.google.com/pricing" className="text-brand-600 hover:text-brand-700 underline">Firebase</a>: <b>$0</b>/month
+            The database and authentication is on <a href="https://supabase.com/pricing" className="text-brand-600 hover:text-brand-700 underline">Supabase</a>: <b>$0</b>/month
           </li>
         </ul>
         
