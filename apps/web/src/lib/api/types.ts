@@ -1,21 +1,18 @@
 export interface ProfileData {
-  userId: string
-  displayName: string
+  firstName: string
   timezone: string
-  created: string
-  modified: string
+  goalStart?: string
+  goalWeight?: number
+  plannedPoundsPerWeek?: number
+  dayStartOffset?: number
+  useMetric: boolean
+  showCalories?: boolean
+  sharingToken?: string
 }
 
-export interface SettingsData {
-  userId: string
-  goalWeightEnabled: boolean
-  goalWeight?: number
-  goalDate?: string
-  unit: 'lbs' | 'kg' | 'stone'
-  movingAverageSize: number
-  allowDataSharing: boolean
-  created: string
-  modified: string
+export interface SettingsData extends ProfileData {
+  uid: string
+  email: string
 }
 
 // Response structure from the settings API endpoint
