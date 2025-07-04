@@ -39,9 +39,9 @@ public class WithingsLinkController : ControllerBase
     {
         try
         {
-            // Get Firebase UID from JWT
-            var firebaseUid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(firebaseUid))
+            // Get Supabase UID from JWT
+            var supabaseUid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(supabaseUid))
             {
                 return Unauthorized(new { error = "User ID not found in token" });
             }
@@ -57,7 +57,7 @@ public class WithingsLinkController : ControllerBase
             // Create OAuth state
             var state = new OAuthState
             {
-                Uid = firebaseUid,
+                Uid = supabaseUid,
                 Reason = "link"
             };
 
@@ -80,11 +80,21 @@ public class WithingsLinkController : ControllerBase
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var signedState = tokenHandler.WriteToken(token);
 
-            // Get callback URL
-            var callbackUrl = $"{Request.Scheme}://{Request.Host}/api/withings/callback";
+            // Get callback URL from request headers, checking for proxy headers first
+            var scheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
+            var host = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
+            var callbackUrl = $"{scheme}://{host}/api/withings/callback";
+            
+            _logger.LogInformation("Direct - Scheme: {Scheme}, Host: {Host}", Request.Scheme, Request.Host);
+            _logger.LogInformation("Forwarded - Proto: {Proto}, Host: {ForwardedHost}", 
+                Request.Headers["X-Forwarded-Proto"].FirstOrDefault(), 
+                Request.Headers["X-Forwarded-Host"].FirstOrDefault());
+            _logger.LogInformation("Using callback URL: {CallbackUrl}", callbackUrl);
             
             // Get authorization URL
             var authorizationUrl = _withingsService.GetAuthorizationUrl(signedState, callbackUrl);
+            
+            _logger.LogInformation("Generated authorization URL: {AuthorizationUrl}", authorizationUrl);
 
             return Ok(new
             {

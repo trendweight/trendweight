@@ -102,7 +102,12 @@ public class WithingsCallbackController : ControllerBase
             }
 
             // Exchange authorization code for access token
-            var callbackUrl = $"{Request.Scheme}://{Request.Host}/api/withings/callback";
+            var scheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
+            var host = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
+            var callbackUrl = $"{scheme}://{host}/api/withings/callback";
+            
+            _logger.LogInformation("Exchanging code for token with callback URL: {CallbackUrl}", callbackUrl);
+            
             var accessToken = await _withingsService.ExchangeAuthorizationCodeAsync(code, callbackUrl);
 
             // Store the token
@@ -114,16 +119,26 @@ public class WithingsCallbackController : ControllerBase
 
             _logger.LogInformation("Withings link created successfully for user {UserId}", user.Uid);
 
-            return Ok(new
-            {
-                linkDetails = linkDetails,
-                accessToken = accessToken
-            });
+            // Redirect to frontend success page
+            var frontendScheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
+            var frontendHost = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
+            var redirectUrl = $"{frontendScheme}://{frontendHost}/oauth/withings/callback?success=true";
+            
+            _logger.LogInformation("Redirecting to: {RedirectUrl}", redirectUrl);
+            _logger.LogInformation("X-Forwarded-Proto: {Proto}, X-Forwarded-Host: {Host}", 
+                Request.Headers["X-Forwarded-Proto"].FirstOrDefault(), 
+                Request.Headers["X-Forwarded-Host"].FirstOrDefault());
+            
+            return Redirect(redirectUrl);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error handling Withings callback");
-            return StatusCode(500, new { error = "Internal server error" });
+            
+            // Redirect to frontend error page
+            var frontendScheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
+            var frontendHost = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
+            return Redirect($"{frontendScheme}://{frontendHost}/oauth/withings/callback?success=false&error={Uri.EscapeDataString(ex.Message)}");
         }
     }
 }
