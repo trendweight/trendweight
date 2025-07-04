@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { supabase } from '../supabase/client'
 import type { User as SupabaseUser, Session } from '@supabase/supabase-js'
+import { authSuspenseManager } from './authSuspense'
 
 interface User {
   uid: string
@@ -153,6 +154,11 @@ export const SupabaseAuthProvider: FC<{ children: ReactNode }> = ({ children }) 
 
     return () => subscription.unsubscribe()
   }, [])
+
+  // Notify authSuspenseManager when initialization state changes
+  useEffect(() => {
+    authSuspenseManager.setInitializing(isInitializing)
+  }, [isInitializing])
 
   const value: AuthContextType = {
     user,
