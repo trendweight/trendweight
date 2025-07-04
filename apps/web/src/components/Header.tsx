@@ -10,14 +10,14 @@ export function Header() {
   return (
     <header className="bg-brand-500 text-white">
       <Container>
-        <nav className="flex flex-col md:flex-row md:items-center md:justify-between">
+        <nav className="flex items-stretch justify-between">
           <div className="flex items-center gap-2 py-3">
             <Link to="/" className="font-logo text-3xl font-bold leading-tight">
               TrendWeight
             </Link>
             <Logo className="h-8 w-auto" />
           </div>
-          <div className="flex flex-wrap gap-x-1">
+          <div className="hidden md:flex items-stretch">
             <NavLink to="/" visibility={visibility}>
               Home
             </NavLink>
@@ -40,7 +40,7 @@ export function Header() {
               </NavLink>
             ) : (
               <button 
-                className={`flex items-center py-2 px-3 rounded md:rounded-none hover:bg-white hover:text-brand-800 transition-colors ${visibility}`}
+                className={`flex items-center px-3 hover:bg-white hover:text-brand-800 transition-colors ${visibility}`}
                 onClick={() => signOut()}
               >
                 Log Out
@@ -63,9 +63,9 @@ function NavLink({ to, children, visibility = 'visible' }: NavLinkProps) {
   return (
     <Link 
       to={to} 
-      className={`flex items-center py-2 px-3 rounded md:rounded-none hover:bg-white hover:text-brand-800 transition-colors ${visibility}`}
+      className={`flex items-center px-3 hover:bg-white hover:text-brand-800 transition-colors ${visibility}`}
       activeProps={{
-        className: "bg-brand-900 md:bg-brand-400"
+        className: "bg-brand-400"
       }}
     >
       {children}

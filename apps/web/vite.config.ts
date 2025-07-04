@@ -17,14 +17,15 @@ export default defineConfig({
         target: 'http://localhost:5199',
         changeOrigin: true,
         secure: false,
-        configure: (proxy, _options) => {
-          proxy.on('proxyReq', (proxyReq, req, _res) => {
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq, req) => {
             // Forward the original host and protocol
             const host = req.headers.host
             if (host) {
               proxyReq.setHeader('X-Forwarded-Host', host)
             }
-            proxyReq.setHeader('X-Forwarded-Proto', req.connection.encrypted ? 'https' : 'http')
+            const socket = req.socket as { encrypted?: boolean }
+            proxyReq.setHeader('X-Forwarded-Proto', socket.encrypted ? 'https' : 'http')
           })
         }
       }

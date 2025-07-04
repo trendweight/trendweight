@@ -3,7 +3,7 @@ import { Container } from './Container'
 
 export function Footer() {
   return (
-    <footer className="py-8">
+    <footer className="py-4">
       <Container>
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 text-gray-400">
           <div className="text-sm">
