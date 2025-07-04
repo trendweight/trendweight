@@ -269,6 +269,27 @@ NEVER proactively create documentation files (*.md) or README files. Only create
 
 Add these updates in the appropriate section or create a new section if needed. This ensures knowledge is preserved across sessions.
 
+## Frontend Route Structure
+
+### Protected Routes
+The following routes require authentication and will redirect to `/login` if the user is not authenticated:
+- `/dashboard` - Main dashboard showing measurement data and charts
+- `/settings` - User settings management (currently shows settings API test data)
+- `/link` - Provider account linking interface (placeholder for Withings/Fitbit OAuth)
+
+### Public Routes
+- `/` - Home page
+- `/login` - Authentication page with email and social login options
+- `/check-email` - Email verification prompt
+- `/auth/verify` - Email link verification handler
+- `/about`, `/faq`, `/privacy`, `/tipjar` - Static content pages
+
+### Authentication Flow
+1. All protected routes use `useRequireAuth()` hook
+2. The hook leverages React Suspense - no manual loading states needed
+3. Auth initialization is handled by a Suspense boundary in the Layout component
+4. Unauthenticated users are automatically redirected to `/login`
+
 ## Migration Rules
 
 ### 1. UI Fidelity
@@ -330,6 +351,43 @@ The C# API has been fully migrated from Firestore to Supabase for data storage. 
 - Better performance with PostgreSQL indexes
 - Easier future migration to Supabase Auth
 - Cleaner code without complex Firestore converters
+
+### Authentication with React Suspense
+
+#### Overview
+The frontend uses React Suspense for handling authentication loading states, eliminating the need for manual loading UI in protected routes.
+
+#### Key Components
+
+1. **`useRequireAuth` Hook**: 
+   - Used in protected routes (dashboard, settings, link)
+   - Throws a promise during auth initialization for Suspense
+   - Automatically redirects to `/login` if user is not authenticated
+   - Returns the full auth object with user data and methods
+
+2. **`authSuspenseManager`**: 
+   - Manages the promise-based loading state for Suspense
+   - Integrates with SupabaseAuthContext to track initialization
+   - Resolves promises when auth state is determined
+
+3. **Suspense Boundary in Layout**:
+   - The `Layout` component wraps children in a Suspense boundary
+   - Shows a centered "Loading..." message during auth initialization
+   - Eliminates boilerplate loading code in individual routes
+
+#### Usage Example
+```typescript
+function ProtectedPage() {
+  const auth = useRequireAuth() // Throws for Suspense, redirects if not logged in
+  
+  return (
+    <Layout>
+      <h1>Welcome {auth.user?.email}</h1>
+      <button onClick={auth.signOut}>Sign Out</button>
+    </Layout>
+  )
+}
+```
 
 ### Recent Backend Cleanup (December 2024)
 
