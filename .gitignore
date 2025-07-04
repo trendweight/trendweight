@@ -126,3 +126,6 @@ routeTree.gen.ts
 # Debug logs
 firebase-debug.log
 pglite-debug.log
+
+# Ignore context_portal (appears to be unrelated tool output)
+context_portal/
