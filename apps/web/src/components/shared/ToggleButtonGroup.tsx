@@ -27,7 +27,7 @@ export const ToggleButtonGroup = ({
       }}
       defaultValue={defaultValue}
       aria-label={ariaLabel}
-      className={clsx("inline-flex rounded-md shadow-sm", className)}
+      className={clsx("inline-flex rounded-md", className)}
     >
       {children}
     </ToggleGroup.Root>

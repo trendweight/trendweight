@@ -14,7 +14,7 @@ const RecentReadings = () => {
   
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-4">Recent {Modes[mode]} Readings</h2>
+      <h2 className="text-xl font-semibold mb-4">Recent {Modes[mode]} Readings</h2>
       <table className="w-full md:w-auto md:min-w-[280px] text-sm">
         <thead>
           <tr>
