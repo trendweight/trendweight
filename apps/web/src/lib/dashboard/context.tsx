@@ -54,7 +54,17 @@ export const useComputeDashboardData = () => {
   )
 
   // Get measurement data
-  const { data: sourceData } = useMeasurementData()
+  const { data: apiSourceData } = useMeasurementData()
+  
+  // Transform API data to match core interfaces
+  const sourceData = useMemo(() => 
+    apiSourceData?.map(data => ({
+      source: data.source as "withings" | "fitbit",
+      lastUpdate: data.lastUpdate,
+      measurements: data.measurements
+    })),
+    [apiSourceData]
+  )
 
   // Compute derived data
   const measurements = useMemo(() => 
