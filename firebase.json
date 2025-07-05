@@ -1,9 +1,0 @@
-{
-  "projects": {
-    "default": "trendweight-dev-c5f34"
-  },
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  }
-}

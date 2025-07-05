@@ -4,38 +4,67 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-TrendWeight is a web application for tracking weight trends by integrating with Withings and Fitbit devices. The application is being rebuilt as a C# ASP.NET Core API backend with a Vite + React frontend.
+TrendWeight is a web application for tracking weight trends by integrating with smart scales from Withings and Fitbit. The application uses a modern architecture with a C# ASP.NET Core API backend and a Vite + React frontend.
 
-## IMPORTANT: Architecture Migration in Progress
-
-**The application is being rebuilt with a new architecture. See `MIGRATION_PLAN_V2.md` for details.**
-
-### Note on Naming
+### Project Name Convention
 - The project name is **TrendWeight** (capital T, capital W, no space)
 - Use this capitalization consistently in code, namespaces, and project names
 
-### Note on Compatibility
-- **The legacy system is NOT live and has NO active users**
-- We are NOT maintaining backward compatibility
-- This is a greenfield rebuild with freedom to modernize
-- Use modern patterns and libraries rather than mimicking legacy approaches
+## Architecture
 
-The new architecture:
-- **Backend**: C# ASP.NET Core API (replacing Next.js API routes)
-- **Frontend**: Vite + React SPA (replacing Next.js)
-- **Styling**: Tailwind CSS v4 + Radix UI (replacing Chakra UI)
-- **Auth**: Firebase Auth (current), planned migration to Supabase Auth
-- **Storage**: Supabase (PostgreSQL with JSONB) replacing Firestore
+### Backend (C# API - `apps/api`)
+- **ASP.NET Core 9.0** Web API
+- **Supabase** for data storage (PostgreSQL with JSONB)
+- **JWT authentication** supporting Supabase Auth
+- **System.Text.Json** for JSON serialization
+- **Feature-based folder structure**
 
-The current Next.js app (`apps/legacy-nextjs`) remains as a reference implementation during development.
+### Frontend (Vite React - `apps/web`)  
+- **Vite** with React 19 and TypeScript
+- **Tailwind CSS v4** for styling
+- **Radix UI** for accessible UI components
+- **TanStack Query** (React Query) for server state
+- **TanStack Router** for type-safe routing
+- **Supabase Auth** for authentication
+- **Highcharts** for data visualization
+- **@bprogress/react** for progress indicators
+- **@js-joda/core** for date/time handling
+
+### Reference Implementation
+If `trendweight-classic/` folder exists locally, it contains the legacy C# MVC application for reference when implementing features or comparing with the live site. This folder is not part of the repository.
+
+## Key Directory Structure
+
+```
+/apps/
+  /api/                    # C# ASP.NET Core solution
+    TrendWeight.sln        # Solution file
+    /TrendWeight/          # Main API project
+      /Features/           # Feature-based organization
+        /Auth/             # Authentication infrastructure
+        /Users/            # User profile management
+        /ProviderLinks/    # Provider OAuth tokens
+        /Providers/        # Withings, Fitbit integrations
+        /Measurements/     # Measurement data management
+        /Settings/         # User settings
+      /Infrastructure/     # Cross-cutting concerns
+        /Auth/             # JWT authentication handlers
+        /DataAccess/       # Supabase data access layer
+  /web/                    # Vite React frontend
+    /src/
+      /components/         # Shared UI components
+      /features/           # Feature modules (currently unused)
+      /lib/                # Core utilities and API client
+      /routes/             # TanStack Router pages
+      /types/              # TypeScript type definitions
+```
 
 ## Essential Commands
 
-**IMPORTANT: The frontend (apps/web) uses npm. The legacy app (apps/legacy-nextjs) uses pnpm.**
-
 ### Monorepo Commands (from root)
 ```bash
-npm run dev       # Start both API and frontend in dev mode
+npm run dev       # Start both API and frontend in dev mode (uses tmuxinator)
+npm run dev:stop  # Stop the tmuxinator session
 npm run build     # Build both API and frontend
 npm run test      # Run all tests (currently just API)
 npm run check     # Run TypeScript and lint checks on frontend
@@ -44,17 +73,17 @@ npm run clean     # Clean all build artifacts and dependencies
 
 ### Development
 
-#### Frontend (Vite React) - uses npm
+#### Frontend (apps/web) - uses npm
 ```bash
 cd apps/web
-npm run dev       # Start development server on http://localhost:3000
+npm run dev       # Start development server on http://localhost:5173
 npm run build     # Build for production
 npm run preview   # Preview production build
 npm run lint      # Run ESLint
 npm run check     # Run typecheck and lint
 ```
 
-#### Backend (C# API)
+#### Backend (apps/api)
 ```bash
 cd apps/api
 dotnet build      # Build entire solution
@@ -65,214 +94,244 @@ dotnet run        # Start API on http://localhost:5199
 dotnet watch      # Run with hot reload
 ```
 
-#### Legacy Reference (uses pnpm)
-```bash
-cd apps/legacy-nextjs
-pnpm dev          # Start on http://localhost:3001
+### Development Server Management
+
+The project uses tmuxinator for managing development servers. When you run `npm run dev`, it:
+1. Starts the backend API server on port 5199
+2. Starts the frontend Vite server on port 5173
+3. Creates log files in the `logs/` directory
+
+To view logs:
+- `tail -f logs/backend.log` for backend logs
+- `tail -f logs/frontend.log` for frontend logs
+
+## Environment Variables
+
+### Frontend (.env.local)
+```
+VITE_API_URL=http://localhost:5199
+VITE_SUPABASE_URL=https://[project-ref].supabase.co
+VITE_SUPABASE_ANON_KEY=[anon-key]
 ```
 
-### Code Quality
-
-The project uses Husky pre-commit hooks that automatically run pretty-quick to format staged files.
-
-## Architecture Overview
-
-### Current Stack
-
-#### Backend (C# API - `apps/api`)
-- **ASP.NET Core 9.0** Web API
-- **Firebase Admin SDK** for JWT authentication
-- **Supabase** for data storage (PostgreSQL with JSONB)
-- **System.Text.Json** for JSON serialization
-
-#### Frontend (Vite React - `apps/web`)
-- **Vite** with React and TypeScript
-- **Tailwind CSS v4** + Radix UI
-- **TanStack Query** (React Query) for server state
-- **TanStack Router** for routing
-- **Firebase JS SDK** for authentication
-
-#### Legacy Reference (`apps/legacy-nextjs`)
-- **Next.js 13.4.4** with Pages Router
-- **Chakra UI** component library
-- **Firebase/Firestore** for data
-
-### Key Directory Structure
-
-```
-/apps/
-  /api/                    # C# ASP.NET Core solution
-    TrendWeight.sln        # Solution file
-    /TrendWeight/          # Main API project
-      /Features/           # Feature-based organization
-        /Users/            # User management
-        /ProviderLinks/    # Provider OAuth tokens (renamed from VendorLinks)
-        /Providers/        # Withings, Fitbit integrations (renamed from Vendors)
-        /Measurements/     # Measurement data management
-        /Settings/         # User settings
-      /Infrastructure/     # Cross-cutting concerns
-        /Firebase/         # Firebase Auth (still used for authentication)
-        /DataAccess/       # Supabase data access layer
-  /web/                    # Vite React frontend
-    /src/
-      /components/         # Shared UI components
-      /features/           # Feature modules
-      /lib/                # Utilities and API client
-      /routes/             # TanStack Router pages
-  /legacy-nextjs/          # Reference implementation
+### Backend (appsettings.Development.json)
+```json
+{
+  "Supabase": {
+    "Url": "https://[project-ref].supabase.co",
+    "AnonKey": "[anon-key]",
+    "ServiceKey": "[service-key]",
+    "JwtSecret": "[jwt-secret]"
+  },
+  "Withings": {
+    "ClientId": "[client-id]",
+    "ClientSecret": "[client-secret]",
+    "RedirectUri": "http://localhost:5173/oauth/withings/callback"
+  }
+}
 ```
 
-### API Route Pattern
+## Database Schema (Supabase)
 
-API routes use a consistent middleware pattern:
+### Tables
+- **profiles**: User profiles with settings (UUID primary key)
+  - `id` (uuid) - User's Supabase Auth UID
+  - `profile_data` (jsonb) - User profile information
+  - `settings_data` (jsonb) - User settings
+  - `created_at`, `updated_at` (text) - ISO 8601 timestamps
 
-```typescript
-// Example from pages/api/settings.ts
-export default checkAuth(async (req: NextApiRequest, res: NextApiResponse) => {
-  // Handler implementation
-});
-```
+- **provider_links**: OAuth tokens for provider integrations
+  - `user_id` (uuid) - Foreign key to profiles
+  - `provider` (text) - Provider name (withings, fitbit)
+  - `link_data` (jsonb) - OAuth tokens and metadata
+  - `created_at`, `updated_at` (text) - ISO 8601 timestamps
 
-The `checkAuth` middleware validates JWT tokens and provides user context.
+- **source_data**: Raw measurement data from providers
+  - `user_id` (uuid) - Foreign key to profiles  
+  - `provider` (text) - Data source provider
+  - `source_data` (jsonb) - Raw measurement data
+  - `last_sync_date` (text) - ISO 8601 timestamp
+  - `created_at`, `updated_at` (text) - ISO 8601 timestamps
 
-### State Management
+### Important Notes
+- All timestamps are stored as `text` in ISO 8601 format to avoid timezone issues
+- Use `DateTime.UtcNow.ToString("o")` when storing
+- Parse with `DateTime.Parse(timestamp, null, DateTimeStyles.RoundtripKind).ToUniversalTime()`
 
-- Server state: React Query with custom hooks (e.g., `useProfile`, `useSettings`)
-- Local state: React hooks and Context API (see `DashboardProvider`)
-- Persisted state: `use-persisted-state` for user preferences
+## Frontend Route Structure
 
-### Date/Time Handling
+### Public Routes
+- `/` - Home page with marketing content
+- `/login` - Authentication page with email and social login options
+- `/check-email` - Email verification prompt
+- `/auth/verify` - Email link verification handler
+- `/about` - About page
+- `/faq` - Frequently asked questions
+- `/privacy` - Privacy policy
+- `/tipjar` - Donation options
+- `/build` - Build/deployment information
+- `/demo` - Demo dashboard with sample data
 
-The app uses multiple date libraries:
+### Protected Routes (require authentication)
+- `/dashboard` - Main dashboard showing measurement data and charts
+- `/settings` - User settings management
+- `/link` - Provider account linking interface
 
-- `@js-joda/core` for core date operations
-- `spacetime` for timezone conversions
-- Date formatting should preserve user's timezone settings
+### OAuth Callback Routes
+- `/oauth/withings/callback` - Withings OAuth callback handler
 
-### Environment Variables
+## Authentication
 
-C# API (`appsettings.Development.json`):
-- Firebase project configuration
-- Supabase connection (URL, keys)
-- Withings OAuth credentials
+### Frontend
+- Uses Supabase Auth with React Context
+- `useRequireAuth()` hook for protected routes
+- Leverages React Suspense for loading states
+- Supports email links and social logins (Google, Microsoft, Apple)
 
-Frontend:
-- Firebase configuration (public keys)
-- API endpoint URL
+### Backend
+- Validates Supabase JWTs using JWT secret
+- `SupabaseAuthenticationHandler` in Infrastructure/Auth
+- All API endpoints require authentication except health checks
 
-## Development Notes
+## State Management
 
-### CRITICAL: Thorough Analysis Before Implementation
-
-**You MUST follow this process for EVERY architectural decision:**
-
-1. **Deep Analysis Phase** (BEFORE writing any code)
-   - Read ALL relevant legacy code, not just snippets
-   - Understand WHY things were done a certain way
-   - Document what you learn
-   - Consider multiple implementation approaches
-   - Think through implications and edge cases
-   - Research best practices for the specific problem
-
-2. **Planning Phase**
-   - Write out your analysis and reasoning
-   - Compare alternatives with pros/cons
-   - Consider long-term maintenance implications
-   - Think about performance, scalability, and user experience
-   - Document your decision rationale
-
-3. **Implementation Phase**
-   - Only start coding after thorough analysis
-   - Refer back to your analysis frequently
-   - Be willing to revise if you discover new information
-
-**Red Flags to Avoid:**
-- Making quick decisions without analysis
-- Flip-flopping between approaches
-- Implementing without understanding the domain
-- Assuming "modern is better" without considering context
-- Writing code before fully understanding the problem
-
-### IMPORTANT: Always Reference Legacy Code
-
-**Before implementing ANY feature in the new architecture (C# API or Vite app), you MUST:**
-
-1. **Read and understand the legacy implementation first**
-   - Never guess or assume how features work
-   - Always examine the existing code to understand the complete implementation
-   - Pay attention to edge cases and business logic nuances
-
-2. **Key areas to examine before implementing:**
-   - `lib/core/interfaces.ts` for TypeScript interfaces and data models
-   - `lib/dashboard/computations/` for calculation logic and algorithms
-   - `lib/data/` for Firebase data access patterns and storage structure
-   - `pages/api/` for API endpoint implementations and contracts
-   - Component files for UI behavior and user interactions
-
-3. **Understand the full context:**
-   - How data flows through the system
-   - What validations are performed
-   - How errors are handled
-   - What the user experience expectations are
-
-**This is not optional. Making assumptions about functionality without reading the legacy code is a critical error.**
-
-### Adding New Features
-
-1. API routes go in `pages/api/`
-2. Feature components go in `lib/[feature]/`
-3. Shared components go in `lib/shared/`
-4. Use existing patterns for consistency
-
-### Type Safety
-
-- All components should have proper TypeScript types
-- API responses should match interfaces in `lib/core/`
-- Use strict null checks
-
-### UI Components
-
-- Use Chakra UI components whenever possible
-- Custom theme is defined in `lib/theme/`
-- Responsive design is required (check mobile views)
-
-### Testing
-
-**Frontend**: No test suite currently exists. When adding tests:
-- Jest is already configured
-- Place tests next to source files as `*.test.ts(x)`
-- Focus on core business logic first
-
-**Backend**: Solution structure prepared for tests. To add tests:
-```bash
-cd apps/api
-dotnet new xunit -n TrendWeight.Tests
-dotnet sln add TrendWeight.Tests/TrendWeight.Tests.csproj
-cd TrendWeight.Tests
-dotnet add reference ../TrendWeight/TrendWeight.csproj
-```
+- **Server State**: TanStack Query with custom hooks
+  - `useProfile()` - User profile data
+  - `useSettings()` - User settings
+  - `useMeasurements()` - Weight measurements
+- **Local State**: React hooks and Context API
+- **Persisted State**: Custom `usePersistedState` hook for user preferences
 
 ## Progress Indicators
 
-The legacy app uses NProgress for two types of progress indication, both styled consistently:
+The app uses @bprogress/react for progress indication:
+- Route changes trigger progress bar
+- Background API calls show progress via `BackgroundQueryProgress`
+- Consistent styling with light blue color (#eef5ff)
 
-### NProgress UI Components
-1. **Progress Bar**: 3px bar at top of page with blur effect
-2. **Spinner**: 18x18px circular spinner in upper right (top: 19px, right: 16px)
-   - Mobile responsive: moves to right: 6px on screens < 768px
+## Date/Time Handling
 
-### Progress Triggers
-1. **Route Changes**: Configured in `_app.tsx` with Next.js Router events
-2. **Background API Calls**: `BackgroundQueryProgress` component monitors React Query's `useIsFetching`
+- **Frontend**: Uses `@js-joda/core` for timezone-aware date operations
+- **Backend**: Consider using NodaTime for proper timezone handling
+- User's timezone and dayStartOffset must be respected for grouping measurements
 
-### Implementation Details
-- Color: `--nprogress-color: #eef5ff` (light blue)
-- 250ms delay before showing (prevents flash on fast operations)
-- Centralized state management via `progress` module (`lib/shared/progress.ts`)
-- Full styling in `lib/shared/nprogress.css`
+## API Patterns
 
-### Migration Note
-Consider using [BProgress](https://bprogress.vercel.app/docs) instead of NProgress for the new app, as NProgress is no longer actively maintained. BProgress is a modern alternative with similar API.
+### Endpoints
+- All API endpoints are under `/api/`
+- Feature-based organization (e.g., `/api/settings`, `/api/measurements`)
+- Consistent JSON response format
+
+### Error Handling
+- Global error handling middleware
+- Consistent error response format
+- Proper HTTP status codes
+
+## UI Components and Styling
+
+### Component Library
+- Radix UI for accessible, unstyled components
+- Custom styled with Tailwind CSS v4
+- Consistent use of CSS variables for theming
+
+### Tailwind Configuration
+- Uses Tailwind CSS v4 with CSS-based configuration
+- Brand colors defined as CSS variables
+- Container widths: sm:640px, md:768px, lg:1024px, xl:1280px
+
+### Typography
+- Inter font for UI elements
+- Zilla Slab for headings
+- Consistent text sizing and line heights
+
+## Development Guidelines
+
+### Code Organization
+1. **Feature-based structure**: Group related functionality together
+2. **Clear separation**: Keep UI components, business logic, and data access separate
+3. **Consistent naming**: Use PascalCase for components, camelCase for functions
+
+### TypeScript Best Practices
+- Enable strict mode
+- Define interfaces for all data structures
+- Avoid `any` type - use `unknown` when type is truly unknown
+- Leverage type inference where possible
+
+### React Best Practices
+- Functional components with hooks
+- Custom hooks for reusable logic
+- Proper error boundaries
+- Suspense for async operations
+
+### C# Best Practices
+- Feature folders for organization
+- Dependency injection for all services
+- Async/await for all I/O operations
+- JSONB for flexible data storage
+
+## Testing
+
+### Frontend
+- No test suite currently implemented
+- When adding tests, use Vitest with React Testing Library
+
+### Backend  
+- Solution structure prepared for xUnit tests
+- Add tests in a separate TrendWeight.Tests project
+
+## Deployment
+
+### Build Process
+1. Frontend builds to `apps/web/dist/`
+2. Backend publishes to standard .NET output
+3. Environment-specific configuration via environment variables
+
+### Build Information
+The `/build` route can display deployment info when configured:
+- See `apps/web/scripts/inject-build-info.js` for build-time injection
+- Supports git commit SHA, branch, build time, and version
+
+## Common Tasks
+
+### Adding a New Route
+1. Create route file in `apps/web/src/routes/`
+2. TanStack Router will auto-generate route tree
+3. Add navigation link if needed
+
+### Adding a New API Endpoint
+1. Create controller in appropriate Features folder
+2. Inherit from `BaseAuthController` for authenticated endpoints
+3. Use consistent response format
+
+### Updating Database Schema
+1. Modify schema in Supabase dashboard
+2. Update corresponding C# models with `Db` prefix
+3. Update TypeScript interfaces if needed
+
+## Troubleshooting
+
+### Port Conflicts
+- Frontend: Default port 5173
+- Backend: Default port 5199
+- Check `logs/` directory for startup errors
+
+### Authentication Issues
+- Verify Supabase JWT secret matches in backend config
+- Check CORS settings for local development
+- Ensure frontend uses correct API URL
+
+### Database Issues
+- All timestamps must be stored as ISO 8601 strings
+- JSONB queries use PostgreSQL syntax
+- Check Supabase logs for query errors
+
+## Important Notes
+
+1. **Never store secrets in code** - Use environment variables
+2. **Always handle errors gracefully** - Show user-friendly messages
+3. **Respect user's timezone** - All date operations must be timezone-aware
+4. **Test on mobile** - The app must be fully responsive
+5. **Keep accessibility in mind** - Use semantic HTML and ARIA labels
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
@@ -290,259 +349,3 @@ NEVER proactively create documentation files (*.md) or README files. Only create
 - Any other information that would help future Claude instances work more effectively on this codebase
 
 Add these updates in the appropriate section or create a new section if needed. This ensures knowledge is preserved across sessions.
-
-## Frontend Route Structure
-
-### Protected Routes
-The following routes require authentication and will redirect to `/login` if the user is not authenticated:
-- `/dashboard` - Main dashboard showing measurement data and charts
-- `/settings` - User settings management (currently shows settings API test data)
-- `/link` - Provider account linking interface (placeholder for Withings/Fitbit OAuth)
-
-### Public Routes
-- `/` - Home page
-- `/login` - Authentication page with email and social login options
-- `/check-email` - Email verification prompt
-- `/auth/verify` - Email link verification handler
-- `/about`, `/faq`, `/privacy`, `/tipjar` - Static content pages
-
-### Authentication Flow
-1. All protected routes use `useRequireAuth()` hook
-2. The hook leverages React Suspense - no manual loading states needed
-3. Auth initialization is handled by a Suspense boundary in the Layout component
-4. Unauthenticated users are automatically redirected to `/login`
-
-## Migration Rules
-
-### 1. UI Fidelity
-- **EXACT REPRODUCTION**: The new UI must match the legacy UI exactly unless explicitly told otherwise
-- This is NOT a redesign opportunity - reproduce the existing UI faithfully
-- Match colors, spacing, typography, and layout precisely
-- Use screenshots to verify visual accuracy before considering any UI task complete
-- Be self-critical about UI quality - if it "looks like ass", fix it
-
-### 2. Component Structure
-- **PRESERVE REACT STRUCTURE**: Maintain the same component hierarchy as the legacy app
-- If the legacy has separate components (e.g., Blurb, SampleChart, InfoButtons), create separate components
-- Don't consolidate multiple components into one file unless explicitly instructed
-- Match the legacy's component organization and naming conventions
-
-### 3. Container and Layout
-- **CONSISTENT WIDTHS**: Use the same Container component for both header and main content
-- Container max-widths match legacy breakpoints: sm:640px, md:768px, lg:1024px, xl:1280px
-- The Layout component wraps all standard pages with Header + Container + Footer
-- Special layouts (like home page) bypass the standard Layout
-
-### 4. Development Approach
-- **THINK BEFORE ACTING**: Always analyze the legacy code before implementing
-- Don't make assumptions about data structures or UI patterns - verify first
-- Check if libraries/plugins are installed and configured before using them (e.g., Tailwind Typography)
-- Use proper Tailwind classes, not raw CSS
-- Read documentation for new tools (e.g., Tailwind v4) before making assumptions
-- Don't act like a "crappy junior dev" - think through problems properly
-
-### 5. Static Pages First
-- Complete all static pages before moving to dynamic/authenticated features
-- Static pages include: Home, About, FAQ, Privacy, Tip Jar, etc.
-- Leave complex features like Dashboard, Settings, and authentication for last
-
-### 6. Typography and Styling
-- Use appropriate text sizes (text-lg for body text on content pages)
-- Ensure proper line height (leading-relaxed) for readability
-- Headers should be prominent (text-4xl for h1, text-3xl for h2)
-- Links use brand colors (text-brand-600 hover:text-brand-700 underline)
-- Maintain consistent spacing between elements
-
-## Supabase Migration (Completed)
-
-### Overview
-The C# API has been fully migrated from Firestore to Supabase for data storage. This migration was completed due to JSON serialization challenges with the C# Firestore client. Supabase provides native PostgreSQL JSONB support, making it ideal for document-style storage.
-
-### Database Schema
-- **profiles**: Stores user profiles with UUID primary key (renamed from users table to avoid confusion with Supabase auth.users)
-- **provider_links**: OAuth tokens for provider integrations (renamed from vendor_links)
-- **source_data**: Raw measurement data from providers
-
-### UID Strategy
-- **Supabase UUID**: Primary key for all tables
-- Uses Supabase Auth JWTs directly - no Firebase UIDs anymore
-- User's Supabase Auth UID is used as the primary key in profiles table
-
-### Key Benefits
-- No JSON serialization issues (native JSONB support)
-- Better performance with PostgreSQL indexes
-- Easier future migration to Supabase Auth
-- Cleaner code without complex Firestore converters
-
-### Authentication with React Suspense
-
-#### Overview
-The frontend uses React Suspense for handling authentication loading states, eliminating the need for manual loading UI in protected routes.
-
-#### Key Components
-
-1. **`useRequireAuth` Hook**: 
-   - Used in protected routes (dashboard, settings, link)
-   - Throws a promise during auth initialization for Suspense
-   - Automatically redirects to `/login` if user is not authenticated
-   - Returns the full auth object with user data and methods
-
-2. **`authSuspenseManager`**: 
-   - Manages the promise-based loading state for Suspense
-   - Integrates with SupabaseAuthContext to track initialization
-   - Resolves promises when auth state is determined
-
-3. **Suspense Boundary in Layout**:
-   - The `Layout` component wraps children in a Suspense boundary
-   - Shows a centered "Loading..." message during auth initialization
-   - Eliminates boilerplate loading code in individual routes
-
-#### Usage Example
-```typescript
-function ProtectedPage() {
-  const auth = useRequireAuth() // Throws for Suspense, redirects if not logged in
-  
-  return (
-    <Layout>
-      <h1>Welcome {auth.user?.email}</h1>
-      <button onClick={auth.signOut}>Sign Out</button>
-    </Layout>
-  )
-}
-```
-
-### Recent Backend Cleanup (December 2024)
-
-The backend C# code underwent a comprehensive cleanup with the following changes:
-
-#### 1. **Complete Firestore Removal**
-- All Firestore dependencies and services removed
-- Migrated SettingsController from Firestore to Supabase
-- Removed obsolete Firestore-related code and configuration
-
-#### 2. **Provider Abstraction Layer**
-- Created `IProviderService` interface for common provider operations
-- Implemented `ProviderServiceBase` abstract class with token refresh logic
-- Created `ProviderIntegrationService` orchestrator for multi-provider support
-- Refactored WithingsService to use the new abstraction
-
-#### 3. **Vendor → Provider Renaming**
-- Renamed all "vendor" references to "provider" throughout the codebase
-- Updated database schema: `vendor_links` → `provider_links`
-- Updated column names: `vendor` → `provider` in both tables
-- Updated all namespaces, classes, and method names accordingly
-
-#### 4. **Database Model Consistency**
-- All database models now have `Db` prefix for clarity:
-  - `User` → `DbProfile` (table renamed from users to profiles to avoid confusion with auth.users)
-  - `ProviderLink` → `DbProviderLink`
-  - `SourceData` → `DbSourceData`
-- Clear separation between database models and domain models
-
-#### 5. **Production Endpoints**
-- Replaced test controllers with production-ready endpoints
-- Created proper OAuth flow controllers for providers
-- Implemented MeasurementsController for data refresh with proper caching
-
-#### 6. **Code Organization**
-- Organized code into feature-specific modules
-- Removed duplicate Data/ folder (kept Measurements/)
-- Cleaned up outdated markdown and plan files
-- Fixed all namespace and import issues
-
-#### 7. **Timestamp Handling**
-- **IMPORTANT**: All timestamp columns are stored as `text` with ISO 8601 format
-- This avoids Supabase C# client timezone conversion issues
-- Use `DateTime.UtcNow.ToString("o")` when storing timestamps
-- Parse with `DateTime.Parse(timestamp, null, DateTimeStyles.RoundtripKind).ToUniversalTime()`
-
-#### 8. **Data Refresh and Merging**
-- Implements proper data merging (not replacement) when refreshing from providers
-- Fetches data from 90 days before last sync to catch late-arriving/edited measurements
-- Only updates database when measurements actually change
-- Preserves historical data outside the refresh window
-- 5-minute cache prevents unnecessary API calls
-
-#### 9. **What Remains**
-- **Firebase Infrastructure**: Still used for authentication (JWT validation)
-  - FirebaseAuthenticationHandler.cs - Validates Firebase JWT tokens
-  - FirebaseConfig.cs - Configuration for Firebase project
-  - FirebaseService.cs - Service for Firebase Admin SDK
-  - IFirebaseService.cs - Interface for Firebase service
-- This is intentional as the app uses Firebase Auth for user authentication while storing data in Supabase
-
-### Auth Migration to Supabase (December 2024)
-
-The application is transitioning from Firebase Auth to Supabase Auth to unify authentication and data storage under a single platform.
-
-#### Backend Auth Configuration
-- **Dual Auth Support**: The backend temporarily supports both Firebase and Supabase JWTs during transition
-- **SupabaseAuthenticationHandler**: New handler in Infrastructure/Auth validates Supabase JWTs using the JWT secret
-- **Unified User Service**: UserService.GetByIdAsync() accepts both Supabase UUIDs and Firebase UIDs
-
-#### Frontend Auth Configuration
-- **Supabase Client**: Configured in `src/lib/supabase/client.ts`
-- **Unified Auth Context**: `UnifiedAuthContext` wraps Supabase auth to maintain API compatibility
-- **Social Logins**: Google, Microsoft (Azure), and Apple OAuth providers
-- **Magic Links**: Email-based passwordless authentication
-
-#### Environment Variables
-Frontend (.env.local):
-```
-VITE_SUPABASE_URL=https://[project-ref].supabase.co
-VITE_SUPABASE_ANON_KEY=[anon-key]
-```
-
-Backend (appsettings.json):
-```json
-{
-  "Supabase": {
-    "Url": "https://[project-ref].supabase.co",
-    "AnonKey": "[anon-key]",
-    "ServiceKey": "[service-key]",
-    "JwtSecret": "[jwt-secret]"
-  }
-}
-```
-
-#### Migration Status
-- ✅ Backend supports Supabase JWTs
-- ✅ Frontend uses Supabase Auth
-- ✅ All auth methods implemented (email, Google, Microsoft, Apple)
-- ⏳ Remove Firebase dependencies after testing
-- ⏳ Update database schema to remove firebase_uid column
-
-## Build Information Page
-
-The `/build` route displays deployment information. Currently it shows basic info in development mode.
-
-### Future Enhancement
-When a deployment/build system is configured, the build page should display:
-- Build version (from package.json)
-- Git commit SHA and branch
-- Build timestamp
-- Deployment environment
-
-See `apps/web/scripts/inject-build-info.js` for a script that can inject this information at build time using environment variables like:
-- `VITE_BUILD_TIME`
-- `VITE_BUILD_VERSION`
-- `VITE_COMMIT_SHA`
-- `VITE_BRANCH`
-
-The build system should run this script before `npm run build` to populate these values.
-
-## Development Tips and Best Practices
-
-### Never Run Both Dev Servers Simultaneously
-
-- **CRITICAL**: Never run the dev servers for the backend or frontend simultaneously
-- Backend and frontend dev servers are already running separately
-- If you want to see recent output from each server (e.g., to check error messages):
-  - Tail the log files at the top of the repo
-  - Use `tail -f logs/backend.log` for backend logs
-  - Use `tail -f logs/frontend.log` for frontend logs
-
-## Port Configuration
-
-- The frontend Vite dev server runs on port 5173
-- The legacy web app runs on port 3000

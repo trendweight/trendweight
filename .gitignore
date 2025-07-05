@@ -128,4 +128,4 @@ firebase-debug.log
 pglite-debug.log
 
 # Ignore context_portal (appears to be unrelated tool output)
-context_portal/
+context_portal/trendweight-classic
