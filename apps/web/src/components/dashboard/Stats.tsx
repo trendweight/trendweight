@@ -24,7 +24,7 @@ const Stats = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-3">Overall Weight Statistics</h2>
+      <h2 className="text-xl font-semibold mb-3">Overall Weight Statistics</h2>
       <ul className="space-y-1">
         <li>
           You are {weightSlope > 0 ? "gaining" : "losing"}{" "}

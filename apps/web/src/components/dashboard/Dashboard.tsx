@@ -6,6 +6,7 @@ import Currently from "./Currently"
 import DashboardPlaceholder from "./DashboardPlaceholder"
 import RecentReadings from "./RecentReadings"
 import Stats from "./Stats"
+import Deltas from "./Deltas"
 
 const Dashboard: FC = () => {
   const dashboardData = useComputeDashboardData()
@@ -28,9 +29,12 @@ const Dashboard: FC = () => {
           </div>
           <Currently />
         </div>
-        <div className="flex flex-col md:flex-row gap-4 md:gap-12 lg:gap-20">
+        <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-12 lg:gap-20">
           <RecentReadings />
-          <Stats />
+          <div className="flex flex-col gap-4">
+            <Deltas />
+            <Stats />
+          </div>
         </div>
       </div>
     </DashboardProvider>

@@ -2,15 +2,30 @@ import { Link } from '@tanstack/react-router'
 import { Logo } from './Logo'
 import { Container } from './Container'
 import { useAuth } from '../lib/auth/UnifiedAuthContext'
+import { useState, useRef, useEffect } from 'react'
+import { HiMenu, HiX } from 'react-icons/hi'
 
 export function Header() {
   const { isInitializing, isLoggedIn, signOut } = useAuth()
   const visibility = isInitializing ? 'invisible' : 'visible'
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMobileMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
     <header className="bg-brand-500 text-white">
       <Container>
-        <nav className="flex items-stretch justify-between">
+        <nav className="flex items-stretch justify-between" ref={menuRef}>
           <div className="flex items-center gap-2 py-3">
             <Link to="/" className="font-logo text-3xl font-bold leading-tight">
               TrendWeight
@@ -47,7 +62,50 @@ export function Header() {
               </button>
             )}
           </div>
+          <button
+            className="flex md:hidden items-center p-2 text-white"
+            aria-label="Open menu"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
+          </button>
         </nav>
+        {/* Mobile menu */}
+        <div className={`md:hidden ${mobileMenuOpen ? 'block' : 'hidden'} bg-brand-400 -mx-4 px-4 py-4`}>
+          <div className="flex flex-col space-y-3">
+            <MobileNavLink to="/" onClick={() => setMobileMenuOpen(false)} visibility={visibility}>
+              Home
+            </MobileNavLink>
+            {isLoggedIn && (
+              <>
+                <MobileNavLink to="/dashboard" onClick={() => setMobileMenuOpen(false)} visibility={visibility}>
+                  Dashboard
+                </MobileNavLink>
+                <MobileNavLink to="/settings" onClick={() => setMobileMenuOpen(false)} visibility={visibility}>
+                  Settings
+                </MobileNavLink>
+              </>
+            )}
+            <MobileNavLink to="/about" onClick={() => setMobileMenuOpen(false)} visibility={visibility}>
+              Learn
+            </MobileNavLink>
+            {!isLoggedIn ? (
+              <MobileNavLink to="/login" onClick={() => setMobileMenuOpen(false)} visibility={visibility}>
+                Log In
+              </MobileNavLink>
+            ) : (
+              <button 
+                className={`text-left px-3 py-2 text-white hover:bg-brand-300 rounded ${visibility}`}
+                onClick={() => {
+                  signOut()
+                  setMobileMenuOpen(false)
+                }}
+              >
+                Log Out
+              </button>
+            )}
+          </div>
+        </div>
       </Container>
     </header>
   )
@@ -67,6 +125,25 @@ function NavLink({ to, children, visibility = 'visible' }: NavLinkProps) {
       activeProps={{
         className: "bg-brand-400"
       }}
+    >
+      {children}
+    </Link>
+  )
+}
+
+interface MobileNavLinkProps extends NavLinkProps {
+  onClick: () => void
+}
+
+function MobileNavLink({ to, children, onClick, visibility = 'visible' }: MobileNavLinkProps) {
+  return (
+    <Link 
+      to={to} 
+      className={`px-3 py-2 text-white hover:bg-brand-300 rounded ${visibility}`}
+      activeProps={{
+        className: "bg-brand-300"
+      }}
+      onClick={onClick}
     >
       {children}
     </Link>
