@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { Layout } from '../components/Layout'
 import { useAuth } from '../lib/auth/useAuth'
 import { supabase } from '../lib/supabase/client'
-import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
+import { pageTitle } from '../lib/utils/pageTitle'
 
 export const Route = createFileRoute('/auth/verify')({
   // This runs BEFORE the component renders, outside of React's lifecycle
@@ -34,7 +34,6 @@ export const Route = createFileRoute('/auth/verify')({
 })
 
 function VerifyEmailPage() {
-  useDocumentTitle('Verify Email')
   const navigate = useNavigate()
   const { isLoggedIn } = useAuth()
   const routeData = Route.useLoaderData()
@@ -95,29 +94,32 @@ function VerifyEmailPage() {
   }, [token, isLoggedIn, navigate, isVerifying, routeData.error])
 
   return (
-    <Layout>
-      <div className="max-w-md mx-auto text-center">
-        {isVerifying ? (
-          <>
-            <h1 className="text-4xl font-bold mb-4">Verifying...</h1>
-            <p className="text-gray-600">Please wait while we verify your login link.</p>
-          </>
-        ) : error ? (
-          <>
-            <h1 className="text-4xl font-bold mb-4">Verification Failed</h1>
-            <p className="text-red-600 mb-4">{error}</p>
-            <Link to="/login" className="text-brand-600 hover:text-brand-700 underline">
-              Return to login
-            </Link>
-          </>
-        ) : (
-          // This shouldn't happen, but just in case
-          <>
-            <h1 className="text-4xl font-bold mb-4">Processing...</h1>
-            <p className="text-gray-600">Please wait...</p>
-          </>
-        )}
-      </div>
-    </Layout>
+    <>
+      <title>{pageTitle('Verify Email')}</title>
+      <Layout>
+        <div className="max-w-md mx-auto text-center">
+          {isVerifying ? (
+            <>
+              <h1 className="text-4xl font-bold mb-4">Verifying...</h1>
+              <p className="text-gray-600">Please wait while we verify your login link.</p>
+            </>
+          ) : error ? (
+            <>
+              <h1 className="text-4xl font-bold mb-4">Verification Failed</h1>
+              <p className="text-red-600 mb-4">{error}</p>
+              <Link to="/login" className="text-brand-600 hover:text-brand-700 underline">
+                Return to login
+              </Link>
+            </>
+          ) : (
+            // This shouldn't happen, but just in case
+            <>
+              <h1 className="text-4xl font-bold mb-4">Processing...</h1>
+              <p className="text-gray-600">Please wait...</p>
+            </>
+          )}
+        </div>
+      </Layout>
+    </>
   )
 }

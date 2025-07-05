@@ -1,17 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
-import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
+import { pageTitle } from '../lib/utils/pageTitle'
 
 export const Route = createFileRoute('/tipjar')({
   component: TipJarPage,
 })
 
 function TipJarPage() {
-  useDocumentTitle('Tip Jar')
-
   return (
-    <Layout>
-      <div className="space-y-6">
+    <>
+      <title>{pageTitle('Tip Jar')}</title>
+      <Layout>
+        <div className="space-y-6">
         <h1 className="text-4xl font-bold text-gray-900">Want to help support TrendWeight?</h1>
         
         <p className="text-lg leading-relaxed text-gray-700">
@@ -83,5 +83,6 @@ function TipJarPage() {
         </ul>
       </div>
     </Layout>
+    </>
   )
 }

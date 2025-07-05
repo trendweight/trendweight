@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import type { ReactNode } from 'react'
 import { Container } from './Container'
+import { pageTitle } from '../lib/utils/pageTitle'
 
 interface Props {
   children: ReactNode
@@ -28,7 +29,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <>
-          <title>Oops</title>
+          <title>{pageTitle('Oops')}</title>
           <meta name="robots" content="noindex, nofollow" />
           
           <Container>

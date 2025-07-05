@@ -2,21 +2,22 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { useSettings } from '../lib/api/queries'
 import { useRequireAuth } from '../lib/auth/useRequireAuth'
-import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
+import { pageTitle } from '../lib/utils/pageTitle'
 
 export const Route = createFileRoute('/settings')({
   component: SettingsPage,
 })
 
 function SettingsPage() {
-  useDocumentTitle('Settings')
   useRequireAuth()
   
   const { data: settingsData, isError, error } = useSettings()
 
   return (
-    <Layout>
-      <div>
+    <>
+      <title>{pageTitle('Settings')}</title>
+      <Layout>
+        <div>
         <h1 className="text-4xl font-bold mb-4">Settings</h1>
         
         {/* Settings API Test Section */}
@@ -43,5 +44,6 @@ function SettingsPage() {
         </div>
       </div>
     </Layout>
+    </>
   )
 }

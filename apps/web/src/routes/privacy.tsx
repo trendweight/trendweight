@@ -1,17 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
-import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
+import { pageTitle } from '../lib/utils/pageTitle'
 
 export const Route = createFileRoute('/privacy')({
   component: PrivacyPage,
 })
 
 function PrivacyPage() {
-  useDocumentTitle('Privacy')
-
   return (
-    <Layout>
-      <div className="mt-4 max-w-4xl">
+    <>
+      <title>{pageTitle('Privacy')}</title>
+      <Layout>
+        <div className="mt-4 max-w-4xl">
         <h1 className="text-4xl font-bold pb-4">Our Privacy Policy</h1>
         <img src="/security.svg" className="float-right ml-4 my-4 h-28 md:h-48" alt="security matters" />
         <p>
@@ -69,5 +69,6 @@ function PrivacyPage() {
         <p className="mt-4">This policy is effective as of April 11, 2021.</p>
       </div>
     </Layout>
+    </>
   )
 }
