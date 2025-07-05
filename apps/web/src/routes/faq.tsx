@@ -1,18 +1,18 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { Question } from '../components/faq/Question'
-import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
+import { pageTitle } from '../lib/utils/pageTitle'
 
 export const Route = createFileRoute('/faq')({
   component: FAQPage,
 })
 
 function FAQPage() {
-  useDocumentTitle('FAQ')
-  
   return (
-    <Layout>
-      <div className="bg-white">
+    <>
+      <title>{pageTitle('FAQ')}</title>
+      <Layout>
+        <div className="bg-white">
         <div>
           <div className="lg:grid lg:gap-8 lg:grid-cols-4">
             <div>
@@ -120,5 +120,6 @@ function FAQPage() {
         </div>
       </div>
     </Layout>
+    </>
   )
 }

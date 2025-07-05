@@ -2,14 +2,13 @@ import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Layout } from '../components/Layout'
 import { useAuth } from '../lib/auth/useAuth'
-import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
+import { pageTitle } from '../lib/utils/pageTitle'
 
 export const Route = createFileRoute('/login')({
   component: LoginPage,
 })
 
 function LoginPage() {
-  useDocumentTitle('Log In')
   const navigate = useNavigate()
   const { sendLoginEmail, signInWithGoogle, signInWithMicrosoft, signInWithApple } = useAuth()
   const [email, setEmail] = useState('')
@@ -57,8 +56,10 @@ function LoginPage() {
   }
 
   return (
-    <Layout>
-      <div className="max-w-md mx-auto py-12">
+    <>
+      <title>{pageTitle('Log In')}</title>
+      <Layout>
+        <div className="max-w-md mx-auto py-12">
         <h1 className="text-4xl font-bold text-center mb-4">Welcome</h1>
         <p className="text-center text-gray-600 mb-8">Log in to your account or create a new one</p>
         
@@ -134,5 +135,6 @@ function LoginPage() {
         </p>
       </div>
     </Layout>
+    </>
   )
 }

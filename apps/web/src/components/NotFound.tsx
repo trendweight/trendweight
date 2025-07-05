@@ -1,9 +1,10 @@
 import { Container } from './Container'
+import { pageTitle } from '../lib/utils/pageTitle'
 
 export function NotFound() {
   return (
     <>
-      <title>Error 404 (Not Found)</title>
+      <title>{pageTitle('Error 404 (Not Found)')}</title>
       <meta name="robots" content="noindex, nofollow" />
       
       <Container>

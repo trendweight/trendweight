@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Container } from '../components/Container'
 import { Layout } from '../components/Layout'
+import { pageTitle } from '../lib/utils/pageTitle'
 
 export const Route = createFileRoute('/build')({
   component: BuildDetails,
@@ -13,7 +14,7 @@ function BuildDetails() {
 
   return (
     <>
-      <title>Build Details</title>
+      <title>{pageTitle('Build Details')}</title>
       
       <Layout>
         <Container>
