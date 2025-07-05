@@ -32,7 +32,7 @@ export function Header() {
             </Link>
             <Logo className="h-8 w-auto" />
           </div>
-          <div className="hidden md:flex items-stretch">
+          <div className="hidden md:flex items-stretch md:pr-8">
             <NavLink to="/" visibility={visibility}>
               Home
             </NavLink>

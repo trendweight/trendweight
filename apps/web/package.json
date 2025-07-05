@@ -13,6 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@bprogress/react": "^1.2.7",
     "@fontsource/zilla-slab": "^5.2.6",
     "@js-joda/core": "^5.6.5",
     "@js-joda/timezone": "^2.22.0",
