@@ -1,6 +1,6 @@
 import { useContext, useMemo, useState } from "react"
 import { dashboardContext, type DashboardData } from "./dashboardContext"
-import { useSettings, useMeasurementData } from "../api/queries"
+import { useProfile, useMeasurementData } from "../api/queries"
 import type { Mode, TimeRange } from "../core/interfaces"
 import { usePersistedState } from "../hooks/usePersistedState"
 import { computeDataPoints } from "./computations/data-points"
@@ -19,22 +19,8 @@ export const useComputeDashboardData = () => {
   const [mode, setMode] = useState<Mode>("weight")
   const [timeRange, setTimeRange] = usePersistedState<TimeRange>("timeRange", "4w")
 
-  // Get profile data from settings endpoint
-  const { data: settingsData } = useSettings()
-  const profile = useMemo(() => 
-    settingsData ? {
-      firstName: settingsData.firstName,
-      timezone: settingsData.timezone,
-      goalStart: settingsData.goalStart,
-      goalWeight: settingsData.goalWeight,
-      plannedPoundsPerWeek: settingsData.plannedPoundsPerWeek,
-      dayStartOffset: settingsData.dayStartOffset,
-      useMetric: settingsData.useMetric,
-      showCalories: settingsData.showCalories,
-      sharingToken: settingsData.sharingToken,
-    } : undefined,
-    [settingsData]
-  )
+  // Get profile data from dedicated profile endpoint
+  const { data: profile } = useProfile()
 
   // Get measurement data
   const { data: apiSourceData } = useMeasurementData()
