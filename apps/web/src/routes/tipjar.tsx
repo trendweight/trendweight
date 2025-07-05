@@ -1,11 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
+import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
 
 export const Route = createFileRoute('/tipjar')({
   component: TipJarPage,
 })
 
 function TipJarPage() {
+  useDocumentTitle('Tip Jar')
+
   return (
     <Layout>
       <div className="space-y-6">

@@ -2,12 +2,14 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineRss, HiOutlineShoppingCart } from 'react-icons/hi'
 import { Layout } from '../components/Layout'
 import { useAuth } from '../lib/auth/useAuth'
+import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
 
 export const Route = createFileRoute('/about')({
   component: AboutPage,
 })
 
 function AboutPage() {
+  useDocumentTitle('About')
   const { isInitializing, user } = useAuth()
   const getStarted = isInitializing || !user ? { label: "Get Started", href: "/login" } : { label: "Go to Dashboard", href: "/dashboard" }
 

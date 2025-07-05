@@ -3,12 +3,14 @@ import { useState, useEffect } from 'react'
 import { Layout } from '../components/Layout'
 import { HiOutlineMail } from 'react-icons/hi'
 import { useAuth } from '../lib/auth/useAuth'
+import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
 
 export const Route = createFileRoute('/check-email')({
   component: CheckEmailPage,
 })
 
 function CheckEmailPage() {
+  useDocumentTitle('Check Email')
   const { sendLoginEmail } = useAuth()
   const [email, setEmail] = useState('')
   const [canResend, setCanResend] = useState(false)

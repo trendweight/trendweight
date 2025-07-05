@@ -2,12 +2,14 @@ import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Layout } from '../components/Layout'
 import { useAuth } from '../lib/auth/useAuth'
+import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
 
 export const Route = createFileRoute('/login')({
   component: LoginPage,
 })
 
 function LoginPage() {
+  useDocumentTitle('Log In')
   const navigate = useNavigate()
   const { sendLoginEmail, signInWithGoogle, signInWithMicrosoft, signInWithApple } = useAuth()
   const [email, setEmail] = useState('')

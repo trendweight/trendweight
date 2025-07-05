@@ -1,11 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
+import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
 
 export const Route = createFileRoute('/privacy')({
   component: PrivacyPage,
 })
 
 function PrivacyPage() {
+  useDocumentTitle('Privacy')
+
   return (
     <Layout>
       <div className="mt-4 max-w-4xl">

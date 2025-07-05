@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Layout } from '../components/Layout'
 import { useAuth } from '../lib/auth/useAuth'
 import { supabase } from '../lib/supabase/client'
+import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
 
 export const Route = createFileRoute('/auth/verify')({
   // This runs BEFORE the component renders, outside of React's lifecycle
@@ -33,6 +34,7 @@ export const Route = createFileRoute('/auth/verify')({
 })
 
 function VerifyEmailPage() {
+  useDocumentTitle('Verify Email')
   const navigate = useNavigate()
   const { isLoggedIn } = useAuth()
   const routeData = Route.useLoaderData()
