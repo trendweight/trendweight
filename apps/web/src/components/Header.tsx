@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { Logo } from './Logo'
 import { Container } from './Container'
-import { useAuth } from '../lib/auth/UnifiedAuthContext'
+import { useAuth } from '../lib/auth/useAuth'
 import { useState, useRef, useEffect } from 'react'
 import { HiMenu, HiX } from 'react-icons/hi'
 

@@ -1,6 +1,6 @@
 import { ToggleButton } from "../shared/ToggleButton"
 import { ToggleButtonGroup } from "../shared/ToggleButtonGroup"
-import { useDashboardData } from "../../lib/dashboard/context"
+import { useDashboardData } from "../../lib/dashboard/hooks"
 import type { Mode, TimeRange } from "../../lib/core/interfaces"
 
 const Buttons = () => {

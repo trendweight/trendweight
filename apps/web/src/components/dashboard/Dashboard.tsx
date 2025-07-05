@@ -1,5 +1,6 @@
 import type { FC } from "react"
-import { DashboardProvider, useComputeDashboardData } from "../../lib/dashboard/context"
+import { DashboardProvider } from "../../lib/dashboard/context"
+import { useComputeDashboardData } from "../../lib/dashboard/hooks"
 import Buttons from "./Buttons"
 import Chart from "./chart/Chart"
 import Currently from "./Currently"

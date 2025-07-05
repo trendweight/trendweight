@@ -4,7 +4,7 @@ import type { DataPoint } from "../../lib/core/interfaces"
 import { formatMeasurement } from "../../lib/core/numbers"
 import { shortDate } from "../../lib/core/dates"
 import ChangeArrow from "./ChangeArrow"
-import { useDashboardData } from "../../lib/dashboard/context"
+import { useDashboardData } from "../../lib/dashboard/hooks"
 
 const Currently = () => {
   const {

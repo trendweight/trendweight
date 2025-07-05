@@ -1,19 +1,4 @@
-export interface ProfileData {
-  firstName: string
-  timezone: string
-  goalStart?: string
-  goalWeight?: number
-  plannedPoundsPerWeek?: number
-  dayStartOffset?: number
-  useMetric: boolean
-  showCalories?: boolean
-  sharingToken?: string
-}
-
-export interface SettingsData extends ProfileData {
-  uid: string
-  email: string
-}
+import type { SettingsData } from '../core/interfaces'
 
 // Response structure from the settings API endpoint
 export interface SettingsResponse {
@@ -44,7 +29,7 @@ export interface TestData {
 }
 
 // Source data from /api/data endpoint
-export interface SourceData {
+export interface ApiSourceData {
   source: string  // "withings" or "fitbit"
   lastUpdate: string  // ISO timestamp
   measurements?: Array<{

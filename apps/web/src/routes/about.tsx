@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineRss, HiOutlineShoppingCart } from 'react-icons/hi'
 import { Layout } from '../components/Layout'
-import { useAuth } from '../lib/auth/UnifiedAuthContext'
+import { useAuth } from '../lib/auth/useAuth'
 
 export const Route = createFileRoute('/about')({
   component: AboutPage,

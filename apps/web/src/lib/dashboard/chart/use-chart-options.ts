@@ -1,7 +1,7 @@
 import { DayOfWeek, LocalDate } from "@js-joda/core"
 import { useMemo } from "react"
 import { Modes } from "../../core/interfaces"
-import type { DashboardData } from "../context"
+import type { DashboardData } from "../dashboardContext"
 import chartOptionsTemplate from "./chart-options-template"
 import {
   createDiamondsSeries,

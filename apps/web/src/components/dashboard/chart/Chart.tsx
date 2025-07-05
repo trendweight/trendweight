@@ -1,6 +1,6 @@
 import HighchartsReact from "highcharts-react-official"
 import Highstock from "highcharts/highstock"
-import { useDashboardData } from "../../../lib/dashboard/context"
+import { useDashboardData } from "../../../lib/dashboard/hooks"
 import { useChartOptions } from "../../../lib/dashboard/chart/use-chart-options"
 import { useEffect } from "react"
 

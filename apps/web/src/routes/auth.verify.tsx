@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link, redirect } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import { Layout } from '../components/Layout'
-import { useAuth } from '../lib/auth/UnifiedAuthContext'
+import { useAuth } from '../lib/auth/useAuth'
 import { supabase } from '../lib/supabase/client'
 
 export const Route = createFileRoute('/auth/verify')({
@@ -90,7 +90,7 @@ function VerifyEmailPage() {
       setIsVerifying(false)
       setError(routeData.error || 'Invalid login link')
     }
-  }, [token, isLoggedIn, navigate, isVerifying])
+  }, [token, isLoggedIn, navigate, isVerifying, routeData.error])
 
   return (
     <Layout>

@@ -1,6 +1,6 @@
 import { Modes } from "../../lib/core/interfaces"
 import { formatMeasurement } from "../../lib/core/numbers"
-import { useDashboardData } from "../../lib/dashboard/context"
+import { useDashboardData } from "../../lib/dashboard/hooks"
 import ChangeArrow from "./ChangeArrow"
 
 const Deltas = () => {
