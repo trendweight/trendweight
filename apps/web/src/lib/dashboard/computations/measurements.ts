@@ -1,6 +1,5 @@
 import { ChronoUnit, Instant, ZoneId } from "@js-joda/core"
-import type { Measurement, ProfileData, SourceMeasurement } from "../../core/interfaces"
-import type { SourceData } from "../../api/types"
+import type { Measurement, ProfileData, SourceMeasurement, SourceData } from "../../core/interfaces"
 import "../../core/time"
 
 export const computeMeasurements = (data?: SourceData[], profile?: ProfileData) => {
@@ -106,7 +105,9 @@ export const computeMeasurements = (data?: SourceData[], profile?: ProfileData) 
 
   // now find missing fatRatios and interpolate
   const fatGroupedByDay = Object.groupBy(
-    rawData.filter(m => m.fatRatio !== undefined),
+    rawData
+      .filter(m => m.fatRatio !== undefined)
+      .toSorted((a, b) => a.timestamp.toString().localeCompare(b.timestamp.toString())),
     m => m.date.toString()
   ) as Record<string, SourceMeasurement[]>
 
@@ -119,6 +120,9 @@ export const computeMeasurements = (data?: SourceData[], profile?: ProfileData) 
       )[0]
     })
     .filter(Boolean)
+    .toSorted((a, b) => a.date.toString().localeCompare(b.date.toString()))
+  
+  
 
   const missingFatDays: SourceMeasurement[] = []
 
@@ -176,14 +180,34 @@ export const computeMeasurements = (data?: SourceData[], profile?: ProfileData) 
     }
 
     const measurement = measurementsByDate[sourceMeasurement.date.toString()]
-    measurement.actualFatPercent = fatRatio
-    measurement.actualFatMass = fatMass
-    measurement.actualLeanMass = leanMass
-    measurement.trendFatPercent = trendFatRatio
-    measurement.trendFatMass = trendFatMass
-    measurement.trendLeanMass = trendLeanMass
-    measurement.fatIsInterpolated = sourceMeasurement.fatRatioIsInterpolated || false
+    if (measurement) {
+      measurement.actualFatPercent = fatRatio
+      measurement.actualFatMass = fatMass
+      measurement.actualLeanMass = leanMass
+      measurement.trendFatPercent = trendFatRatio
+      measurement.trendFatMass = trendFatMass
+      measurement.trendLeanMass = trendLeanMass
+      measurement.fatIsInterpolated = sourceMeasurement.fatRatioIsInterpolated || false
+    } else {
+      // This is an interpolated fat day that doesn't have a corresponding weight measurement
+      // We need to create a new measurement for this day
+      measurements.push({
+        date: sourceMeasurement.date,
+        source: sourceMeasurement.source,
+        actualWeight: sourceMeasurement.weight,
+        trendWeight: sourceMeasurement.weight, // Use the interpolated weight as trend too
+        weightIsInterpolated: true,
+        actualFatPercent: fatRatio,
+        actualFatMass: fatMass,
+        actualLeanMass: leanMass,
+        trendFatPercent: trendFatRatio,
+        trendFatMass: trendFatMass,
+        trendLeanMass: trendLeanMass,
+        fatIsInterpolated: sourceMeasurement.fatRatioIsInterpolated || false,
+      })
+    }
   }
 
-  return measurements
+  // Re-sort measurements after adding interpolated fat days
+  return measurements.toSorted((a, b) => a.date.toString().localeCompare(b.date.toString()))
 }

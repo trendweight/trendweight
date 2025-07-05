@@ -1,32 +1,75 @@
+import { ChronoUnit, LocalDate } from "@js-joda/core"
 import type { DataPoint, Delta, Measurement, Mode } from "../../core/interfaces"
 
 export const computeDeltas = (_mode: Mode, dataPoints?: DataPoint[]): Delta[] => {
+  const deltas: Delta[] = []
+  
   if (!dataPoints || dataPoints.length === 0) {
-    return []
+    return deltas
   }
 
-  const deltas: Delta[] = []
+  // Clone and reverse the array
   const points = [...dataPoints].reverse()
+  if (points.length === 0) {
+    return deltas
+  }
+
+  const today = LocalDate.now()
+  const daysSinceMostRecent = points[0].date.until(today, ChronoUnit.DAYS)
+  
+  // Not enough recent readings
+  if (daysSinceMostRecent > 2 || points.length <= 1) {
+    return deltas
+  }
+
+  const mostRecentTrendValue = points[0].trend
+  const deltaStart = today.equals(points[0].date) ? today : today.minusDays(1)
   let index: number
 
-  // Find the measurements for various time periods
-  const today = points[0].date
-  const targetDates = [
-    { description: "Since yesterday", period: 1, date: today.minusDays(1) },
-    { description: "7-Day", period: 7, date: today.minusDays(7) },
-    { description: "30-Day", period: 30, date: today.minusDays(30) },
-    { description: "90-Day", period: 90, date: today.minusDays(90) },
-  ]
-
-  for (const target of targetDates) {
-    index = points.findIndex((m) => m.date.equals(target.date))
-    if (index !== -1) {
+  // Yesterday
+  if (daysSinceMostRecent <= 1 && points.length > 1) {
+    const comparisonDataPoint = points[1]
+    if (comparisonDataPoint.date.until(deltaStart, ChronoUnit.DAYS) === 1) {
       deltas.push({
-        description: target.description,
-        period: target.period,
-        delta: points[0].trend - points[index].trend,
+        period: 1,
+        description: "yesterday",
+        delta: mostRecentTrendValue - comparisonDataPoint.trend,
       })
     }
+  }
+
+  // A week ago
+  const targetDate7 = deltaStart.minusDays(7)
+  index = points.findIndex((m) => m.date.equals(targetDate7))
+  // Needs to be at least 4 readings between now and a week ago for a valid trend comparison
+  if (index >= 4) {
+    deltas.push({
+      period: 7,
+      description: "last week",
+      delta: mostRecentTrendValue - points[index].trend,
+    })
+  }
+
+  // Two weeks ago
+  const targetDate14 = deltaStart.minusDays(14)
+  index = points.findIndex((m) => m.date.equals(targetDate14))
+  if (index >= 9) {
+    deltas.push({
+      period: 14,
+      description: "two weeks ago",
+      delta: mostRecentTrendValue - points[index].trend,
+    })
+  }
+
+  // A month ago  
+  const targetDate28 = deltaStart.minusDays(28)
+  index = points.findIndex((m) => m.date.equals(targetDate28))
+  if (index >= 19) {
+    deltas.push({
+      period: 28,
+      description: "a month ago",
+      delta: mostRecentTrendValue - points[index].trend,
+    })
   }
 
   return deltas
@@ -49,13 +92,16 @@ export const computeWeightSlope = (measurements?: Measurement[]): number => {
   return calculateSlope(values)
 }
 
-export const computeActiveSlope = (_mode: Mode, dataPoints?: DataPoint[]): number => {
+export const computeActiveSlope = (mode: Mode, dataPoints?: DataPoint[]): number => {
   if (!dataPoints || dataPoints.length === 0) {
     return 0
   }
 
+  // Use 28 data points for fat/lean modes, 14 for weight
+  const pointCount = mode === "weight" ? 14 : 28
+  
   const values = dataPoints
-    .slice(-14)
+    .slice(-pointCount)
     .map((m, index) => ({ x: index, y: m.trend }))
 
   if (values.length < 2) {
