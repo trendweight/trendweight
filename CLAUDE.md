@@ -252,6 +252,28 @@ cd TrendWeight.Tests
 dotnet add reference ../TrendWeight/TrendWeight.csproj
 ```
 
+## Progress Indicators
+
+The legacy app uses NProgress for two types of progress indication, both styled consistently:
+
+### NProgress UI Components
+1. **Progress Bar**: 3px bar at top of page with blur effect
+2. **Spinner**: 18x18px circular spinner in upper right (top: 19px, right: 16px)
+   - Mobile responsive: moves to right: 6px on screens < 768px
+
+### Progress Triggers
+1. **Route Changes**: Configured in `_app.tsx` with Next.js Router events
+2. **Background API Calls**: `BackgroundQueryProgress` component monitors React Query's `useIsFetching`
+
+### Implementation Details
+- Color: `--nprogress-color: #eef5ff` (light blue)
+- 250ms delay before showing (prevents flash on fast operations)
+- Centralized state management via `progress` module (`lib/shared/progress.ts`)
+- Full styling in `lib/shared/nprogress.css`
+
+### Migration Note
+Consider using [BProgress](https://bprogress.vercel.app/docs) instead of NProgress for the new app, as NProgress is no longer actively maintained. BProgress is a modern alternative with similar API.
+
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
 NEVER create files unless they're absolutely necessary for achieving your goal.
@@ -489,3 +511,14 @@ Backend (appsettings.json):
 - ✅ All auth methods implemented (email, Google, Microsoft, Apple)
 - ⏳ Remove Firebase dependencies after testing
 - ⏳ Update database schema to remove firebase_uid column
+
+## Development Tips and Best Practices
+
+### Never Run Both Dev Servers Simultaneously
+
+- **CRITICAL**: Never run the dev servers for the backend or frontend simultaneously
+- Backend and frontend dev servers are already running separately
+- If you want to see recent output from each server (e.g., to check error messages):
+  - Tail the log files at the top of the repo
+  - Use `tail -f logs/backend.log` for backend logs
+  - Use `tail -f logs/frontend.log` for frontend logs
