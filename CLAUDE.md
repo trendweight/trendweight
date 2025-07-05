@@ -512,6 +512,25 @@ Backend (appsettings.json):
 - ⏳ Remove Firebase dependencies after testing
 - ⏳ Update database schema to remove firebase_uid column
 
+## Build Information Page
+
+The `/build` route displays deployment information. Currently it shows basic info in development mode.
+
+### Future Enhancement
+When a deployment/build system is configured, the build page should display:
+- Build version (from package.json)
+- Git commit SHA and branch
+- Build timestamp
+- Deployment environment
+
+See `apps/web/scripts/inject-build-info.js` for a script that can inject this information at build time using environment variables like:
+- `VITE_BUILD_TIME`
+- `VITE_BUILD_VERSION`
+- `VITE_COMMIT_SHA`
+- `VITE_BRANCH`
+
+The build system should run this script before `npm run build` to populate these values.
+
 ## Development Tips and Best Practices
 
 ### Never Run Both Dev Servers Simultaneously
@@ -522,3 +541,8 @@ Backend (appsettings.json):
   - Tail the log files at the top of the repo
   - Use `tail -f logs/backend.log` for backend logs
   - Use `tail -f logs/frontend.log` for frontend logs
+
+## Port Configuration
+
+- The frontend Vite dev server runs on port 5173
+- The legacy web app runs on port 3000

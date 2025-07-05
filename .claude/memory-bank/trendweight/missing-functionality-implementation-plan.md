@@ -17,29 +17,32 @@ Each phase will be implemented completely, followed by a pause for commit using 
 - [x] Test the endpoint works with the frontend
 - [x] Update dashboard to use dedicated profile endpoint
 
-**Completed:** Commit 65f88c9
+**Completed:** Commit 1b5fbf6
 
 **Why needed:**
 - Dashboard needs profile data to render correctly (timezone, metric units, etc.)
 - Future sharing feature will allow anonymous users to view dashboards
 - Keeps sensitive data (email, uid) separate from display preferences
 
-## Phase 2: BProgress Integration
+## Phase 2: BProgress Integration ✅
 **Purpose:** Add progress indicators for better UX during navigation and data loading
 
 **Implementation:**
-- [ ] Install BProgress React package: `npm install @bprogress/react`
-- [ ] Add `ProgressProvider` wrapper in `App.tsx`
-- [ ] Create `lib/progress/progress.ts` for state management
-- [ ] Create custom CSS file with legacy NProgress styling:
+- [x] Install BProgress React package: `npm install @bprogress/react`
+- [x] Add `ProgressProvider` wrapper in `App.tsx`
+- [x] Create `lib/progress/progress.ts` for state management
+- [x] Create custom CSS file with legacy NProgress styling:
    - Progress color: `#eef5ff` (light blue)
    - Bar height: 3px
-   - Spinner: 18x18px in upper right (top: 19px, right: 16px)
+   - Spinner: 18x18px in upper right (top: 21px, right: 16px)
    - Mobile responsive: spinner right: 6px on screens < 768px
    - Blur effect on progress bar
-- [ ] Create `BackgroundQueryProgress` component for TanStack Query
-- [ ] Integrate with TanStack Router navigation events
-- [ ] Test progress indicators work on route changes and API calls
+- [x] Create `BackgroundQueryProgress` component for TanStack Query
+- [x] Integrate with TanStack Router navigation events
+- [x] Test progress indicators work on route changes and API calls
+- [x] Fix reference counting bug with centralized progress manager
+
+**Completed:** Commit 7cdfffd
 
 ## Phase 3: Custom Error Pages
 **Purpose:** Provide user-friendly error pages with proper SEO signals
