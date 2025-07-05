@@ -1,19 +1,21 @@
 interface ChangeArrowProps {
   change: number
-  intendedDirection: number
+  intendedDirection?: number
 }
 
-const ChangeArrow = ({ change, intendedDirection }: ChangeArrowProps) => {
-  const isGood = intendedDirection < 0 ? change < 0 : change > 0
-  const color = isGood ? "text-green-600" : "text-red-600"
+const ChangeArrow = ({ change, intendedDirection = 0 }: ChangeArrowProps) => {
+  let color: string
   
-  if (Math.abs(change) < 0.01) {
-    return null
+  if (intendedDirection === 0) {
+    color = "text-gray-700"
+  } else {
+    const isGood = change * intendedDirection >= 0
+    color = isGood ? "text-green-600" : "text-red-600"
   }
   
   return (
-    <span className={color} aria-label={isGood ? "Positive change" : "Negative change"}>
-      {change > 0 ? "↑" : "↓"}
+    <span className={color} aria-label={intendedDirection === 0 ? "Neutral change" : change * intendedDirection >= 0 ? "Positive change" : "Negative change"}>
+      {change <= 0 ? "↓" : "↑"}
     </span>
   )
 }

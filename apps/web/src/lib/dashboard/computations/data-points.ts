@@ -5,57 +5,39 @@ export const computeDataPoints = (mode: Mode, measurements?: Measurement[]): Dat
     return undefined
   }
 
-  return measurements
-    .filter((m) => {
-      switch (mode) {
-        case "weight":
-          return true
-        case "fatpercent":
-          return m.actualFatPercent != null
-        case "fatmass":
-          return m.actualFatMass != null
-        case "leanmass":
-          return m.actualLeanMass != null
-        default:
-          return false
-      }
-    })
-    .map((m) => {
-      let actual: number
-      let trend: number
-      let isInterpolated: boolean
+  const propertyMap = {
+    weight: "Weight",
+    fatpercent: "FatPercent",
+    fatmass: "FatMass",
+    leanmass: "LeanMass",
+  } as const
 
-      switch (mode) {
-        case "weight":
-          actual = m.actualWeight
-          trend = m.trendWeight
-          isInterpolated = m.weightIsInterpolated
-          break
-        case "fatpercent":
-          actual = m.actualFatPercent!
-          trend = m.trendFatPercent!
-          isInterpolated = m.fatIsInterpolated
-          break
-        case "fatmass":
-          actual = m.actualFatMass!
-          trend = m.trendFatMass!
-          isInterpolated = m.fatIsInterpolated
-          break
-        case "leanmass":
-          actual = m.actualLeanMass!
-          trend = m.trendLeanMass!
-          isInterpolated = m.fatIsInterpolated
-          break
-        default:
-          throw new Error(`Unknown mode: ${mode}`)
-      }
+  const property = propertyMap[mode]
+  const interpolatedField = mode === "weight" ? "weightIsInterpolated" : "fatIsInterpolated"
 
-      return {
-        date: m.date,
-        source: m.source,
-        actual,
-        trend,
-        isInterpolated,
-      }
-    })
+  // Map all measurements to data points (including those with undefined values)
+  const mapped = measurements.map((m) => ({
+    date: m.date,
+    source: m.source,
+    actual: m[`actual${property}` as keyof Measurement] as number | undefined,
+    trend: m[`trend${property}` as keyof Measurement] as number,
+    isInterpolated: m[interpolatedField as keyof Measurement] as boolean,
+  } as DataPoint))
+  
+  // Sort by date to ensure proper ordering
+  mapped.sort((a, b) => a.date.toString().localeCompare(b.date.toString()))
+
+  // Find the first and last indices with defined actual values
+  let startIndex = 0
+  while (startIndex < mapped.length && mapped[startIndex].actual === undefined) {
+    startIndex++
+  }
+
+  let endIndex = mapped.length - 1
+  while (endIndex >= 0 && mapped[endIndex].actual === undefined) {
+    endIndex--
+  }
+
+  // Return the slice that excludes undefined values at the beginning and end
+  return mapped.slice(startIndex, endIndex + 1)
 }
