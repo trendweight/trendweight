@@ -2,7 +2,7 @@ import { ChronoUnit, LocalDate, Period } from "@js-joda/core"
 import { shortDate } from "../../lib/core/dates"
 import type { Measurement } from "../../lib/core/interfaces"
 import { formatNumber, formatWeight } from "../../lib/core/numbers"
-import { useDashboardData } from "../../lib/dashboard/context"
+import { useDashboardData } from "../../lib/dashboard/hooks"
 
 const Stats = () => {
   const {

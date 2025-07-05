@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { useAuth } from './UnifiedAuthContext'
+import { useAuth } from './useAuth'
 import { authSuspenseManager } from './authSuspense'
 
 export function useRequireAuth() {

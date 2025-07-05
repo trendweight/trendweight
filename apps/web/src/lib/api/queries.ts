@@ -1,6 +1,7 @@
 import { useQuery, useSuspenseQuery, type UseQueryOptions } from '@tanstack/react-query'
 import { apiRequest } from './client'
-import type { ProfileData, SettingsData, SettingsResponse, ChartData, TestData, SourceData } from './types'
+import type { SettingsResponse, ChartData, TestData, ApiSourceData } from './types'
+import type { ProfileData, SettingsData } from '../core/interfaces'
 
 // Query keys
 export const queryKeys = {
@@ -52,11 +53,11 @@ export function useTestData(
 
 // Measurement data query (matches legacy behavior - refresh handled server-side)
 export function useMeasurementData(
-  options?: Omit<UseQueryOptions<SourceData[], Error, SourceData[], typeof queryKeys.data>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<ApiSourceData[], Error, ApiSourceData[], typeof queryKeys.data>, 'queryKey' | 'queryFn'>
 ) {
   return useQuery({
     queryKey: queryKeys.data,
-    queryFn: () => apiRequest<SourceData[]>('/data'),
+    queryFn: () => apiRequest<ApiSourceData[]>('/data'),
     staleTime: 60000, // 1 minute (matching legacy React Query config)
     ...options,
   })

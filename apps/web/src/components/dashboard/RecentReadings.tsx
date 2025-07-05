@@ -1,7 +1,7 @@
 import { recentDate } from "../../lib/core/dates"
 import { Modes } from "../../lib/core/interfaces"
 import { formatMeasurement } from "../../lib/core/numbers"
-import { useDashboardData } from "../../lib/dashboard/context"
+import { useDashboardData } from "../../lib/dashboard/hooks"
 
 const RecentReadings = () => {
   const {
