@@ -27,25 +27,26 @@ function TipJarPage() {
         </p>
         
         <p className="text-lg leading-relaxed text-gray-700">
-          In fact, <a href="https://trendweight.io" className="text-brand-600 hover:text-brand-700 underline">trendweight.io</a> pretty inexpensive to run:
+          In fact, TrendWeight is pretty inexpensive to run:
         </p>
         
         <ul className="pl-8 list-disc space-y-2 text-lg text-gray-700">
           <li>
-            The website runs on <a href="https://vercel.com" className="text-brand-600 hover:text-brand-700 underline">Vercel</a>: <b>$20</b>
-            /month
+            Hosting (TBD): <b>$20</b>/month
           </li>
           <li>
-            Performance monitoring is <a href="https://vercel.com/docs/analytics" className="text-brand-600 hover:text-brand-700 underline">Vercel Analytics</a>: <b>$10</b>
-            /month
+            Analytics via <a href="https://plausible.io" className="text-brand-600 hover:text-brand-700 underline">Plausible</a>: <b>~$10</b>/month
           </li>
           <li>
-            The database and authentication is on <a href="https://supabase.com/pricing" className="text-brand-600 hover:text-brand-700 underline">Supabase</a>: <b>$0</b>/month
+            Database and authentication via <a href="https://supabase.com" className="text-brand-600 hover:text-brand-700 underline">Supabase</a>: <b>$25</b>/month
+          </li>
+          <li>
+            Charting library from <a href="https://www.highcharts.com" className="text-brand-600 hover:text-brand-700 underline">Highcharts</a>: <b>~$40</b>/month
           </li>
         </ul>
         
         <p className="text-lg leading-relaxed text-gray-700">
-          In total, my monthly expenses are <b>$30</b>/month.
+          In total, my monthly expenses are <b>$95</b>/month.
         </p>
         
         <p className="text-lg leading-relaxed text-gray-700">

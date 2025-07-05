@@ -12,61 +12,63 @@ function PrivacyPage() {
       <title>{pageTitle('Privacy')}</title>
       <Layout>
         <div className="mt-4 max-w-4xl">
-        <h1 className="text-4xl font-bold pb-4">Our Privacy Policy</h1>
+        <h1 className="text-4xl font-bold pb-4">Privacy Policy</h1>
         <img src="/security.svg" className="float-right ml-4 my-4 h-28 md:h-48" alt="security matters" />
         <p>
-          Your privacy is important. It is TrendWeight's policy to respect your privacy regarding any information we may collect from you across our web app,{" "}
-          <a href="https://trendweight.io" className="text-brand-600 hover:text-brand-700 underline">https://trendweight.io</a>, and other sites we operate.
+          Your privacy is important. It is TrendWeight's policy to respect your privacy regarding any information collected from you on this web app at{" "}
+          <a href="https://trendweight.io" className="text-brand-600 hover:text-brand-700 underline">https://trendweight.io</a>.
         </p>
         <p className="mt-4">
-          We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and
-          consent. We also let you know why we're collecting it and how it will be used.
+          TrendWeight only collects information that's needed to make the service work for you - like your email address for sign-in and your weight measurements from
+          your connected devices. Everything collected is transparent and necessary.
         </p>
         <p className="mt-4">
-          We only retain collected information for as long as necessary to provide you with your requested service. What data we store, we'll protect within
-          commercially acceptable means to prevent loss and theft, as well as unauthorized access, disclosure, copying, use or modification.
+          Your data is stored securely and protected with reasonable safeguards. Your information is kept only as long as you have an active account.
         </p>
-        <p className="mt-4">We don't share any personally identifying information publicly or with third-parties, except when required to by law.</p>
         <p className="mt-4">
-          We use <a href="https://plausible.io/" className="text-brand-600 hover:text-brand-700 underline">Plausible</a> for analytics to understand how many people visit the site and what kinds of devices they
-          use. However, Plausible does not use cookies, does not track you, and does not collect any personally identifiable information. You can see their data
+          TrendWeight uses <a href="https://plausible.io/" className="text-brand-600 hover:text-brand-700 underline">Plausible</a> for analytics to understand how many people visit and what kinds of devices they
+          use. Plausible does not use cookies, does not track you, and does not collect any personally identifiable information. You can see their data
           privacy policy <a href="https://plausible.io/data-policy" className="text-brand-600 hover:text-brand-700 underline">here</a>.
         </p>
         <p className="mt-4">
-          We also use <a href="https://vercel.com/docs/analytics" className="text-brand-600 hover:text-brand-700 underline">Vercel Analytics</a> to monitor the performance of the app. Vercel also does not use
-          cookies, does not track you, and does not collect any personally identifiable information. Their privacy policy is{" "}
-          <a href="https://vercel.com/legal/privacy-policy" className="text-brand-600 hover:text-brand-700 underline">here</a>.
-        </p>
-        <p className="mt-4">
-          We use a number of service providers to make this site work. These service providers may receive some of your personal information as part of their
-          normal operation. Below is a non-exhaustive list of the service providers we used and and the scope of the services they provide to us. Please see their
-          respective privacy policies for details on how they protect any data they may receive about you.
+          This site uses several service providers to make TrendWeight work. These providers help deliver the service to you. Here's what each provider does and what
+          information they may handle:
         </p>
         <ul className="mt-4 px-4 list-disc">
           <li>
-            <a href="https://supabase.com/auth" className="text-brand-600 hover:text-brand-700 underline">Supabase Auth</a>. Authenticating accounts e.g. email and password.
+            Hosting Provider (TBD). Hosts the website and serves it to your browser.
           </li>
           <li>
-            <a href="https://supabase.com/database" className="text-brand-600 hover:text-brand-700 underline">Supabase Database</a>. Cloud database for storing your settings and your synced
-            weight data.
+            <a href="https://supabase.com/auth" className="text-brand-600 hover:text-brand-700 underline">Supabase Auth</a>. Manages your account sign-in using email links or social logins
+            (Google, Microsoft, Apple).
           </li>
           <li>
-            <a href="https://vercel.com/" className="text-brand-600 hover:text-brand-700 underline">Vercel</a>. Website hosting, content distribution, and performance monitoring.
+            <a href="https://supabase.com/database" className="text-brand-600 hover:text-brand-700 underline">Supabase Database</a>. Stores your account settings and weight measurements
+            securely in the cloud.
+          </li>
+          <li>
+            <a href="https://withings.com/" className="text-brand-600 hover:text-brand-700 underline">Withings</a>. If you connect your Withings account, TrendWeight retrieves your weight measurements
+            on your behalf.
+          </li>
+          <li>
+            <a href="https://www.fitbit.com/" className="text-brand-600 hover:text-brand-700 underline">Fitbit</a>. If you connect your Fitbit account, TrendWeight retrieves your weight measurements
+            on your behalf.
           </li>
         </ul>
         <p className="mt-4">
-          Our website may link to external sites that are not operated by us. Please be aware that we have no control over the content and practices of these
-          sites, and cannot accept responsibility or liability for their respective privacy policies.
+          TrendWeight never sells your personal information and never shares it with anyone other than the service providers listed above (and only what's necessary 
+          for them to provide their services).
         </p>
         <p className="mt-4">
-          You are free to refuse our request for your personal information, with the understanding that we may be unable to provide you with some of your desired
-          services. You may also delete your account at any time from the Settings page which will also delete your personal information.
+          When you click links that take you to other websites, those sites have their own privacy policies that TrendWeight doesn't control.
         </p>
         <p className="mt-4">
-          Your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions
-          about how we handle user data and personal information, feel free to contact us.
+          You can delete your account at any time from the Settings page, which will also delete all your data from the system.
         </p>
-        <p className="mt-4">This policy is effective as of April 11, 2021.</p>
+        <p className="mt-4">
+          If you have any questions about your privacy or how TrendWeight handles your data, please contact us.
+        </p>
+        <p className="mt-4">This policy is effective as of July 5, 2025.</p>
       </div>
     </Layout>
     </>
