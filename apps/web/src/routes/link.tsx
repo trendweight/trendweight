@@ -3,6 +3,7 @@ import { Layout } from '../components/Layout'
 import { useRequireAuth } from '../lib/auth/useRequireAuth'
 import { apiRequest } from '../lib/api/client'
 import { useState } from 'react'
+import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
 
 export const Route = createFileRoute('/link')({
   component: LinkPage,
@@ -10,6 +11,7 @@ export const Route = createFileRoute('/link')({
 
 function LinkPage() {
   useRequireAuth()
+  useDocumentTitle('Link Accounts')
   const [isLoading, setIsLoading] = useState(false)
 
   const handleLinkWithings = async () => {

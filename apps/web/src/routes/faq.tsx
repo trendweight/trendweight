@@ -1,12 +1,15 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { Question } from '../components/faq/Question'
+import { useDocumentTitle } from '../lib/hooks/useDocumentTitle'
 
 export const Route = createFileRoute('/faq')({
   component: FAQPage,
 })
 
 function FAQPage() {
+  useDocumentTitle('FAQ')
+  
   return (
     <Layout>
       <div className="bg-white">
