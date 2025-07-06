@@ -1,15 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { useSettings } from '../lib/api/queries'
-import { useRequireAuth } from '../lib/auth/useRequireAuth'
+import { requireAuth } from '../lib/auth/authGuard'
 import { pageTitle } from '../lib/utils/pageTitle'
 
 export const Route = createFileRoute('/settings')({
+  beforeLoad: requireAuth,
   component: SettingsPage,
 })
 
 function SettingsPage() {
-  useRequireAuth()
   
   const { data: settingsData, isError, error } = useSettings()
 

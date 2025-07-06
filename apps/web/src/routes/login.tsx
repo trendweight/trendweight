@@ -10,6 +10,8 @@ export const Route = createFileRoute('/login')({
 
 function LoginPage() {
   const navigate = useNavigate()
+  const search = Route.useSearch() as { from?: string }
+  const from = search.from
   const { sendLoginEmail, signInWithGoogle, signInWithMicrosoft, signInWithApple } = useAuth()
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -47,8 +49,8 @@ function LoginPage() {
           await signInWithApple()
           break
       }
-      // After successful login, redirect to dashboard
-      navigate({ to: '/dashboard' })
+      // After successful login, redirect to original destination or dashboard
+      navigate({ to: from || '/dashboard' })
     } catch (err) {
       console.error(`Error signing in with ${provider}:`, err)
       setError(`Failed to sign in with ${provider}. Please try again.`)

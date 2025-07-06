@@ -1,16 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
-import { useRequireAuth } from '../lib/auth/useRequireAuth'
+import { requireAuth } from '../lib/auth/authGuard'
 import { apiRequest } from '../lib/api/client'
 import { useState } from 'react'
 import { pageTitle } from '../lib/utils/pageTitle'
 
 export const Route = createFileRoute('/link')({
+  beforeLoad: requireAuth,
   component: LinkPage,
 })
 
 function LinkPage() {
-  useRequireAuth()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleLinkWithings = async () => {

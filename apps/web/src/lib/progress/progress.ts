@@ -56,8 +56,7 @@ export function useDelayedProgress() {
 // Store the progress instance
 let progressInstance: ReturnType<typeof useProgress> | null = null
 
-// Centralized progress state management with reference counting
-let routeChangeCount = 0
+// Centralized progress state management - only tracks data fetching
 let fetchingCount = 0
 let delayTimer: number | undefined
 let isShowing = false
@@ -65,15 +64,6 @@ let isShowing = false
 const progressManager = {
   setProgress: (progress: ReturnType<typeof useProgress>) => {
     progressInstance = progress
-  },
-
-  setRouteChanging: (isChanging: boolean) => {
-    if (isChanging) {
-      routeChangeCount++
-    } else {
-      routeChangeCount = Math.max(0, routeChangeCount - 1)
-    }
-    progressManager.updateProgress()
   },
 
   setFetching: (active: number) => {
@@ -84,13 +74,18 @@ const progressManager = {
   updateProgress() {
     if (!progressInstance) return
 
-    const shouldBeActive = routeChangeCount > 0 || fetchingCount > 0
+    const shouldBeActive = fetchingCount > 0
 
     if (shouldBeActive && !isShowing && !delayTimer) {
+      // Clear any existing timer first
+      if (delayTimer) {
+        window.clearTimeout(delayTimer)
+      }
+      
       // Start timer for delayed start
       delayTimer = window.setTimeout(() => {
         // Check again in case state changed during delay
-        if ((routeChangeCount > 0 || fetchingCount > 0) && progressInstance) {
+        if (fetchingCount > 0 && progressInstance) {
           progressInstance.start(0)
           isShowing = true
         }
@@ -110,7 +105,20 @@ const progressManager = {
     }
   },
 
-  isActive: () => routeChangeCount > 0 || fetchingCount > 0
+  // Force stop progress (useful for cleanup)
+  forceStop() {
+    fetchingCount = 0
+    if (delayTimer) {
+      window.clearTimeout(delayTimer)
+      delayTimer = undefined
+    }
+    if (isShowing && progressInstance) {
+      progressInstance.stop()
+      isShowing = false
+    }
+  },
+
+  isActive: () => fetchingCount > 0
 }
 
 export default progressManager

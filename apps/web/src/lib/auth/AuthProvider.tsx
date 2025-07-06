@@ -4,6 +4,7 @@ import { supabase } from '../supabase/client'
 import type { User as SupabaseUser, Session } from '@supabase/supabase-js'
 import { authSuspenseManager } from './authSuspense'
 import { AuthContext, type AuthContextType, type User } from './authContext'
+import { router } from '../../router'
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
@@ -98,7 +99,6 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('Initial session check:', session ? 'Session exists' : 'No session')
       setSession(session)
       setUser(transformUser(session?.user || null))
       setIsInitializing(false)
@@ -107,13 +107,12 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state changed:', event, session ? 'Session exists' : 'No session')
       setSession(session)
       setUser(transformUser(session?.user || null))
       
       // Handle sign out by redirecting to home
       if (event === 'SIGNED_OUT') {
-        window.location.href = '/'
+        router.navigate({ to: '/' })
       }
     })
 
