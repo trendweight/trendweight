@@ -17,3 +17,8 @@
   --font-sans: 'Inter Variable', Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-logo: 'Zilla Slab', Georgia, serif;
 }
+
+/* Prevent layout shift from scrollbar appearing/disappearing */
+html {
+  scrollbar-gutter: stable;
+}
