@@ -70,9 +70,5 @@
   ],
   "prConcurrentLimit": 20,
   "automergeStrategy": "squash",
-  "automergeType": "pr",
-  "commitMessagePrefix": "⬆️",
-  "commitMessageAction": "update",
-  "commitMessageTopic": "{{depName}}",
-  "commitMessageExtra": "to {{newVersion}}"
+  "automergeType": "pr"
 }
