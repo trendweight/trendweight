@@ -350,17 +350,22 @@ The `.github/workflows/ci.yml` workflow runs on all branches and provides:
 #### Docker Build & Registry
 - Builds Docker image after all checks pass
 - Uses Docker Buildx for advanced caching
-- Pushes to GitHub Container Registry (ghcr.io) on main branch
-- Image tagging strategy:
+- Pushes to both registries on main branch:
+  - GitHub Container Registry (ghcr.io)
+  - DigitalOcean Container Registry (registry.digitalocean.com)
+- Image tagging strategy (same tags for both registries):
   - `latest` for main branch
   - Branch name for feature branches
   - PR number for pull requests
   - SHA prefix for commit tracking
 - Build args injected from GitHub secrets for Supabase config
+- DigitalOcean registry enables auto-deploy on their App Platform
 
 #### Required GitHub Secrets
 - `VITE_SUPABASE_URL` - Supabase project URL
 - `VITE_SUPABASE_ANON_KEY` - Supabase anonymous key
+- `DIGITALOCEAN_ACCESS_TOKEN` - DigitalOcean API token with registry write access
+- `DIGITALOCEAN_REGISTRY_NAME` - Your DigitalOcean registry name (e.g., "your-registry-name")
 
 ### Production Deployment
 
