@@ -28,9 +28,16 @@
     "clean:deps": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "clean:build": "find . -name 'bin' -type d -prune -exec rm -rf '{}' + && find . -name 'obj' -type d -prune -exec rm -rf '{}' + && find . -name 'dist' -type d -prune -exec rm -rf '{}' +",
     "docker:build": "bash -c 'set -a; source .env; set +a; docker build --build-arg VITE_SUPABASE_URL=$VITE_SUPABASE_URL --build-arg VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY --build-arg BUILD_TIME=\"$(date -u +\"%Y-%m-%dT%H:%M:%SZ\")\" --build-arg BUILD_COMMIT=\"$(git rev-parse HEAD)\" --build-arg BUILD_BRANCH=\"$(git rev-parse --abbrev-ref HEAD)\" --build-arg BUILD_VERSION=\"local\" --build-arg BUILD_REPO=\"$(git remote get-url origin 2>/dev/null | sed -E \"s|^.*github.com[:/](.+)\\.git$|\\1|\" || echo \"\")\" -t trendweight:local .'",
-    "docker:run": "docker run --rm -p 8080:8080 --env-file .env trendweight:local"
+    "docker:run": "docker run --rm -p 8080:8080 --env-file .env trendweight:local",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0"
+    "concurrently": "^8.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2"
+  },
+  "lint-staged": {
+    "apps/web/**/*.{js,jsx,ts,tsx,json,css,md}": ["cd apps/web && npx prettier --write"],
+    "apps/api/**/*.cs": ["dotnet format --include"]
   }
 }
