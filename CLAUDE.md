@@ -184,14 +184,17 @@ VITE_SUPABASE_ANON_KEY=[anon-key]
 
 ### Frontend
 - Uses Supabase Auth with React Context
-- `useRequireAuth()` hook for protected routes
-- Leverages React Suspense for loading states
+- Route-level protection using `beforeLoad: requireAuth` from `/lib/auth/authGuard.ts`
+- TanStack Router integration for clean, declarative route protection
+- Redirects to `/login` with `from` parameter to preserve destination
 - Supports email links and social logins (Google, Microsoft, Apple)
 
 ### Backend
 - Validates Supabase JWTs using JWT secret
 - `SupabaseAuthenticationHandler` in Infrastructure/Auth
-- All API endpoints require authentication except health checks
+- All API endpoints require authentication except:
+  - `/api/health` - Health check endpoint
+  - `/api/withings/callback` - OAuth callback handler
 
 ## State Management
 
@@ -287,9 +290,86 @@ The app uses @bprogress/react for progress indication:
 3. Environment-specific configuration via environment variables
 
 ### Build Information
-The `/build` route can display deployment info when configured:
-- See `apps/web/scripts/inject-build-info.js` for build-time injection
-- Supports git commit SHA, branch, build time, and version
+The `/build` route displays build metadata injected during the Docker build process:
+- Build time, git commit SHA, branch name, and version number
+- Passed as Docker build arguments and exposed as VITE_ environment variables
+- GitHub Actions provides these values automatically
+- Local builds use git commands to populate the same information
+
+## Containerization and CI/CD
+
+### Docker Setup
+The project includes a multi-stage Dockerfile for production deployment:
+
+#### Build Stages
+1. **Frontend Build** (node:20-alpine)
+   - Installs frontend dependencies and builds Vite app
+   - Accepts build args for Supabase configuration
+   - Outputs static files to dist/
+
+2. **Backend Build** (mcr.microsoft.com/dotnet/sdk:9.0)
+   - Restores and builds the .NET solution
+   - Publishes release build to /app/publish
+
+3. **Runtime** (mcr.microsoft.com/dotnet/aspnet:9.0-alpine)
+   - Minimal Alpine-based runtime image
+   - Serves both API and static frontend files
+   - Includes health check endpoint
+   - Exposes port 8080
+
+#### Docker Commands
+```bash
+# Build image with environment variables from .env
+npm run docker:build
+
+# Run container locally
+npm run docker:run
+
+# Manual build with specific args
+docker build \
+  --build-arg VITE_SUPABASE_URL=<url> \
+  --build-arg VITE_SUPABASE_ANON_KEY=<key> \
+  -t trendweight:local .
+```
+
+### GitHub Actions CI/CD
+
+The `.github/workflows/ci.yml` workflow runs on all branches and provides:
+
+#### Frontend Checks
+- Node.js 20 setup with npm caching
+- TypeScript type checking
+- ESLint validation
+
+#### Backend Checks  
+- .NET 9.0 SDK setup
+- Dependency restoration
+- Release build compilation
+- Test execution (when tests are added)
+
+#### Docker Build & Registry
+- Builds Docker image after all checks pass
+- Uses Docker Buildx for advanced caching
+- Pushes to GitHub Container Registry (ghcr.io) on main branch
+- Image tagging strategy:
+  - `latest` for main branch
+  - Branch name for feature branches
+  - PR number for pull requests
+  - SHA prefix for commit tracking
+- Build args injected from GitHub secrets for Supabase config
+
+#### Required GitHub Secrets
+- `VITE_SUPABASE_URL` - Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` - Supabase anonymous key
+
+### Production Deployment
+
+The containerized application:
+- Serves the API on port 8080
+- Hosts the frontend from wwwroot/
+- Includes health check at `/api/health`
+- Expects runtime environment variables for backend config
+- Frontend configuration is baked in at build time
 
 ## Common Tasks
 

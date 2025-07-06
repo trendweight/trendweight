@@ -1,0 +1,78 @@
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+LICENSE
+
+# Development files
+.env
+.env.*
+.envrc
+*.local
+
+# Node modules (we'll install fresh in container)
+**/node_modules/
+**/.pnpm-store/
+**/npm-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+
+# Build outputs
+**/dist/
+**/build/
+**/.next/
+**/.turbo/
+**/.vite/
+
+# .NET build outputs
+**/bin/
+**/obj/
+**/.vs/
+**/.idea/
+*.user
+*.suo
+
+# Test results
+**/coverage/
+**/test-results/
+**/.nyc_output/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*~
+*.swo
+
+# Logs
+logs/
+*.log
+
+# TypeScript
+*.tsbuildinfo
+**/.tanstack/
+**/routeTree.gen.ts
+
+# Development tools
+.tmuxinator.yml
+tmuxinator.yml
+dev.sh
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Legacy code
+trendweight-classic/
+context_portal/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

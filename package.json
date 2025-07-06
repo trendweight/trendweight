@@ -17,7 +17,9 @@
     "lint": "cd apps/web && npm run lint",
     "clean": "npm run clean:deps && npm run clean:build",
     "clean:deps": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
-    "clean:build": "find . -name 'bin' -type d -prune -exec rm -rf '{}' + && find . -name 'obj' -type d -prune -exec rm -rf '{}' + && find . -name 'dist' -type d -prune -exec rm -rf '{}' +"
+    "clean:build": "find . -name 'bin' -type d -prune -exec rm -rf '{}' + && find . -name 'obj' -type d -prune -exec rm -rf '{}' + && find . -name 'dist' -type d -prune -exec rm -rf '{}' +",
+    "docker:build": "bash -c 'set -a; source .env; set +a; docker build --build-arg VITE_SUPABASE_URL=$VITE_SUPABASE_URL --build-arg VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY --build-arg BUILD_TIME=\"$(date -u +\"%Y-%m-%dT%H:%M:%SZ\")\" --build-arg BUILD_COMMIT=\"$(git rev-parse HEAD)\" --build-arg BUILD_BRANCH=\"$(git rev-parse --abbrev-ref HEAD)\" --build-arg BUILD_VERSION=\"local\" --build-arg BUILD_REPO=\"$(git remote get-url origin 2>/dev/null | sed -E \"s|^.*github.com[:/](.+)\\.git$|\\1|\" || echo \"\")\" -t trendweight:local .'",
+    "docker:run": "docker run --rm -p 8080:8080 --env-file .env trendweight:local"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"
