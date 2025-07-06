@@ -52,12 +52,22 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Serve static files from wwwroot (for production container)
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-// Health check endpoint
-app.MapGet("/", () => Results.Ok(new { status = "healthy", service = "TrendWeight API" }));
+// Health check endpoint for container health checks
+app.MapGet("/api/health", () => Results.Ok(new { status = "healthy", service = "TrendWeight API", timestamp = DateTime.UtcNow }));
+
+// For production, serve the SPA for any non-API routes
+if (!app.Environment.IsDevelopment())
+{
+    app.MapFallbackToFile("index.html");
+}
 
 app.Run();

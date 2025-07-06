@@ -8,9 +8,19 @@ export const Route = createFileRoute('/build')({
 })
 
 function BuildDetails() {
-  // TODO: When we have a build system, inject these at build time
-  // See scripts/inject-build-info.js for a possible approach
   const environment = import.meta.env.MODE || 'development'
+  const buildTime = import.meta.env.VITE_BUILD_TIME || 'Not available'
+  const buildCommit = import.meta.env.VITE_BUILD_COMMIT || 'Not available'
+  const buildBranch = import.meta.env.VITE_BUILD_BRANCH || 'Not available'
+  const buildVersion = import.meta.env.VITE_BUILD_VERSION || 'Not available'
+  const buildRepo = import.meta.env.VITE_BUILD_REPO || ''
+
+  const githubRepo = buildRepo ? `https://github.com/${buildRepo}` : null
+  
+  const isTag = buildVersion.startsWith('v') || (!buildVersion.startsWith('build-') && buildVersion !== 'Not available' && buildVersion !== 'local')
+  const commitUrl = githubRepo && buildCommit !== 'Not available' ? `${githubRepo}/commit/${buildCommit}` : null
+  const versionUrl = githubRepo && buildVersion !== 'Not available' && buildVersion !== 'local' ? 
+    (isTag ? `${githubRepo}/releases/tag/${buildVersion}` : `${githubRepo}/actions/runs`) : null
 
   return (
     <>
@@ -35,12 +45,45 @@ function BuildDetails() {
                 </tr>
                 <tr className="border-b">
                   <td className="px-4 py-2">Build Time</td>
-                  <td className="px-4 py-2">{new Date().toUTCString()}</td>
+                  <td className="px-4 py-2">{buildTime}</td>
                 </tr>
                 <tr className="border-b">
-                  <td className="px-4 py-2">Note</td>
-                  <td className="px-4 py-2">Build info will be available when deployment system is configured</td>
+                  <td className="px-4 py-2">Git Commit</td>
+                  <td className="px-4 py-2 font-mono text-sm">
+                    {commitUrl ? (
+                      <a href={commitUrl} target="_blank" rel="noopener noreferrer" 
+                         className="text-blue-600 hover:text-blue-800 underline">
+                        {buildCommit.substring(0, 7)}
+                      </a>
+                    ) : buildCommit}
+                  </td>
                 </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-2">Git Branch</td>
+                  <td className="px-4 py-2">{buildBranch}</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-2">Version</td>
+                  <td className="px-4 py-2">
+                    {versionUrl ? (
+                      <a href={versionUrl} target="_blank" rel="noopener noreferrer"
+                         className="text-blue-600 hover:text-blue-800 underline">
+                        {buildVersion}
+                      </a>
+                    ) : buildVersion}
+                  </td>
+                </tr>
+                {buildRepo && githubRepo && (
+                  <tr className="border-b">
+                    <td className="px-4 py-2">Repository</td>
+                    <td className="px-4 py-2">
+                      <a href={githubRepo} target="_blank" rel="noopener noreferrer"
+                         className="text-blue-600 hover:text-blue-800 underline">
+                        {buildRepo}
+                      </a>
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
