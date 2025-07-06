@@ -20,10 +20,8 @@ function BuildDetails() {
   const isTag = buildVersion.startsWith("v") || (!buildVersion.startsWith("build-") && buildVersion !== "Not available" && buildVersion !== "local");
   const commitUrl = githubRepo && buildCommit !== "Not available" ? `${githubRepo}/commit/${buildCommit}` : null;
   const versionUrl =
-    githubRepo && buildVersion !== "Not available" && buildVersion !== "local"
-      ? isTag
-        ? `${githubRepo}/releases/tag/${buildVersion}`
-        : `${githubRepo}/actions/runs`
+    githubRepo && buildVersion !== "Not available" && buildVersion !== "local" && isTag
+      ? `${githubRepo}/releases/tag/${buildVersion}`
       : null;
 
   return (
