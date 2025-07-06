@@ -39,10 +39,22 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Add HTTP logging
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestPath |
+                          Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestMethod |
+                          Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseStatusCode |
+                          Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.Duration;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
 app.UseMiddleware<ErrorHandlingMiddleware>();
+
+// Enable HTTP request logging
+app.UseHttpLogging();
 
 if (app.Environment.IsDevelopment())
 {

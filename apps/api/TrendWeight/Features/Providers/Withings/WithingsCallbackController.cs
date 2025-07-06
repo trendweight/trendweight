@@ -106,7 +106,7 @@ public class WithingsCallbackController : ControllerBase
             var host = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
             var callbackUrl = $"{scheme}://{host}/api/withings/callback";
 
-            _logger.LogInformation("Exchanging code for token with callback URL: {CallbackUrl}", callbackUrl);
+            _logger.LogDebug("Exchanging code for token with callback URL: {CallbackUrl}", callbackUrl);
 
             var accessToken = await _withingsService.ExchangeAuthorizationCodeAsync(code, callbackUrl);
 
@@ -117,15 +117,15 @@ public class WithingsCallbackController : ControllerBase
                 accessToken,
                 linkDetails.Reason);
 
-            _logger.LogInformation("Withings link created successfully for user {UserId}", user.Uid);
+            _logger.LogDebug("Withings link created successfully for user {UserId}", user.Uid);
 
             // Redirect to frontend success page
             var frontendScheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
             var frontendHost = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
             var redirectUrl = $"{frontendScheme}://{frontendHost}/oauth/withings/callback?success=true";
 
-            _logger.LogInformation("Redirecting to: {RedirectUrl}", redirectUrl);
-            _logger.LogInformation("X-Forwarded-Proto: {Proto}, X-Forwarded-Host: {Host}",
+            _logger.LogDebug("Redirecting to: {RedirectUrl}", redirectUrl);
+            _logger.LogDebug("X-Forwarded-Proto: {Proto}, X-Forwarded-Host: {Host}",
                 Request.Headers["X-Forwarded-Proto"].FirstOrDefault(),
                 Request.Headers["X-Forwarded-Host"].FirstOrDefault());
 

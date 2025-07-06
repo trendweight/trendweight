@@ -75,7 +75,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        _logger.LogInformation("Withings authorization code exchange response: {Content}", responseContent);
+        _logger.LogDebug("Withings authorization code exchange completed");
 
         var options = new JsonSerializerOptions
         {
@@ -128,7 +128,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        _logger.LogInformation("Withings token refresh response: {Content}", responseContent);
+        _logger.LogDebug("Withings token refresh completed");
 
         var options = new JsonSerializerOptions
         {
@@ -182,7 +182,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
     private async Task<(List<RawMeasurement> measurements, bool more, object? offset, string timezone)>
         GetMeasurementPageAsync(AccessToken token, bool metric, long start, object? offset = null)
     {
-        _logger.LogInformation("Fetching Withings measurements page with offset: {Offset}", offset);
+        _logger.LogDebug("Fetching Withings measurements page with offset: {Offset}", offset);
 
         var request = new HttpRequestMessage(HttpMethod.Get, "https://wbsapi.withings.net/measure");
         request.Headers.Add("Authorization", $"Bearer {token.Access_Token}");
@@ -203,7 +203,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         uriBuilder.Query = query.ToString();
         request.RequestUri = uriBuilder.Uri;
 
-        _logger.LogInformation("Withings API request: {Uri}", request.RequestUri);
+        _logger.LogDebug("Withings API request: {Uri}", request.RequestUri);
 
         var response = await _httpClient.SendAsync(request);
 
@@ -216,7 +216,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        _logger.LogInformation("Withings API response: {Content}", responseContent);
+        _logger.LogDebug("Withings API response received for measurements");
 
         var withingsResponse = JsonSerializer.Deserialize<WithingsResponse<WithingsGetMeasuresResponse>>(responseContent);
 

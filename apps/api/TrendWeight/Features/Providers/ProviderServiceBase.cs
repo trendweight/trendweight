@@ -46,7 +46,7 @@ public abstract class ProviderServiceBase : IProviderService
             // Store the token using ProviderLinkService
             await _providerLinkService.StoreProviderLinkAsync(userId, ProviderName, accessToken);
 
-            _logger.LogInformation("Successfully stored {Provider} link for user {UserId}", ProviderName, userId);
+            _logger.LogDebug("Successfully stored {Provider} link for user {UserId}", ProviderName, userId);
             return true;
         }
         catch (Exception ex)
@@ -96,14 +96,14 @@ public abstract class ProviderServiceBase : IProviderService
             {
                 // Fetch from 90 days before last sync to catch any late-arriving or edited measurements
                 startDate = lastSyncTime.Value.AddDays(-90);
-                _logger.LogInformation("Fetching {Provider} measurements from {StartDate} (90 days before last sync)",
+                _logger.LogDebug("Fetching {Provider} measurements from {StartDate} (90 days before last sync)",
                     ProviderName, startDate.ToString("o"));
             }
             else
             {
                 // No previous sync - fetch all data
                 startDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                _logger.LogInformation("No previous sync for {Provider}, fetching all measurements", ProviderName);
+                _logger.LogDebug("No previous sync for {Provider}, fetching all measurements", ProviderName);
             }
 
             // Get measurements from the provider
@@ -124,7 +124,7 @@ public abstract class ProviderServiceBase : IProviderService
             // Store in database (UpdateSourceDataAsync will handle merging)
             await _sourceDataService.UpdateSourceDataAsync(userId, new List<SourceData> { sourceData });
 
-            _logger.LogInformation("Successfully synced {Count} {Provider} measurements for user {UserId}",
+            _logger.LogDebug("Successfully synced {Count} {Provider} measurements for user {UserId}",
                 measurements.Count, ProviderName, userId);
             return true;
         }
@@ -171,7 +171,7 @@ public abstract class ProviderServiceBase : IProviderService
         // Check if token needs refresh
         if (IsTokenExpired(providerLink.Token))
         {
-            _logger.LogInformation("Token expired for {Provider} user {UserId}, refreshing", ProviderName, userId);
+            _logger.LogDebug("Token expired for {Provider} user {UserId}, refreshing", ProviderName, userId);
 
             try
             {
