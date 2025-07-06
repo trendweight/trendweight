@@ -5,7 +5,6 @@
     "dev": "tmuxinator start",
     "dev:stop": "tmuxinator stop trendweight",
     "dev:shell": "./dev.sh",
-    "dev:concurrently": "concurrently -n \"api,web\" -c \"yellow,blue\" \"npm run dev:api\" \"npm run dev:web\"",
     "dev:api": "cd apps/api && npm run dev",
     "dev:web": "cd apps/web && npm run dev",
     "build": "npm run build:api && npm run build:web",
@@ -32,7 +31,6 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2"
   },
