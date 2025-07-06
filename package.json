@@ -38,6 +38,6 @@
   },
   "lint-staged": {
     "apps/web/**/*.{js,jsx,ts,tsx,json,css,md}": ["cd apps/web && npx prettier --write"],
-    "apps/api/**/*.cs": ["dotnet format --include"]
+    "apps/api/**/*.cs": ["cd apps/api && dotnet format --include"]
   }
 }
