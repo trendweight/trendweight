@@ -16,9 +16,6 @@ function WithingsCallbackPage() {
   const navigate = useNavigate()
   const search = Route.useSearch() as { success?: string; error?: string }
   
-  console.log('Search params:', search)
-  console.log('window.location.search:', window.location.search)
-  
   const isSuccess = search.success === 'true'
   const errorMessage = search.error ? decodeURIComponent(search.error) : 'Unknown error occurred'
 

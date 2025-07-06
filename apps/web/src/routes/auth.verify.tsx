@@ -8,12 +8,10 @@ import { pageTitle } from '../lib/utils/pageTitle'
 export const Route = createFileRoute('/auth/verify')({
   // This runs BEFORE the component renders, outside of React's lifecycle
   loader: async ({ location }) => {
-    console.log('loader: Checking email verification link')
     
     // Check if already logged in
     const { data: { session } } = await supabase.auth.getSession()
     if (session) {
-      console.log('loader: User already logged in, redirecting')
       throw redirect({ to: '/dashboard' })
     }
     
@@ -23,7 +21,6 @@ export const Route = createFileRoute('/auth/verify')({
     const type = url.searchParams.get('type')
     
     if (!token || type !== 'email') {
-      console.log('loader: Not a valid email link')
       return { error: 'Invalid login link', needsEmail: false }
     }
     
@@ -53,7 +50,6 @@ function VerifyEmailPage() {
     if (token && isVerifying) {
       (async () => {
         try {
-          console.log('Verifying magic link token...')
           
           // Supabase will handle the verification automatically when we call getSession
           // after the URL contains the proper parameters
@@ -67,7 +63,6 @@ function VerifyEmailPage() {
           }
           
           if (data.session) {
-            console.log('Verification successful, redirecting...')
             navigate({ to: '/dashboard' })
           } else {
             // Try to exchange the token manually
