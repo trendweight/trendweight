@@ -1,18 +1,18 @@
-import { redirect } from '@tanstack/react-router'
-import { supabase } from '../supabase/client'
+import { redirect } from "@tanstack/react-router";
+import { supabase } from "../supabase/client";
 
 interface BeforeLoadContext {
   location: {
-    pathname: string
-    href: string
-    search: Record<string, unknown>
-  }
+    pathname: string;
+    href: string;
+    search: Record<string, unknown>;
+  };
 }
 
 /**
  * TanStack Router beforeLoad guard for protected routes.
  * Checks authentication state and redirects to login if not authenticated.
- * 
+ *
  * Usage:
  * export const Route = createFileRoute('/dashboard')({
  *   beforeLoad: requireAuth,
@@ -20,15 +20,17 @@ interface BeforeLoadContext {
  * })
  */
 export async function requireAuth({ location }: BeforeLoadContext) {
-  const { data: { session } } = await supabase.auth.getSession()
-  
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
   if (!session) {
     // Redirect to login with the original destination
     throw redirect({
-      to: '/login',
+      to: "/login",
       search: {
         from: location.pathname,
       },
-    })
+    });
   }
 }

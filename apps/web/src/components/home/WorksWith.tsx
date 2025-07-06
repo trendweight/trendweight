@@ -1,4 +1,4 @@
-import { FaCheck } from 'react-icons/fa'
+import { FaCheck } from "react-icons/fa";
 
 export function WorksWith() {
   return (
@@ -26,7 +26,7 @@ export function WorksWith() {
           </div>
         </div>
       </a>
-      
+
       {/* Text content */}
       <div className="order-1 md:order-3 md:pt-6 pb-6 text-xl">
         <div className="font-bold">Enter your daily weight how you like...</div>
@@ -41,5 +41,5 @@ export function WorksWith() {
         </div>
       </div>
     </div>
-  )
+  );
 }

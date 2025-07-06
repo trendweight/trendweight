@@ -10,12 +10,12 @@ public class SourceData
     /// Source provider: "withings" or "fitbit"
     /// </summary>
     public string Source { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// Last update timestamp from this source (UTC)
     /// </summary>
     public DateTime LastUpdate { get; set; }
-    
+
     /// <summary>
     /// Array of measurements from this source
     /// </summary>

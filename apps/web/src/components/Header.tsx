@@ -1,26 +1,26 @@
-import { Link } from '@tanstack/react-router'
-import { Logo } from './Logo'
-import { Container } from './Container'
-import { useAuth } from '../lib/auth/useAuth'
-import { useState, useRef, useEffect } from 'react'
-import { HiMenu, HiX } from 'react-icons/hi'
+import { Link } from "@tanstack/react-router";
+import { Logo } from "./Logo";
+import { Container } from "./Container";
+import { useAuth } from "../lib/auth/useAuth";
+import { useState, useRef, useEffect } from "react";
+import { HiMenu, HiX } from "react-icons/hi";
 
 export function Header() {
-  const { isInitializing, isLoggedIn, signOut } = useAuth()
-  const visibility = isInitializing ? 'invisible' : 'visible'
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
+  const { isInitializing, isLoggedIn, signOut } = useAuth();
+  const visibility = isInitializing ? "invisible" : "visible";
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   // Close menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMobileMenuOpen(false)
+        setMobileMenuOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="bg-brand-500 text-white">
@@ -54,24 +54,17 @@ export function Header() {
                 Log In
               </NavLink>
             ) : (
-              <button 
-                className={`flex items-center px-3 hover:bg-white hover:text-brand-800 transition-colors ${visibility}`}
-                onClick={() => signOut()}
-              >
+              <button className={`flex items-center px-3 hover:bg-white hover:text-brand-800 transition-colors ${visibility}`} onClick={() => signOut()}>
                 Log Out
               </button>
             )}
           </div>
-          <button
-            className="flex md:hidden items-center p-2 text-white"
-            aria-label="Open menu"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
+          <button className="flex md:hidden items-center p-2 text-white" aria-label="Open menu" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
           </button>
         </nav>
         {/* Mobile menu */}
-        <div className={`md:hidden ${mobileMenuOpen ? 'block' : 'hidden'} bg-brand-400 -mx-4 px-4 py-4`}>
+        <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"} bg-brand-400 -mx-4 px-4 py-4`}>
           <div className="flex flex-col space-y-3">
             <MobileNavLink to="/" onClick={() => setMobileMenuOpen(false)} visibility={visibility}>
               Home
@@ -94,11 +87,11 @@ export function Header() {
                 Log In
               </MobileNavLink>
             ) : (
-              <button 
+              <button
                 className={`text-left px-3 py-2 text-white hover:bg-brand-300 rounded ${visibility}`}
                 onClick={() => {
-                  signOut()
-                  setMobileMenuOpen(false)
+                  signOut();
+                  setMobileMenuOpen(false);
                 }}
               >
                 Log Out
@@ -108,44 +101,44 @@ export function Header() {
         </div>
       </Container>
     </header>
-  )
+  );
 }
 
 interface NavLinkProps {
-  to: string
-  children: React.ReactNode
-  visibility?: string
+  to: string;
+  children: React.ReactNode;
+  visibility?: string;
 }
 
-function NavLink({ to, children, visibility = 'visible' }: NavLinkProps) {
+function NavLink({ to, children, visibility = "visible" }: NavLinkProps) {
   return (
-    <Link 
-      to={to} 
+    <Link
+      to={to}
       className={`flex items-center px-3 hover:bg-white hover:text-brand-800 transition-colors ${visibility}`}
       activeProps={{
-        className: "bg-brand-400"
+        className: "bg-brand-400",
       }}
     >
       {children}
     </Link>
-  )
+  );
 }
 
 interface MobileNavLinkProps extends NavLinkProps {
-  onClick: () => void
+  onClick: () => void;
 }
 
-function MobileNavLink({ to, children, onClick, visibility = 'visible' }: MobileNavLinkProps) {
+function MobileNavLink({ to, children, onClick, visibility = "visible" }: MobileNavLinkProps) {
   return (
-    <Link 
-      to={to} 
+    <Link
+      to={to}
       className={`px-3 py-2 text-white hover:bg-brand-300 rounded ${visibility}`}
       activeProps={{
-        className: "bg-brand-300"
+        className: "bg-brand-300",
       }}
       onClick={onClick}
     >
       {children}
     </Link>
-  )
+  );
 }

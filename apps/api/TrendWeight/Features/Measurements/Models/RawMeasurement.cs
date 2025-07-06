@@ -11,12 +11,12 @@ public record RawMeasurement
     /// Will be converted to user's local date on client
     /// </summary>
     public long Timestamp { get; init; }
-    
+
     /// <summary>
     /// Weight in kilograms (using decimal to avoid floating point issues)
     /// </summary>
     public decimal Weight { get; init; }
-    
+
     /// <summary>
     /// Fat ratio as decimal (0.0 to 1.0) matching provider format
     /// Legacy uses ratio, not percentage

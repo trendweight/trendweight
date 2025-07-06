@@ -1,10 +1,10 @@
-import { Suspense, type ReactNode } from 'react'
-import { Header } from './Header'
-import { Footer } from './Footer'
-import { Container } from './Container'
+import { Suspense, type ReactNode } from "react";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
+import { Container } from "./Container";
 
 interface LayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 function LoadingFallback() {
@@ -12,7 +12,7 @@ function LoadingFallback() {
     <div className="flex justify-center items-center min-h-[400px]">
       <div className="text-gray-500">Loading...</div>
     </div>
-  )
+  );
 }
 
 export function Layout({ children }: LayoutProps) {
@@ -20,11 +20,9 @@ export function Layout({ children }: LayoutProps) {
     <div className="min-h-screen flex flex-col">
       <Header />
       <Container as="main" className="flex-grow py-4 md:py-6">
-        <Suspense fallback={<LoadingFallback />}>
-          {children}
-        </Suspense>
+        <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
       </Container>
       <Footer />
     </div>
-  )
+  );
 }

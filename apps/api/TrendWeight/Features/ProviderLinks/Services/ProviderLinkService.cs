@@ -23,7 +23,7 @@ public class ProviderLinkService : IProviderLinkService
                 query.Filter("uid", Supabase.Postgrest.Constants.Operator.Equals, uid.ToString())
                      .Filter("provider", Supabase.Postgrest.Constants.Operator.Equals, provider)
             );
-            
+
             return links.FirstOrDefault();
         }
         catch (Exception ex)
@@ -68,21 +68,21 @@ public class ProviderLinkService : IProviderLinkService
             await _supabaseService.DeleteAsync(providerLink);
         }
     }
-    
+
     public Task<DbProviderLink?> GetProviderLinkAsync(Guid uid, string provider)
     {
         return GetAsync(uid, provider);
     }
-    
+
     public Task RemoveProviderLinkAsync(Guid uid, string provider)
     {
         return DeleteAsync(uid, provider);
     }
-    
+
     public async Task StoreProviderLinkAsync(Guid uid, string provider, AccessToken token, string? updateReason = null)
     {
         var existingLink = await GetAsync(uid, provider);
-        
+
         if (existingLink != null)
         {
             // Update existing link

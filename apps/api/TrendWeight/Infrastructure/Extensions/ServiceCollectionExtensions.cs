@@ -43,27 +43,27 @@ public static class ServiceCollectionExtensions
         configuration.GetSection("Supabase").Bind(supabaseConfig);
         services.AddSingleton(supabaseConfig);
         services.AddSingleton<ISupabaseService, SupabaseService>();
-        
+
         // Register feature services
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProviderLinkService, ProviderLinkService>();
         services.AddScoped<ISourceDataService, SourceDataService>();
-        
+
         // Register Withings service
         var withingsConfig = new WithingsConfig();
         configuration.GetSection("Withings").Bind(withingsConfig);
         services.AddSingleton(withingsConfig);
         services.AddHttpClient<IWithingsService, WithingsService>();
         services.AddHttpClient<IProviderService, WithingsService>();
-        
+
         // Register provider integration orchestrator
         services.AddScoped<IProviderIntegrationService, ProviderIntegrationService>();
-        
+
         // Add feature services as we implement them
         // services.AddScoped<IMeasurementService, MeasurementService>();
         // services.AddScoped<IProfileService, ProfileService>();
         // services.AddScoped<ISettingsService, SettingsService>();
-        
+
         return services;
     }
 }

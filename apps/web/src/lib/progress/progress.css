@@ -1,6 +1,8 @@
 /* BProgress custom styling to match legacy NProgress */
 .bprogress .bar {
-  box-shadow: 0 0 10px #eef5ff, 0 0 5px #eef5ff;
+  box-shadow:
+    0 0 10px #eef5ff,
+    0 0 5px #eef5ff;
 }
 
 .bprogress .spinner {

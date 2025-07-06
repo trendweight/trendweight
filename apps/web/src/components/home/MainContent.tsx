@@ -1,8 +1,8 @@
-import { Container } from '../Container'
-import { Blurb } from './Blurb'
-import { InfoButtons } from './InfoButtons'
-import { SampleChart } from './SampleChart'
-import { WorksWith } from './WorksWith'
+import { Container } from "../Container";
+import { Blurb } from "./Blurb";
+import { InfoButtons } from "./InfoButtons";
+import { SampleChart } from "./SampleChart";
+import { WorksWith } from "./WorksWith";
 
 export function MainContent() {
   return (
@@ -23,5 +23,5 @@ export function MainContent() {
         </div>
       </div>
     </Container>
-  )
+  );
 }

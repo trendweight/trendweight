@@ -9,7 +9,7 @@ public class WithingsConfig
     /// Withings OAuth client ID
     /// </summary>
     public string ClientId { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// Withings OAuth client secret
     /// </summary>

@@ -18,5 +18,5 @@ export function Blurb() {
         </div>
       </div>
     </div>
-  )
+  );
 }

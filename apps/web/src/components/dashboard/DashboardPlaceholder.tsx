@@ -6,7 +6,7 @@ const DashboardPlaceholder = () => {
         <div className="h-10 bg-gray-200 rounded-md w-64"></div>
         <div className="h-10 bg-gray-200 rounded-md w-64"></div>
       </div>
-      
+
       {/* Chart and Currently section */}
       <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12 mb-4">
         <div className="w-full md:w-[475px] lg:w-[650px] xl:w-[840px] h-96 bg-gray-200 rounded"></div>
@@ -17,7 +17,7 @@ const DashboardPlaceholder = () => {
           <div className="h-4 bg-gray-200 rounded w-36"></div>
         </div>
       </div>
-      
+
       {/* Recent Readings and Stats section */}
       <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-12 lg:gap-20">
         <div className="w-full md:w-auto">
@@ -62,7 +62,7 @@ const DashboardPlaceholder = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DashboardPlaceholder
+export default DashboardPlaceholder;

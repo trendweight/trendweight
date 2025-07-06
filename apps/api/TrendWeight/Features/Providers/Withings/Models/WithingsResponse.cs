@@ -12,13 +12,13 @@ public class WithingsResponse<T>
     /// </summary>
     [JsonPropertyName("status")]
     public int Status { get; set; }
-    
+
     /// <summary>
     /// Response body containing the actual data
     /// </summary>
     [JsonPropertyName("body")]
     public T? Body { get; set; }
-    
+
     /// <summary>
     /// Error message if status is not 0
     /// </summary>

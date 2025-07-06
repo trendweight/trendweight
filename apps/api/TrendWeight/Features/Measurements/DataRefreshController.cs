@@ -43,32 +43,32 @@ public class DataRefreshController : ControllerBase
             {
                 return Unauthorized(new { error = "User ID not found in token" });
             }
-            
+
             _logger.LogInformation("Refreshing data for user ID: {UserId}", userId);
-            
+
             // Get user by Supabase UID
             var user = await _userService.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound(new { error = "User not found" });
             }
-            
+
             // Get active providers for user
             var activeProviders = await _providerIntegrationService.GetActiveProvidersAsync(user.Uid);
             if (!activeProviders.Any())
             {
-                return Ok(new 
-                { 
+                return Ok(new
+                {
                     message = "No active provider connections found",
                     providers = new Dictionary<string, object>()
                 });
             }
-            
+
             // Sync all providers
             var syncResults = await _providerIntegrationService.SyncAllProvidersAsync(
-                user.Uid, 
+                user.Uid,
                 user.Profile.UseMetric);
-            
+
             // Build response
             var providerStatuses = new Dictionary<string, object>();
             foreach (var provider in activeProviders)
@@ -79,7 +79,7 @@ public class DataRefreshController : ControllerBase
                     synced = syncResults.ContainsKey(provider)
                 };
             }
-            
+
             return Ok(new
             {
                 message = "Data refresh completed",
@@ -110,31 +110,31 @@ public class DataRefreshController : ControllerBase
             {
                 return Unauthorized(new { error = "User ID not found in token" });
             }
-            
+
             // Get user by Supabase UID
             var user = await _userService.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound(new { error = "User not found" });
             }
-            
+
             // Get provider service
             var providerService = _providerIntegrationService.GetProviderService(provider);
             if (providerService == null)
             {
                 return BadRequest(new { error = $"Unknown provider: {provider}" });
             }
-            
+
             // Check if user has active provider link
             if (!await providerService.HasActiveProviderLinkAsync(user.Uid))
             {
                 return NotFound(new { error = $"No active {provider} connection found" });
             }
-            
+
             // Sync provider data
             _logger.LogInformation("Refreshing {Provider} data for user {UserId}", provider, user.Uid);
             var success = await providerService.SyncMeasurementsAsync(user.Uid, user.Profile.UseMetric);
-            
+
             if (success)
             {
                 return Ok(new

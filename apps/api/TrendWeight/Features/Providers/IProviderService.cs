@@ -11,7 +11,7 @@ public interface IProviderService
     /// Gets the provider name (e.g., "withings", "fitbit")
     /// </summary>
     string ProviderName { get; }
-    
+
     /// <summary>
     /// Gets the authorization URL for OAuth flow
     /// </summary>
@@ -19,7 +19,7 @@ public interface IProviderService
     /// <param name="callbackUrl">Callback URL for OAuth redirect</param>
     /// <returns>The authorization URL</returns>
     string GetAuthorizationUrl(string state, string callbackUrl);
-    
+
     /// <summary>
     /// Exchanges an authorization code for access tokens and stores them
     /// </summary>
@@ -28,7 +28,7 @@ public interface IProviderService
     /// <param name="userId">Supabase user ID</param>
     /// <returns>Success status</returns>
     Task<bool> ExchangeAuthorizationCodeAsync(string code, string callbackUrl, Guid userId);
-    
+
     /// <summary>
     /// Gets measurements for a user, automatically handling token refresh if needed
     /// </summary>
@@ -37,7 +37,7 @@ public interface IProviderService
     /// <param name="startDate">Optional start date for measurements (null for all)</param>
     /// <returns>List of measurements or null if no provider link exists</returns>
     Task<List<RawMeasurement>?> GetMeasurementsAsync(Guid userId, bool metric, DateTime? startDate = null);
-    
+
     /// <summary>
     /// Syncs all measurements for a user and updates the source data
     /// </summary>
@@ -45,14 +45,14 @@ public interface IProviderService
     /// <param name="metric">Whether to store measurements in metric units</param>
     /// <returns>Success status</returns>
     Task<bool> SyncMeasurementsAsync(Guid userId, bool metric);
-    
+
     /// <summary>
     /// Checks if a user has an active provider link
     /// </summary>
     /// <param name="userId">Supabase user ID</param>
     /// <returns>True if provider link exists and is active</returns>
     Task<bool> HasActiveProviderLinkAsync(Guid userId);
-    
+
     /// <summary>
     /// Removes the provider link for a user
     /// </summary>

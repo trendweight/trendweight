@@ -1,19 +1,14 @@
-import type { SeriesHlcOptions, SeriesLineOptions } from "highcharts/highstock"
-import type { Mode } from "../../core/interfaces"
+import type { SeriesHlcOptions, SeriesLineOptions } from "highcharts/highstock";
+import type { Mode } from "../../core/interfaces";
 
 const colors = {
   weight: "#8b0000",
   fatpercent: "#660066",
   fatmass: "#336600",
   leanmass: "#000066",
-}
+};
 
-export const createTrendSeries = (
-  data: [number, number][],
-  mode: Mode,
-  modeText: string,
-  isNarrow: boolean
-): SeriesLineOptions => ({
+export const createTrendSeries = (data: [number, number][], mode: Mode, modeText: string, isNarrow: boolean): SeriesLineOptions => ({
   type: "line",
   id: "trend",
   name: `${modeText} Trend`,
@@ -28,17 +23,13 @@ export const createTrendSeries = (
   events: {
     legendItemClick: () => false,
   },
-})
+});
 
-export const createDiamondsSeries = (
-  data: [number, number | null][],
-  isInterpolated: boolean,
-  isNarrow: boolean
-): SeriesLineOptions => {
-  const series = createLineSeries(data, isInterpolated)
-  series.connectNulls = false
-  series.zIndex = 6
-  series.lineWidth = 0
+export const createDiamondsSeries = (data: [number, number | null][], isInterpolated: boolean, isNarrow: boolean): SeriesLineOptions => {
+  const series = createLineSeries(data, isInterpolated);
+  series.connectNulls = false;
+  series.zIndex = 6;
+  series.lineWidth = 0;
   series.marker = {
     enabled: true,
     symbol: "diamond",
@@ -46,18 +37,15 @@ export const createDiamondsSeries = (
     fillColor: "#ffffff",
     lineWidth: 1,
     radius: isNarrow ? 3 : 4.5,
-  }
-  return series
-}
+  };
+  return series;
+};
 
-export const createDotSeries = (
-  data: [number, number | null][],
-  isInterpolated: boolean
-): SeriesLineOptions => {
-  const series = createLineSeries(data, isInterpolated)
-  series.connectNulls = false
-  series.zIndex = 4
-  series.lineWidth = 0
+export const createDotSeries = (data: [number, number | null][], isInterpolated: boolean): SeriesLineOptions => {
+  const series = createLineSeries(data, isInterpolated);
+  series.connectNulls = false;
+  series.zIndex = 4;
+  series.lineWidth = 0;
   series.marker = {
     enabled: true,
     symbol: "circle",
@@ -65,14 +53,11 @@ export const createDotSeries = (
     fillColor: isInterpolated ? "#e2e2e2" : "#333333",
     lineWidth: 0,
     radius: 2,
-  }
-  return series
-}
+  };
+  return series;
+};
 
-export const createLineSeries = (
-  data: [number, number | null][],
-  isInterpolated: boolean
-): SeriesLineOptions => ({
+export const createLineSeries = (data: [number, number | null][], isInterpolated: boolean): SeriesLineOptions => ({
   type: "line",
   id: isInterpolated ? "estimated" : "actual",
   name: isInterpolated ? "Estimated Reading" : "Scale Reading",
@@ -89,14 +74,9 @@ export const createLineSeries = (
   events: {
     legendItemClick: () => false,
   },
-})
+});
 
-export const createProjectionSeries = (
-  data: [number, number][],
-  mode: Mode,
-  modeText: string,
-  isNarrow: boolean
-): SeriesLineOptions => ({
+export const createProjectionSeries = (data: [number, number][], mode: Mode, modeText: string, isNarrow: boolean): SeriesLineOptions => ({
   type: "line",
   id: "projection",
   name: `Projected ${modeText}`,
@@ -110,12 +90,9 @@ export const createProjectionSeries = (
   events: {
     legendItemClick: () => false,
   },
-})
+});
 
-export const createSinkersSeries = (
-  data: [number, number | null, number | null, null][],
-  isInterpolated: boolean
-): SeriesHlcOptions => ({
+export const createSinkersSeries = (data: [number, number | null, number | null, null][], isInterpolated: boolean): SeriesHlcOptions => ({
   type: "hlc",
   id: isInterpolated ? "estimated-sinkers" : "actual-sinkers",
   name: isInterpolated ? "Estimated Sinkers" : "Actual Sinkers",
@@ -124,4 +101,4 @@ export const createSinkersSeries = (
   color: isInterpolated ? "#e2e2e2" : "#999999",
   pointValKey: "high",
   data,
-})
+});

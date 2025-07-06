@@ -16,7 +16,7 @@ public interface IWithingsService : IProviderService
     /// <param name="callbackUrl">Callback URL used in the authorization request</param>
     /// <returns>Access token information</returns>
     Task<AccessToken> ExchangeAuthorizationCodeAsync(string code, string callbackUrl);
-    
+
     /// <summary>
     /// Gets measurements from the Withings API
     /// </summary>
@@ -25,6 +25,6 @@ public interface IWithingsService : IProviderService
     /// <param name="start">Start timestamp for measurements</param>
     /// <param name="offset">Pagination offset</param>
     /// <returns>Measurement data and pagination information</returns>
-    Task<(System.Collections.Generic.List<RawMeasurement> measurements, bool more, object? offset, string timezone)> 
+    Task<(System.Collections.Generic.List<RawMeasurement> measurements, bool more, object? offset, string timezone)>
         GetMeasurementsAsync(AccessToken token, bool metric, long start, object? offset = null);
 }

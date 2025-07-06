@@ -1,29 +1,29 @@
-import type { Mode } from "./interfaces"
+import type { Mode } from "./interfaces";
 
 const numberFormatter = Intl.NumberFormat([], {
   maximumFractionDigits: 1,
   minimumFractionDigits: 1,
-})
+});
 
 const numberDeltaFormatter = Intl.NumberFormat([], {
   maximumFractionDigits: 1,
   minimumFractionDigits: 1,
   signDisplay: "always",
-})
+});
 
 const metricFormatter = Intl.NumberFormat([], {
   maximumFractionDigits: 1,
   minimumFractionDigits: 1,
   style: "unit",
   unit: "kilogram",
-})
+});
 
 const imperialFormatter = Intl.NumberFormat([], {
   maximumFractionDigits: 1,
   minimumFractionDigits: 1,
   style: "unit",
   unit: "pound",
-})
+});
 
 const metricDeltaFormatter = Intl.NumberFormat([], {
   maximumFractionDigits: 1,
@@ -31,7 +31,7 @@ const metricDeltaFormatter = Intl.NumberFormat([], {
   style: "unit",
   unit: "kilogram",
   signDisplay: "always",
-})
+});
 
 const imperialDeltaFormatter = Intl.NumberFormat([], {
   maximumFractionDigits: 1,
@@ -39,73 +39,70 @@ const imperialDeltaFormatter = Intl.NumberFormat([], {
   style: "unit",
   unit: "pound",
   signDisplay: "always",
-})
+});
 
 const percentFormatter = Intl.NumberFormat([], {
   maximumFractionDigits: 1,
   minimumFractionDigits: 1,
   style: "percent",
-})
+});
 
 const percentDeltaFormatter = Intl.NumberFormat([], {
   maximumFractionDigits: 1,
   minimumFractionDigits: 1,
   style: "percent",
   signDisplay: "always",
-})
+});
 
 interface FormatOptions {
-  type: Mode
-  metric?: boolean
-  units?: boolean
-  sign?: boolean
+  type: Mode;
+  metric?: boolean;
+  units?: boolean;
+  sign?: boolean;
 }
 
 export const formatWeight = (weight: number, metric: boolean, sign = false) => {
   if (metric) {
     if (sign) {
-      return metricDeltaFormatter.format(weight)
+      return metricDeltaFormatter.format(weight);
     } else {
-      return metricFormatter.format(weight)
+      return metricFormatter.format(weight);
     }
   } else {
     if (sign) {
-      return imperialDeltaFormatter.format(weight)
+      return imperialDeltaFormatter.format(weight);
     } else {
-      return imperialFormatter.format(weight)
+      return imperialFormatter.format(weight);
     }
   }
-}
+};
 
 export const formatPercent = (decimal: number, sign = false) => {
   if (sign) {
-    return percentDeltaFormatter.format(decimal)
+    return percentDeltaFormatter.format(decimal);
   } else {
-    return percentFormatter.format(decimal)
+    return percentFormatter.format(decimal);
   }
-}
+};
 
 export const formatNumber = (value: number, sign = false) => {
   if (sign) {
-    return numberDeltaFormatter.format(value)
+    return numberDeltaFormatter.format(value);
   } else {
-    return numberFormatter.format(value)
+    return numberFormatter.format(value);
   }
-}
+};
 
-export const formatMeasurement: (value: number, options: FormatOptions) => string = (
-  value: number, 
-  { type, sign = false, units = true, metric = false }
-) => {
+export const formatMeasurement: (value: number, options: FormatOptions) => string = (value: number, { type, sign = false, units = true, metric = false }) => {
   if (type === "fatpercent") {
     if (units) {
-      return formatPercent(value, sign)
+      return formatPercent(value, sign);
     } else {
-      return formatNumber(value * 100, sign)
+      return formatNumber(value * 100, sign);
     }
   } else if (units) {
-    return formatWeight(value, metric, sign)
+    return formatWeight(value, metric, sign);
   } else {
-    return formatNumber(value, sign)
+    return formatNumber(value, sign);
   }
-}
+};

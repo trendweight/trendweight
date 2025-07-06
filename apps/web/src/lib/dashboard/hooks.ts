@@ -1,68 +1,54 @@
-import { useContext, useMemo, useState } from "react"
-import { dashboardContext, type DashboardData } from "./dashboardContext"
-import { useProfile, useMeasurementData } from "../api/queries"
-import type { Mode, TimeRange } from "../core/interfaces"
-import { usePersistedState } from "../hooks/usePersistedState"
-import { computeDataPoints } from "./computations/data-points"
-import { computeMeasurements } from "./computations/measurements"
-import { computeActiveSlope, computeDeltas, computeWeightSlope } from "./computations/stats"
+import { useContext, useMemo, useState } from "react";
+import { dashboardContext, type DashboardData } from "./dashboardContext";
+import { useProfile, useMeasurementData } from "../api/queries";
+import type { Mode, TimeRange } from "../core/interfaces";
+import { usePersistedState } from "../hooks/usePersistedState";
+import { computeDataPoints } from "./computations/data-points";
+import { computeMeasurements } from "./computations/measurements";
+import { computeActiveSlope, computeDeltas, computeWeightSlope } from "./computations/stats";
 
 export const useDashboardData = (): DashboardData => {
-  const data = useContext(dashboardContext)
+  const data = useContext(dashboardContext);
   if (!data) {
-    throw new Error("Called useDashboardData() when the provider is not present.")
+    throw new Error("Called useDashboardData() when the provider is not present.");
   }
-  return data
-}
+  return data;
+};
 
 export const useComputeDashboardData = () => {
-  const [mode, setMode] = useState<Mode>("weight")
-  const [timeRange, setTimeRange] = usePersistedState<TimeRange>("timeRange", "4w")
+  const [mode, setMode] = useState<Mode>("weight");
+  const [timeRange, setTimeRange] = usePersistedState<TimeRange>("timeRange", "4w");
 
   // Get profile data from dedicated profile endpoint
-  const { data: profile } = useProfile()
+  const { data: profile } = useProfile();
 
   // Get measurement data
-  const { data: apiSourceData } = useMeasurementData()
-  
+  const { data: apiSourceData } = useMeasurementData();
+
   // Transform API data to match core interfaces
-  const sourceData = useMemo(() => 
-    apiSourceData?.map(data => ({
-      source: data.source as "withings" | "fitbit",
-      lastUpdate: data.lastUpdate,
-      measurements: data.measurements
-    })),
-    [apiSourceData]
-  )
+  const sourceData = useMemo(
+    () =>
+      apiSourceData?.map((data) => ({
+        source: data.source as "withings" | "fitbit",
+        lastUpdate: data.lastUpdate,
+        measurements: data.measurements,
+      })),
+    [apiSourceData],
+  );
 
   // Compute derived data
-  const measurements = useMemo(() => 
-    computeMeasurements(sourceData, profile), 
-    [profile, sourceData]
-  )
-  
-  const dataPoints = useMemo(() => 
-    computeDataPoints(mode, measurements), 
-    [measurements, mode]
-  )
-  
-  const weightSlope = useMemo(() => 
-    computeWeightSlope(measurements), 
-    [measurements]
-  )
-  
-  const activeSlope = useMemo(() => 
-    computeActiveSlope(mode, dataPoints), 
-    [mode, dataPoints]
-  )
-  
-  const deltas = useMemo(() => 
-    computeDeltas(mode, dataPoints), 
-    [mode, dataPoints]
-  )
+  const measurements = useMemo(() => computeMeasurements(sourceData, profile), [profile, sourceData]);
+
+  const dataPoints = useMemo(() => computeDataPoints(mode, measurements), [measurements, mode]);
+
+  const weightSlope = useMemo(() => computeWeightSlope(measurements), [measurements]);
+
+  const activeSlope = useMemo(() => computeActiveSlope(mode, dataPoints), [mode, dataPoints]);
+
+  const deltas = useMemo(() => computeDeltas(mode, dataPoints), [mode, dataPoints]);
 
   if (!measurements || !dataPoints || !profile) {
-    return undefined
+    return undefined;
   }
 
   const data: DashboardData = {
@@ -74,7 +60,7 @@ export const useComputeDashboardData = () => {
     weightSlope,
     activeSlope,
     deltas,
-  }
+  };
 
-  return data
-}
+  return data;
+};

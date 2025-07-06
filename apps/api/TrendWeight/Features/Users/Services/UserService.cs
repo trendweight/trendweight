@@ -27,7 +27,7 @@ public class UserService : IUserService
         {
             return await GetByIdAsync(guid);
         }
-        
+
         _logger.LogWarning("Invalid user ID format: {Id}", id);
         return null;
     }
@@ -39,7 +39,7 @@ public class UserService : IUserService
             var profiles = await _supabaseService.QueryAsync<DbProfile>(query =>
                 query.Filter("email", Supabase.Postgrest.Constants.Operator.Equals, email)
             );
-            
+
             return profiles.FirstOrDefault();
         }
         catch (Exception ex)

@@ -1,5 +1,5 @@
-import Highstock from "highcharts/highstock"
-import { formatNumber } from "../../core/numbers"
+import Highstock from "highcharts/highstock";
+import { formatNumber } from "../../core/numbers";
 
 const chartOptionsTemplate = (): Highstock.Options => ({
   accessibility: {
@@ -58,14 +58,17 @@ const chartOptionsTemplate = (): Highstock.Options => ({
   tooltip: {
     formatter: function () {
       try {
-        return this.points?.reduce((s, point) => {
-          if (point.series.type === "ohlc") {
-            return s
-          }
-          return s + `<br/><span style="color: ${point.color};">${point.series.name}:</span> <b>${formatNumber(point.y as number)}</b>`
-        }, `${Highstock.dateFormat("%a, %b %e, %Y", this.x as number)}`)
+        return this.points?.reduce(
+          (s, point) => {
+            if (point.series.type === "ohlc") {
+              return s;
+            }
+            return s + `<br/><span style="color: ${point.color};">${point.series.name}:</span> <b>${formatNumber(point.y as number)}</b>`;
+          },
+          `${Highstock.dateFormat("%a, %b %e, %Y", this.x as number)}`,
+        );
       } catch {
-        return ""
+        return "";
       }
     },
   },
@@ -106,6 +109,6 @@ const chartOptionsTemplate = (): Highstock.Options => ({
     },
   },
   series: [],
-})
+});
 
-export default chartOptionsTemplate
+export default chartOptionsTemplate;

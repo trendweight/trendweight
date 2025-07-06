@@ -73,7 +73,7 @@ public class WithingsLinkController : ControllerBase
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key), 
+                    new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -84,16 +84,16 @@ public class WithingsLinkController : ControllerBase
             var scheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
             var host = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
             var callbackUrl = $"{scheme}://{host}/api/withings/callback";
-            
+
             _logger.LogInformation("Direct - Scheme: {Scheme}, Host: {Host}", Request.Scheme, Request.Host);
-            _logger.LogInformation("Forwarded - Proto: {Proto}, Host: {ForwardedHost}", 
-                Request.Headers["X-Forwarded-Proto"].FirstOrDefault(), 
+            _logger.LogInformation("Forwarded - Proto: {Proto}, Host: {ForwardedHost}",
+                Request.Headers["X-Forwarded-Proto"].FirstOrDefault(),
                 Request.Headers["X-Forwarded-Host"].FirstOrDefault());
             _logger.LogInformation("Using callback URL: {CallbackUrl}", callbackUrl);
-            
+
             // Get authorization URL
             var authorizationUrl = _withingsService.GetAuthorizationUrl(signedState, callbackUrl);
-            
+
             _logger.LogInformation("Generated authorization URL: {AuthorizationUrl}", authorizationUrl);
 
             return Ok(new

@@ -1,7 +1,7 @@
-import { Modes } from "../../lib/core/interfaces"
-import { formatMeasurement } from "../../lib/core/numbers"
-import { useDashboardData } from "../../lib/dashboard/hooks"
-import ChangeArrow from "./ChangeArrow"
+import { Modes } from "../../lib/core/interfaces";
+import { formatMeasurement } from "../../lib/core/numbers";
+import { useDashboardData } from "../../lib/dashboard/hooks";
+import ChangeArrow from "./ChangeArrow";
 
 const Deltas = () => {
   const {
@@ -9,20 +9,20 @@ const Deltas = () => {
     mode: [mode],
     dataPoints,
     profile: { useMetric, plannedPoundsPerWeek, goalWeight },
-  } = useDashboardData()
+  } = useDashboardData();
 
   if (deltas.length === 0) {
-    return null
+    return null;
   }
 
-  const last = dataPoints[dataPoints.length - 1]
-  let intendedDirection: number
+  const last = dataPoints[dataPoints.length - 1];
+  let intendedDirection: number;
   if (mode === "weight") {
-    intendedDirection = plannedPoundsPerWeek || (goalWeight ? goalWeight - last.trend : -1)
+    intendedDirection = plannedPoundsPerWeek || (goalWeight ? goalWeight - last.trend : -1);
   } else if (mode === "fatpercent" || mode === "fatmass") {
-    intendedDirection = -1
+    intendedDirection = -1;
   } else {
-    intendedDirection = 1
+    intendedDirection = 1;
   }
 
   return (
@@ -37,7 +37,7 @@ const Deltas = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Deltas
+export default Deltas;

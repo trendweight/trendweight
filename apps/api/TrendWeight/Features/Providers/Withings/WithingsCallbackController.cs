@@ -65,7 +65,7 @@ public class WithingsCallbackController : ControllerBase
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(jwtSigningKey);
-                
+
                 var validationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -76,15 +76,15 @@ public class WithingsCallbackController : ControllerBase
                 };
 
                 var principal = tokenHandler.ValidateToken(state, validationParameters, out var validatedToken);
-                
+
                 var uid = principal.FindFirst("uid")?.Value;
                 var reason = principal.FindFirst("reason")?.Value;
-                
+
                 if (string.IsNullOrEmpty(uid) || string.IsNullOrEmpty(reason))
                 {
                     throw new SecurityTokenException("Invalid state token");
                 }
-                
+
                 linkDetails = new OAuthState { Uid = uid, Reason = reason };
             }
             catch (Exception ex)
@@ -105,15 +105,15 @@ public class WithingsCallbackController : ControllerBase
             var scheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
             var host = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
             var callbackUrl = $"{scheme}://{host}/api/withings/callback";
-            
+
             _logger.LogInformation("Exchanging code for token with callback URL: {CallbackUrl}", callbackUrl);
-            
+
             var accessToken = await _withingsService.ExchangeAuthorizationCodeAsync(code, callbackUrl);
 
             // Store the token
             await _providerLinkService.StoreProviderLinkAsync(
-                user.Uid, 
-                "withings", 
+                user.Uid,
+                "withings",
                 accessToken,
                 linkDetails.Reason);
 
@@ -123,18 +123,18 @@ public class WithingsCallbackController : ControllerBase
             var frontendScheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
             var frontendHost = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
             var redirectUrl = $"{frontendScheme}://{frontendHost}/oauth/withings/callback?success=true";
-            
+
             _logger.LogInformation("Redirecting to: {RedirectUrl}", redirectUrl);
-            _logger.LogInformation("X-Forwarded-Proto: {Proto}, X-Forwarded-Host: {Host}", 
-                Request.Headers["X-Forwarded-Proto"].FirstOrDefault(), 
+            _logger.LogInformation("X-Forwarded-Proto: {Proto}, X-Forwarded-Host: {Host}",
+                Request.Headers["X-Forwarded-Proto"].FirstOrDefault(),
                 Request.Headers["X-Forwarded-Host"].FirstOrDefault());
-            
+
             return Redirect(redirectUrl);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error handling Withings callback");
-            
+
             // Redirect to frontend error page
             var frontendScheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
             var frontendHost = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
