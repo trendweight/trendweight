@@ -11,13 +11,13 @@ public class SupabaseService : ISupabaseService
     public SupabaseService(SupabaseConfig config, ILogger<SupabaseService> logger)
     {
         _logger = logger;
-        
+
         var options = new SupabaseOptions
         {
             AutoRefreshToken = true,
             AutoConnectRealtime = false
         };
-        
+
         _supabaseClient = new Client(config.Url, config.ServiceKey, options);
         var initTask = _supabaseClient.InitializeAsync();
         initTask.Wait(); // Wait for initialization
@@ -31,7 +31,7 @@ public class SupabaseService : ISupabaseService
             var response = await _supabaseClient.From<T>()
                 .Filter("uid", Supabase.Postgrest.Constants.Operator.Equals, id.ToString())
                 .Single();
-            
+
             return response;
         }
         catch (Exception ex)
@@ -48,7 +48,7 @@ public class SupabaseService : ISupabaseService
             var response = await _supabaseClient.From<T>()
                 .Filter("uid", Supabase.Postgrest.Constants.Operator.Equals, id)
                 .Single();
-            
+
             return response;
         }
         catch (Exception ex)
@@ -64,7 +64,7 @@ public class SupabaseService : ISupabaseService
         {
             var response = await _supabaseClient.From<T>()
                 .Get();
-            
+
             return response.Models;
         }
         catch (Exception ex)
@@ -80,7 +80,7 @@ public class SupabaseService : ISupabaseService
         {
             var response = await _supabaseClient.From<T>()
                 .Insert(model);
-            
+
             return response.Models.First();
         }
         catch (Exception ex)
@@ -96,7 +96,7 @@ public class SupabaseService : ISupabaseService
         {
             var response = await _supabaseClient.From<T>()
                 .Update(model);
-            
+
             return response.Models.First();
         }
         catch (Exception ex)
@@ -127,7 +127,7 @@ public class SupabaseService : ISupabaseService
             var table = _supabaseClient.From<T>();
             query(table);
             var response = await table.Get();
-            
+
             return response.Models;
         }
         catch (Exception ex)

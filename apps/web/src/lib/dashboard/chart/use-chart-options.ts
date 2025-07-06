@@ -1,22 +1,15 @@
-import { DayOfWeek, LocalDate } from "@js-joda/core"
-import { useMemo } from "react"
-import { Modes } from "../../core/interfaces"
-import type { DashboardData } from "../dashboardContext"
-import chartOptionsTemplate from "./chart-options-template"
-import {
-  createDiamondsSeries,
-  createDotSeries,
-  createLineSeries,
-  createProjectionSeries,
-  createSinkersSeries,
-  createTrendSeries,
-} from "./create-chart-series"
+import { DayOfWeek, LocalDate } from "@js-joda/core";
+import { useMemo } from "react";
+import { Modes } from "../../core/interfaces";
+import type { DashboardData } from "../dashboardContext";
+import chartOptionsTemplate from "./chart-options-template";
+import { createDiamondsSeries, createDotSeries, createLineSeries, createProjectionSeries, createSinkersSeries, createTrendSeries } from "./create-chart-series";
 
-const toEpoch = (date: LocalDate) => date.toEpochDay() * 86400000
+const toEpoch = (date: LocalDate) => date.toEpochDay() * 86400000;
 
 export const useChartOptions = (data: DashboardData) => {
   // TODO: Add media query hook for narrow screens
-  const isNarrow = false
+  const isNarrow = false;
 
   const {
     dataPoints,
@@ -24,103 +17,103 @@ export const useChartOptions = (data: DashboardData) => {
     timeRange: [timeRange],
     activeSlope,
     profile: { useMetric, goalWeight },
-  } = data
+  } = data;
 
   return useMemo(() => {
-    const options = chartOptionsTemplate()
+    const options = chartOptionsTemplate();
 
     if (isNarrow && options.chart) {
-      options.chart.height = "75%"
+      options.chart.height = "75%";
     }
-    
-    const modeText = Modes[mode]
-    const lastMeasurement = dataPoints[dataPoints.length - 1]
-    const actualData: [number, number | null][] = dataPoints.map((m) => [toEpoch(m.date), m.isInterpolated ? null : m.actual])
-    const interpolatedData: [number, number | null][] = dataPoints.map((m) => [toEpoch(m.date), m.isInterpolated ? m.actual : null])
-    const trendData: [number, number][] = dataPoints.map((m) => [toEpoch(m.date), m.trend])
+
+    const modeText = Modes[mode];
+    const lastMeasurement = dataPoints[dataPoints.length - 1];
+    const actualData: [number, number | null][] = dataPoints.map((m) => [toEpoch(m.date), m.isInterpolated ? null : m.actual]);
+    const interpolatedData: [number, number | null][] = dataPoints.map((m) => [toEpoch(m.date), m.isInterpolated ? m.actual : null]);
+    const trendData: [number, number][] = dataPoints.map((m) => [toEpoch(m.date), m.trend]);
     const projectionsData: [number, number][] = [
       [toEpoch(lastMeasurement.date), lastMeasurement.trend],
       [toEpoch(lastMeasurement.date.plusDays(6)), lastMeasurement.trend + activeSlope * 6],
-    ]
+    ];
 
     const actualSinkersData: [number, number | null, number | null, null][] = dataPoints.map((m) => [
       toEpoch(m.date),
       m.isInterpolated ? null : m.actual,
       m.isInterpolated ? null : m.trend,
       null,
-    ])
+    ]);
     const interpolatedSinkersData: [number, number | null, number | null, null][] = dataPoints.map((m) => [
       toEpoch(m.date),
       m.isInterpolated ? m.actual : null,
       m.isInterpolated ? m.trend : null,
       null,
-    ])
+    ]);
 
     if (options.series && options.xAxis && !Array.isArray(options.xAxis)) {
       switch (timeRange) {
         case "4w":
-          options.series.push(createTrendSeries(trendData, mode, modeText, isNarrow))
-          options.series.push(createDiamondsSeries(actualData, false, isNarrow))
-          options.series.push(createDiamondsSeries(interpolatedData, true, isNarrow))
-          options.series.push(createSinkersSeries(actualSinkersData, false))
-          options.series.push(createSinkersSeries(interpolatedSinkersData, true))
-          options.series.push(createProjectionSeries(projectionsData, mode, modeText, isNarrow))
-          options.xAxis.tickInterval = 86400000 * 7
-          options.xAxis.range = 86400000 * (28 - 1 + 6)
-          options.xAxis.plotBands = []
-          
+          options.series.push(createTrendSeries(trendData, mode, modeText, isNarrow));
+          options.series.push(createDiamondsSeries(actualData, false, isNarrow));
+          options.series.push(createDiamondsSeries(interpolatedData, true, isNarrow));
+          options.series.push(createSinkersSeries(actualSinkersData, false));
+          options.series.push(createSinkersSeries(interpolatedSinkersData, true));
+          options.series.push(createProjectionSeries(projectionsData, mode, modeText, isNarrow));
+          options.xAxis.tickInterval = 86400000 * 7;
+          options.xAxis.range = 86400000 * (28 - 1 + 6);
+          options.xAxis.plotBands = [];
+
           {
             // Weekend shading
-            const endDate = lastMeasurement.date.plusWeeks(1)
-            let saturday = endDate
-          while (saturday.dayOfWeek() !== DayOfWeek.SATURDAY) {
-            saturday = saturday.plusDays(-1)
+            const endDate = lastMeasurement.date.plusWeeks(1);
+            let saturday = endDate;
+            while (saturday.dayOfWeek() !== DayOfWeek.SATURDAY) {
+              saturday = saturday.plusDays(-1);
+            }
+            saturday = saturday.plusWeeks(-8);
+            while (saturday.isBefore(endDate)) {
+              options.xAxis.plotBands.push({
+                from: toEpoch(saturday) - 43200000, // Friday noon
+                to: toEpoch(saturday) + 129600000, // Sunday noon
+                color: "rgba(220, 220, 220, 0.2)",
+                zIndex: 1,
+              });
+              saturday = saturday.plusWeeks(1);
+            }
           }
-          saturday = saturday.plusWeeks(-8)
-          while (saturday.isBefore(endDate)) {
-            options.xAxis.plotBands.push({
-              from: toEpoch(saturday) - 43200000, // Friday noon
-              to: toEpoch(saturday) + 129600000, // Sunday noon
-              color: "rgba(220, 220, 220, 0.2)",
-              zIndex: 1,
-            })
-            saturday = saturday.plusWeeks(1)
-          }
-          }
-          break
-          
+          break;
+
         case "3m":
-          options.series.push(createTrendSeries(trendData, mode, modeText, isNarrow))
+          options.series.push(createTrendSeries(trendData, mode, modeText, isNarrow));
           if (isNarrow) {
-            options.series.push(createLineSeries(actualData, false))
+            options.series.push(createLineSeries(actualData, false));
           } else {
-            options.series.push(createDotSeries(actualData, false))
-            options.series.push(createDotSeries(interpolatedData, true))
-            options.series.push(createSinkersSeries(actualSinkersData, false))
-            options.series.push(createSinkersSeries(interpolatedSinkersData, true))
+            options.series.push(createDotSeries(actualData, false));
+            options.series.push(createDotSeries(interpolatedData, true));
+            options.series.push(createSinkersSeries(actualSinkersData, false));
+            options.series.push(createSinkersSeries(interpolatedSinkersData, true));
           }
-          options.series.push(createProjectionSeries(projectionsData, mode, modeText, isNarrow))
-          options.xAxis.tickInterval = 86400000 * 7
-          options.xAxis.range = 86400000 * (90 - 1 + 6)
-          options.xAxis.plotBands = []
-          break
-          
+          options.series.push(createProjectionSeries(projectionsData, mode, modeText, isNarrow));
+          options.xAxis.tickInterval = 86400000 * 7;
+          options.xAxis.range = 86400000 * (90 - 1 + 6);
+          options.xAxis.plotBands = [];
+          break;
+
         case "6m":
         case "1y":
         case "all":
-          options.series = []
-          options.series.push(createTrendSeries(trendData, mode, modeText, isNarrow))
-          options.series.push(createLineSeries(actualData, false))
-          options.series.push(createProjectionSeries(projectionsData, mode, modeText, isNarrow))
-          options.xAxis.range = 86400000 * ((timeRange === "6m" ? 180 : timeRange === "1y" ? 365 : trendData.length) - 1 + 6)
-          options.xAxis.plotBands = []
-          break
+          options.series = [];
+          options.series.push(createTrendSeries(trendData, mode, modeText, isNarrow));
+          options.series.push(createLineSeries(actualData, false));
+          options.series.push(createProjectionSeries(projectionsData, mode, modeText, isNarrow));
+          options.xAxis.range = 86400000 * ((timeRange === "6m" ? 180 : timeRange === "1y" ? 365 : trendData.length) - 1 + 6);
+          options.xAxis.plotBands = [];
+          break;
       }
     }
 
     // Goal bands for weight mode
     if (mode === "weight" && goalWeight && options.yAxis && !Array.isArray(options.yAxis)) {
-      const goalWidth = useMetric ? 1.134 : 5
+      const goalWidth = useMetric ? 1.134 : 5;
       options.yAxis.plotBands = [
         {
           from: goalWeight - goalWidth,
@@ -139,7 +132,7 @@ export const useChartOptions = (data: DashboardData) => {
           },
           zIndex: 0,
         },
-      ]
+      ];
       options.yAxis.plotLines = [
         {
           value: goalWeight - goalWidth,
@@ -155,9 +148,9 @@ export const useChartOptions = (data: DashboardData) => {
           zIndex: 1,
           width: 1,
         },
-      ]
+      ];
     }
 
-    return options
-  }, [dataPoints, activeSlope, goalWeight, isNarrow, mode, timeRange, useMetric])
-}
+    return options;
+  }, [dataPoints, activeSlope, goalWeight, isNarrow, mode, timeRange, useMetric]);
+};

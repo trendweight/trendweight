@@ -13,25 +13,25 @@ public class WithingsGetMeasuresResponse
     /// </summary>
     [JsonPropertyName("updatetime")]
     public long UpdateTime { get; set; }
-    
+
     /// <summary>
     /// Timezone information from the Withings API
     /// </summary>
     [JsonPropertyName("timezone")]
     public string Timezone { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// Collection of measurement groups
     /// </summary>
     [JsonPropertyName("measuregrps")]
     public List<WithingsMeasureGroup> MeasureGroups { get; set; } = new();
-    
+
     /// <summary>
     /// Indicates if there are more measurements to fetch (pagination)
     /// </summary>
     [JsonPropertyName("more")]
     public int More { get; set; }
-    
+
     /// <summary>
     /// Offset for pagination
     /// </summary>

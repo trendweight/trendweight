@@ -12,7 +12,7 @@ public class WithingsMeasure
     /// </summary>
     [JsonPropertyName("value")]
     public int Value { get; set; }
-    
+
     /// <summary>
     /// The type of measurement:
     /// 1 = Weight
@@ -20,7 +20,7 @@ public class WithingsMeasure
     /// </summary>
     [JsonPropertyName("type")]
     public int Type { get; set; }
-    
+
     /// <summary>
     /// The unit of the measurement (power of 10 to convert value)
     /// </summary>

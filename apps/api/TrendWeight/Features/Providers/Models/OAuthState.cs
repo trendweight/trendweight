@@ -9,7 +9,7 @@ public class OAuthState
     /// User ID (Supabase UID)
     /// </summary>
     public string Uid { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// Reason for the OAuth flow (e.g., "link", "refresh")
     /// </summary>

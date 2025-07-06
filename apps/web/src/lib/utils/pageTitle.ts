@@ -1,6 +1,6 @@
 export function pageTitle(title?: string): string {
-  if (!title || title === 'TrendWeight') {
-    return 'TrendWeight'
+  if (!title || title === "TrendWeight") {
+    return "TrendWeight";
   }
-  return `${title} - TrendWeight`
+  return `${title} - TrendWeight`;
 }

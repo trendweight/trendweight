@@ -1,23 +1,23 @@
-import type { FC } from "react"
-import { DashboardProvider } from "../../lib/dashboard/context"
-import { useComputeDashboardData } from "../../lib/dashboard/hooks"
-import Buttons from "./Buttons"
-import Chart from "./chart/Chart"
-import Currently from "./Currently"
-import DashboardPlaceholder from "./DashboardPlaceholder"
-import RecentReadings from "./RecentReadings"
-import Stats from "./Stats"
-import Deltas from "./Deltas"
+import type { FC } from "react";
+import { DashboardProvider } from "../../lib/dashboard/context";
+import { useComputeDashboardData } from "../../lib/dashboard/hooks";
+import Buttons from "./Buttons";
+import Chart from "./chart/Chart";
+import Currently from "./Currently";
+import DashboardPlaceholder from "./DashboardPlaceholder";
+import RecentReadings from "./RecentReadings";
+import Stats from "./Stats";
+import Deltas from "./Deltas";
 
 const Dashboard: FC = () => {
-  const dashboardData = useComputeDashboardData()
+  const dashboardData = useComputeDashboardData();
 
   if (!dashboardData) {
-    return <DashboardPlaceholder />
+    return <DashboardPlaceholder />;
   }
 
   if (dashboardData.measurements.length === 0) {
-    return <div>No data yet.</div>
+    return <div>No data yet.</div>;
   }
 
   return (
@@ -39,7 +39,7 @@ const Dashboard: FC = () => {
         </div>
       </div>
     </DashboardProvider>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

@@ -42,10 +42,10 @@ public abstract class ProviderServiceBase : IProviderService
         {
             // Get provider-specific access token
             var accessToken = await ExchangeCodeForTokenAsync(code, callbackUrl);
-            
+
             // Store the token using ProviderLinkService
             await _providerLinkService.StoreProviderLinkAsync(userId, ProviderName, accessToken);
-            
+
             _logger.LogInformation("Successfully stored {Provider} link for user {UserId}", ProviderName, userId);
             return true;
         }
@@ -72,7 +72,7 @@ public abstract class ProviderServiceBase : IProviderService
             // Get measurements from provider
             var startTimestamp = startDate.HasValue ? ToUnixTimeSeconds(startDate.Value) : 1; // 1 = all time
             var measurements = await FetchMeasurementsAsync(providerLink.Token, metric, startTimestamp);
-            
+
             return measurements;
         }
         catch (Exception ex)
@@ -89,14 +89,14 @@ public abstract class ProviderServiceBase : IProviderService
         {
             // Get the last sync time to determine fetch window
             var lastSyncTime = await _sourceDataService.GetLastSyncTimeAsync(userId, ProviderName);
-            
+
             // Calculate start date: 90 days before last sync, or all time if no previous sync
             DateTime startDate;
             if (lastSyncTime.HasValue)
             {
                 // Fetch from 90 days before last sync to catch any late-arriving or edited measurements
                 startDate = lastSyncTime.Value.AddDays(-90);
-                _logger.LogInformation("Fetching {Provider} measurements from {StartDate} (90 days before last sync)", 
+                _logger.LogInformation("Fetching {Provider} measurements from {StartDate} (90 days before last sync)",
                     ProviderName, startDate.ToString("o"));
             }
             else
@@ -105,7 +105,7 @@ public abstract class ProviderServiceBase : IProviderService
                 startDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 _logger.LogInformation("No previous sync for {Provider}, fetching all measurements", ProviderName);
             }
-            
+
             // Get measurements from the provider
             var measurements = await GetMeasurementsAsync(userId, metric, startDate);
             if (measurements == null)
@@ -123,8 +123,8 @@ public abstract class ProviderServiceBase : IProviderService
 
             // Store in database (UpdateSourceDataAsync will handle merging)
             await _sourceDataService.UpdateSourceDataAsync(userId, new List<SourceData> { sourceData });
-            
-            _logger.LogInformation("Successfully synced {Count} {Provider} measurements for user {UserId}", 
+
+            _logger.LogInformation("Successfully synced {Count} {Provider} measurements for user {UserId}",
                 measurements.Count, ProviderName, userId);
             return true;
         }
@@ -172,7 +172,7 @@ public abstract class ProviderServiceBase : IProviderService
         if (IsTokenExpired(providerLink.Token))
         {
             _logger.LogInformation("Token expired for {Provider} user {UserId}, refreshing", ProviderName, userId);
-            
+
             try
             {
                 var refreshedToken = await RefreshTokenAsync(providerLink.Token);
@@ -217,17 +217,17 @@ public abstract class ProviderServiceBase : IProviderService
     }
 
     // Abstract methods that provider-specific implementations must provide
-    
+
     /// <summary>
     /// Exchanges authorization code for access token (provider-specific)
     /// </summary>
     protected abstract Task<AccessToken> ExchangeCodeForTokenAsync(string code, string callbackUrl);
-    
+
     /// <summary>
     /// Refreshes an expired access token (provider-specific)
     /// </summary>
     protected abstract Task<AccessToken> RefreshTokenAsync(AccessToken token);
-    
+
     /// <summary>
     /// Fetches measurements from the provider API (provider-specific)
     /// </summary>

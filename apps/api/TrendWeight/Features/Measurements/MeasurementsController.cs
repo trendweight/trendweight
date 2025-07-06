@@ -20,7 +20,7 @@ public class MeasurementsController : ControllerBase
     private readonly IProviderIntegrationService _providerIntegrationService;
     private readonly ISourceDataService _sourceDataService;
     private readonly ILogger<MeasurementsController> _logger;
-    
+
     // Data is considered fresh for 5 minutes (matching legacy behavior)
     private const int CACHE_DURATION_SECONDS = 300;
 
@@ -52,51 +52,51 @@ public class MeasurementsController : ControllerBase
             {
                 return Unauthorized(new { error = "User ID not found in token" });
             }
-            
+
             _logger.LogInformation("Getting measurements for user ID: {UserId}", userId);
-            
+
             // Get user by Supabase UID
             var user = await _userService.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound(new { error = "User not found" });
             }
-            
+
             // Get active providers
             var activeProviders = await _providerIntegrationService.GetActiveProvidersAsync(user.Uid);
-            
+
             // For each active provider, check if refresh is needed
             var refreshTasks = new List<Task<(string provider, bool success)>>();
             var now = DateTime.UtcNow;
-            
+
             // Check each provider's last sync time directly from the database
             foreach (var provider in activeProviders)
             {
                 // Check last sync time for this provider
                 var lastSync = await _sourceDataService.GetLastSyncTimeAsync(user.Uid, provider);
                 var needsRefresh = lastSync == null || (now - lastSync.Value).TotalSeconds > CACHE_DURATION_SECONDS;
-                
+
                 if (lastSync != null)
                 {
-                    _logger.LogInformation("Provider {Provider} - Now: {Now}, LastSync: {LastSync}, Age: {Age}s, CacheDuration: {CacheDuration}s", 
+                    _logger.LogInformation("Provider {Provider} - Now: {Now}, LastSync: {LastSync}, Age: {Age}s, CacheDuration: {CacheDuration}s",
                         provider, now.ToString("o"), lastSync.Value.ToString("o"), (now - lastSync.Value).TotalSeconds, CACHE_DURATION_SECONDS);
                 }
-                
+
                 if (needsRefresh)
                 {
-                    _logger.LogInformation("Provider {Provider} needs refresh (last sync: {LastSync})", 
+                    _logger.LogInformation("Provider {Provider} needs refresh (last sync: {LastSync})",
                         provider, lastSync?.ToString("o") ?? "never");
-                    
+
                     // Add refresh task
                     refreshTasks.Add(RefreshProviderAsync(user.Uid, provider, user.Profile.UseMetric));
                 }
                 else
                 {
-                    _logger.LogInformation("Provider {Provider} data is fresh (last sync: {LastSync})", 
+                    _logger.LogInformation("Provider {Provider} data is fresh (last sync: {LastSync})",
                         provider, lastSync!.Value.ToString("o"));
                 }
             }
-            
+
             // Wait for all refresh tasks to complete
             if (refreshTasks.Any())
             {
@@ -108,12 +108,12 @@ public class MeasurementsController : ControllerBase
                         _logger.LogWarning("Failed to refresh data for provider {Provider}", provider);
                     }
                 }
-                
+
             }
-            
+
             // Get the current data (whether refreshed or cached)
             var currentData = await _sourceDataService.GetSourceDataAsync(user.Uid) ?? new List<SourceData>();
-            
+
             // Return the current data
             return Ok(currentData);
         }
@@ -123,7 +123,7 @@ public class MeasurementsController : ControllerBase
             return StatusCode(500, new { error = "Internal server error" });
         }
     }
-    
+
     private async Task<(string provider, bool success)> RefreshProviderAsync(Guid userId, string provider, bool useMetric)
     {
         try
@@ -133,7 +133,7 @@ public class MeasurementsController : ControllerBase
             {
                 return (provider, false);
             }
-            
+
             var success = await providerService.SyncMeasurementsAsync(userId, useMetric);
             return (provider, success);
         }

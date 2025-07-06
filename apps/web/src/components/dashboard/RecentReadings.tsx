@@ -1,17 +1,17 @@
-import { recentDate } from "../../lib/core/dates"
-import { Modes } from "../../lib/core/interfaces"
-import { formatMeasurement } from "../../lib/core/numbers"
-import { useDashboardData } from "../../lib/dashboard/hooks"
+import { recentDate } from "../../lib/core/dates";
+import { Modes } from "../../lib/core/interfaces";
+import { formatMeasurement } from "../../lib/core/numbers";
+import { useDashboardData } from "../../lib/dashboard/hooks";
 
 const RecentReadings = () => {
   const {
     dataPoints,
     mode: [mode],
     profile: { useMetric },
-  } = useDashboardData()
+  } = useDashboardData();
 
-  const readings = dataPoints.slice(-14).reverse()
-  
+  const readings = dataPoints.slice(-14).reverse();
+
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">Recent {Modes[mode]} Readings</h2>
@@ -29,18 +29,14 @@ const RecentReadings = () => {
               <td className="pl-0 py-1" suppressHydrationWarning>
                 {recentDate(m.date)}
               </td>
-              <td className="text-gray-400 text-right py-1">
-                {formatMeasurement(m.actual, { type: mode, metric: useMetric, units: false })}
-              </td>
-              <td className="text-right pr-0 font-semibold py-1">
-                {formatMeasurement(m.trend, { type: mode, metric: useMetric, units: false })}
-              </td>
+              <td className="text-gray-400 text-right py-1">{formatMeasurement(m.actual, { type: mode, metric: useMetric, units: false })}</td>
+              <td className="text-right pr-0 font-semibold py-1">{formatMeasurement(m.trend, { type: mode, metric: useMetric, units: false })}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default RecentReadings
+export default RecentReadings;

@@ -12,10 +12,10 @@
   --color-brand-700: #315c98;
   --color-brand-800: #31517f;
   --color-brand-900: #2c466b;
-  
+
   /* Custom fonts - overriding default sans changes the HTML element's font */
-  --font-sans: 'Inter Variable', Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-logo: 'Zilla Slab', Georgia, serif;
+  --font-sans: "Inter Variable", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-logo: "Zilla Slab", Georgia, serif;
 }
 
 /* Prevent layout shift from scrollbar appearing/disappearing */

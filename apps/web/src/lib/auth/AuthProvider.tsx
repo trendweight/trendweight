@@ -1,26 +1,26 @@
-import { useEffect, useState } from 'react'
-import type { FC, ReactNode } from 'react'
-import { supabase } from '../supabase/client'
-import type { User as SupabaseUser, Session } from '@supabase/supabase-js'
-import { authSuspenseManager } from './authSuspense'
-import { AuthContext, type AuthContextType, type User } from './authContext'
-import { router } from '../../router'
+import { useEffect, useState } from "react";
+import type { FC, ReactNode } from "react";
+import { supabase } from "../supabase/client";
+import type { User as SupabaseUser, Session } from "@supabase/supabase-js";
+import { authSuspenseManager } from "./authSuspense";
+import { AuthContext, type AuthContextType, type User } from "./authContext";
+import { router } from "../../router";
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
-  const [isInitializing, setIsInitializing] = useState(true)
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   // Transform Supabase user to our User type
   const transformUser = (supabaseUser: SupabaseUser | null): User | null => {
-    if (!supabaseUser) return null
-    
+    if (!supabaseUser) return null;
+
     return {
       uid: supabaseUser.id,
       email: supabaseUser.email || null,
       displayName: supabaseUser.user_metadata?.name || null,
-    }
-  }
+    };
+  };
 
   // Send login email
   const sendLoginEmail = async (email: string) => {
@@ -30,96 +30,98 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         shouldCreateUser: true,
         emailRedirectTo: `${window.location.origin}/auth/verify`,
       },
-    })
-    
+    });
+
     if (error) {
-      console.error('Error sending login email:', error)
-      throw error
+      console.error("Error sending login email:", error);
+      throw error;
     }
-    
+
     // Store email for later verification
-    window.localStorage.setItem('emailForSignIn', email)
-  }
+    window.localStorage.setItem("emailForSignIn", email);
+  };
 
   // Social sign-in methods
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider: "google",
       options: {
         redirectTo: `${window.location.origin}/dashboard`,
       },
-    })
-    
+    });
+
     if (error) {
-      console.error('Error signing in with Google:', error)
-      throw error
+      console.error("Error signing in with Google:", error);
+      throw error;
     }
-  }
+  };
 
   const signInWithMicrosoft = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'azure',
+      provider: "azure",
       options: {
         redirectTo: `${window.location.origin}/dashboard`,
-        scopes: 'email',
+        scopes: "email",
       },
-    })
-    
+    });
+
     if (error) {
-      console.error('Error signing in with Microsoft:', error)
-      throw error
+      console.error("Error signing in with Microsoft:", error);
+      throw error;
     }
-  }
+  };
 
   const signInWithApple = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'apple',
+      provider: "apple",
       options: {
         redirectTo: `${window.location.origin}/dashboard`,
       },
-    })
-    
+    });
+
     if (error) {
-      console.error('Error signing in with Apple:', error)
-      throw error
+      console.error("Error signing in with Apple:", error);
+      throw error;
     }
-  }
+  };
 
   // Sign out
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    
+    const { error } = await supabase.auth.signOut();
+
     if (error) {
-      console.error('Error signing out:', error)
-      throw error
+      console.error("Error signing out:", error);
+      throw error;
     }
-  }
+  };
 
   // Handle auth state changes
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(transformUser(session?.user || null))
-      setIsInitializing(false)
-      authSuspenseManager.setInitializing(false)
-    })
+      setSession(session);
+      setUser(transformUser(session?.user || null));
+      setIsInitializing(false);
+      authSuspenseManager.setInitializing(false);
+    });
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session)
-      setUser(transformUser(session?.user || null))
-      
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      setUser(transformUser(session?.user || null));
+
       // Handle sign out by redirecting to home
-      if (event === 'SIGNED_OUT') {
-        router.navigate({ to: '/' })
+      if (event === "SIGNED_OUT") {
+        router.navigate({ to: "/" });
       }
-    })
+    });
 
     return () => {
-      subscription.unsubscribe()
-    }
-  }, [])
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const value: AuthContextType = {
     user,
@@ -131,7 +133,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     signInWithMicrosoft,
     signInWithApple,
     signOut,
-  }
+  };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-}
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};

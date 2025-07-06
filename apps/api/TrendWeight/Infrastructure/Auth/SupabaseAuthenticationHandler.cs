@@ -64,7 +64,7 @@ public class SupabaseAuthenticationHandler : AuthenticationHandler<SupabaseAuthe
 
             // Extract claims from the JWT
             var claims = new List<Claim>();
-            
+
             // Add the sub claim as NameIdentifier
             var subClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == "sub");
             if (subClaim != null)

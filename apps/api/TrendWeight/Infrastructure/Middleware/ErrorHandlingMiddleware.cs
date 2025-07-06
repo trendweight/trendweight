@@ -30,7 +30,7 @@ public class ErrorHandlingMiddleware
     private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
-        
+
         var response = new ErrorResponse();
 
         switch (exception)
@@ -40,17 +40,17 @@ public class ErrorHandlingMiddleware
                 response.Message = exception.Message;
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
                 break;
-                
+
             case KeyNotFoundException:
                 response.Message = "Resource not found";
                 response.StatusCode = (int)HttpStatusCode.NotFound;
                 break;
-                
+
             case UnauthorizedAccessException:
                 response.Message = "Access denied";
                 response.StatusCode = (int)HttpStatusCode.Forbidden;
                 break;
-                
+
             default:
                 response.Message = "An error occurred while processing your request";
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -58,12 +58,12 @@ public class ErrorHandlingMiddleware
         }
 
         context.Response.StatusCode = response.StatusCode;
-        
+
         var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         });
-        
+
         await context.Response.WriteAsync(jsonResponse);
     }
 }
