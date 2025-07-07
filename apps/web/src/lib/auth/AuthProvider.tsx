@@ -72,15 +72,27 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const signInWithApple = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "apple",
-      options: {
-        redirectTo: `${window.location.origin}/dashboard`,
-      },
-    });
+    // Check if Apple JS is available
+    if (!window.AppleID) {
+      throw new Error("Apple Sign In is not available. Please check configuration.");
+    }
 
-    if (error) {
-      console.error("Error signing in with Apple:", error);
+    try {
+      // Trigger Apple sign in
+      const response = await window.AppleID.auth.signIn();
+      
+      // Sign in with the ID token
+      const { error } = await supabase.auth.signInWithIdToken({
+        provider: 'apple',
+        token: response.authorization.id_token,
+      });
+      
+      if (error) {
+        console.error("Error signing in with Apple:", error);
+        throw error;
+      }
+    } catch (error) {
+      console.error("Apple sign-in failed:", error);
       throw error;
     }
   };

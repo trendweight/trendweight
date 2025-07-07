@@ -139,6 +139,7 @@ jobs:
         build-args: |
           VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_APPLE_SERVICES_ID=${{ secrets.VITE_APPLE_SERVICES_ID }}
           BUILD_TIME=${{ github.event.head_commit.timestamp }}
           BUILD_COMMIT=${{ github.sha }}
           BUILD_BRANCH=${{ github.ref_name }}
