@@ -5,6 +5,7 @@
     ":semanticCommits",
     ":rebaseStalePrs",
     ":pinDependencies",
+    ":pinDevDependencies",
     "group:monorepos",
     "group:recommended"
   ],
