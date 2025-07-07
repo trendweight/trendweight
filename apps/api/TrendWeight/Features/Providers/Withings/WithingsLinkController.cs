@@ -80,15 +80,9 @@ public class WithingsLinkController : ControllerBase
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var signedState = tokenHandler.WriteToken(token);
 
-            // Get callback URL from request headers, checking for proxy headers first
-            var scheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
-            var host = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
-            var callbackUrl = $"{scheme}://{host}/api/withings/callback";
+            // Get callback URL - ForwardedHeaders middleware has already updated Request.Scheme and Request.Host
+            var callbackUrl = $"{Request.Scheme}://{Request.Host}/api/withings/callback";
 
-            _logger.LogInformation("Direct - Scheme: {Scheme}, Host: {Host}", Request.Scheme, Request.Host);
-            _logger.LogInformation("Forwarded - Proto: {Proto}, Host: {ForwardedHost}",
-                Request.Headers["X-Forwarded-Proto"].FirstOrDefault(),
-                Request.Headers["X-Forwarded-Host"].FirstOrDefault());
             _logger.LogInformation("Using callback URL: {CallbackUrl}", callbackUrl);
 
             // Get authorization URL

@@ -102,9 +102,8 @@ public class WithingsCallbackController : ControllerBase
             }
 
             // Exchange authorization code for access token
-            var scheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
-            var host = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
-            var callbackUrl = $"{scheme}://{host}/api/withings/callback";
+            // ForwardedHeaders middleware has already updated Request.Scheme and Request.Host
+            var callbackUrl = $"{Request.Scheme}://{Request.Host}/api/withings/callback";
 
             _logger.LogDebug("Exchanging code for token with callback URL: {CallbackUrl}", callbackUrl);
 
@@ -120,14 +119,9 @@ public class WithingsCallbackController : ControllerBase
             _logger.LogDebug("Withings link created successfully for user {UserId}", user.Uid);
 
             // Redirect to frontend success page
-            var frontendScheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
-            var frontendHost = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
-            var redirectUrl = $"{frontendScheme}://{frontendHost}/oauth/withings/callback?success=true";
+            var redirectUrl = $"{Request.Scheme}://{Request.Host}/oauth/withings/callback?success=true";
 
             _logger.LogDebug("Redirecting to: {RedirectUrl}", redirectUrl);
-            _logger.LogDebug("X-Forwarded-Proto: {Proto}, X-Forwarded-Host: {Host}",
-                Request.Headers["X-Forwarded-Proto"].FirstOrDefault(),
-                Request.Headers["X-Forwarded-Host"].FirstOrDefault());
 
             return Redirect(redirectUrl);
         }
@@ -136,9 +130,7 @@ public class WithingsCallbackController : ControllerBase
             _logger.LogError(ex, "Error handling Withings callback");
 
             // Redirect to frontend error page
-            var frontendScheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
-            var frontendHost = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.ToString();
-            return Redirect($"{frontendScheme}://{frontendHost}/oauth/withings/callback?success=false&error={Uri.EscapeDataString(ex.Message)}");
+            return Redirect($"{Request.Scheme}://{Request.Host}/oauth/withings/callback?success=false&error={Uri.EscapeDataString(ex.Message)}");
         }
     }
 }

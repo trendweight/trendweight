@@ -78,31 +78,58 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
 
     try {
-      // Trigger Apple sign in
-      const response = await window.AppleID.auth.signIn();
-      
-      // Sign in with the ID token
-      const { error } = await supabase.auth.signInWithIdToken({
-        provider: 'apple',
-        token: response.authorization.id_token,
-      });
-      
-      if (error) {
-        console.error("Error signing in with Apple:", error);
-        throw error;
-      }
+      // Store current location for redirect after auth
+      // The state is already set during Apple ID initialization
+      const currentPath = window.location.pathname + window.location.search;
+      sessionStorage.setItem("apple_auth_redirect", currentPath);
+
+      // Trigger Apple sign in - this will redirect to Apple
+      await window.AppleID.auth.signIn();
+
+      // Note: Code execution won't reach here as the page will redirect
     } catch (error) {
       console.error("Apple sign-in failed:", error);
+      // Clean up session storage on error
+      sessionStorage.removeItem("apple_auth_state");
+      sessionStorage.removeItem("apple_auth_redirect");
       throw error;
     }
   };
 
   // Sign out
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
+    try {
+      const { error } = await supabase.auth.signOut();
 
-    if (error) {
-      console.error("Error signing out:", error);
+      if (error) {
+        console.error("Error signing out:", error);
+
+        // If the error is about missing session, force clear everything
+        if (error.message === "Auth session missing!") {
+          // Clear all Supabase localStorage items to force a clean state
+          const keysToRemove = [];
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && (key.startsWith("sb-") || key.includes("supabase"))) {
+              keysToRemove.push(key);
+            }
+          }
+          keysToRemove.forEach((key) => localStorage.removeItem(key));
+
+          // Clear local state and navigate
+          setUser(null);
+          setSession(null);
+          router.navigate({ to: "/" });
+
+          // Reload the page to ensure clean state
+          window.location.reload();
+          return;
+        }
+
+        throw error;
+      }
+    } catch (error) {
+      console.error("Error during sign out:", error);
       throw error;
     }
   };

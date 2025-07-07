@@ -1,5 +1,7 @@
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.HttpOverrides;
 using TrendWeight.Infrastructure.Extensions;
 using TrendWeight.Infrastructure.Middleware;
 
@@ -48,6 +50,25 @@ builder.Services.AddHttpLogging(options =>
                           Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.Duration;
 });
 
+// Configure forwarded headers for proxy scenarios
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+
+    if (builder.Environment.IsProduction())
+    {
+        // Production: Only trust the immediate proxy (most secure default)
+        options.ForwardLimit = 1;
+        options.RequireHeaderSymmetry = false;
+    }
+    else
+    {
+        // Development: Trust any source for ease of testing
+        options.KnownNetworks.Clear();
+        options.KnownProxies.Clear();
+    }
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
@@ -55,6 +76,9 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 
 // Enable HTTP request logging
 app.UseHttpLogging();
+
+// Use forwarded headers from proxies
+app.UseForwardedHeaders();
 
 if (app.Environment.IsDevelopment())
 {

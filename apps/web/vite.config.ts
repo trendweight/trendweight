@@ -1,14 +1,14 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [TanStackRouterVite(), react(), tailwindcss()],
   server: {
     host: true,
-    allowedHosts: ['studio-1', '.local', 'localhost'],
+    allowedHosts: ["studio-1", "studio-1.elf-hadar.ts.net", ".local", "localhost"],
     proxy: {
       // Proxy all /api requests to the C# backend
       "/api": {

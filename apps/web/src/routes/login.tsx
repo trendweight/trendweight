@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { Layout } from "../components/Layout";
 import { useAuth } from "../lib/auth/useAuth";
 import { pageTitle } from "../lib/utils/pageTitle";
-import { supabase } from "../lib/supabase/client";
-import type { AppleIDAuthResponse } from "../types/apple";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -40,6 +38,11 @@ function LoginPage() {
     setError("");
 
     try {
+      // For Apple in redirect mode, store the intended destination
+      if (provider === "apple" && from) {
+        sessionStorage.setItem("apple_auth_redirect", from);
+      }
+
       switch (provider) {
         case "google":
           await signInWithGoogle();
@@ -51,8 +54,10 @@ function LoginPage() {
           await signInWithApple();
           break;
       }
-      // After successful login, redirect to original destination or dashboard
-      navigate({ to: from || "/dashboard" });
+      // For Google/Microsoft, redirect happens here. For Apple, page will redirect to Apple
+      if (provider !== "apple") {
+        navigate({ to: from || "/dashboard" });
+      }
     } catch (err) {
       console.error(`Error signing in with ${provider}:`, err);
       setError(`Failed to sign in with ${provider}. Please try again.`);
@@ -75,68 +80,30 @@ function LoginPage() {
       }
     }
 
-    const script = document.createElement('script');
-    script.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js';
+    const script = document.createElement("script");
+    script.src = "https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js";
     script.async = true;
     script.defer = true;
-    
+
     script.onload = () => {
       // Initialize Apple ID auth after script loads
       if (window.AppleID) {
+        // Generate a state value for this session
+        const state = Math.random().toString(36).substring(2) + Date.now().toString(36);
+        sessionStorage.setItem("apple_auth_state", state);
+
         window.AppleID.auth.init({
           clientId: appleServicesId,
-          scope: 'name email',
-          redirectURI: window.location.origin,
-          usePopup: true,
+          scope: "name email",
+          redirectURI: `${window.location.origin}/api/auth/apple/callback`, // Backend endpoint
+          state: state,
+          usePopup: false, // Use redirect mode
         });
       }
     };
-    
+
     document.head.appendChild(script);
   }, []);
-
-  // Handle Apple Sign In events
-  useEffect(() => {
-    if (!import.meta.env.VITE_APPLE_SERVICES_ID) {
-      return;
-    }
-
-    const handleSuccess = async (event: Event) => {
-      const customEvent = event as CustomEvent<AppleIDAuthResponse>;
-      try {
-        setIsSubmitting(true);
-        setError("");
-        
-        const { error } = await supabase.auth.signInWithIdToken({
-          provider: 'apple',
-          token: customEvent.detail.authorization.id_token,
-        });
-        
-        if (error) throw error;
-        
-        navigate({ to: from || "/dashboard" });
-      } catch (err) {
-        console.error('Apple sign-in completion failed:', err);
-        setError('Failed to complete Apple sign-in');
-      } finally {
-        setIsSubmitting(false);
-      }
-    };
-    
-    const handleFailure = (event: Event) => {
-      const customEvent = event as CustomEvent<{ error: string }>;
-      console.error('Apple sign-in failed:', customEvent.detail?.error);
-      setError('Apple sign-in was cancelled or failed');
-    };
-    
-    document.addEventListener('AppleIDSignInOnSuccess', handleSuccess as EventListener);
-    document.addEventListener('AppleIDSignInOnFailure', handleFailure as EventListener);
-    
-    return () => {
-      document.removeEventListener('AppleIDSignInOnSuccess', handleSuccess as EventListener);
-      document.removeEventListener('AppleIDSignInOnFailure', handleFailure as EventListener);
-    };
-  }, [navigate, from]);
 
   return (
     <>

@@ -68,6 +68,7 @@ npm run dev:stop  # Stop the tmuxinator session
 npm run build     # Build both API and frontend
 npm run test      # Run all tests (currently just API)
 npm run check     # Run TypeScript and lint checks on frontend
+npm run format    # Auto-format code in both API and frontend
 npm run clean     # Clean all build artifacts and dependencies
 ```
 

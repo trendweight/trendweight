@@ -15,12 +15,7 @@ export function Header() {
   // Close menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        menuRef.current && 
-        !menuRef.current.contains(event.target as Node) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target as Node)
-      ) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node) && buttonRef.current && !buttonRef.current.contains(event.target as Node)) {
         setMobileMenuOpen(false);
       }
     }
@@ -67,7 +62,12 @@ export function Header() {
               </button>
             )}
           </div>
-          <button ref={buttonRef} className="flex md:hidden items-center p-2 text-white" aria-label="Open menu" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button
+            ref={buttonRef}
+            className="flex md:hidden items-center p-2 text-white"
+            aria-label="Open menu"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
             {mobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
           </button>
         </nav>
