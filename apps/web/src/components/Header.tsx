@@ -10,22 +10,30 @@ export function Header() {
   const visibility = isInitializing ? "invisible" : "visible";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   // Close menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      if (
+        menuRef.current && 
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
         setMobileMenuOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    if (mobileMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [mobileMenuOpen]);
 
   return (
     <header className="bg-brand-500 text-white">
       <Container>
-        <nav className="flex items-stretch justify-between" ref={menuRef}>
+        <nav className="flex items-stretch justify-between">
           <div className="flex items-center gap-2 py-3">
             <Link to="/" className="font-logo text-3xl font-bold leading-tight">
               TrendWeight
@@ -59,12 +67,12 @@ export function Header() {
               </button>
             )}
           </div>
-          <button className="flex md:hidden items-center p-2 text-white" aria-label="Open menu" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button ref={buttonRef} className="flex md:hidden items-center p-2 text-white" aria-label="Open menu" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
           </button>
         </nav>
         {/* Mobile menu */}
-        <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"} bg-brand-400 -mx-4 px-4 py-4`}>
+        <div ref={menuRef} className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"} bg-brand-400 -mx-4 px-4 py-4`}>
           <div className="flex flex-col space-y-3">
             <MobileNavLink to="/" onClick={() => setMobileMenuOpen(false)} visibility={visibility}>
               Home
