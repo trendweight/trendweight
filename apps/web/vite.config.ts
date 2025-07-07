@@ -7,6 +7,8 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 export default defineConfig({
   plugins: [TanStackRouterVite(), react(), tailwindcss()],
   server: {
+    host: true,
+    allowedHosts: ['studio-1', '.local', 'localhost'],
     proxy: {
       // Proxy all /api requests to the C# backend
       "/api": {
