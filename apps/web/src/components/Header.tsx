@@ -97,9 +97,10 @@ export function Header() {
             ) : (
               <button
                 className={`text-left px-3 py-2 text-white hover:bg-brand-300 rounded ${visibility}`}
-                onClick={async () => {
-                  setMobileMenuOpen(false);
+                onClick={async (e) => {
+                  e.preventDefault();
                   await signOut();
+                  setMobileMenuOpen(false);
                 }}
               >
                 Log Out
