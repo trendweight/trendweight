@@ -1,10 +1,10 @@
 import { ChronoUnit, LocalDate } from "@js-joda/core";
 import type { DataPoint, Delta, Measurement, Mode } from "../../core/interfaces";
 
-export const computeDeltas = (_mode: Mode, dataPoints?: DataPoint[]): Delta[] => {
+export const computeDeltas = (_mode: Mode, dataPoints: DataPoint[]): Delta[] => {
   const deltas: Delta[] = [];
 
-  if (!dataPoints || dataPoints.length === 0) {
+  if (dataPoints.length === 0) {
     return deltas;
   }
 
@@ -75,8 +75,8 @@ export const computeDeltas = (_mode: Mode, dataPoints?: DataPoint[]): Delta[] =>
   return deltas;
 };
 
-export const computeWeightSlope = (measurements?: Measurement[]): number => {
-  if (!measurements || measurements.length === 0) {
+export const computeWeightSlope = (measurements: Measurement[]): number => {
+  if (measurements.length === 0) {
     return 0;
   }
 
@@ -92,8 +92,8 @@ export const computeWeightSlope = (measurements?: Measurement[]): number => {
   return calculateSlope(values);
 };
 
-export const computeActiveSlope = (mode: Mode, dataPoints?: DataPoint[]): number => {
-  if (!dataPoints || dataPoints.length === 0) {
+export const computeActiveSlope = (mode: Mode, dataPoints: DataPoint[]): number => {
+  if (dataPoints.length === 0) {
     return 0;
   }
 

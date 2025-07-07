@@ -2,10 +2,7 @@ import { ChronoUnit, Instant, ZoneId } from "@js-joda/core";
 import type { Measurement, ProfileData, SourceMeasurement, SourceData } from "../../core/interfaces";
 import "../../core/time";
 
-export const computeMeasurements = (data?: SourceData[], profile?: ProfileData) => {
-  if (!data || !profile) {
-    return undefined;
-  }
+export const computeMeasurements = (data: SourceData[], profile: ProfileData): Measurement[] => {
 
   const dayStartOffset = profile.dayStartOffset || 0;
 

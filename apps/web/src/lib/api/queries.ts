@@ -1,58 +1,51 @@
-import { useQuery, useSuspenseQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery, useSuspenseQueries } from "@tanstack/react-query";
 import { apiRequest } from "./client";
-import type { SettingsResponse, ChartData, TestData, ApiSourceData } from "./types";
-import type { ProfileData, SettingsData } from "../core/interfaces";
+import type { SettingsResponse, ApiSourceData } from "./types";
+import type { ProfileData } from "../core/interfaces";
 
 // Query keys
 export const queryKeys = {
   profile: ["profile"] as const,
   settings: ["settings"] as const,
-  chart: (days: number) => ["chart", days] as const,
-  test: ["test"] as const,
   data: ["data"] as const,
+};
+
+// Query options for reuse
+const queryOptions = {
+  profile: {
+    queryKey: queryKeys.profile,
+    queryFn: () => apiRequest<ProfileData>("/profile"),
+  },
+  settings: {
+    queryKey: queryKeys.settings,
+    queryFn: () => apiRequest<SettingsResponse>("/settings"),
+    select: (data: SettingsResponse) => data.user, // Extract the user settings from the nested response
+  },
+  data: {
+    queryKey: queryKeys.data,
+    queryFn: () => apiRequest<ApiSourceData[]>("/data"),
+    staleTime: 60000, // 1 minute (matching legacy React Query config)
+  },
 };
 
 // Profile query (with suspense)
 export function useProfile() {
-  return useSuspenseQuery({
-    queryKey: queryKeys.profile,
-    queryFn: () => apiRequest<ProfileData>("/profile"),
-  });
+  return useSuspenseQuery(queryOptions.profile);
 }
 
 // Settings query
-export function useSettings(options?: Omit<UseQueryOptions<SettingsResponse, Error, SettingsData, typeof queryKeys.settings>, "queryKey" | "queryFn">) {
-  return useQuery({
-    queryKey: queryKeys.settings,
-    queryFn: () => apiRequest<SettingsResponse>("/settings"),
-    select: (data) => data.user, // Extract the user settings from the nested response
-    ...options,
-  });
+export function useSettings() {
+  return useQuery(queryOptions.settings);
 }
 
-// Chart data query
-export function useChartData(days: number = 30) {
-  return useQuery({
-    queryKey: queryKeys.chart(days),
-    queryFn: () => apiRequest<ChartData>(`/data/chart?days=${days}`),
+// Combined profile and measurement data query with suspense (loads in parallel)
+export function useDashboardQueries() {
+  const results = useSuspenseQueries({
+    queries: [queryOptions.profile, queryOptions.data],
   });
-}
 
-// Test endpoint query (for verifying authentication)
-export function useTestData(options?: Omit<UseQueryOptions<TestData, Error, TestData, typeof queryKeys.test>, "queryKey" | "queryFn">) {
-  return useQuery({
-    queryKey: queryKeys.test,
-    queryFn: () => apiRequest<TestData>("/Test"),
-    ...options,
-  });
-}
-
-// Measurement data query (matches legacy behavior - refresh handled server-side)
-export function useMeasurementData(options?: Omit<UseQueryOptions<ApiSourceData[], Error, ApiSourceData[], typeof queryKeys.data>, "queryKey" | "queryFn">) {
-  return useQuery({
-    queryKey: queryKeys.data,
-    queryFn: () => apiRequest<ApiSourceData[]>("/data"),
-    staleTime: 60000, // 1 minute (matching legacy React Query config)
-    ...options,
-  });
+  return {
+    profile: results[0].data,
+    measurementData: results[1].data,
+  };
 }

@@ -4,17 +4,12 @@ import { useComputeDashboardData } from "../../lib/dashboard/hooks";
 import Buttons from "./Buttons";
 import Chart from "./chart/Chart";
 import Currently from "./Currently";
-import DashboardPlaceholder from "./DashboardPlaceholder";
 import RecentReadings from "./RecentReadings";
 import Stats from "./Stats";
 import Deltas from "./Deltas";
 
 const Dashboard: FC = () => {
   const dashboardData = useComputeDashboardData();
-
-  if (!dashboardData) {
-    return <DashboardPlaceholder />;
-  }
 
   if (dashboardData.measurements.length === 0) {
     return <div>No data yet.</div>;

@@ -1,6 +1,6 @@
 import { useContext, useMemo, useState } from "react";
 import { dashboardContext, type DashboardData } from "./dashboardContext";
-import { useProfile, useMeasurementData } from "../api/queries";
+import { useDashboardQueries } from "../api/queries";
 import type { Mode, TimeRange } from "../core/interfaces";
 import { usePersistedState } from "../hooks/usePersistedState";
 import { computeDataPoints } from "./computations/data-points";
@@ -15,20 +15,17 @@ export const useDashboardData = (): DashboardData => {
   return data;
 };
 
-export const useComputeDashboardData = () => {
+export const useComputeDashboardData = (): DashboardData => {
   const [mode, setMode] = useState<Mode>("weight");
   const [timeRange, setTimeRange] = usePersistedState<TimeRange>("timeRange", "4w");
 
-  // Get profile data from dedicated profile endpoint
-  const { data: profile } = useProfile();
-
-  // Get measurement data
-  const { data: apiSourceData } = useMeasurementData();
+  // Get profile and measurement data in parallel
+  const { profile, measurementData: apiSourceData } = useDashboardQueries();
 
   // Transform API data to match core interfaces
   const sourceData = useMemo(
     () =>
-      apiSourceData?.map((data) => ({
+      apiSourceData.map((data) => ({
         source: data.source as "withings" | "fitbit",
         lastUpdate: data.lastUpdate,
         measurements: data.measurements,
@@ -36,7 +33,7 @@ export const useComputeDashboardData = () => {
     [apiSourceData],
   );
 
-  // Compute derived data
+  // Compute derived data - profile and apiSourceData are guaranteed by suspense
   const measurements = useMemo(() => computeMeasurements(sourceData, profile), [profile, sourceData]);
 
   const dataPoints = useMemo(() => computeDataPoints(mode, measurements), [measurements, mode]);
@@ -46,10 +43,6 @@ export const useComputeDashboardData = () => {
   const activeSlope = useMemo(() => computeActiveSlope(mode, dataPoints), [mode, dataPoints]);
 
   const deltas = useMemo(() => computeDeltas(mode, dataPoints), [mode, dataPoints]);
-
-  if (!measurements || !dataPoints || !profile) {
-    return undefined;
-  }
 
   const data: DashboardData = {
     dataPoints,
