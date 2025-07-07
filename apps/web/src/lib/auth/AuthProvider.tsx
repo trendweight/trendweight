@@ -78,12 +78,8 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
 
     try {
-      // Store current location for redirect after auth
-      // The state is already set during Apple ID initialization
-      const currentPath = window.location.pathname + window.location.search;
-      sessionStorage.setItem("apple_auth_redirect", currentPath);
-
       // Trigger Apple sign in - this will redirect to Apple
+      // The calling component is responsible for setting apple_auth_redirect if needed
       await window.AppleID.auth.signIn();
 
       // Note: Code execution won't reach here as the page will redirect
