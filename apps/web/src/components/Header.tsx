@@ -96,8 +96,13 @@ export function Header() {
               </MobileNavLink>
             ) : (
               <button
-                className={`text-left px-3 py-2 text-white hover:bg-brand-300 rounded ${visibility}`}
+                className={`block w-full text-left px-3 py-2 text-white hover:bg-brand-300 rounded ${visibility}`}
                 onClick={async (e) => {
+                  e.preventDefault();
+                  await signOut();
+                  setMobileMenuOpen(false);
+                }}
+                onTouchEnd={async (e) => {
                   e.preventDefault();
                   await signOut();
                   setMobileMenuOpen(false);
