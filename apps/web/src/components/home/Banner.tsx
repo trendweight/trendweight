@@ -1,7 +1,9 @@
+import { Container } from "../Container";
+
 export function Banner() {
   return (
     <div className="bg-brand-500 text-white">
-      <div className="max-w-6xl mx-auto px-4 py-16">
+      <Container className="py-16">
         <div className="flex items-center gap-2 mb-1">
           <h1 className="font-logo text-5xl md:text-6xl font-bold leading-none">TrendWeight</h1>
           <svg className="h-8 md:h-12 w-auto" viewBox="0 0 458 190" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,7 +18,7 @@ export function Banner() {
         <p className="text-xl">
           Automated Weight Tracking<span className="hidden md:inline">, Hacker's Diet Style</span>
         </p>
-      </div>
+      </Container>
     </div>
   );
 }
