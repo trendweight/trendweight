@@ -1,11 +1,18 @@
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.HostFiltering;
 using Microsoft.AspNetCore.HttpOverrides;
 using TrendWeight.Infrastructure.Extensions;
 using TrendWeight.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Disable ASP.NET Core's built-in host filtering since we have custom validation
+builder.Services.Configure<HostFilteringOptions>(options =>
+{
+    options.AllowedHosts = new List<string> { "*" };
+});
 
 // Add services to the container
 builder.Services.AddControllers()
@@ -55,18 +62,14 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
 
-    if (builder.Environment.IsProduction())
-    {
-        // Production: Only trust the immediate proxy (most secure default)
-        options.ForwardLimit = 1;
-        options.RequireHeaderSymmetry = false;
-    }
-    else
-    {
-        // Development: Trust any source for ease of testing
-        options.KnownNetworks.Clear();
-        options.KnownProxies.Clear();
-    }
+    // Clear default networks/proxies to trust headers from load balancers
+    // Security Note: Host header validation is performed later in the pipeline
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+
+    // Limit proxy chain depth to prevent spoofing
+    options.ForwardLimit = 2; // Allows for Cloudflare -> DigitalOcean chain
+    options.RequireHeaderSymmetry = false;
 });
 
 var app = builder.Build();
@@ -79,6 +82,35 @@ app.UseHttpLogging();
 
 // Use forwarded headers from proxies
 app.UseForwardedHeaders();
+
+// Validate host header for security (prevent host header injection)
+if (app.Environment.IsProduction())
+{
+    app.Use(async (context, next) =>
+    {
+        var allowedHostsConfig = app.Configuration["AllowedHosts"];
+
+        if (!string.IsNullOrEmpty(allowedHostsConfig) && allowedHostsConfig != "*")
+        {
+            var allowedHosts = allowedHostsConfig.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var requestHost = context.Request.Host.Host;
+
+            // Check both with and without port
+            var hostMatches = allowedHosts.Any(h =>
+                h.Equals(requestHost, StringComparison.OrdinalIgnoreCase) ||
+                h.Equals(context.Request.Host.Value, StringComparison.OrdinalIgnoreCase));
+
+            if (!hostMatches)
+            {
+                app.Logger.LogWarning("Rejected request with invalid host header: {Host}", context.Request.Host.Value);
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync("Bad Request: Invalid Host header");
+                return;
+            }
+        }
+        await next();
+    });
+}
 
 if (app.Environment.IsDevelopment())
 {

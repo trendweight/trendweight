@@ -21,4 +21,4 @@ windows:
             - cd apps/api/TrendWeight
             - tmux pipe-pane -t 1 "perl -pe '$|=1; s/\\e\\[[0-9;?]*[a-zA-Z]//g; s/\\\\\\].*?\\\\//g; s/\\e\\].*?\\007//g; s/\\r//g; s/\\e=//g' > logs/backend.log 2>&1"
             - clear
-            - exec bash -c "trap 'tmux kill-session -t trendweight' EXIT; dotnet watch"
+            - exec bash -c "trap 'tmux kill-session -t trendweight' EXIT; dotnet watch --no-hot-reload"
