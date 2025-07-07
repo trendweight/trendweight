@@ -31,8 +31,8 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "husky": "^9.1.7",
-    "lint-staged": "^16.1.2"
+    "husky": "9.1.7",
+    "lint-staged": "16.1.2"
   },
   "lint-staged": {
     "apps/web/**/*.{js,jsx,ts,tsx,json,css,md}": ["cd apps/web && npx prettier --write"],
