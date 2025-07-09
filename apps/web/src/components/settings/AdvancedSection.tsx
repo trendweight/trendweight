@@ -62,13 +62,15 @@ export function AdvancedSection({ control }: AdvancedSectionProps) {
             name="showCalories"
             control={control}
             render={({ field }) => (
-              <label className="flex items-start space-x-3 cursor-pointer">
-                <Switch checked={field.value ?? false} onCheckedChange={field.onChange} />
-                <div>
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <Switch checked={field.value ?? false} onCheckedChange={field.onChange} />
+                </div>
+                <label htmlFor={field.name} className="cursor-pointer">
                   <div className="text-sm font-medium text-gray-700">Show calorie calculations</div>
                   <p className="text-sm text-gray-600 mt-1">Display estimated calorie surplus/deficit based on your weight changes</p>
-                </div>
-              </label>
+                </label>
+              </div>
             )}
           />
         </div>
