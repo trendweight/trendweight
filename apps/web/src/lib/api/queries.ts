@@ -1,12 +1,13 @@
 import { useQuery, useSuspenseQuery, useSuspenseQueries } from "@tanstack/react-query";
 import { apiRequest } from "./client";
-import type { ProfileResponse, ApiSourceData } from "./types";
+import type { ProfileResponse, ApiSourceData, ProviderLink } from "./types";
 import type { ProfileData, SettingsData } from "../core/interfaces";
 
 // Query keys
 export const queryKeys = {
   profile: ["profile"] as const,
   data: ["data"] as const,
+  providerLinks: ["providerLinks"] as const,
 };
 
 // Query options for reuse
@@ -74,4 +75,12 @@ export function useDashboardQueries() {
     profile: results[0].data,
     measurementData: results[1].data,
   };
+}
+
+// Provider links query
+export function useProviderLinks() {
+  return useQuery({
+    queryKey: queryKeys.providerLinks,
+    queryFn: () => apiRequest<ProviderLink[]>("/providers/links"),
+  });
 }

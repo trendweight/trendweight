@@ -16,15 +16,18 @@ public class DataRefreshController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IProviderIntegrationService _providerIntegrationService;
+    private readonly ISourceDataService _sourceDataService;
     private readonly ILogger<DataRefreshController> _logger;
 
     public DataRefreshController(
         IUserService userService,
         IProviderIntegrationService providerIntegrationService,
+        ISourceDataService sourceDataService,
         ILogger<DataRefreshController> logger)
     {
         _userService = userService;
         _providerIntegrationService = providerIntegrationService;
+        _sourceDataService = sourceDataService;
         _logger = logger;
     }
 
@@ -62,6 +65,24 @@ public class DataRefreshController : ControllerBase
                     message = "No active provider connections found",
                     providers = new Dictionary<string, object>()
                 });
+            }
+
+            // Check for any providers that need resync
+            var providersNeedingResync = new List<string>();
+            foreach (var provider in activeProviders)
+            {
+                if (await _sourceDataService.IsResyncRequestedAsync(user.Uid, provider))
+                {
+                    providersNeedingResync.Add(provider);
+                    _logger.LogInformation("Provider {Provider} has resync requested flag set for user {UserId}", provider, user.Uid);
+                }
+            }
+
+            // If any providers need resync, clear their data first
+            foreach (var provider in providersNeedingResync)
+            {
+                await _sourceDataService.ClearSourceDataAsync(user.Uid, provider);
+                _logger.LogInformation("Cleared data for {Provider} due to resync request", provider);
             }
 
             // Sync all providers

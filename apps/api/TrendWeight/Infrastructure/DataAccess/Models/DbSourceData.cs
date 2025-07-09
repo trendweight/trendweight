@@ -21,6 +21,9 @@ public class DbSourceData : BaseModel
     [Column("last_sync")]
     public string? LastSync { get; set; }
 
+    [Column("resync_requested")]
+    public bool ResyncRequested { get; set; } = false;
+
     [Column("updated_at")]
     public string UpdatedAt { get; set; } = string.Empty;
 }

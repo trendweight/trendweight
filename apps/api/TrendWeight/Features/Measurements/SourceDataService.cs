@@ -103,8 +103,9 @@ public class SourceDataService : ISourceDataService
                             userId, sourceData.Source);
                     }
 
-                    // Always update LastSync timestamp
+                    // Always update LastSync timestamp and clear resync flag
                     dbSourceData.LastSync = sourceData.LastUpdate.ToUniversalTime().ToString("o");
+                    dbSourceData.ResyncRequested = false; // Clear the flag after successful sync
                     dbSourceData.UpdatedAt = DateTime.UtcNow.ToString("o");
 
                     await _supabaseService.UpdateAsync(dbSourceData);
@@ -183,6 +184,113 @@ public class SourceDataService : ISourceDataService
         {
             _logger.LogError(ex, "Error getting last sync time for user {UserId} provider {Provider}", userId, provider);
             return null;
+        }
+    }
+
+    /// <inheritdoc />
+    public async Task ClearSourceDataAsync(Guid userId, string? provider = null)
+    {
+        try
+        {
+            if (provider != null)
+            {
+                // Clear specific provider data
+                var sourceData = await _supabaseService.QueryAsync<DbSourceData>(q =>
+                    q.Where(sd => sd.Uid == userId && sd.Provider == provider));
+
+                var data = sourceData.FirstOrDefault();
+                if (data != null)
+                {
+                    // Clear measurements array
+                    data.Measurements = new List<RawMeasurement>();
+                    data.LastSync = null;
+                    data.ResyncRequested = false; // Clear the flag when clearing data
+                    data.UpdatedAt = DateTime.UtcNow.ToString("o");
+
+                    await _supabaseService.UpdateAsync(data);
+                    _logger.LogInformation("Cleared source data for user {UserId} provider {Provider}", userId, provider);
+                }
+            }
+            else
+            {
+                // Clear all source data for the user
+                var allSourceData = await _supabaseService.QueryAsync<DbSourceData>(q =>
+                    q.Where(sd => sd.Uid == userId));
+
+                foreach (var data in allSourceData)
+                {
+                    data.Measurements = new List<RawMeasurement>();
+                    data.LastSync = null;
+                    data.ResyncRequested = false; // Clear the flag when clearing data
+                    data.UpdatedAt = DateTime.UtcNow.ToString("o");
+
+                    await _supabaseService.UpdateAsync(data);
+                }
+
+                _logger.LogInformation("Cleared all source data for user {UserId}", userId);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error clearing source data for user {UserId} provider {Provider}", userId, provider);
+            throw;
+        }
+    }
+
+    /// <inheritdoc />
+    public async Task SetResyncRequestedAsync(Guid userId, string provider)
+    {
+        try
+        {
+            var sourceData = await _supabaseService.QueryAsync<DbSourceData>(q =>
+                q.Where(sd => sd.Uid == userId && sd.Provider == provider));
+
+            var data = sourceData.FirstOrDefault();
+            if (data == null)
+            {
+                // Create a new entry with resync requested
+                data = new DbSourceData
+                {
+                    Uid = userId,
+                    Provider = provider,
+                    Measurements = new List<RawMeasurement>(),
+                    ResyncRequested = true,
+                    UpdatedAt = DateTime.UtcNow.ToString("o")
+                };
+                await _supabaseService.InsertAsync(data);
+            }
+            else
+            {
+                // Update existing entry
+                data.ResyncRequested = true;
+                data.UpdatedAt = DateTime.UtcNow.ToString("o");
+                await _supabaseService.UpdateAsync(data);
+            }
+
+            _logger.LogInformation("Set resync requested for user {UserId} provider {Provider}", userId, provider);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error setting resync requested for user {UserId} provider {Provider}", userId, provider);
+            throw;
+        }
+    }
+
+    /// <inheritdoc />
+    public async Task<bool> IsResyncRequestedAsync(Guid userId, string provider)
+    {
+        try
+        {
+            var sourceData = await _supabaseService.QueryAsync<DbSourceData>(q =>
+                q.Where(sd => sd.Uid == userId && sd.Provider == provider));
+
+            var data = sourceData.FirstOrDefault();
+            return data?.ResyncRequested ?? false;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error checking resync requested for user {UserId} provider {Provider}", userId, provider);
+            return false;
         }
     }
 

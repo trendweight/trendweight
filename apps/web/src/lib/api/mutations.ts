@@ -31,3 +31,28 @@ export function useUpdateProfile() {
     },
   });
 }
+
+export function useDisconnectProvider() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (provider: string) => 
+      apiRequest(`/providers/${provider}`, { method: "DELETE" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.providerLinks });
+    },
+  });
+}
+
+export function useResyncProvider() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (provider: string) => 
+      apiRequest(`/providers/${provider}/resync`, { method: "POST" }),
+    onSuccess: () => {
+      // Invalidate data query to refresh measurements after resync
+      queryClient.invalidateQueries({ queryKey: queryKeys.data });
+    },
+  });
+}

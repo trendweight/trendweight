@@ -38,3 +38,11 @@ export interface ApiSourceData {
     fatRatio?: number;
   }>;
 }
+
+// Provider link from /api/providers/links endpoint
+export interface ProviderLink {
+  provider: string;
+  connectedAt: string;
+  updateReason?: string;
+  hasToken: boolean;
+}

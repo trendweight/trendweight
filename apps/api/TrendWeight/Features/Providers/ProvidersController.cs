@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using TrendWeight.Features.Measurements;
 using TrendWeight.Features.ProviderLinks.Services;
+using TrendWeight.Features.Profile.Services;
 using TrendWeight.Features.Providers.Models;
 
 namespace TrendWeight.Features.Providers;
@@ -12,13 +14,22 @@ namespace TrendWeight.Features.Providers;
 public class ProvidersController : ControllerBase
 {
     private readonly IProviderLinkService _providerLinkService;
+    private readonly ISourceDataService _sourceDataService;
+    private readonly IProviderIntegrationService _providerIntegrationService;
+    private readonly IUserService _userService;
     private readonly ILogger<ProvidersController> _logger;
 
     public ProvidersController(
         IProviderLinkService providerLinkService,
+        ISourceDataService sourceDataService,
+        IProviderIntegrationService providerIntegrationService,
+        IUserService userService,
         ILogger<ProvidersController> logger)
     {
         _providerLinkService = providerLinkService;
+        _sourceDataService = sourceDataService;
+        _providerIntegrationService = providerIntegrationService;
+        _userService = userService;
         _logger = logger;
     }
 
@@ -137,10 +148,41 @@ public class ProvidersController : ControllerBase
                 return NotFound(new { error = $"No {provider} connection found" });
             }
 
-            // TODO: Trigger actual resync logic here
-            // For now, just return success
-            _logger.LogInformation("Triggered resync for {Provider} for user {UserId}", provider, userId);
-            return Ok(new { message = $"{provider} resync initiated" });
+            // Get user to check metric preference
+            var user = await _userService.GetByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new { error = "User not found" });
+            }
+
+            // Set the resync requested flag immediately
+            await _sourceDataService.SetResyncRequestedAsync(userGuid, provider);
+            _logger.LogInformation("Set resync requested flag for {Provider} for user {UserId}", provider, userId);
+
+            // Clear existing source data for this provider
+            await _sourceDataService.ClearSourceDataAsync(userGuid, provider);
+            _logger.LogInformation("Cleared source data for {Provider} for user {UserId}", provider, userId);
+
+            // Get provider service and trigger sync
+            var providerService = _providerIntegrationService.GetProviderService(provider);
+            if (providerService == null)
+            {
+                return BadRequest(new { error = $"Provider service not found for: {provider}" });
+            }
+
+            // Sync with metric=true (always store in kg)
+            var success = await providerService.SyncMeasurementsAsync(userGuid, true);
+
+            if (success)
+            {
+                _logger.LogInformation("Successfully resynced {Provider} for user {UserId}", provider, userId);
+                return Ok(new { message = $"{provider} resync completed successfully" });
+            }
+            else
+            {
+                _logger.LogError("Failed to resync {Provider} for user {UserId}", provider, userId);
+                return StatusCode(500, new { error = $"Failed to resync {provider} data" });
+            }
         }
         catch (Exception ex)
         {
