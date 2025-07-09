@@ -33,9 +33,7 @@ function SettingsPage() {
     reset,
     control,
     formState: { errors, isDirty, isSubmitting },
-  } = useForm<SettingsData>({
-    defaultValues: settingsData,
-  });
+  } = useForm<SettingsData>();
 
   // Update form when settings data loads
   useEffect(() => {

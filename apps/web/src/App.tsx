@@ -8,6 +8,7 @@ import { queryClient } from "./lib/queryClient";
 import { BackgroundQueryProgress } from "./lib/progress/BackgroundQueryProgress";
 import { ProgressManager } from "./lib/progress/ProgressManager";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { ToastContextProvider } from "./components/ui/ToastProvider";
 import "@bprogress/core/css";
 import "./lib/progress/progress.css";
 
@@ -15,14 +16,16 @@ function App() {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <ProgressProvider color="#eef5ff" height="3px" delay={250} spinnerPosition="top-right">
-          <ProgressManager />
-          <AuthProvider>
-            <BackgroundQueryProgress />
-            <RouterProvider router={router} />
-          </AuthProvider>
-        </ProgressProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ToastContextProvider>
+          <ProgressProvider color="#eef5ff" height="3px" delay={250} spinnerPosition="top-right">
+            <ProgressManager />
+            <AuthProvider>
+              <BackgroundQueryProgress />
+              <RouterProvider router={router} />
+            </AuthProvider>
+          </ProgressProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </ToastContextProvider>
       </QueryClientProvider>
     </ErrorBoundary>
   );
