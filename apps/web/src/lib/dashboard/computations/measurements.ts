@@ -4,6 +4,8 @@ import "../../core/time";
 
 export const computeMeasurements = (data: SourceData[], profile: ProfileData): Measurement[] => {
   const dayStartOffset = profile.dayStartOffset || 0;
+  const useMetric = profile.useMetric || false;
+  const conversionFactor = useMetric ? 1 : 2.20462262;
 
   // combines measurements from all sources into a single array
   const rawData: SourceMeasurement[] = data
@@ -17,7 +19,7 @@ export const computeMeasurements = (data: SourceData[], profile: ProfileData): M
           date: timestamp.minusHours(dayStartOffset).toLocalDate(),
           timestamp,
           source: sourceData.source,
-          weight: sourceMeasurement.weight,
+          weight: sourceMeasurement.weight * conversionFactor, // Convert kg to lbs if needed
           fatRatio: sourceMeasurement.fatRatio,
           weightIsInterpolated: false,
         };

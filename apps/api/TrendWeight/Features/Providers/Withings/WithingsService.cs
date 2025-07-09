@@ -167,7 +167,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
 
         while (hasMore)
         {
-            var (measurements, more, newOffset, timezone) = await GetMeasurementPageAsync(token, metric, startTimestamp, offset);
+            var (measurements, more, newOffset, timezone) = await GetMeasurementPageAsync(token, startTimestamp, offset);
             allMeasurements.AddRange(measurements);
             hasMore = more;
             offset = newOffset;
@@ -180,7 +180,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
     /// Gets a single page of measurements from Withings API
     /// </summary>
     private async Task<(List<RawMeasurement> measurements, bool more, object? offset, string timezone)>
-        GetMeasurementPageAsync(AccessToken token, bool metric, long start, object? offset = null)
+        GetMeasurementPageAsync(AccessToken token, long start, object? offset = null)
     {
         _logger.LogDebug("Fetching Withings measurements page with offset: {Offset}", offset);
 
@@ -251,7 +251,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
                 var measurement = new RawMeasurement
                 {
                     Timestamp = timestamp,
-                    Weight = metric ? weight : weight * 2.20462262185m, // Convert kg to lbs if not metric
+                    Weight = weight, // Always store in kg
                     FatRatio = fatRatio
                 };
 
@@ -284,6 +284,6 @@ public class WithingsService : ProviderServiceBase, IWithingsService
     public async Task<(List<RawMeasurement> measurements, bool more, object? offset, string timezone)>
         GetMeasurementsAsync(AccessToken token, bool metric, long start, object? offset = null)
     {
-        return await GetMeasurementPageAsync(token, metric, start, offset);
+        return await GetMeasurementPageAsync(token, start, offset);
     }
 }
