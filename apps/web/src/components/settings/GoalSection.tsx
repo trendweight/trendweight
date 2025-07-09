@@ -1,0 +1,97 @@
+import type { UseFormRegister, FieldErrors, UseFormWatch, Control } from "react-hook-form";
+import { Controller } from "react-hook-form";
+import type { SettingsData } from "../../lib/core/interfaces";
+import { Select } from "../ui/Select";
+
+interface GoalSectionProps {
+  register: UseFormRegister<SettingsData>;
+  errors: FieldErrors<SettingsData>;
+  watch: UseFormWatch<SettingsData>;
+  control: Control<SettingsData>;
+}
+
+export function GoalSection({ register, errors, watch, control }: GoalSectionProps) {
+  const useMetric = watch("useMetric");
+  const weightUnit = useMetric ? "kg" : "lbs";
+
+  // Convert weight plans based on metric setting
+  const weightPlans = useMetric
+    ? [
+        { value: 0, label: "Maintain current weight" },
+        { value: -0.25, label: "Lose 0.25 kg per week" },
+        { value: -0.5, label: "Lose 0.5 kg per week" },
+        { value: -0.75, label: "Lose 0.75 kg per week" },
+        { value: -1, label: "Lose 1 kg per week" },
+      ]
+    : [
+        { value: 0, label: "Maintain current weight" },
+        { value: -0.5, label: "Lose 1/2 lb per week" },
+        { value: -1, label: "Lose 1 lb per week" },
+        { value: -1.5, label: "Lose 1 1/2 lbs per week" },
+        { value: -2, label: "Lose 2 lbs per week" },
+      ];
+
+  return (
+    <div className="p-6 border-b border-gray-200">
+      <h2 className="text-xl font-semibold mb-4">Goal Settings</h2>
+      <p className="text-sm text-gray-600 mb-6">
+        If you provide some details on your weight loss goals, your dashboard will include statistics on how closely you are following your plan.
+      </p>
+
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="goalStart" className="block text-sm font-medium text-gray-700 mb-1">
+            Start Date
+          </label>
+          <input
+            id="goalStart"
+            type="date"
+            {...register("goalStart")}
+            max={new Date().toISOString().split("T")[0]}
+            className="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          <p className="mt-1 text-sm text-gray-500">Tell us when you started working on your current plan</p>
+        </div>
+
+        <div>
+          <label htmlFor="goalWeight" className="block text-sm font-medium text-gray-700 mb-1">
+            Goal Weight ({weightUnit})
+          </label>
+          <input
+            id="goalWeight"
+            type="number"
+            step="0.1"
+            {...register("goalWeight", {
+              valueAsNumber: true,
+              min: { value: 0, message: "Goal weight must be positive" },
+            })}
+            className="w-full md:w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          {errors.goalWeight && <p className="mt-1 text-sm text-red-600">{errors.goalWeight.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="plannedPoundsPerWeek" className="block text-sm font-medium text-gray-700 mb-1">
+            My Plan
+          </label>
+          <div className="w-full md:w-64">
+            <Controller
+              name="plannedPoundsPerWeek"
+              control={control}
+              render={({ field }) => (
+                <Select<{ value: number; label: string }>
+                  value={weightPlans.find((plan) => plan.value === field.value)}
+                  onChange={(option) => {
+                    field.onChange(option?.value ?? 0);
+                  }}
+                  options={weightPlans}
+                  placeholder="Select a plan..."
+                />
+              )}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

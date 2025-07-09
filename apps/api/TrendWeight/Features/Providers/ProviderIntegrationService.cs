@@ -1,5 +1,5 @@
 using TrendWeight.Features.Measurements.Models;
-using TrendWeight.Features.Users.Services;
+using TrendWeight.Features.Profile.Services;
 
 namespace TrendWeight.Features.Providers;
 

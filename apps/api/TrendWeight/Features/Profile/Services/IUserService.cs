@@ -1,6 +1,6 @@
 using TrendWeight.Infrastructure.DataAccess.Models;
 
-namespace TrendWeight.Features.Users.Services;
+namespace TrendWeight.Features.Profile.Services;
 
 public interface IUserService
 {

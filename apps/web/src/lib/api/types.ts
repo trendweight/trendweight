@@ -1,7 +1,7 @@
 import type { SettingsData } from "../core/interfaces";
 
-// Response structure from the settings API endpoint
-export interface SettingsResponse {
+// Response structure from the profile API endpoint
+export interface ProfileResponse {
   user: SettingsData;
   timestamp: string;
 }

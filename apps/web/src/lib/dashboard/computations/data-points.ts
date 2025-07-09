@@ -1,7 +1,6 @@
 import type { DataPoint, Measurement, Mode } from "../../core/interfaces";
 
 export const computeDataPoints = (mode: Mode, measurements: Measurement[]): DataPoint[] => {
-
   const propertyMap = {
     weight: "Weight",
     fatpercent: "FatPercent",

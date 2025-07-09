@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Web;
 using TrendWeight.Features.Measurements;
 using TrendWeight.Features.Measurements.Models;
-using TrendWeight.Features.Users.Services;
+using TrendWeight.Features.Profile.Services;
 using TrendWeight.Features.ProviderLinks.Services;
 using TrendWeight.Features.Providers.Models;
 using TrendWeight.Features.Providers.Withings.Models;

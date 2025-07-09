@@ -4,7 +4,7 @@ using TrendWeight.Infrastructure.Middleware;
 using TrendWeight.Features.Providers;
 using TrendWeight.Features.Providers.Withings;
 using TrendWeight.Infrastructure.DataAccess;
-using TrendWeight.Features.Users.Services;
+using TrendWeight.Features.Profile.Services;
 using TrendWeight.Features.ProviderLinks.Services;
 using TrendWeight.Features.Measurements;
 

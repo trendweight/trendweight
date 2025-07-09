@@ -25,7 +25,7 @@ export async function apiRequest<T>(path: string, options?: RequestInit): Promis
     ...options?.headers,
   };
 
-  // Add Authorization header with Firebase token if available
+  // Add Authorization header with Supabase JWT token if available
   if (token) {
     // Use proper type assertion for the headers object to avoid TypeScript errors
     (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;

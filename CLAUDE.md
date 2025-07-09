@@ -234,7 +234,11 @@ The app uses @bprogress/react for progress indication:
 ## UI Components and Styling
 
 ### Component Library
-- Radix UI for accessible, unstyled components
+- Radix UI for accessible, unstyled components (switches, toggles, dialogs, etc.)
+- **react-select for all dropdown/select components** - Our standard dropdown control
+  - Use the custom `Select` component at `/components/ui/Select.tsx`
+  - Styled with Tailwind classes via `classNames` prop
+  - Always use this instead of native HTML select elements
 - Custom styled with Tailwind CSS v4
 - Consistent use of CSS variables for theming
 

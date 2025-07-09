@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using TrendWeight.Features.Users.Services;
+using TrendWeight.Features.Profile.Services;
 using TrendWeight.Features.Providers;
 using TrendWeight.Features.Measurements.Models;
 

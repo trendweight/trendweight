@@ -3,7 +3,6 @@ import type { Measurement, ProfileData, SourceMeasurement, SourceData } from "..
 import "../../core/time";
 
 export const computeMeasurements = (data: SourceData[], profile: ProfileData): Measurement[] => {
-
   const dayStartOffset = profile.dayStartOffset || 0;
 
   // combines measurements from all sources into a single array
