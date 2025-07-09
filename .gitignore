@@ -128,7 +128,8 @@ firebase-debug.log
 pglite-debug.log
 
 # Ignore context_portal (appears to be unrelated tool output)
-context_portal/trendweight-classic
+context_portal/
+
 
 # Claude memory bank (personal workspace data)
 .claude/memory-bank/
