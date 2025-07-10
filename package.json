@@ -1,33 +1,30 @@
 {
   "name": "trendweight-monorepo",
   "private": true,
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
   "scripts": {
     "dev": "tmuxinator start",
     "dev:stop": "tmuxinator stop trendweight",
     "dev:shell": "./dev.sh",
-    "dev:api": "cd apps/api && npm run dev",
-    "dev:web": "cd apps/web && npm run dev",
-    "build": "npm run build:api && npm run build:web",
-    "build:api": "cd apps/api && npm run build",
-    "build:web": "cd apps/web && npm run build",
-    "test": "npm run test:api && npm run test:web",
-    "test:api": "cd apps/api && npm run test",
-    "test:web": "echo 'No frontend tests yet'",
-    "check": "npm run check:api && npm run check:web",
-    "check:api": "cd apps/api && npm run format:check",
-    "check:web": "cd apps/web && npm run check",
-    "lint": "cd apps/web && npm run lint",
-    "format": "npm run format:api && npm run format:web",
-    "format:api": "cd apps/api && npm run format",
-    "format:web": "cd apps/web && npm run format",
-    "format:check": "npm run format:check:api && npm run format:check:web",
-    "format:check:api": "cd apps/api && npm run format:check",
-    "format:check:web": "cd apps/web && npm run format:check",
+    "dev:api": "npm run -w apps/api dev",
+    "dev:web": "npm run -w apps/web dev",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "npm run format --workspaces --if-present",
+    "format:check": "npm run format:check --workspaces --if-present",
+    "check": "npm run check --workspaces --if-present",
     "clean": "npm run clean:deps && npm run clean:build",
     "clean:deps": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
-    "clean:build": "find . -name 'bin' -type d -prune -exec rm -rf '{}' + && find . -name 'obj' -type d -prune -exec rm -rf '{}' + && find . -name 'dist' -type d -prune -exec rm -rf '{}' +",
-    "docker:build": "bash -c 'set -a; source .env; set +a; docker build --build-arg VITE_SUPABASE_URL=$VITE_SUPABASE_URL --build-arg VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY --build-arg BUILD_TIME=\"$(date -u +\"%Y-%m-%dT%H:%M:%SZ\")\" --build-arg BUILD_COMMIT=\"$(git rev-parse HEAD)\" --build-arg BUILD_BRANCH=\"$(git rev-parse --abbrev-ref HEAD)\" --build-arg BUILD_VERSION=\"local\" --build-arg BUILD_REPO=\"$(git remote get-url origin 2>/dev/null | sed -E \"s|^.*github.com[:/](.+)\\.git$|\\1|\" || echo \"\")\" -t trendweight:local .'",
+    "clean:build": "find . \\( -name 'bin' -o -name 'obj' -o -name 'dist' \\) -type d -prune -exec rm -rf '{}' +",
+    "docker:build": "./scripts/docker-build.sh",
     "docker:run": "docker run --rm -p 8080:8080 --env-file .env trendweight:local",
+    "install:all": "npm install --workspaces --include-workspace-root",
+    "outdated": "npm outdated --workspaces --include-workspace-root",
+    "update": "npm update --workspaces --include-workspace-root",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -35,12 +32,8 @@
     "lint-staged": "16.1.2"
   },
   "lint-staged": {
-    "apps/web/**/*.{js,jsx,ts,tsx,json,css,md}": [
-      "cd apps/web && npx prettier --write"
-    ],
-    "apps/api/**/*.cs": [
-      "cd apps/api && dotnet format --include"
-    ]
+    "apps/web/**/*.{js,jsx,ts,tsx,json,css,md}": "prettier --write",
+    "apps/api/**/*.cs": "cd apps/api && dotnet format --include"
   },
   "version": "2.0.0-alpha.1"
 }
