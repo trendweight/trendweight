@@ -3,16 +3,16 @@ FROM node:22-alpine AS frontend-build
 
 WORKDIR /app
 
-# Copy package files for frontend
-COPY apps/web/package*.json ./apps/web/
+# Copy package files for all workspaces
 COPY package*.json ./
+COPY apps/web/package.json ./apps/web/
+COPY apps/api/package.json ./apps/api/
 
-# Install dependencies
-WORKDIR /app/apps/web
+# Install dependencies from root (npm workspaces)
 RUN npm ci
 
 # Copy frontend source
-COPY apps/web/ ./
+COPY apps/web/ ./apps/web/
 
 # Build frontend with production environment variables
 ARG VITE_SUPABASE_URL
@@ -36,6 +36,8 @@ ENV VITE_BUILD_BRANCH=$BUILD_BRANCH
 ENV VITE_BUILD_VERSION=$BUILD_VERSION
 ENV VITE_BUILD_REPO=$BUILD_REPO
 
+# Build from the web workspace directory
+WORKDIR /app/apps/web
 RUN npm run build
 
 # Stage 2: Build backend
