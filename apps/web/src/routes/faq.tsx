@@ -109,11 +109,11 @@ function FAQPage() {
                       site.
                     </p>
                     <p>
-                      Additionally, there is a detailed walkthrough of the math of TrendWeight, specifically in this{" "}
-                      <a href="#" className="text-brand-600 hover:text-brand-700 underline">
-                        blog post
-                      </a>
-                      .
+                      Additionally, we have a{" "}
+                      <Link to="/math" className="text-brand-600 hover:text-brand-700 underline">
+                        detailed explanation of the math behind TrendWeight
+                      </Link>{" "}
+                      that covers everything from the basic concepts to the advanced calculations.
                     </p>
                   </Question>
                   <Question title="Is there some way I can help support TrendWeight?">

@@ -27,7 +27,11 @@ function AboutPage() {
           <p className="pb-4">
             When you really want to track your weight loss, you probably know you should disregard day to day changes in weight and instead focus on the trend
             over time. There are multiple ways to do this, but TrendWeight uses the methodology described by John Walker in his online book,{" "}
-            <i>The Hacker's Diet</i>.
+            <i>The Hacker's Diet</i>. Curious about the math behind how it works?{" "}
+            <Link to="/math" className="text-brand-600 hover:text-brand-700 underline">
+              Learn more about the math
+            </Link>
+            .
           </p>
           <div className="inline-block pb-6 md:pb-4 pr-0 md:pr-8 pt-0 md:pt-2 float-none md:float-left">
             <div className="text-lg pb-2">

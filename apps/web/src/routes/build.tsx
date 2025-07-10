@@ -50,7 +50,7 @@ function BuildDetails() {
                   <td className="px-4 py-2">Git Commit</td>
                   <td className="px-4 py-2 font-mono text-sm">
                     {commitUrl ? (
-                      <a href={commitUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">
+                      <a href={commitUrl} target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:text-brand-700 underline">
                         {buildCommit.substring(0, 7)}
                       </a>
                     ) : (
@@ -66,7 +66,7 @@ function BuildDetails() {
                   <td className="px-4 py-2">Version</td>
                   <td className="px-4 py-2">
                     {versionUrl ? (
-                      <a href={versionUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">
+                      <a href={versionUrl} target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:text-brand-700 underline">
                         {buildVersion}
                       </a>
                     ) : (
@@ -78,7 +78,7 @@ function BuildDetails() {
                   <tr className="border-b">
                     <td className="px-4 py-2">Repository</td>
                     <td className="px-4 py-2">
-                      <a href={githubRepo} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">
+                      <a href={githubRepo} target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:text-brand-700 underline">
                         {buildRepo}
                       </a>
                     </td>
