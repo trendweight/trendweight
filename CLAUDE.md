@@ -65,35 +65,41 @@ If `trendweight-classic/` folder exists locally, it contains the legacy C# MVC a
 ```bash
 npm run dev       # Start both API and frontend in dev mode (uses tmuxinator)
 npm run dev:stop  # Stop the tmuxinator session
-npm run build     # Build both API and frontend
-npm run test      # Run all tests (currently just API)
-npm run check     # Run TypeScript and lint checks on frontend
-npm run format    # Auto-format code in both API and frontend
+npm run build     # Build all workspaces (runs build in both API and frontend)
+npm run test      # Run tests in all workspaces
+npm run check     # Run all checks (formatting, linting, type checking, warnings)
+npm run format    # Auto-format code in all workspaces
 npm run clean     # Clean all build artifacts and dependencies
+npm run install:all # Install dependencies for all workspaces
+npm run outdated  # Check for outdated packages in all workspaces
+npm run update    # Update packages in all workspaces
 ```
+
+The project uses npm workspaces, so commands automatically run in both `apps/api` and `apps/web` workspaces when applicable.
 
 ### Development
 
-#### Frontend (apps/web) - uses npm
+You can run workspace-specific commands using the `-w` flag:
+
 ```bash
-cd apps/web
-npm run dev       # Start development server on http://localhost:5173
-npm run build     # Build for production
-npm run preview   # Preview production build
-npm run lint      # Run ESLint
-npm run check     # Run typecheck and lint
+npm run -w apps/web dev      # Start frontend dev server
+npm run -w apps/api dev      # Start API dev server
+npm run -w apps/web build    # Build frontend only
+npm run -w apps/api test     # Run API tests only
 ```
 
-#### Backend (apps/api)
+Or use the convenience scripts:
 ```bash
-cd apps/api
-dotnet build      # Build entire solution
-dotnet test       # Run all tests (when tests are added)
-
-cd apps/api/TrendWeight
-dotnet run        # Start API on http://localhost:5199
-dotnet watch      # Run with hot reload
+npm run dev:web   # Start frontend dev server on http://localhost:5173
+npm run dev:api   # Start API dev server on http://localhost:5199
 ```
+
+#### Backend (apps/api) Details
+The API project includes:
+- Code formatting check: `dotnet format --verify-no-changes`
+- Build with warnings as errors: `dotnet build --warnaserror`
+- Code analysis with latest recommended rules
+- Code style enforcement during build
 
 ### Development Server Management
 
@@ -443,6 +449,25 @@ The containerized application:
    - Maximum date range per request is 32 days (not 31 or 33)
    - Body-weight endpoint may return extrapolated data, not actual measurements
    - Always use initial sync date of 2009-01-01 for Fitbit
+
+## Recent Architecture Improvements
+
+### NPM Workspaces Setup (2025-07-10)
+The project now uses npm workspaces for better monorepo management:
+- Both `apps/api` and `apps/web` are defined as workspaces
+- Single `npm install` at root installs all dependencies
+- Simplified scripts using `--workspaces` flag for parallel execution
+- API uses package.json for script management alongside .NET tooling
+
+### Enhanced .NET Code Quality
+The API project now includes comprehensive code quality checks:
+- `AnalysisLevel=latest-recommended` for code analysis
+- `EnforceCodeStyleInBuild=true` for style enforcement
+- Build warnings treated as errors in check script
+- Format verification with `dotnet format --verify-no-changes`
+
+### Docker Build Simplification
+Docker build command extracted to `scripts/docker-build.sh` for maintainability.
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.

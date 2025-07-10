@@ -43,8 +43,8 @@ TrendWeight uses a modern web architecture:
 2. Install dependencies:
    ```bash
    npm install
-   cd apps/web && npm install
    ```
+   This automatically installs dependencies for all workspaces (root, API, and frontend)
 
 3. Set up environment variables:
 
@@ -96,9 +96,13 @@ TrendWeight uses a modern web architecture:
 
 From the root directory:
 - `npm run dev` - Start both frontend and backend in development mode
-- `npm run build` - Build both frontend and backend for production
-- `npm run test` - Run backend tests
-- `npm run check` - Run TypeScript and ESLint checks on frontend
+- `npm run dev:api` - Start only the API server
+- `npm run dev:web` - Start only the frontend server
+- `npm run build` - Build all workspaces for production
+- `npm run test` - Run tests in all workspaces
+- `npm run check` - Run all checks (formatting, linting, type checking, build warnings)
+- `npm run format` - Format code in all workspaces
+- `npm run lint` - Run linting in all workspaces
 - `npm run clean` - Clean all build artifacts and dependencies
 - `npm run docker:build` - Build Docker container locally
 - `npm run docker:run` - Run the Docker container locally
