@@ -129,7 +129,7 @@ public class SourceDataService : ISourceDataService
             var sourceDataList = await _supabaseService.QueryAsync<DbSourceData>(q =>
                 q.Where(sd => sd.Uid == userId));
 
-            if (!sourceDataList.Any())
+            if (sourceDataList.Count == 0)
             {
                 return new List<FeatureSourceData>();
             }

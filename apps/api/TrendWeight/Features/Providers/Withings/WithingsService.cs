@@ -68,13 +68,13 @@ public class WithingsService : ProviderServiceBase, IWithingsService
 
         if (!response.IsSuccessStatusCode)
         {
-            _logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}",
+            Logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}",
                 response.StatusCode, response.ReasonPhrase);
             throw new Exception($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        _logger.LogDebug("Withings authorization code exchange completed. Response: {Response}", responseContent);
+        Logger.LogDebug("Withings authorization code exchange completed. Response: {Response}", responseContent);
 
         var options = new JsonSerializerOptions
         {
@@ -88,13 +88,13 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to deserialize Withings response: {Response}", responseContent);
+            Logger.LogError(ex, "Failed to deserialize Withings response: {Response}", responseContent);
             throw;
         }
 
         if (withingsResponse?.Status != 0)
         {
-            _logger.LogError("Withings API error: {Status} {Error}",
+            Logger.LogError("Withings API error: {Status} {Error}",
                 withingsResponse?.Status, withingsResponse?.Error);
             throw new Exception($"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}");
         }
@@ -163,13 +163,13 @@ public class WithingsService : ProviderServiceBase, IWithingsService
 
         if (!response.IsSuccessStatusCode)
         {
-            _logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}",
+            Logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}",
                 response.StatusCode, response.ReasonPhrase);
             throw new Exception($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        _logger.LogDebug("Withings token refresh completed");
+        Logger.LogDebug("Withings token refresh completed");
 
         var options = new JsonSerializerOptions
         {
@@ -180,7 +180,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
 
         if (withingsResponse?.Status != 0)
         {
-            _logger.LogError("Withings API error: {Status} {Error}",
+            Logger.LogError("Withings API error: {Status} {Error}",
                 withingsResponse?.Status, withingsResponse?.Error);
             throw new Exception($"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}");
         }
@@ -232,7 +232,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
     private async Task<(List<RawMeasurement> measurements, bool more, object? offset, string timezone)>
         GetMeasurementPageAsync(string accessToken, long start, object? offset = null)
     {
-        _logger.LogDebug("Fetching Withings measurements page with offset: {Offset}", offset);
+        Logger.LogDebug("Fetching Withings measurements page with offset: {Offset}", offset);
 
         var request = new HttpRequestMessage(HttpMethod.Get, "https://wbsapi.withings.net/measure");
         request.Headers.Add("Authorization", $"Bearer {accessToken}");
@@ -253,26 +253,26 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         uriBuilder.Query = query.ToString();
         request.RequestUri = uriBuilder.Uri;
 
-        _logger.LogDebug("Withings API request: {Uri}", request.RequestUri);
+        Logger.LogDebug("Withings API request: {Uri}", request.RequestUri);
 
         var response = await _httpClient.SendAsync(request);
 
         if (!response.IsSuccessStatusCode)
         {
             var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}. Response content: {Content}",
+            Logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}. Response content: {Content}",
                 response.StatusCode, response.ReasonPhrase, errorContent);
             throw new Exception($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        _logger.LogDebug("Withings API response received for measurements");
+        Logger.LogDebug("Withings API response received for measurements");
 
         var withingsResponse = JsonSerializer.Deserialize<WithingsResponse<WithingsGetMeasuresResponse>>(responseContent);
 
         if (withingsResponse?.Status != 0)
         {
-            _logger.LogError("Withings API error: {Status} {Error}",
+            Logger.LogError("Withings API error: {Status} {Error}",
                 withingsResponse?.Status, withingsResponse?.Error);
             throw new Exception($"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}");
         }

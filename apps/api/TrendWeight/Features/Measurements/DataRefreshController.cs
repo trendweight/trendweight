@@ -58,7 +58,7 @@ public class DataRefreshController : ControllerBase
 
             // Get active providers for user
             var activeProviders = await _providerIntegrationService.GetActiveProvidersAsync(user.Uid);
-            if (!activeProviders.Any())
+            if (activeProviders.Count == 0)
             {
                 return Ok(new
                 {

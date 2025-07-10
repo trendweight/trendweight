@@ -12,10 +12,10 @@ namespace TrendWeight.Features.Providers;
 /// </summary>
 public abstract class ProviderServiceBase : IProviderService
 {
-    protected readonly IProviderLinkService _providerLinkService;
-    protected readonly ISourceDataService _sourceDataService;
-    protected readonly IUserService _userService;
-    protected readonly ILogger _logger;
+    protected IProviderLinkService ProviderLinkService { get; }
+    protected ISourceDataService SourceDataService { get; }
+    protected IUserService UserService { get; }
+    protected ILogger Logger { get; }
 
     protected ProviderServiceBase(
         IProviderLinkService providerLinkService,
@@ -23,10 +23,10 @@ public abstract class ProviderServiceBase : IProviderService
         IUserService userService,
         ILogger logger)
     {
-        _providerLinkService = providerLinkService;
-        _sourceDataService = sourceDataService;
-        _userService = userService;
-        _logger = logger;
+        ProviderLinkService = providerLinkService;
+        SourceDataService = sourceDataService;
+        UserService = userService;
+        Logger = logger;
     }
 
     /// <inheritdoc />
@@ -44,14 +44,14 @@ public abstract class ProviderServiceBase : IProviderService
             var token = await ExchangeCodeForTokenAsync(code, callbackUrl);
 
             // Store the token using ProviderLinkService
-            await _providerLinkService.StoreProviderLinkAsync(userId, ProviderName, token);
+            await ProviderLinkService.StoreProviderLinkAsync(userId, ProviderName, token);
 
-            _logger.LogDebug("Successfully stored {Provider} link for user {UserId}", ProviderName, userId);
+            Logger.LogDebug("Successfully stored {Provider} link for user {UserId}", ProviderName, userId);
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to exchange authorization code for {Provider}", ProviderName);
+            Logger.LogError(ex, "Failed to exchange authorization code for {Provider}", ProviderName);
             return false;
         }
     }
@@ -65,7 +65,7 @@ public abstract class ProviderServiceBase : IProviderService
             var providerLink = await GetActiveProviderLinkAsync(userId);
             if (providerLink == null)
             {
-                _logger.LogWarning("No active {Provider} link found for user {UserId}", ProviderName, userId);
+                Logger.LogWarning("No active {Provider} link found for user {UserId}", ProviderName, userId);
                 return null;
             }
 
@@ -77,7 +77,7 @@ public abstract class ProviderServiceBase : IProviderService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get {Provider} measurements for user {UserId}", ProviderName, userId);
+            Logger.LogError(ex, "Failed to get {Provider} measurements for user {UserId}", ProviderName, userId);
             return null;
         }
     }
@@ -88,7 +88,7 @@ public abstract class ProviderServiceBase : IProviderService
         try
         {
             // Get the last sync time to determine fetch window
-            var lastSyncTime = await _sourceDataService.GetLastSyncTimeAsync(userId, ProviderName);
+            var lastSyncTime = await SourceDataService.GetLastSyncTimeAsync(userId, ProviderName);
 
             // Calculate start date: 90 days before last sync, or all time if no previous sync
             DateTime startDate;
@@ -96,14 +96,14 @@ public abstract class ProviderServiceBase : IProviderService
             {
                 // Fetch from 90 days before last sync to catch any late-arriving or edited measurements
                 startDate = lastSyncTime.Value.AddDays(-90);
-                _logger.LogDebug("Fetching {Provider} measurements from {StartDate} (90 days before last sync)",
+                Logger.LogDebug("Fetching {Provider} measurements from {StartDate} (90 days before last sync)",
                     ProviderName, startDate.ToString("o"));
             }
             else
             {
                 // No previous sync - fetch all data
                 startDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                _logger.LogDebug("No previous sync for {Provider}, fetching all measurements", ProviderName);
+                Logger.LogDebug("No previous sync for {Provider}, fetching all measurements", ProviderName);
             }
 
             // Get measurements from the provider
@@ -122,15 +122,15 @@ public abstract class ProviderServiceBase : IProviderService
             };
 
             // Store in database (UpdateSourceDataAsync will handle merging)
-            await _sourceDataService.UpdateSourceDataAsync(userId, new List<SourceData> { sourceData });
+            await SourceDataService.UpdateSourceDataAsync(userId, new List<SourceData> { sourceData });
 
-            _logger.LogDebug("Successfully synced {Count} {Provider} measurements for user {UserId}",
+            Logger.LogDebug("Successfully synced {Count} {Provider} measurements for user {UserId}",
                 measurements.Count, ProviderName, userId);
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to sync {Provider} measurements for user {UserId}", ProviderName, userId);
+            Logger.LogError(ex, "Failed to sync {Provider} measurements for user {UserId}", ProviderName, userId);
             return false;
         }
     }
@@ -138,7 +138,7 @@ public abstract class ProviderServiceBase : IProviderService
     /// <inheritdoc />
     public async Task<bool> HasActiveProviderLinkAsync(Guid userId)
     {
-        var providerLink = await _providerLinkService.GetProviderLinkAsync(userId, ProviderName);
+        var providerLink = await ProviderLinkService.GetProviderLinkAsync(userId, ProviderName);
         return providerLink != null;
     }
 
@@ -148,17 +148,17 @@ public abstract class ProviderServiceBase : IProviderService
         try
         {
             // Remove the provider link
-            await _providerLinkService.RemoveProviderLinkAsync(userId, ProviderName);
+            await ProviderLinkService.RemoveProviderLinkAsync(userId, ProviderName);
 
             // Also delete the source data row for this provider
-            await _sourceDataService.DeleteSourceDataAsync(userId, ProviderName);
+            await SourceDataService.DeleteSourceDataAsync(userId, ProviderName);
 
-            _logger.LogInformation("Removed {Provider} link and deleted source data for user {UserId}", ProviderName, userId);
+            Logger.LogInformation("Removed {Provider} link and deleted source data for user {UserId}", ProviderName, userId);
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to remove {Provider} link for user {UserId}", ProviderName, userId);
+            Logger.LogError(ex, "Failed to remove {Provider} link for user {UserId}", ProviderName, userId);
             return false;
         }
     }
@@ -168,7 +168,7 @@ public abstract class ProviderServiceBase : IProviderService
     /// </summary>
     protected async Task<DbProviderLink?> GetActiveProviderLinkAsync(Guid userId)
     {
-        var providerLink = await _providerLinkService.GetProviderLinkAsync(userId, ProviderName);
+        var providerLink = await ProviderLinkService.GetProviderLinkAsync(userId, ProviderName);
         if (providerLink == null)
         {
             return null;
@@ -177,24 +177,24 @@ public abstract class ProviderServiceBase : IProviderService
         // Check if token needs refresh (provider-specific logic)
         if (IsTokenExpired(providerLink.Token))
         {
-            _logger.LogDebug("Token expired for {Provider} user {UserId}, attempting refresh", ProviderName, userId);
+            Logger.LogDebug("Token expired for {Provider} user {UserId}, attempting refresh", ProviderName, userId);
 
             try
             {
                 var refreshedToken = await RefreshTokenAsync(providerLink.Token);
-                await _providerLinkService.StoreProviderLinkAsync(userId, ProviderName, refreshedToken);
+                await ProviderLinkService.StoreProviderLinkAsync(userId, ProviderName, refreshedToken);
                 // Update the local copy with the new token
                 providerLink.Token = refreshedToken;
             }
             catch (InvalidOperationException ex) when (ex.Message.Contains("null or undefined"))
             {
-                _logger.LogWarning("Token for {Provider} user {UserId} is invalid and cannot be refreshed. User needs to re-link account.", ProviderName, userId);
+                Logger.LogWarning("Token for {Provider} user {UserId} is invalid and cannot be refreshed. User needs to re-link account.", ProviderName, userId);
                 // Return null to indicate no valid provider link
                 return null;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to refresh token for {Provider} user {UserId}", ProviderName, userId);
+                Logger.LogError(ex, "Failed to refresh token for {Provider} user {UserId}", ProviderName, userId);
                 throw;
             }
         }

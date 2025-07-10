@@ -54,7 +54,7 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         query["redirect_uri"] = callbackUrl;
         url.Query = query.ToString();
 
-        _logger.LogDebug("Generated Fitbit authorization URL");
+        Logger.LogDebug("Generated Fitbit authorization URL");
         return url.ToString();
     }
 
@@ -84,9 +84,9 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         if (!response.IsSuccessStatusCode)
         {
             var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogError("Fitbit token exchange failed: {StatusCode} {Content}",
+            Logger.LogError("Fitbit token exchange failed: {StatusCode} {Content}",
                 response.StatusCode, errorContent);
-            throw new Exception($"Fitbit token exchange failed: {response.StatusCode}");
+            throw new HttpRequestException($"Fitbit token exchange failed: {response.StatusCode}");
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
@@ -94,10 +94,10 @@ public class FitbitService : ProviderServiceBase, IFitbitService
 
         if (tokenData == null)
         {
-            throw new Exception("Failed to parse Fitbit token response");
+            throw new JsonException("Failed to parse Fitbit token response");
         }
 
-        _logger.LogDebug("Successfully exchanged Fitbit authorization code for tokens");
+        Logger.LogDebug("Successfully exchanged Fitbit authorization code for tokens");
 
         // Create token dictionary
         return new Dictionary<string, object>
@@ -169,9 +169,9 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         if (!response.IsSuccessStatusCode)
         {
             var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogError("Fitbit token refresh failed: {StatusCode} {Content}",
+            Logger.LogError("Fitbit token refresh failed: {StatusCode} {Content}",
                 response.StatusCode, errorContent);
-            throw new Exception($"Fitbit token refresh failed: {response.StatusCode}");
+            throw new HttpRequestException($"Fitbit token refresh failed: {response.StatusCode}");
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
@@ -179,10 +179,10 @@ public class FitbitService : ProviderServiceBase, IFitbitService
 
         if (tokenData == null)
         {
-            throw new Exception("Failed to parse Fitbit token refresh response");
+            throw new JsonException("Failed to parse Fitbit token refresh response");
         }
 
-        _logger.LogDebug("Successfully refreshed Fitbit access token");
+        Logger.LogDebug("Successfully refreshed Fitbit access token");
 
         // Create refreshed token dictionary
         return new Dictionary<string, object>
@@ -224,16 +224,16 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             // For initial sync, use Fitbit's earliest allowed date
             // The API doesn't allow requests before 2009-01-01
             startDate = new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            _logger.LogInformation("Starting Fitbit sync from earliest allowed date: {StartDate}", startDate.ToString("yyyy-MM-dd"));
+            Logger.LogInformation("Starting Fitbit sync from earliest allowed date: {StartDate}", startDate.ToString("yyyy-MM-dd"));
         }
 
-        _logger.LogInformation("Fetching Fitbit measurements from {StartDate} to {EndDate}",
+        Logger.LogInformation("Fetching Fitbit measurements from {StartDate} to {EndDate}",
             startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
 
         // Calculate total days and chunks needed
         var totalDays = (endDate - startDate).TotalDays;
         var estimatedChunks = Math.Ceiling(totalDays / 32);
-        _logger.LogInformation("Total days to fetch: {TotalDays}, estimated API calls: {Chunks}", totalDays, estimatedChunks);
+        Logger.LogInformation("Total days to fetch: {TotalDays}, estimated API calls: {Chunks}", totalDays, estimatedChunks);
 
         // Fetch data in 32-day chunks (Fitbit's maximum allowed range)
         var currentStart = startDate;
@@ -251,7 +251,7 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             currentStart = currentEnd.AddDays(1);
         }
 
-        _logger.LogInformation("Fetched {Count} measurements from Fitbit spanning {StartDate} to {EndDate}",
+        Logger.LogInformation("Fetched {Count} measurements from Fitbit spanning {StartDate} to {EndDate}",
             allMeasurements.Count,
             startDate.ToString("yyyy-MM-dd"),
             endDate.ToString("yyyy-MM-dd"));
@@ -263,7 +263,7 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             var earliestDate = DateTimeOffset.FromUnixTimeSeconds(earliestMeasurement.Timestamp).DateTime;
             var latestDate = DateTimeOffset.FromUnixTimeSeconds(latestMeasurement.Timestamp).DateTime;
 
-            _logger.LogInformation("Actual measurement dates: {EarliestDate} to {LatestDate}",
+            Logger.LogInformation("Actual measurement dates: {EarliestDate} to {LatestDate}",
                 earliestDate.ToString("yyyy-MM-dd"),
                 latestDate.ToString("yyyy-MM-dd"));
         }
@@ -280,7 +280,7 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         if (_remainingApiCalls < 5 && DateTimeOffset.UtcNow < _rateLimitResetTime)
         {
             var waitTime = _rateLimitResetTime - DateTimeOffset.UtcNow;
-            _logger.LogWarning("Rate limit nearly exhausted. Waiting {WaitTime} seconds before next request", waitTime.TotalSeconds);
+            Logger.LogWarning("Rate limit nearly exhausted. Waiting {WaitTime} seconds before next request", waitTime.TotalSeconds);
             await Task.Delay(waitTime);
         }
 
@@ -316,13 +316,13 @@ public class FitbitService : ProviderServiceBase, IFitbitService
                     _rateLimitResetTime = DateTimeOffset.UtcNow.AddSeconds(resetSeconds);
                 }
 
-                _logger.LogDebug("Fitbit rate limit: {Remaining}/{Limit} (resets in {Reset}s)",
+                Logger.LogDebug("Fitbit rate limit: {Remaining}/{Limit} (resets in {Reset}s)",
                     remaining, limit, reset);
 
                 // Log warning if approaching limit
                 if (_remainingApiCalls < 10)
                 {
-                    _logger.LogWarning("Approaching Fitbit rate limit: {Remaining} calls remaining", _remainingApiCalls);
+                    Logger.LogWarning("Approaching Fitbit rate limit: {Remaining} calls remaining", _remainingApiCalls);
                 }
             }
         }
@@ -338,7 +338,7 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         var startStr = startDate.ToString("yyyy-MM-dd");
         var endStr = endDate.ToString("yyyy-MM-dd");
 
-        _logger.LogDebug("Fetching Fitbit weight log from {StartDate} to {EndDate}", startStr, endStr);
+        Logger.LogDebug("Fetching Fitbit weight log from {StartDate} to {EndDate}", startStr, endStr);
 
         var request = new HttpRequestMessage(HttpMethod.Get,
             $"https://api.fitbit.com/1/user/-/body/log/weight/date/{startStr}/{endStr}.json");
@@ -347,40 +347,40 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         request.Headers.Add("Accept-Language", "en_US");
 
-        _logger.LogDebug("Fitbit API request: {Method} {Uri}", request.Method, request.RequestUri);
+        Logger.LogDebug("Fitbit API request: {Method} {Uri}", request.Method, request.RequestUri);
 
         var response = await SendRateLimitedRequestAsync(request);
 
         if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
-            _logger.LogWarning("Fitbit token expired");
+            Logger.LogWarning("Fitbit token expired");
             throw new UnauthorizedException("Fitbit authorization expired. Please reconnect your account.");
         }
 
         if (!response.IsSuccessStatusCode)
         {
             var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogError("Failed to get weight log: {StatusCode} {Content}", response.StatusCode, errorContent);
+            Logger.LogError("Failed to get weight log: {StatusCode} {Content}", response.StatusCode, errorContent);
             return measurements;
         }
 
         var content = await response.Content.ReadAsStringAsync();
         var debugContent = TruncateJsonArrays(content, 3);
-        _logger.LogDebug("Fitbit weight log response for {StartDate} to {EndDate}: {Content}", startStr, endStr, debugContent);
+        Logger.LogDebug("Fitbit weight log response for {StartDate} to {EndDate}: {Content}", startStr, endStr, debugContent);
 
         var weightLog = JsonSerializer.Deserialize<FitbitWeightLog>(content);
 
         if (weightLog?.Weight == null)
         {
-            _logger.LogWarning("No weight data in Fitbit response");
+            Logger.LogWarning("No weight data in Fitbit response");
             return measurements;
         }
 
-        _logger.LogDebug("Found {Count} weight entries in Fitbit response", weightLog.Weight.Count);
+        Logger.LogDebug("Found {Count} weight entries in Fitbit response", weightLog.Weight.Count);
 
         if (weightLog.Weight.Count == 0)
         {
-            _logger.LogDebug("Weight array is empty for date range {StartDate} to {EndDate}", startStr, endStr);
+            Logger.LogDebug("Weight array is empty for date range {StartDate} to {EndDate}", startStr, endStr);
             return measurements;
         }
 
@@ -394,7 +394,7 @@ public class FitbitService : ProviderServiceBase, IFitbitService
                 // Convert pounds to kg for storage
                 var weightInKg = entry.Weight / PoundsToKgFactor;
 
-                _logger.LogDebug("Processing weight entry: Date={Date}, Time={Time}, Weight={Weight}lbs ({WeightKg}kg)",
+                Logger.LogDebug("Processing weight entry: Date={Date}, Time={Time}, Weight={Weight}lbs ({WeightKg}kg)",
                     entry.Date, entry.Time, entry.Weight, weightInKg);
 
                 var measurement = new RawMeasurement
@@ -408,11 +408,11 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             }
             else
             {
-                _logger.LogWarning("Failed to parse date/time: {Date} {Time}", entry.Date, entry.Time);
+                Logger.LogWarning("Failed to parse date/time: {Date} {Time}", entry.Date, entry.Time);
             }
         }
 
-        _logger.LogDebug("Processed {Count} measurements from Fitbit", measurements.Count);
+        Logger.LogDebug("Processed {Count} measurements from Fitbit", measurements.Count);
         return measurements;
     }
 
