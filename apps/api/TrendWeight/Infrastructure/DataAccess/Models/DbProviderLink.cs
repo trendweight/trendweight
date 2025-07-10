@@ -1,6 +1,5 @@
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
-using TrendWeight.Features.Providers.Models;
 
 namespace TrendWeight.Infrastructure.DataAccess.Models;
 
@@ -16,7 +15,7 @@ public class DbProviderLink : BaseModel
     public string Provider { get; set; } = string.Empty;
 
     [Column("token")]
-    public AccessToken Token { get; set; } = new();
+    public Dictionary<string, object> Token { get; set; } = new Dictionary<string, object>();
 
     [Column("update_reason")]
     public string? UpdateReason { get; set; }

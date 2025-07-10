@@ -22,7 +22,7 @@ TrendWeight uses a modern web architecture:
 - **Backend**: C# ASP.NET Core Web API
   - Supabase (PostgreSQL) for data storage
   - JWT-based authentication
-  - Provider integrations for Withings and Fitbit
+  - Provider integrations for Withings and Fitbit (NEW)
 
 ## Getting Started
 
@@ -76,6 +76,11 @@ TrendWeight uses a modern web architecture:
      "Withings": {
        "ClientId": "your-withings-client-id",
        "ClientSecret": "your-withings-client-secret"
+     },
+     "Fitbit": {
+       "ClientId": "your-fitbit-client-id",
+       "ClientSecret": "your-fitbit-client-secret",
+       "RedirectUri": "http://localhost:5173/oauth/fitbit/callback"
      }
    }
    ```
@@ -156,6 +161,8 @@ The application uses different environment variables at build time vs runtime:
 - `Supabase__JwtSecret` - Your Supabase JWT secret
 - `Withings__ClientId` - Withings OAuth client ID
 - `Withings__ClientSecret` - Withings OAuth client secret
+- `Fitbit__ClientId` - Fitbit OAuth client ID
+- `Fitbit__ClientSecret` - Fitbit OAuth client secret
 - `Jwt__SigningKey` - JWT signing key for the API
 
 ### GitHub Actions CI/CD
@@ -198,8 +205,10 @@ docker run -d \
   -e Supabase__AnonKey="your-anon-key" \
   -e Supabase__ServiceKey="your-service-key" \
   -e Supabase__JwtSecret="your-jwt-secret" \
-  -e Withings__ClientId="your-client-id" \
-  -e Withings__ClientSecret="your-client-secret" \
+  -e Withings__ClientId="your-withings-client-id" \
+  -e Withings__ClientSecret="your-withings-client-secret" \
+  -e Fitbit__ClientId="your-fitbit-client-id" \
+  -e Fitbit__ClientSecret="your-fitbit-client-secret" \
   -e Jwt__SigningKey="your-signing-key" \
   ghcr.io/[your-username]/trendweight:latest
 ```

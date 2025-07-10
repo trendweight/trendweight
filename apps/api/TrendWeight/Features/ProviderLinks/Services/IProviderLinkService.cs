@@ -1,4 +1,3 @@
-using TrendWeight.Features.Providers.Models;
 using DbProviderLink = TrendWeight.Infrastructure.DataAccess.Models.DbProviderLink;
 
 namespace TrendWeight.Features.ProviderLinks.Services;
@@ -12,5 +11,5 @@ public interface IProviderLinkService
     Task<DbProviderLink> UpdateAsync(DbProviderLink providerLink);
     Task DeleteAsync(Guid uid, string provider);
     Task RemoveProviderLinkAsync(Guid uid, string provider);
-    Task StoreProviderLinkAsync(Guid uid, string provider, AccessToken token, string? updateReason = null);
+    Task StoreProviderLinkAsync(Guid uid, string provider, Dictionary<string, object> token, string? updateReason = null);
 }

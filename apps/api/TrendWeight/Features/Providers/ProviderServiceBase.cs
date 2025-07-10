@@ -1,7 +1,7 @@
+using System.Text.Json;
 using TrendWeight.Features.Measurements;
 using TrendWeight.Features.Measurements.Models;
 using TrendWeight.Features.ProviderLinks.Services;
-using TrendWeight.Features.Providers.Models;
 using TrendWeight.Features.Profile.Services;
 using TrendWeight.Infrastructure.DataAccess.Models;
 
@@ -40,11 +40,11 @@ public abstract class ProviderServiceBase : IProviderService
     {
         try
         {
-            // Get provider-specific access token
-            var accessToken = await ExchangeCodeForTokenAsync(code, callbackUrl);
+            // Get provider-specific token as dictionary
+            var token = await ExchangeCodeForTokenAsync(code, callbackUrl);
 
             // Store the token using ProviderLinkService
-            await _providerLinkService.StoreProviderLinkAsync(userId, ProviderName, accessToken);
+            await _providerLinkService.StoreProviderLinkAsync(userId, ProviderName, token);
 
             _logger.LogDebug("Successfully stored {Provider} link for user {UserId}", ProviderName, userId);
             return true;
@@ -147,7 +147,13 @@ public abstract class ProviderServiceBase : IProviderService
     {
         try
         {
+            // Remove the provider link
             await _providerLinkService.RemoveProviderLinkAsync(userId, ProviderName);
+
+            // Also delete the source data row for this provider
+            await _sourceDataService.DeleteSourceDataAsync(userId, ProviderName);
+
+            _logger.LogInformation("Removed {Provider} link and deleted source data for user {UserId}", ProviderName, userId);
             return true;
         }
         catch (Exception ex)
@@ -168,16 +174,23 @@ public abstract class ProviderServiceBase : IProviderService
             return null;
         }
 
-        // Check if token needs refresh
+        // Check if token needs refresh (provider-specific logic)
         if (IsTokenExpired(providerLink.Token))
         {
-            _logger.LogDebug("Token expired for {Provider} user {UserId}, refreshing", ProviderName, userId);
+            _logger.LogDebug("Token expired for {Provider} user {UserId}, attempting refresh", ProviderName, userId);
 
             try
             {
                 var refreshedToken = await RefreshTokenAsync(providerLink.Token);
                 await _providerLinkService.StoreProviderLinkAsync(userId, ProviderName, refreshedToken);
+                // Update the local copy with the new token
                 providerLink.Token = refreshedToken;
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("null or undefined"))
+            {
+                _logger.LogWarning("Token for {Provider} user {UserId} is invalid and cannot be refreshed. User needs to re-link account.", ProviderName, userId);
+                // Return null to indicate no valid provider link
+                return null;
             }
             catch (Exception ex)
             {
@@ -190,25 +203,6 @@ public abstract class ProviderServiceBase : IProviderService
     }
 
     /// <summary>
-    /// Checks if a token is expired
-    /// </summary>
-    protected bool IsTokenExpired(AccessToken token)
-    {
-        if (string.IsNullOrEmpty(token.Expires_At))
-        {
-            return true;
-        }
-
-        if (DateTimeOffset.TryParse(token.Expires_At, out var expiresAt))
-        {
-            // Consider token expired if it expires in less than 5 minutes
-            return expiresAt <= DateTimeOffset.UtcNow.AddMinutes(5);
-        }
-
-        return true;
-    }
-
-    /// <summary>
     /// Extension point to convert Unix timestamp to DateTime
     /// </summary>
     protected static long ToUnixTimeSeconds(DateTime dateTime)
@@ -216,20 +210,26 @@ public abstract class ProviderServiceBase : IProviderService
         return ((DateTimeOffset)dateTime).ToUnixTimeSeconds();
     }
 
+
     // Abstract methods that provider-specific implementations must provide
 
     /// <summary>
     /// Exchanges authorization code for access token (provider-specific)
     /// </summary>
-    protected abstract Task<AccessToken> ExchangeCodeForTokenAsync(string code, string callbackUrl);
+    protected abstract Task<Dictionary<string, object>> ExchangeCodeForTokenAsync(string code, string callbackUrl);
+
+    /// <summary>
+    /// Checks if a token is expired (provider-specific)
+    /// </summary>
+    protected abstract bool IsTokenExpired(Dictionary<string, object> token);
 
     /// <summary>
     /// Refreshes an expired access token (provider-specific)
     /// </summary>
-    protected abstract Task<AccessToken> RefreshTokenAsync(AccessToken token);
+    protected abstract Task<Dictionary<string, object>> RefreshTokenAsync(Dictionary<string, object> token);
 
     /// <summary>
     /// Fetches measurements from the provider API (provider-specific)
     /// </summary>
-    protected abstract Task<List<RawMeasurement>> FetchMeasurementsAsync(AccessToken token, bool metric, long startTimestamp);
+    protected abstract Task<List<RawMeasurement>> FetchMeasurementsAsync(Dictionary<string, object> token, bool metric, long startTimestamp);
 }

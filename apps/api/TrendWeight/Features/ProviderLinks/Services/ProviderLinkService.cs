@@ -1,6 +1,6 @@
+using System.Text.Json;
 using TrendWeight.Infrastructure.DataAccess;
 using TrendWeight.Infrastructure.DataAccess.Models;
-using TrendWeight.Features.Providers.Models;
 
 namespace TrendWeight.Features.ProviderLinks.Services;
 
@@ -79,7 +79,7 @@ public class ProviderLinkService : IProviderLinkService
         return DeleteAsync(uid, provider);
     }
 
-    public async Task StoreProviderLinkAsync(Guid uid, string provider, AccessToken token, string? updateReason = null)
+    public async Task StoreProviderLinkAsync(Guid uid, string provider, Dictionary<string, object> token, string? updateReason = null)
     {
         var existingLink = await GetAsync(uid, provider);
 

@@ -107,14 +107,14 @@ public class WithingsCallbackController : ControllerBase
 
             _logger.LogDebug("Exchanging code for token with callback URL: {CallbackUrl}", callbackUrl);
 
-            var accessToken = await _withingsService.ExchangeAuthorizationCodeAsync(code, callbackUrl);
+            // Use the base class method that handles everything
+            var success = await _withingsService.ExchangeAuthorizationCodeAsync(code, callbackUrl, user.Uid);
 
-            // Store the token
-            await _providerLinkService.StoreProviderLinkAsync(
-                user.Uid,
-                "withings",
-                accessToken,
-                linkDetails.Reason);
+            if (!success)
+            {
+                _logger.LogError("Failed to exchange Withings authorization code");
+                return BadRequest("Failed to complete authorization");
+            }
 
             _logger.LogDebug("Withings link created successfully for user {UserId}", user.Uid);
 

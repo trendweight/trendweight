@@ -3,6 +3,7 @@ using TrendWeight.Infrastructure.Auth;
 using TrendWeight.Infrastructure.Middleware;
 using TrendWeight.Features.Providers;
 using TrendWeight.Features.Providers.Withings;
+using TrendWeight.Features.Providers.Fitbit;
 using TrendWeight.Infrastructure.DataAccess;
 using TrendWeight.Features.Profile.Services;
 using TrendWeight.Features.ProviderLinks.Services;
@@ -55,6 +56,13 @@ public static class ServiceCollectionExtensions
         services.AddSingleton(withingsConfig);
         services.AddHttpClient<IWithingsService, WithingsService>();
         services.AddHttpClient<IProviderService, WithingsService>();
+
+        // Register Fitbit service
+        var fitbitConfig = new FitbitConfig();
+        configuration.GetSection("Fitbit").Bind(fitbitConfig);
+        services.AddSingleton(fitbitConfig);
+        services.AddHttpClient<IFitbitService, FitbitService>();
+        services.AddHttpClient<IProviderService, FitbitService>();
 
         // Register provider integration orchestrator
         services.AddScoped<IProviderIntegrationService, ProviderIntegrationService>();

@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  Toast,
-  ToastClose,
-  ToastDescription,
-  ToastProvider,
-  ToastTitle,
-  ToastViewport,
-} from "./Toast";
+import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "./Toast";
 import { ToastContext } from "../../lib/contexts/ToastContext";
 import type { ToastProps, ToastState } from "../../lib/contexts/ToastContext";
 

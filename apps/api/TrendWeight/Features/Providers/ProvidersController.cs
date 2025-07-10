@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -59,7 +60,7 @@ public class ProvidersController : ControllerBase
                 provider = link.Provider,
                 connectedAt = link.UpdatedAt,
                 updateReason = link.UpdateReason,
-                hasToken = link.Token != null && !string.IsNullOrEmpty(link.Token.Access_Token)
+                hasToken = link.Token != null && link.Token.Count > 0
             }).ToList();
 
             return Ok(response);
@@ -103,10 +104,21 @@ public class ProvidersController : ControllerBase
                 return NotFound(new { error = $"No {provider} connection found" });
             }
 
-            // Delete the provider link
-            await _providerLinkService.DeleteAsync(userGuid, provider);
+            // Get provider service to handle disconnection (includes source data cleanup)
+            var providerService = _providerIntegrationService.GetProviderService(provider);
+            if (providerService == null)
+            {
+                return BadRequest(new { error = $"Provider service not found for: {provider}" });
+            }
 
-            _logger.LogInformation("Disconnected {Provider} for user {UserId}", provider, userId);
+            // Remove provider link and associated source data
+            var success = await providerService.RemoveProviderLinkAsync(userGuid);
+            if (!success)
+            {
+                return StatusCode(500, new { error = $"Failed to disconnect {provider}" });
+            }
+
+            _logger.LogInformation("Disconnected {Provider} and cleared source data for user {UserId}", provider, userId);
             return Ok(new { message = $"{provider} disconnected successfully" });
         }
         catch (Exception ex)

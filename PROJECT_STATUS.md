@@ -56,19 +56,22 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Data access layer in backend
 - [x] Type-safe API client
 
-### ⚙️ Provider Integrations
+### ✅ Provider Integrations
 
 - [x] Withings OAuth flow
 - [x] Withings data sync
 - [x] Withings token refresh
 - [x] Provider link management API
-- [ ] Fitbit OAuth flow
-- [ ] Fitbit data sync
-- [ ] Fitbit token refresh
+- [x] Fitbit OAuth flow
+- [x] Fitbit data sync (with pounds-to-kg conversion)
+- [x] Fitbit token refresh
+- [x] Fitbit rate limiting (automatic handling with delays)
+- [x] Fitbit date range handling (32-day chunks, 2009-01-01 minimum)
 - [x] OAuth callback handling
 - [ ] OAuth error handling/recovery
-- [ ] Bulk historical data import
+- [x] Bulk historical data import (Fitbit fetches all available data)
 - [x] Manual data resync (with resync_requested flag for resilient handling)
+- [x] Provider disconnection (removes both link and source data)
 
 ### ✅ Dashboard & Visualization
 

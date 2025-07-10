@@ -126,11 +126,16 @@ VITE_SUPABASE_ANON_KEY=[anon-key]
   },
   "Withings": {
     "ClientId": "[client-id]",
-    "ClientSecret": "[client-secret]",
-    "RedirectUri": "http://localhost:5173/oauth/withings/callback"
+    "ClientSecret": "[client-secret]"
+  },
+  "Fitbit": {
+    "ClientId": "[client-id]",
+    "ClientSecret": "[client-secret]"
   }
 }
 ```
+
+**Note**: OAuth redirect URLs are constructed dynamically using `Request.Scheme` and `Request.Host` to support different deployment environments. Never hardcode URLs in configuration.
 
 ## Database Schema (Supabase)
 
@@ -184,6 +189,7 @@ VITE_SUPABASE_ANON_KEY=[anon-key]
 
 ### OAuth Callback Routes
 - `/oauth/withings/callback` - Withings OAuth callback handler
+- `/oauth/fitbit/callback` - Fitbit OAuth callback handler
 
 ## Authentication
 
@@ -431,6 +437,12 @@ The containerized application:
 3. **Respect user's timezone** - All date operations must be timezone-aware
 4. **Test on mobile** - The app must be fully responsive
 5. **Keep accessibility in mind** - Use semantic HTML and ARIA labels
+6. **Provider disconnection** - When a user disconnects a provider, both the provider link AND the associated source data are deleted to ensure clean state
+7. **Fitbit API limitations**:
+   - Weight data requests cannot start before 2009-01-01
+   - Maximum date range per request is 32 days (not 31 or 33)
+   - Body-weight endpoint may return extrapolated data, not actual measurements
+   - Always use initial sync date of 2009-01-01 for Fitbit
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.

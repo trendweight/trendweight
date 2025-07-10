@@ -49,7 +49,10 @@ export function ConnectedAccountsSection() {
             const providerLink = providerLinks?.find((link) => link.provider === provider.id);
 
             return (
-              <div key={provider.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border border-gray-200 rounded-lg space-y-3 sm:space-y-0">
+              <div
+                key={provider.id}
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border border-gray-200 rounded-lg space-y-3 sm:space-y-0"
+              >
                 <div className="flex items-center space-x-4">
                   <div className="text-2xl">{provider.icon}</div>
                   <div>

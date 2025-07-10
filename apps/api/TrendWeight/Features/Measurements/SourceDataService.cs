@@ -317,4 +317,26 @@ public class SourceDataService : ISourceDataService
 
         return true;
     }
+
+    /// <inheritdoc />
+    public async Task DeleteSourceDataAsync(Guid userId, string provider)
+    {
+        try
+        {
+            var sourceData = await _supabaseService.QueryAsync<DbSourceData>(q =>
+                q.Where(sd => sd.Uid == userId && sd.Provider == provider));
+
+            var data = sourceData.FirstOrDefault();
+            if (data != null)
+            {
+                await _supabaseService.DeleteAsync<DbSourceData>(data);
+                _logger.LogInformation("Deleted source data row for user {UserId} provider {Provider}", userId, provider);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting source data for user {UserId} provider {Provider}", userId, provider);
+            throw;
+        }
+    }
 }

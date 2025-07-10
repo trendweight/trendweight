@@ -4,7 +4,6 @@ using TrendWeight.Features.Measurements;
 using TrendWeight.Features.Measurements.Models;
 using TrendWeight.Features.Profile.Services;
 using TrendWeight.Features.ProviderLinks.Services;
-using TrendWeight.Features.Providers.Models;
 using TrendWeight.Features.Providers.Withings.Models;
 
 namespace TrendWeight.Features.Providers.Withings;
@@ -52,7 +51,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
     }
 
     /// <inheritdoc />
-    protected override async Task<AccessToken> ExchangeCodeForTokenAsync(string code, string callbackUrl)
+    protected override async Task<Dictionary<string, object>> ExchangeCodeForTokenAsync(string code, string callbackUrl)
     {
         var parameters = new Dictionary<string, string>
         {
@@ -75,14 +74,23 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        _logger.LogDebug("Withings authorization code exchange completed");
+        _logger.LogDebug("Withings authorization code exchange completed. Response: {Response}", responseContent);
 
         var options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = false
         };
 
-        var withingsResponse = JsonSerializer.Deserialize<WithingsResponse<WithingsTokenResponse>>(responseContent, options);
+        WithingsResponse<WithingsTokenResponse>? withingsResponse;
+        try
+        {
+            withingsResponse = JsonSerializer.Deserialize<WithingsResponse<WithingsTokenResponse>>(responseContent, options);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to deserialize Withings response: {Response}", responseContent);
+            throw;
+        }
 
         if (withingsResponse?.Status != 0)
         {
@@ -92,29 +100,62 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         }
 
         var tokenData = withingsResponse!.Body!;
-        string userid = tokenData.Userid?.ToString() ?? string.Empty;
 
-        return new AccessToken
+        // Create token dictionary
+        return new Dictionary<string, object>
         {
-            Userid = userid,
-            Access_Token = tokenData.AccessToken ?? string.Empty,
-            Refresh_Token = tokenData.RefreshToken ?? string.Empty,
-            Token_Type = tokenData.TokenType ?? string.Empty,
-            Scope = tokenData.Scope ?? string.Empty,
-            Expires_At = DateTimeOffset.UtcNow.AddSeconds(tokenData.ExpiresIn).ToString("o")
+            ["userid"] = tokenData.Userid,
+            ["access_token"] = tokenData.AccessToken ?? string.Empty,
+            ["refresh_token"] = tokenData.RefreshToken ?? string.Empty,
+            ["token_type"] = tokenData.TokenType ?? string.Empty,
+            ["scope"] = tokenData.Scope ?? string.Empty,
+            ["expires_at"] = DateTimeOffset.UtcNow.AddSeconds(tokenData.ExpiresIn).ToString("o"),
+            ["expires_in"] = tokenData.ExpiresIn
         };
     }
 
     /// <inheritdoc />
-    protected override async Task<AccessToken> RefreshTokenAsync(AccessToken token)
+    protected override bool IsTokenExpired(Dictionary<string, object> token)
     {
+        // Check if token has expiration
+        if (!token.TryGetValue("expires_at", out var expiresAtObj))
+        {
+            return true;
+        }
+
+        var expiresAtStr = expiresAtObj?.ToString();
+        if (string.IsNullOrEmpty(expiresAtStr))
+        {
+            return true;
+        }
+
+        if (DateTimeOffset.TryParse(expiresAtStr, out var expiresAt))
+        {
+            // Consider token expired if it expires in less than 5 minutes
+            return expiresAt <= DateTimeOffset.UtcNow.AddMinutes(5);
+        }
+
+        return true;
+    }
+
+    /// <inheritdoc />
+    protected override async Task<Dictionary<string, object>> RefreshTokenAsync(Dictionary<string, object> token)
+    {
+        // Get refresh token
+        if (!token.TryGetValue("refresh_token", out var refreshTokenObj) || refreshTokenObj == null)
+        {
+            throw new InvalidOperationException("No refresh token found");
+        }
+
+        var refreshToken = refreshTokenObj.ToString();
+
         var parameters = new Dictionary<string, string>
         {
             ["action"] = "requesttoken",
             ["grant_type"] = "refresh_token",
             ["client_id"] = _config.ClientId,
             ["client_secret"] = _config.ClientSecret,
-            ["refresh_token"] = token.Refresh_Token
+            ["refresh_token"] = refreshToken!
         };
 
         var content = new FormUrlEncodedContent(parameters);
@@ -145,29 +186,38 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         }
 
         var tokenData = withingsResponse!.Body!;
-        string userid = tokenData.Userid?.ToString() ?? string.Empty;
 
-        return new AccessToken
+        // Create refreshed token dictionary
+        return new Dictionary<string, object>
         {
-            Userid = userid,
-            Access_Token = tokenData.AccessToken ?? string.Empty,
-            Refresh_Token = tokenData.RefreshToken ?? string.Empty,
-            Token_Type = tokenData.TokenType ?? string.Empty,
-            Scope = tokenData.Scope ?? string.Empty,
-            Expires_At = DateTimeOffset.UtcNow.AddSeconds(tokenData.ExpiresIn).ToString("o")
+            ["userid"] = tokenData.Userid,
+            ["access_token"] = tokenData.AccessToken ?? string.Empty,
+            ["refresh_token"] = tokenData.RefreshToken ?? string.Empty,
+            ["token_type"] = tokenData.TokenType ?? string.Empty,
+            ["scope"] = tokenData.Scope ?? string.Empty,
+            ["expires_at"] = DateTimeOffset.UtcNow.AddSeconds(tokenData.ExpiresIn).ToString("o"),
+            ["expires_in"] = tokenData.ExpiresIn
         };
     }
 
     /// <inheritdoc />
-    protected override async Task<List<RawMeasurement>> FetchMeasurementsAsync(AccessToken token, bool metric, long startTimestamp)
+    protected override async Task<List<RawMeasurement>> FetchMeasurementsAsync(Dictionary<string, object> token, bool metric, long startTimestamp)
     {
+        // Get access token
+        if (!token.TryGetValue("access_token", out var accessTokenObj) || accessTokenObj == null)
+        {
+            throw new InvalidOperationException("No access token found");
+        }
+
+        var accessToken = accessTokenObj.ToString();
+
         var allMeasurements = new List<RawMeasurement>();
         bool hasMore = true;
         object? offset = null;
 
         while (hasMore)
         {
-            var (measurements, more, newOffset, timezone) = await GetMeasurementPageAsync(token, startTimestamp, offset);
+            var (measurements, more, newOffset, timezone) = await GetMeasurementPageAsync(accessToken!, startTimestamp, offset);
             allMeasurements.AddRange(measurements);
             hasMore = more;
             offset = newOffset;
@@ -180,12 +230,12 @@ public class WithingsService : ProviderServiceBase, IWithingsService
     /// Gets a single page of measurements from Withings API
     /// </summary>
     private async Task<(List<RawMeasurement> measurements, bool more, object? offset, string timezone)>
-        GetMeasurementPageAsync(AccessToken token, long start, object? offset = null)
+        GetMeasurementPageAsync(string accessToken, long start, object? offset = null)
     {
         _logger.LogDebug("Fetching Withings measurements page with offset: {Offset}", offset);
 
         var request = new HttpRequestMessage(HttpMethod.Get, "https://wbsapi.withings.net/measure");
-        request.Headers.Add("Authorization", $"Bearer {token.Access_Token}");
+        request.Headers.Add("Authorization", $"Bearer {accessToken}");
 
         var uriBuilder = new UriBuilder(request.RequestUri!);
         var query = HttpUtility.ParseQueryString(uriBuilder.Query);
@@ -273,17 +323,4 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         return (decimal)(measure.Value * Math.Pow(10, measure.Unit));
     }
 
-    // IWithingsService legacy methods - these delegate to the base class methods
-
-    public Task<AccessToken> ExchangeAuthorizationCodeAsync(string code, string callbackUrl)
-    {
-        return ExchangeCodeForTokenAsync(code, callbackUrl);
-    }
-
-
-    public async Task<(List<RawMeasurement> measurements, bool more, object? offset, string timezone)>
-        GetMeasurementsAsync(AccessToken token, bool metric, long start, object? offset = null)
-    {
-        return await GetMeasurementPageAsync(token, start, offset);
-    }
 }

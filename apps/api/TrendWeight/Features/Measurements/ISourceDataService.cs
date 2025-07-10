@@ -47,4 +47,11 @@ public interface ISourceDataService
     /// <param name="provider">Provider name</param>
     /// <returns>True if resync is requested</returns>
     Task<bool> IsResyncRequestedAsync(Guid userId, string provider);
+
+    /// <summary>
+    /// Deletes source data for a user
+    /// </summary>
+    /// <param name="userId">User's Supabase UID</param>
+    /// <param name="provider">Provider name to delete specific provider data</param>
+    Task DeleteSourceDataAsync(Guid userId, string provider);
 }
