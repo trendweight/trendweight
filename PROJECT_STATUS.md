@@ -33,10 +33,16 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] JWT authentication in backend
 - [x] Email link authentication
 - [x] Social logins (Google, Microsoft, Apple)
+- [x] Apple Sign-in with JS SDK for better iOS compatibility
+- [x] Apple Sign-in redirect flow improvements
 - [x] Protected route handling
 - [x] Authentication loading states with Suspense
 - [x] Check email flow
 - [x] Email verification handling
+- [x] Navigation guard for unsaved changes
+- [x] Mobile logout fixes for iPhone Safari
+- [x] Touch device navigation improvements
+- [x] Improved proxy header security
 - [ ] Account migration from legacy site
 
 ### ✅ Database & Data Layer
@@ -62,7 +68,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] OAuth callback handling
 - [ ] OAuth error handling/recovery
 - [ ] Bulk historical data import
-- [ ] Manual data resync
+- [x] Manual data resync (with resync_requested flag for resilient handling)
 
 ### ✅ Dashboard & Visualization
 
@@ -75,25 +81,27 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Support for body fat %, lean mass, etc.
 - [x] Client-side trend calculation
 - [x] Demo dashboard with sample data
+- [x] Optimized data loading with parallel queries
+- [x] Consistent weight storage in kg (instant unit switching)
 - [ ] Handle "no data" state elegantly
 - [ ] Handle "no provider links" state
 - [ ] Shared/public dashboard URLs
 - [ ] Dashboard sharing UI
 - [ ] Explore UI
 
-### ⚙️ Settings & Profile
+### ✅ Settings & Profile
 
 - [x] Settings page route
-- [x] Settings API endpoint
-- [x] Profile API endpoint
-- [ ] Settings UI implementation
-- [ ] Weight units preference
+- [x] Settings API endpoint (refactored into ProfileController)
+- [x] Profile API endpoint (GET/PUT /api/profile)
+- [x] Settings UI implementation (comprehensive with all sections)
+- [x] Weight units preference
 - [ ] Smoothing days preference
-- [ ] Timezone selection
-- [ ] Day start offset
+- [x] Timezone selection (with @vvo/tzdb)
+- [x] Day start offset
 - [ ] Privacy settings
-- [ ] Connect/disconnect providers
-- [ ] Delete account functionality
+- [x] Connect/disconnect providers
+- [x] Delete account functionality (UI ready, backend pending)
 
 ### ✅ Static Pages
 

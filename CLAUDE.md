@@ -152,12 +152,16 @@ VITE_SUPABASE_ANON_KEY=[anon-key]
   - `provider` (text) - Data source provider
   - `source_data` (jsonb) - Raw measurement data
   - `last_sync_date` (text) - ISO 8601 timestamp
+  - `resync_requested` (boolean) - Flag for pending resync operations
   - `created_at`, `updated_at` (text) - ISO 8601 timestamps
 
 ### Important Notes
 - All timestamps are stored as `text` in ISO 8601 format to avoid timezone issues
 - Use `DateTime.UtcNow.ToString("o")` when storing
 - Parse with `DateTime.Parse(timestamp, null, DateTimeStyles.RoundtripKind).ToUniversalTime()`
+- **All weights are stored in kg** in the database for consistency
+  - Client-side conversion handles imperial/metric display based on user preference
+  - This enables instant unit switching without data resync
 
 ## Frontend Route Structure
 
@@ -241,6 +245,11 @@ The app uses @bprogress/react for progress indication:
   - Always use this instead of native HTML select elements
 - Custom styled with Tailwind CSS v4
 - Consistent use of CSS variables for theming
+
+### Form Management
+- react-hook-form for form state management
+- Use Controller wrapper for custom components to enable dirty state tracking
+- Navigation guard warns users about unsaved changes
 
 ### Tailwind Configuration
 - Uses Tailwind CSS v4 with CSS-based configuration
