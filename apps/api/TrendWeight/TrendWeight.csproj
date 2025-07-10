@@ -4,6 +4,9 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <NoWarn>$(NoWarn);CA1848</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

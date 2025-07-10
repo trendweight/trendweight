@@ -25,23 +25,24 @@ public class SupabaseAuthenticationHandler : AuthenticationHandler<SupabaseAuthe
         _supabaseConfig = supabaseConfig;
     }
 
-    protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+#pragma warning disable CS1998 // Async method lacks 'await' operators - required by base class
+    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         if (!Request.Headers.ContainsKey("Authorization"))
         {
-            return AuthenticateResult.NoResult();
+            return Task.FromResult(AuthenticateResult.NoResult());
         }
 
         var authHeader = Request.Headers.Authorization.ToString();
         if (!authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
         {
-            return AuthenticateResult.NoResult();
+            return Task.FromResult(AuthenticateResult.NoResult());
         }
 
         var token = authHeader.Substring("Bearer ".Length).Trim();
         if (string.IsNullOrEmpty(token))
         {
-            return AuthenticateResult.Fail("Token is empty");
+            return Task.FromResult(AuthenticateResult.Fail("Token is empty"));
         }
 
         try
@@ -100,16 +101,17 @@ public class SupabaseAuthenticationHandler : AuthenticationHandler<SupabaseAuthe
             var claimsPrincipal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(claimsPrincipal, Scheme.Name);
 
-            return AuthenticateResult.Success(ticket);
+            return Task.FromResult(AuthenticateResult.Success(ticket));
         }
         catch (SecurityTokenExpiredException)
         {
-            return AuthenticateResult.Fail("Token has expired");
+            return Task.FromResult(AuthenticateResult.Fail("Token has expired"));
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Supabase authentication failed");
-            return AuthenticateResult.Fail(ex);
+            return Task.FromResult(AuthenticateResult.Fail(ex));
         }
     }
+#pragma warning restore CS1998
 }

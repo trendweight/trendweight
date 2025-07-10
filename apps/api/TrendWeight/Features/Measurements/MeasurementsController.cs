@@ -98,7 +98,7 @@ public class MeasurementsController : ControllerBase
             }
 
             // Wait for all refresh tasks to complete
-            if (refreshTasks.Any())
+            if (refreshTasks.Count > 0)
             {
                 var refreshResults = await Task.WhenAll(refreshTasks);
                 foreach (var (provider, success) in refreshResults)

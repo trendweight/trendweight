@@ -7,6 +7,10 @@ public class ErrorHandlingMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<ErrorHandlingMiddleware> _logger;
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
 
     public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
     {
@@ -59,10 +63,7 @@ public class ErrorHandlingMiddleware
 
         context.Response.StatusCode = response.StatusCode;
 
-        var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        });
+        var jsonResponse = JsonSerializer.Serialize(response, JsonOptions);
 
         await context.Response.WriteAsync(jsonResponse);
     }
