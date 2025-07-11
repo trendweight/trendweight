@@ -1,4 +1,5 @@
 using TrendWeight.Features.Measurements.Models;
+using TrendWeight.Features.Providers.Models;
 
 namespace TrendWeight.Features.Providers;
 
@@ -43,8 +44,8 @@ public interface IProviderService
     /// </summary>
     /// <param name="userId">Supabase user ID</param>
     /// <param name="metric">Whether to store measurements in metric units</param>
-    /// <returns>Success status</returns>
-    Task<bool> SyncMeasurementsAsync(Guid userId, bool metric);
+    /// <returns>Sync result with success status and error details</returns>
+    Task<ProviderSyncResult> SyncMeasurementsAsync(Guid userId, bool metric);
 
     /// <summary>
     /// Checks if a user has an active provider link

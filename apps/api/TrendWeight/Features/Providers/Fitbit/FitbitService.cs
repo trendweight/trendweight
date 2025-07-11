@@ -8,6 +8,7 @@ using TrendWeight.Features.Measurements;
 using TrendWeight.Features.Measurements.Models;
 using TrendWeight.Features.Profile.Services;
 using TrendWeight.Features.ProviderLinks.Services;
+using TrendWeight.Features.Providers.Exceptions;
 using TrendWeight.Features.Providers.Fitbit.Models;
 
 namespace TrendWeight.Features.Providers.Fitbit;
@@ -171,6 +172,19 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             var errorContent = await response.Content.ReadAsStringAsync();
             Logger.LogError("Fitbit token refresh failed: {StatusCode} {Content}",
                 response.StatusCode, errorContent);
+
+            // Check if this is an auth failure
+            if (response.StatusCode == HttpStatusCode.Unauthorized ||
+                response.StatusCode == HttpStatusCode.BadRequest &&
+                (errorContent.Contains("invalid_grant", StringComparison.OrdinalIgnoreCase) ||
+                 errorContent.Contains("refresh_token_invalid", StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new ProviderAuthException(
+                    "fitbit",
+                    "Fitbit refresh token is invalid or expired. Please reconnect your account.",
+                    response.StatusCode.ToString());
+            }
+
             throw new HttpRequestException($"Fitbit token refresh failed: {response.StatusCode}");
         }
 
@@ -354,7 +368,10 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
             Logger.LogWarning("Fitbit token expired");
-            throw new UnauthorizedException("Fitbit authorization expired. Please reconnect your account.");
+            throw new ProviderAuthException(
+                "fitbit",
+                "Fitbit authorization expired. Please reconnect your account.",
+                "401");
         }
 
         if (!response.IsSuccessStatusCode)

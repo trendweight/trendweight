@@ -183,9 +183,9 @@ public class ProvidersController : ControllerBase
             }
 
             // Sync with metric=true (always store in kg)
-            var success = await providerService.SyncMeasurementsAsync(userGuid, true);
+            var syncResult = await providerService.SyncMeasurementsAsync(userGuid, true);
 
-            if (success)
+            if (syncResult.Success)
             {
                 _logger.LogInformation("Successfully resynced {Provider} for user {UserId}", provider, userId);
                 return Ok(new { message = $"{provider} resync completed successfully" });

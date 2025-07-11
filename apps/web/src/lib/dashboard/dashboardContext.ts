@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import type { DataPoint, Delta, Measurement, Mode, ProfileData, TimeRange } from "../core/interfaces";
+import type { ProviderSyncStatus } from "../api/types";
 
 export interface DashboardData {
   dataPoints: DataPoint[];
@@ -10,6 +11,7 @@ export interface DashboardData {
   weightSlope: number;
   activeSlope: number;
   deltas: Delta[];
+  providerStatus?: Record<string, ProviderSyncStatus>;
 }
 
 export const dashboardContext = createContext<DashboardData | undefined>(undefined);

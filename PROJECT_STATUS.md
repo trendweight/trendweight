@@ -68,10 +68,12 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Fitbit rate limiting (automatic handling with delays)
 - [x] Fitbit date range handling (32-day chunks, 2009-01-01 minimum)
 - [x] OAuth callback handling
-- [ ] OAuth error handling/recovery
+- [x] OAuth error handling/recovery (ProviderAuthException, dashboard reconnect UI)
 - [x] Bulk historical data import (Fitbit fetches all available data)
 - [x] Manual data resync (with resync_requested flag for resilient handling)
 - [x] Provider disconnection (removes both link and source data)
+- [x] Token expiration detection (5-minute buffer before expiry)
+- [x] Token refresh failure handling (auth vs network errors)
 
 ### ✅ Dashboard & Visualization
 
@@ -86,6 +88,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Demo dashboard with sample data
 - [x] Optimized data loading with parallel queries
 - [x] Consistent weight storage in kg (instant unit switching)
+- [x] Provider sync error display with reconnect buttons
 - [ ] Handle "no data" state elegantly
 - [ ] Handle "no provider links" state
 - [ ] Shared/public dashboard URLs
@@ -99,7 +102,6 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Profile API endpoint (GET/PUT /api/profile)
 - [x] Settings UI implementation (comprehensive with all sections)
 - [x] Weight units preference
-- [ ] Smoothing days preference
 - [x] Timezone selection (with @vvo/tzdb)
 - [x] Day start offset
 - [ ] Privacy settings
@@ -114,7 +116,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Privacy policy
 - [x] Tip jar/donation page
 - [x] Build info page
-- [ ] Mathematical explanation page
+- [x] Mathematical explanation page
 
 ### 🚀 Additional Features
 
@@ -130,7 +132,7 @@ This issues tracks the implementation status of TrendWeight migration
 
 ### 🐛 Other Items
 
-- [ ] Improve error handling throughout
+- [x] Improve error handling throughout (ProviderAuthException, dashboard error UI)
 - [ ] Add request/response logging
 - [ ] Implement proper retry logic
 - [ ] Add monitoring/observability

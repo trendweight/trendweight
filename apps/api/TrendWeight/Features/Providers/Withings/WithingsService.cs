@@ -4,6 +4,7 @@ using TrendWeight.Features.Measurements;
 using TrendWeight.Features.Measurements.Models;
 using TrendWeight.Features.Profile.Services;
 using TrendWeight.Features.ProviderLinks.Services;
+using TrendWeight.Features.Providers.Exceptions;
 using TrendWeight.Features.Providers.Withings.Models;
 
 namespace TrendWeight.Features.Providers.Withings;
@@ -96,6 +97,19 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         {
             Logger.LogError("Withings API error: {Status} {Error}",
                 withingsResponse?.Status, withingsResponse?.Error);
+
+            // Check for auth-related errors
+            // Withings uses status 401 for invalid token
+            if (withingsResponse?.Status == 401 ||
+                withingsResponse?.Error?.Contains("invalid_token", StringComparison.OrdinalIgnoreCase) == true ||
+                withingsResponse?.Error?.Contains("unauthorized", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                throw new ProviderAuthException(
+                    "withings",
+                    $"Withings authentication failed: {withingsResponse.Error}",
+                    withingsResponse.Status.ToString());
+            }
+
             throw new Exception($"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}");
         }
 
@@ -182,6 +196,19 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         {
             Logger.LogError("Withings API error: {Status} {Error}",
                 withingsResponse?.Status, withingsResponse?.Error);
+
+            // Check for auth-related errors
+            // Withings uses status 401 for invalid token
+            if (withingsResponse?.Status == 401 ||
+                withingsResponse?.Error?.Contains("invalid_token", StringComparison.OrdinalIgnoreCase) == true ||
+                withingsResponse?.Error?.Contains("unauthorized", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                throw new ProviderAuthException(
+                    "withings",
+                    $"Withings authentication failed: {withingsResponse.Error}",
+                    withingsResponse.Status.ToString());
+            }
+
             throw new Exception($"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}");
         }
 
@@ -274,6 +301,19 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         {
             Logger.LogError("Withings API error: {Status} {Error}",
                 withingsResponse?.Status, withingsResponse?.Error);
+
+            // Check for auth-related errors
+            // Withings uses status 401 for invalid token
+            if (withingsResponse?.Status == 401 ||
+                withingsResponse?.Error?.Contains("invalid_token", StringComparison.OrdinalIgnoreCase) == true ||
+                withingsResponse?.Error?.Contains("unauthorized", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                throw new ProviderAuthException(
+                    "withings",
+                    $"Withings authentication failed: {withingsResponse.Error}",
+                    withingsResponse.Status.ToString());
+            }
+
             throw new Exception($"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}");
         }
 

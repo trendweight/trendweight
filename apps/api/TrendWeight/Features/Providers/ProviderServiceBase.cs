@@ -2,6 +2,8 @@ using System.Text.Json;
 using TrendWeight.Features.Measurements;
 using TrendWeight.Features.Measurements.Models;
 using TrendWeight.Features.ProviderLinks.Services;
+using TrendWeight.Features.Providers.Exceptions;
+using TrendWeight.Features.Providers.Models;
 using TrendWeight.Features.Profile.Services;
 using TrendWeight.Infrastructure.DataAccess.Models;
 
@@ -75,6 +77,11 @@ public abstract class ProviderServiceBase : IProviderService
 
             return measurements;
         }
+        catch (ProviderAuthException)
+        {
+            // Re-throw auth exceptions to be handled by SyncMeasurementsAsync
+            throw;
+        }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Failed to get {Provider} measurements for user {UserId}", ProviderName, userId);
@@ -83,7 +90,7 @@ public abstract class ProviderServiceBase : IProviderService
     }
 
     /// <inheritdoc />
-    public async Task<bool> SyncMeasurementsAsync(Guid userId, bool metric)
+    public async Task<ProviderSyncResult> SyncMeasurementsAsync(Guid userId, bool metric)
     {
         try
         {
@@ -110,7 +117,15 @@ public abstract class ProviderServiceBase : IProviderService
             var measurements = await GetMeasurementsAsync(userId, metric, startDate);
             if (measurements == null)
             {
-                return false;
+                // This should rarely happen now that we have specific exception handling
+                // but keeping it as a fallback
+                return new ProviderSyncResult
+                {
+                    Provider = ProviderName,
+                    Success = false,
+                    Error = ProviderSyncError.Unknown,
+                    Message = $"Failed to retrieve measurements from {ProviderName}"
+                };
             }
 
             // Update source data
@@ -126,12 +141,45 @@ public abstract class ProviderServiceBase : IProviderService
 
             Logger.LogDebug("Successfully synced {Count} {Provider} measurements for user {UserId}",
                 measurements.Count, ProviderName, userId);
-            return true;
+
+            return new ProviderSyncResult
+            {
+                Provider = ProviderName,
+                Success = true
+            };
+        }
+        catch (ProviderAuthException ex)
+        {
+            Logger.LogWarning(ex, "Authentication failed for {Provider} user {UserId}", ProviderName, userId);
+            return new ProviderSyncResult
+            {
+                Provider = ProviderName,
+                Success = false,
+                Error = ProviderSyncError.AuthFailed,
+                Message = $"{ProviderName} authentication failed. Please reconnect your account."
+            };
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogError(ex, "Network error syncing {Provider} measurements for user {UserId}", ProviderName, userId);
+            return new ProviderSyncResult
+            {
+                Provider = ProviderName,
+                Success = false,
+                Error = ProviderSyncError.NetworkError,
+                Message = $"Network error connecting to {ProviderName}. Please try again later."
+            };
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Failed to sync {Provider} measurements for user {UserId}", ProviderName, userId);
-            return false;
+            return new ProviderSyncResult
+            {
+                Provider = ProviderName,
+                Success = false,
+                Error = ProviderSyncError.Unknown,
+                Message = $"An error occurred syncing {ProviderName} data"
+            };
         }
     }
 
@@ -186,7 +234,13 @@ public abstract class ProviderServiceBase : IProviderService
                 // Update the local copy with the new token
                 providerLink.Token = refreshedToken;
             }
-            catch (InvalidOperationException ex) when (ex.Message.Contains("null or undefined"))
+            catch (ProviderAuthException)
+            {
+                Logger.LogWarning("Token refresh failed with auth error for {Provider} user {UserId}. User needs to re-link account.", ProviderName, userId);
+                // Re-throw to be handled by the calling method
+                throw;
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("null or undefined") || ex.Message.Contains("No refresh token"))
             {
                 Logger.LogWarning("Token for {Provider} user {UserId} is invalid and cannot be refreshed. User needs to re-link account.", ProviderName, userId);
                 // Return null to indicate no valid provider link
