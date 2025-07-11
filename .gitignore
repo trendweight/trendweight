@@ -49,6 +49,8 @@ yarn-error.log*
 # Monorepo
 .nx/
 .turbo/
+# Ignore subdirectory package-lock files (only root should have one)
+apps/*/package-lock.json
 
 # C# / .NET
 *.swp
