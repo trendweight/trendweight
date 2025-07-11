@@ -46,7 +46,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/dashboard`,
+        redirectTo: `${window.location.origin}/auth/verify`,
       },
     });
 
@@ -60,7 +60,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "azure",
       options: {
-        redirectTo: `${window.location.origin}/dashboard`,
+        redirectTo: `${window.location.origin}/auth/verify`,
         scopes: "email",
       },
     });

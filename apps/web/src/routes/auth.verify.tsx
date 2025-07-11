@@ -16,17 +16,33 @@ export const Route = createFileRoute("/auth/verify")({
       throw redirect({ to: "/dashboard" });
     }
 
-    // Check if this is a Supabase magic link
-    const url = new URL(location.href);
-    const token = url.searchParams.get("token");
-    const type = url.searchParams.get("type");
+    // Check if this is a Supabase magic link or OAuth callback
+    const searchParams = new URLSearchParams(location.search);
+    const token = searchParams.get("token");
+    const type = searchParams.get("type");
+    const error = searchParams.get("error");
+    const errorDescription = searchParams.get("error_description");
 
-    if (!token || type !== "email") {
-      return { error: "Invalid login link", needsEmail: false };
+    // Handle OAuth errors
+    if (error) {
+      return { error: errorDescription || error, needsEmail: false };
     }
 
-    // For Supabase, we handle the verification in the component
-    return { error: null, needsEmail: false, token };
+    // Magic link requires token and type=email
+    if (token && type === "email") {
+      return { error: null, needsEmail: false, token };
+    }
+
+    // Check if this looks like an OAuth callback (has hash or specific query params)
+    const hasAuthParams = location.hash || searchParams.get("code") || searchParams.get("access_token");
+
+    if (hasAuthParams) {
+      // OAuth callbacks - Supabase handles them automatically
+      return { error: null, needsEmail: false, isOAuth: true };
+    }
+
+    // Manual visit with no auth parameters - redirect to home
+    throw redirect({ to: "/" });
   },
   component: VerifyEmailPage,
 });
@@ -39,6 +55,7 @@ function VerifyEmailPage() {
   const [error, setError] = useState("");
 
   const token = routeData.token;
+  const isOAuth = routeData.isOAuth;
 
   useEffect(() => {
     // If already logged in, redirect
@@ -47,8 +64,8 @@ function VerifyEmailPage() {
       return;
     }
 
-    // If we have a token, verify it
-    if (token && isVerifying) {
+    // Handle OAuth callback or magic link token
+    if ((token || isOAuth) && isVerifying) {
       (async () => {
         try {
           // Supabase will handle the verification automatically when we call getSession
@@ -82,11 +99,11 @@ function VerifyEmailPage() {
           setIsVerifying(false);
         }
       })();
-    } else if (!token) {
+    } else if (!token && !isOAuth) {
       setIsVerifying(false);
       setError(routeData.error || "Invalid login link");
     }
-  }, [token, isLoggedIn, navigate, isVerifying, routeData.error]);
+  }, [token, isOAuth, isLoggedIn, navigate, isVerifying, routeData.error]);
 
   return (
     <>
