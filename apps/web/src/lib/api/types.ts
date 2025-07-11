@@ -46,3 +46,16 @@ export interface ProviderLink {
   updateReason?: string;
   hasToken: boolean;
 }
+
+// Provider sync status
+export interface ProviderSyncStatus {
+  success: boolean;
+  error?: "authfailed" | "networkerror" | "unknown";
+  message?: string;
+}
+
+// Enhanced measurements response from /api/data endpoint
+export interface MeasurementsResponse {
+  data: ApiSourceData[];
+  providerStatus: Record<string, ProviderSyncStatus>;
+}

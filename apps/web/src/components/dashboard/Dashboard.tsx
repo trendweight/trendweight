@@ -7,6 +7,7 @@ import Currently from "./Currently";
 import RecentReadings from "./RecentReadings";
 import Stats from "./Stats";
 import Deltas from "./Deltas";
+import ProviderSyncErrors from "./ProviderSyncErrors";
 
 const Dashboard: FC = () => {
   const dashboardData = useComputeDashboardData();
@@ -18,6 +19,7 @@ const Dashboard: FC = () => {
   return (
     <DashboardProvider data={dashboardData}>
       <div className="flex flex-col gap-4">
+        <ProviderSyncErrors providerStatus={dashboardData.providerStatus} />
         <Buttons />
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12">
           <div className="w-full md:w-[475px] lg:w-[650px] xl:w-[840px]">

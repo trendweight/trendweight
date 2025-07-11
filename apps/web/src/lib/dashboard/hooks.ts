@@ -20,7 +20,7 @@ export const useComputeDashboardData = (): DashboardData => {
   const [timeRange, setTimeRange] = usePersistedState<TimeRange>("timeRange", "4w");
 
   // Get profile and measurement data in parallel
-  const { profile, measurementData: apiSourceData } = useDashboardQueries();
+  const { profile, measurementData: apiSourceData, providerStatus } = useDashboardQueries();
 
   // Transform API data to match core interfaces
   const sourceData = useMemo(
@@ -53,6 +53,7 @@ export const useComputeDashboardData = (): DashboardData => {
     weightSlope,
     activeSlope,
     deltas,
+    providerStatus,
   };
 
   return data;

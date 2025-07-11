@@ -1,6 +1,6 @@
 import { useQuery, useSuspenseQuery, useSuspenseQueries } from "@tanstack/react-query";
 import { apiRequest } from "./client";
-import type { ProfileResponse, ApiSourceData, ProviderLink } from "./types";
+import type { ProfileResponse, ProviderLink, MeasurementsResponse } from "./types";
 import type { ProfileData, SettingsData } from "../core/interfaces";
 
 // Query keys
@@ -18,7 +18,7 @@ const queryOptions = {
   },
   data: {
     queryKey: queryKeys.data,
-    queryFn: () => apiRequest<ApiSourceData[]>("/data"),
+    queryFn: () => apiRequest<MeasurementsResponse>("/data"),
     staleTime: 60000, // 1 minute (matching legacy React Query config)
   },
 };
@@ -71,9 +71,11 @@ export function useDashboardQueries() {
     ],
   });
 
+  const measurementsResponse = results[1].data;
   return {
     profile: results[0].data,
-    measurementData: results[1].data,
+    measurementData: measurementsResponse.data,
+    providerStatus: measurementsResponse.providerStatus,
   };
 }
 

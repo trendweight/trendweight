@@ -76,10 +76,10 @@ public class ProviderIntegrationService : IProviderIntegrationService
                     _logger.LogInformation("Syncing {Provider} measurements for user {UserId}",
                         providerName, userId);
 
-                    var success = await providerService.SyncMeasurementsAsync(userId, metric);
-                    results[providerName] = success;
+                    var syncResult = await providerService.SyncMeasurementsAsync(userId, metric);
+                    results[providerName] = syncResult.Success;
 
-                    if (success)
+                    if (syncResult.Success)
                     {
                         _logger.LogInformation("Successfully synced {Provider} measurements for user {UserId}",
                             providerName, userId);

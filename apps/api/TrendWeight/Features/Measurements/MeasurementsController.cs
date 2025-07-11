@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TrendWeight.Features.Profile.Services;
 using TrendWeight.Features.Providers;
+using TrendWeight.Features.Providers.Models;
 using TrendWeight.Features.Measurements.Models;
 
 namespace TrendWeight.Features.Measurements;
@@ -40,7 +41,7 @@ public class MeasurementsController : ControllerBase
     /// Gets measurement data, refreshing from providers if needed
     /// Matches legacy /api/data endpoint behavior
     /// </summary>
-    /// <returns>Array of SourceData objects</returns>
+    /// <returns>MeasurementsResponse with data and provider status</returns>
     [HttpGet]
     public async Task<IActionResult> GetMeasurements()
     {
@@ -65,8 +66,11 @@ public class MeasurementsController : ControllerBase
             // Get active providers
             var activeProviders = await _providerIntegrationService.GetActiveProvidersAsync(user.Uid);
 
+            // Track provider sync status
+            var providerStatus = new Dictionary<string, ProviderSyncStatus>();
+
             // For each active provider, check if refresh is needed
-            var refreshTasks = new List<Task<(string provider, bool success)>>();
+            var refreshTasks = new List<Task<ProviderSyncResult>>();
             var now = DateTime.UtcNow;
 
             // Check each provider's last sync time directly from the database
@@ -94,6 +98,12 @@ public class MeasurementsController : ControllerBase
                 {
                     _logger.LogInformation("Provider {Provider} data is fresh (last sync: {LastSync})",
                         provider, lastSync!.Value.ToString("o"));
+
+                    // Mark provider as successful since we have fresh data
+                    providerStatus[provider] = new ProviderSyncStatus
+                    {
+                        Success = true
+                    };
                 }
             }
 
@@ -101,21 +111,34 @@ public class MeasurementsController : ControllerBase
             if (refreshTasks.Count > 0)
             {
                 var refreshResults = await Task.WhenAll(refreshTasks);
-                foreach (var (provider, success) in refreshResults)
+                foreach (var result in refreshResults)
                 {
-                    if (!success)
+                    providerStatus[result.Provider] = new ProviderSyncStatus
                     {
-                        _logger.LogWarning("Failed to refresh data for provider {Provider}", provider);
+                        Success = result.Success,
+                        Error = result.Error?.ToString().ToLowerInvariant(),
+                        Message = result.Message
+                    };
+
+                    if (!result.Success)
+                    {
+                        _logger.LogWarning("Failed to refresh data for provider {Provider}: {Error}",
+                            result.Provider, result.Message);
                     }
                 }
-
             }
 
             // Get the current data (whether refreshed or cached)
             var currentData = await _sourceDataService.GetSourceDataAsync(user.Uid) ?? new List<SourceData>();
 
-            // Return the current data
-            return Ok(currentData);
+            // Return the enhanced response
+            var response = new MeasurementsResponse
+            {
+                Data = currentData,
+                ProviderStatus = providerStatus
+            };
+
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -124,23 +147,35 @@ public class MeasurementsController : ControllerBase
         }
     }
 
-    private async Task<(string provider, bool success)> RefreshProviderAsync(Guid userId, string provider, bool useMetric)
+    private async Task<ProviderSyncResult> RefreshProviderAsync(Guid userId, string provider, bool useMetric)
     {
         try
         {
             var providerService = _providerIntegrationService.GetProviderService(provider);
             if (providerService == null)
             {
-                return (provider, false);
+                return new ProviderSyncResult
+                {
+                    Provider = provider,
+                    Success = false,
+                    Error = ProviderSyncError.Unknown,
+                    Message = $"Provider service not found for {provider}"
+                };
             }
 
-            var success = await providerService.SyncMeasurementsAsync(userId, useMetric);
-            return (provider, success);
+            var result = await providerService.SyncMeasurementsAsync(userId, useMetric);
+            return result;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error refreshing {Provider} data", provider);
-            return (provider, false);
+            return new ProviderSyncResult
+            {
+                Provider = provider,
+                Success = false,
+                Error = ProviderSyncError.Unknown,
+                Message = $"Unexpected error refreshing {provider} data"
+            };
         }
     }
 }

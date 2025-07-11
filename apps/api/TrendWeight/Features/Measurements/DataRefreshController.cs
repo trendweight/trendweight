@@ -154,9 +154,9 @@ public class DataRefreshController : ControllerBase
 
             // Sync provider data
             _logger.LogInformation("Refreshing {Provider} data for user {UserId}", provider, user.Uid);
-            var success = await providerService.SyncMeasurementsAsync(user.Uid, user.Profile.UseMetric);
+            var syncResult = await providerService.SyncMeasurementsAsync(user.Uid, user.Profile.UseMetric);
 
-            if (success)
+            if (syncResult.Success)
             {
                 return Ok(new
                 {
