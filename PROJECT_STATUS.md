@@ -107,6 +107,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [ ] Privacy settings
 - [x] Connect/disconnect providers
 - [x] Delete account functionality (UI ready, backend pending)
+- [ ] Data export functionality (download your data)
 
 ### ✅ Static Pages
 
