@@ -48,7 +48,7 @@ export function GoalSection({ register, errors, watch, control }: GoalSectionPro
             type="date"
             {...register("goalStart")}
             max={new Date().toISOString().split("T")[0]}
-            className="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           />
           <p className="mt-1 text-sm text-gray-500">Tell us when you started working on your current plan</p>
         </div>
@@ -65,7 +65,7 @@ export function GoalSection({ register, errors, watch, control }: GoalSectionPro
               valueAsNumber: true,
               min: { value: 0, message: "Goal weight must be positive" },
             })}
-            className="w-full md:w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full md:w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           />
           {errors.goalWeight && <p className="mt-1 text-sm text-red-600">{errors.goalWeight.message}</p>}
         </div>

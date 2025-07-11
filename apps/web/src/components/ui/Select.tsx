@@ -16,7 +16,7 @@ export function Select<Option = unknown, IsMulti extends boolean = false, Group 
         classNamePrefix="select"
         className="react-select-container"
         classNames={{
-          control: (state) => (state.isFocused ? "!border-blue-500 !ring-2 !ring-blue-500 !shadow-none" : "!border-gray-300 hover:!border-gray-400"),
+          control: (state) => (state.isFocused ? "!border-brand-500 !ring-2 !ring-brand-500 !shadow-none" : "!border-gray-300 hover:!border-gray-400"),
           placeholder: () => "!text-gray-500",
           input: () => "!text-gray-900",
           singleValue: () => "!text-gray-900",
@@ -24,10 +24,10 @@ export function Select<Option = unknown, IsMulti extends boolean = false, Group 
           menuList: () => "!p-1",
           option: (state) => {
             if (state.isSelected) {
-              return "!bg-blue-600 !text-white";
+              return "!bg-brand-600 !text-white";
             }
             if (state.isFocused) {
-              return "!bg-blue-50 !text-gray-900 !cursor-pointer";
+              return "!bg-brand-50 !text-gray-900 !cursor-pointer";
             }
             return "!text-gray-900 !cursor-pointer hover:!bg-gray-50";
           },

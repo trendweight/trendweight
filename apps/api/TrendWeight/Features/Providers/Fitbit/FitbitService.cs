@@ -238,11 +238,11 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             // For initial sync, use Fitbit's earliest allowed date
             // The API doesn't allow requests before 2009-01-01
             startDate = new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            Logger.LogInformation("Starting Fitbit sync from earliest allowed date: {StartDate}", startDate.ToString("yyyy-MM-dd"));
+            Logger.LogInformation("Starting Fitbit sync from earliest allowed date: {StartDate}", startDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
         }
 
         Logger.LogInformation("Fetching Fitbit measurements from {StartDate} to {EndDate}",
-            startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
+            startDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), endDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
 
         // Calculate total days and chunks needed
         var totalDays = (endDate - startDate).TotalDays;
@@ -267,8 +267,8 @@ public class FitbitService : ProviderServiceBase, IFitbitService
 
         Logger.LogInformation("Fetched {Count} measurements from Fitbit spanning {StartDate} to {EndDate}",
             allMeasurements.Count,
-            startDate.ToString("yyyy-MM-dd"),
-            endDate.ToString("yyyy-MM-dd"));
+            startDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+            endDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
 
         if (allMeasurements.Count > 0)
         {
@@ -278,8 +278,8 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             var latestDate = DateTimeOffset.FromUnixTimeSeconds(latestMeasurement.Timestamp).DateTime;
 
             Logger.LogInformation("Actual measurement dates: {EarliestDate} to {LatestDate}",
-                earliestDate.ToString("yyyy-MM-dd"),
-                latestDate.ToString("yyyy-MM-dd"));
+                earliestDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                latestDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
         }
 
         return allMeasurements;
@@ -349,8 +349,8 @@ public class FitbitService : ProviderServiceBase, IFitbitService
     {
         var measurements = new List<RawMeasurement>();
 
-        var startStr = startDate.ToString("yyyy-MM-dd");
-        var endStr = endDate.ToString("yyyy-MM-dd");
+        var startStr = startDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        var endStr = endDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
         Logger.LogDebug("Fetching Fitbit weight log from {StartDate} to {EndDate}", startStr, endStr);
 
@@ -436,7 +436,7 @@ public class FitbitService : ProviderServiceBase, IFitbitService
     /// <summary>
     /// Truncates JSON arrays in a string to show only first and last few elements
     /// </summary>
-    private string TruncateJsonArrays(string json, int keepCount)
+    private static string TruncateJsonArrays(string json, int keepCount)
     {
         try
         {
@@ -446,14 +446,14 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         catch
         {
             // If we can't parse it, return a truncated version
-            return json.Length > 500 ? json.Substring(0, 500) + "..." : json;
+            return json.Length > 500 ? string.Concat(json.AsSpan(0, 500), "...") : json;
         }
     }
 
     /// <summary>
     /// Recursively truncates arrays in a JsonElement
     /// </summary>
-    private string TruncateJsonElement(JsonElement element, int keepCount)
+    private static string TruncateJsonElement(JsonElement element, int keepCount)
     {
         switch (element.ValueKind)
         {
@@ -462,12 +462,12 @@ public class FitbitService : ProviderServiceBase, IFitbitService
                 var objFirst = true;
                 foreach (var prop in element.EnumerateObject())
                 {
-                    if (!objFirst) obj.Append(",");
+                    if (!objFirst) obj.Append(',');
                     objFirst = false;
-                    obj.Append($"\"{prop.Name}\":");
+                    obj.Append(CultureInfo.InvariantCulture, $"\"{prop.Name}\":");
                     obj.Append(TruncateJsonElement(prop.Value, keepCount));
                 }
-                obj.Append("}");
+                obj.Append('}');
                 return obj.ToString();
 
             case JsonValueKind.Array:
@@ -484,10 +484,10 @@ public class FitbitService : ProviderServiceBase, IFitbitService
                     var firstItems = items.Take(keepCount).Select(item => TruncateJsonElement(item, keepCount));
                     var lastItems = items.Skip(items.Count - keepCount).Select(item => TruncateJsonElement(item, keepCount));
                     arr.Append(string.Join(",", firstItems));
-                    arr.Append($",...({items.Count - keepCount * 2} more items)...,");
+                    arr.Append(CultureInfo.InvariantCulture, $",...({items.Count - keepCount * 2} more items)...,");
                     arr.Append(string.Join(",", lastItems));
                 }
-                arr.Append("]");
+                arr.Append(']');
                 return arr.ToString();
 
             case JsonValueKind.String:

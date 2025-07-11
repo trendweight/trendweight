@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json;
 using System.Web;
 using TrendWeight.Features.Measurements;
@@ -16,6 +17,10 @@ public class WithingsService : ProviderServiceBase, IWithingsService
 {
     private readonly HttpClient _httpClient;
     private readonly WithingsConfig _config;
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
 
     /// <summary>
     /// Constructor
@@ -71,21 +76,16 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         {
             Logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}",
                 response.StatusCode, response.ReasonPhrase);
-            throw new Exception($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
+            throw new HttpRequestException($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
         Logger.LogDebug("Withings authorization code exchange completed. Response: {Response}", responseContent);
 
-        var options = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = false
-        };
-
         WithingsResponse<WithingsTokenResponse>? withingsResponse;
         try
         {
-            withingsResponse = JsonSerializer.Deserialize<WithingsResponse<WithingsTokenResponse>>(responseContent, options);
+            withingsResponse = JsonSerializer.Deserialize<WithingsResponse<WithingsTokenResponse>>(responseContent, JsonOptions);
         }
         catch (Exception ex)
         {
@@ -107,10 +107,10 @@ public class WithingsService : ProviderServiceBase, IWithingsService
                 throw new ProviderAuthException(
                     "withings",
                     $"Withings authentication failed: {withingsResponse.Error}",
-                    withingsResponse.Status.ToString());
+                    withingsResponse.Status.ToString(CultureInfo.InvariantCulture));
             }
 
-            throw new Exception($"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}");
+            throw new ProviderApiException("withings", $"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}", withingsResponse?.Error, withingsResponse?.Status);
         }
 
         var tokenData = withingsResponse!.Body!;
@@ -179,18 +179,13 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         {
             Logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}",
                 response.StatusCode, response.ReasonPhrase);
-            throw new Exception($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
+            throw new HttpRequestException($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
         Logger.LogDebug("Withings token refresh completed");
 
-        var options = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = false
-        };
-
-        var withingsResponse = JsonSerializer.Deserialize<WithingsResponse<WithingsTokenResponse>>(responseContent, options);
+        var withingsResponse = JsonSerializer.Deserialize<WithingsResponse<WithingsTokenResponse>>(responseContent, JsonOptions);
 
         if (withingsResponse?.Status != 0)
         {
@@ -206,10 +201,10 @@ public class WithingsService : ProviderServiceBase, IWithingsService
                 throw new ProviderAuthException(
                     "withings",
                     $"Withings authentication failed: {withingsResponse.Error}",
-                    withingsResponse.Status.ToString());
+                    withingsResponse.Status.ToString(CultureInfo.InvariantCulture));
             }
 
-            throw new Exception($"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}");
+            throw new ProviderApiException("withings", $"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}", withingsResponse?.Error, withingsResponse?.Status);
         }
 
         var tokenData = withingsResponse!.Body!;
@@ -270,7 +265,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         query["action"] = "getmeas";
         query["category"] = "1"; // 1 for real measures
         query["meastypes"] = "1,6"; // 1 for Weight (kg), 6 for Fat Ratio (%)
-        query["startdate"] = start.ToString();
+        query["startdate"] = start.ToString(CultureInfo.InvariantCulture);
 
         if (offset != null)
         {
@@ -289,7 +284,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
             var errorContent = await response.Content.ReadAsStringAsync();
             Logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}. Response content: {Content}",
                 response.StatusCode, response.ReasonPhrase, errorContent);
-            throw new Exception($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
+            throw new HttpRequestException($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
@@ -311,10 +306,10 @@ public class WithingsService : ProviderServiceBase, IWithingsService
                 throw new ProviderAuthException(
                     "withings",
                     $"Withings authentication failed: {withingsResponse.Error}",
-                    withingsResponse.Status.ToString());
+                    withingsResponse.Status.ToString(CultureInfo.InvariantCulture));
             }
 
-            throw new Exception($"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}");
+            throw new ProviderApiException("withings", $"Withings API error: {withingsResponse?.Status} {withingsResponse?.Error}", withingsResponse?.Error, withingsResponse?.Status);
         }
 
         var body = withingsResponse!.Body!;

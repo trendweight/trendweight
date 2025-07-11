@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Security.Claims;
 using TrendWeight.Features.Profile.Models;
 using TrendWeight.Features.Profile.Services;
@@ -70,7 +71,7 @@ public class ProfileController : ControllerBase
                     email = user.Email,
                     firstName = profileData.FirstName,
                     timezone = profileData.Timezone,
-                    goalStart = profileData.GoalStart?.ToString("yyyy-MM-dd"),
+                    goalStart = profileData.GoalStart?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                     goalWeight = profileData.GoalWeight,
                     plannedPoundsPerWeek = profileData.PlannedPoundsPerWeek,
                     dayStartOffset = profileData.DayStartOffset,

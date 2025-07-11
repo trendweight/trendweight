@@ -133,3 +133,4 @@ context_portal/
 
 # Claude memory bank (personal workspace data)
 .claude/memory-bank/
+.chunkhound
