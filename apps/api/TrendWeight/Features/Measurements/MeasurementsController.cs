@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TrendWeight.Features.Profile.Services;
@@ -21,20 +22,29 @@ public class MeasurementsController : ControllerBase
     private readonly IProviderIntegrationService _providerIntegrationService;
     private readonly ISourceDataService _sourceDataService;
     private readonly ILogger<MeasurementsController> _logger;
+    private readonly IWebHostEnvironment _environment;
 
-    // Data is considered fresh for 5 minutes (matching legacy behavior)
-    private const int CACHE_DURATION_SECONDS = 300;
+    // Data is considered fresh for 5 minutes in production (matching legacy behavior)
+    // In development, use 10 seconds for easier debugging
+    private readonly int CACHE_DURATION_SECONDS;
 
     public MeasurementsController(
         IUserService userService,
         IProviderIntegrationService providerIntegrationService,
         ISourceDataService sourceDataService,
-        ILogger<MeasurementsController> logger)
+        ILogger<MeasurementsController> logger,
+        IWebHostEnvironment environment)
     {
         _userService = userService;
         _providerIntegrationService = providerIntegrationService;
         _sourceDataService = sourceDataService;
         _logger = logger;
+        _environment = environment;
+
+        // Use shorter cache duration in development for easier debugging
+        CACHE_DURATION_SECONDS = _environment.IsDevelopment() ? 10 : 300;
+        _logger.LogDebug("Cache duration set to {Duration} seconds ({Environment} mode)",
+            CACHE_DURATION_SECONDS, _environment.EnvironmentName);
     }
 
     /// <summary>

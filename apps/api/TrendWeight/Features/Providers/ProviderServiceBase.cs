@@ -223,7 +223,10 @@ public abstract class ProviderServiceBase : IProviderService
         }
 
         // Check if token needs refresh (provider-specific logic)
-        if (IsTokenExpired(providerLink.Token))
+        var isExpired = IsTokenExpired(providerLink.Token);
+        Logger.LogDebug("Checking {Provider} token expiration for user {UserId}: {IsExpired}", ProviderName, userId, isExpired);
+
+        if (isExpired)
         {
             Logger.LogDebug("Token expired for {Provider} user {UserId}, attempting refresh", ProviderName, userId);
 

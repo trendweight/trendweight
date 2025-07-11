@@ -123,7 +123,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
             ["refresh_token"] = tokenData.RefreshToken ?? string.Empty,
             ["token_type"] = tokenData.TokenType ?? string.Empty,
             ["scope"] = tokenData.Scope ?? string.Empty,
-            ["expires_at"] = DateTimeOffset.UtcNow.AddSeconds(tokenData.ExpiresIn).ToString("o"),
+            ["received_at"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             ["expires_in"] = tokenData.ExpiresIn
         };
     }
@@ -131,24 +131,29 @@ public class WithingsService : ProviderServiceBase, IWithingsService
     /// <inheritdoc />
     protected override bool IsTokenExpired(Dictionary<string, object> token)
     {
-        // Check if token has expiration
-        if (!token.TryGetValue("expires_at", out var expiresAtObj))
+        // Check if we have the required fields
+        if (!token.TryGetValue("received_at", out var receivedAtObj) ||
+            !token.TryGetValue("expires_in", out var expiresInObj))
         {
+            Logger.LogDebug("Withings token missing received_at/expires_in fields, considering expired");
             return true;
         }
 
-        var expiresAtStr = expiresAtObj?.ToString();
-        if (string.IsNullOrEmpty(expiresAtStr))
+        // Calculate expiration from Unix timestamps
+        if (long.TryParse(receivedAtObj.ToString(), out var receivedAt) &&
+            int.TryParse(expiresInObj.ToString(), out var expiresIn))
         {
-            return true;
+            var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var expiresAt = receivedAt + expiresIn;
+            var isExpired = expiresAt <= now + 300; // 5 minutes buffer
+
+            Logger.LogDebug("Withings token - Received: {ReceivedAt}, ExpiresIn: {ExpiresIn}s, ExpiresAt: {ExpiresAt}, Now: {Now}, IsExpired: {IsExpired}",
+                receivedAt, expiresIn, expiresAt, now, isExpired);
+
+            return isExpired;
         }
 
-        if (DateTimeOffset.TryParse(expiresAtStr, out var expiresAt))
-        {
-            // Consider token expired if it expires in less than 5 minutes
-            return expiresAt <= DateTimeOffset.UtcNow.AddMinutes(5);
-        }
-
+        Logger.LogDebug("Failed to parse Withings token timestamps");
         return true;
     }
 
@@ -183,7 +188,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        Logger.LogDebug("Withings token refresh completed");
+        Logger.LogDebug("Withings token refresh response: {Response}", responseContent);
 
         var withingsResponse = JsonSerializer.Deserialize<WithingsResponse<WithingsTokenResponse>>(responseContent, JsonOptions);
 
@@ -217,7 +222,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
             ["refresh_token"] = tokenData.RefreshToken ?? string.Empty,
             ["token_type"] = tokenData.TokenType ?? string.Empty,
             ["scope"] = tokenData.Scope ?? string.Empty,
-            ["expires_at"] = DateTimeOffset.UtcNow.AddSeconds(tokenData.ExpiresIn).ToString("o"),
+            ["received_at"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             ["expires_in"] = tokenData.ExpiresIn
         };
     }
@@ -288,7 +293,7 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        Logger.LogDebug("Withings API response received for measurements");
+        Logger.LogDebug("Withings measurements response received, length: {Length} bytes", responseContent.Length);
 
         var withingsResponse = JsonSerializer.Deserialize<WithingsResponse<WithingsGetMeasuresResponse>>(responseContent);
 

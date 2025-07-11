@@ -11,7 +11,7 @@ public class WithingsTokenResponse
     /// User ID from Withings
     /// </summary>
     [JsonPropertyName("userid")]
-    public string Userid { get; set; } = string.Empty;
+    public long Userid { get; set; }
 
     /// <summary>
     /// Access token for API calls
