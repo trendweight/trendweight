@@ -44,7 +44,7 @@ function WithingsCallbackPage() {
             <>
               <p className="text-gray-700 mb-4">Failed to link your Withings account.</p>
               <p className="text-sm text-red-600 mb-4">Error: {errorMessage}</p>
-              <button onClick={() => navigate({ to: "/link" })} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              <button onClick={() => navigate({ to: "/link" })} className="bg-brand-600 text-white px-4 py-2 rounded hover:bg-brand-700">
                 Try Again
               </button>
             </>

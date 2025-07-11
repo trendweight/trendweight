@@ -297,7 +297,7 @@ public class SourceDataService : ISourceDataService
     /// <summary>
     /// Compares two lists of measurements for equality
     /// </summary>
-    private bool AreMeasurementsEqual(List<RawMeasurement> list1, List<RawMeasurement> list2)
+    private static bool AreMeasurementsEqual(List<RawMeasurement> list1, List<RawMeasurement> list2)
     {
         if (list1.Count != list2.Count)
             return false;

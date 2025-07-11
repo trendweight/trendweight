@@ -20,7 +20,7 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(({ optio
         <RadioGroup.Item
           key={option.value}
           value={option.value}
-          className="relative flex-1 px-3 py-1.5 text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100 rounded-md transition-all data-[state=checked]:bg-white data-[state=checked]:text-gray-900 data-[state=checked]:shadow-sm"
+          className="relative flex-1 px-3 py-1.5 text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-gray-100 rounded-md transition-all data-[state=checked]:bg-white data-[state=checked]:text-gray-900 data-[state=checked]:shadow-sm"
         >
           {option.label}
         </RadioGroup.Item>
