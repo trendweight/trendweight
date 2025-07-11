@@ -81,6 +81,27 @@ function TipJarPage() {
         <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-hr:my-6">
           <hr />
 
+          <h2>GitHub Sponsors</h2>
+
+          <p>
+            If you're a GitHub user, you can support TrendWeight through GitHub Sponsors. This allows you to make recurring monthly contributions or one-time
+            sponsorships.
+          </p>
+        </div>
+
+        <div className="my-6">
+          <iframe
+            src="https://github.com/sponsors/ervwalter/button"
+            title="Sponsor ervwalter"
+            height="32"
+            width="114"
+            style={{ border: 0, borderRadius: "6px" }}
+          />
+        </div>
+
+        <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-hr:my-6">
+          <hr />
+
           <h2>Venmo / PayPal</h2>
 
           <p>If you like, you can also send small amounts directly via PayPal or Venmo:</p>
