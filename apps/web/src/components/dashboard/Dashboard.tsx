@@ -7,6 +7,7 @@ import Currently from "./Currently";
 import RecentReadings from "./RecentReadings";
 import Stats from "./Stats";
 import Deltas from "./Deltas";
+import HelpLink from "./HelpLink";
 import ProviderSyncErrors from "./ProviderSyncErrors";
 
 const Dashboard: FC = () => {
@@ -32,6 +33,7 @@ const Dashboard: FC = () => {
           <div className="flex flex-col gap-4">
             <Deltas />
             <Stats />
+            <HelpLink />
           </div>
         </div>
       </div>

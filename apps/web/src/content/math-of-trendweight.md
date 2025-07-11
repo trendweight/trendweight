@@ -1,6 +1,10 @@
 # The Math Behind TrendWeight
 
-## Why Weight Tracking is Hard (And How Math Helps)
+## The TrendWeight Dashboard
+
+The TrendWeight dashboard presents a lot of information – current weight, trend weight, daily change, weekly loss rate, goal predictions, calorie estimates, and more. With all these numbers and charts, it can be overwhelming at first glance. Before diving into using these features, it's worth taking a step back to understand the challenge they're designed to solve and how they work together to give you meaningful insights into your weight loss journey.
+
+## Weight Tracking is Hard
 
 ### The Daily Weight Problem
 
@@ -17,7 +21,7 @@ These fluctuations can be 3-5 pounds in a single day, while actual fat loss migh
 
 ### Enter the Trend Line
 
-TrendWeight solves this by calculating a **trend line** - a smooth curve that filters out the daily noise to reveal your true weight direction. Think of it like this:
+Math can help with this problem. TrendWeight calculates a **trend line** - a smooth curve that filters out the daily noise to reveal your true weight direction. Think of it like this:
 
 - **Daily weights** = Bumpy dirt road
 - **Trend line** = Smooth highway running through the middle
@@ -46,7 +50,17 @@ The 2-pound spike only moved your trend by 0.2 pounds. If it's real weight gain,
 
 ### What You See on the Dashboard
 
-Every number on your TrendWeight dashboard comes from mathematical analysis of your trend line:
+The centerpiece of your dashboard is the weight chart. When you look at it, you'll notice there's a main line with diamond-shaped points scattered above and below it, each connected to the line by a vertical "string." These elements represent:
+
+- **Diamond points**: Your actual daily scale readings
+- **Main line (trend)**: The calculated trend that filters out daily noise
+- **Vertical strings**: The difference between your actual weight and the trend
+
+Think of the points below the line as "sinkers" that seem to pull the trend downward, and points above as "floaters" that appear to pull it upward. When you're losing weight, you'll have more sinkers than floaters, gradually bringing the trend line down. This visualization helps you see that weight loss isn't about every day being lower – it's about having more down days than up days over time.
+
+The trend line is what matters – it reveals whether you're actually losing, gaining, or maintaining weight by smoothing out the day-to-day fluctuations.
+
+The other numbers on your dashboard come from mathematical analysis of this trend line:
 
 - **Current Weight**: Your latest trend value (not today's actual weight)
 - **Loss per Week**: How fast your trend line is going down
