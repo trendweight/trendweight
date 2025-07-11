@@ -11,65 +11,64 @@ function TipJarPage() {
     <>
       <title>{pageTitle("Tip Jar")}</title>
       <Layout>
-        <div className="space-y-6">
-          <h1 className="text-4xl font-bold text-gray-900">Want to help support TrendWeight?</h1>
+        <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-hr:my-6">
+          <h1>Want to help support TrendWeight?</h1>
 
-          <p className="text-lg leading-relaxed text-gray-700">
+          <p>
             TrendWeight is a free app. I created it in my free time because I like tech gadgets and I wanted a better way to apply the concepts of the Hacker's
             Diet to my own day-to-day life. I didn't create it in order to make money. However, from time to time, I get an email from someone asking if there
             is some way they can make a donation to help support TrendWeight.
           </p>
 
-          <p className="text-lg leading-relaxed text-gray-700">
+          <p>
             Since TrendWeight is a development project I work on in my free time, I don't have to pay employees to develop or maintain the site. But there are
             some small fees I pay each month for the servers and software that power TrendWeight. In the interest of transparency, let me tell you what those
             costs are.
           </p>
 
-          <p className="text-lg leading-relaxed text-gray-700">In fact, TrendWeight is pretty inexpensive to run:</p>
+          <p>In fact, TrendWeight is pretty inexpensive to run:</p>
 
-          <ul className="pl-8 list-disc space-y-2 text-lg text-gray-700">
+          <ul>
             <li>
-              Hosting (TBD): <b>$20</b>/month
-            </li>
-            <li>
-              Analytics via{" "}
-              <a href="https://plausible.io" className="text-brand-600 hover:text-brand-700 underline">
-                Plausible
+              Hosting via{" "}
+              <a href="https://www.digitalocean.com" className="text-brand-600 hover:text-brand-700">
+                Digital Ocean
               </a>
-              : <b>~$10</b>/month
+              : <strong>$25</strong>/month
             </li>
             <li>
               Database and authentication via{" "}
-              <a href="https://supabase.com" className="text-brand-600 hover:text-brand-700 underline">
+              <a href="https://supabase.com" className="text-brand-600 hover:text-brand-700">
                 Supabase
               </a>
-              : <b>$25</b>/month
+              : <strong>$25</strong>/month
             </li>
             <li>
-              Charting library from{" "}
-              <a href="https://www.highcharts.com" className="text-brand-600 hover:text-brand-700 underline">
-                Highcharts
+              Analytics via{" "}
+              <a href="https://plausible.io" className="text-brand-600 hover:text-brand-700">
+                Plausible
               </a>
-              : <b>~$40</b>/month
+              : <strong>~$10</strong>/month
             </li>
           </ul>
 
-          <p className="text-lg leading-relaxed text-gray-700">
-            In total, my monthly expenses are <b>$95</b>/month.
+          <p>
+            In total, my monthly expenses are <strong>$60</strong>/month.
           </p>
 
-          <p className="text-lg leading-relaxed text-gray-700">
-            Let me be <b>crystal clear</b>: I don't need help paying for TrendWeight. I can afford to run TrendWeight out of my own pocket. I only have this
-            page because people kept emailing me asking how to support the site. If you really want to help, there are a few ways I can suggest...
+          <p>
+            Let me be <strong>crystal clear</strong>: I don't need help paying for TrendWeight. I can afford to run TrendWeight out of my own pocket. I only
+            have this page because people kept emailing me asking how to support the site. If you really want to help, there are a few ways I can suggest...
           </p>
 
-          <hr className="my-8 border-gray-300" />
+          <hr />
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-8 mb-4">Tip with Ko-fi</h2>
+          <h2>Tip with Ko-fi</h2>
 
-          <p className="text-lg leading-relaxed text-gray-700 mb-6">Ko-fi lets you give a small amount to someone using a credit card, PayPal, or Apple Pay.</p>
+          <p>Ko-fi lets you give a small amount to someone using a credit card, PayPal, or Apple Pay.</p>
+        </div>
 
+        <div className="my-6">
           <div
             dangerouslySetInnerHTML={{
               __html: `
@@ -77,23 +76,25 @@ function TipJarPage() {
             `,
             }}
           />
+        </div>
 
-          <hr className="my-8 border-gray-300" />
+        <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-hr:my-6">
+          <hr />
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-8 mb-4">Venmo / PayPal</h2>
+          <h2>Venmo / PayPal</h2>
 
-          <p className="text-lg leading-relaxed text-gray-700 mb-6">If you like, you can also send small amounts directly via PayPal or Venmo:</p>
+          <p>If you like, you can also send small amounts directly via PayPal or Venmo:</p>
 
-          <ul className="pl-8 list-disc space-y-2 text-lg text-gray-700">
+          <ul>
             <li>
               Venmo:{" "}
-              <a href="https://venmo.com/code?user_id=2181966380138496050" className="text-brand-600 hover:text-brand-700 underline">
+              <a href="https://venmo.com/code?user_id=2181966380138496050" className="text-brand-600 hover:text-brand-700">
                 ErvWalter
               </a>
             </li>
             <li>
               PayPal:{" "}
-              <a href="https://paypal.me/erv" className="text-brand-600 hover:text-brand-700 underline">
+              <a href="https://paypal.me/erv" className="text-brand-600 hover:text-brand-700">
                 erv@ewal.net
               </a>
             </li>
