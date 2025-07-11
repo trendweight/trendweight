@@ -108,7 +108,7 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             ["refresh_token"] = tokenData.RefreshToken,
             ["token_type"] = tokenData.TokenType,
             ["scope"] = tokenData.Scope,
-            ["expires_at"] = DateTimeOffset.UtcNow.AddSeconds(tokenData.ExpiresIn).ToString("o"),
+            ["received_at"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             ["expires_in"] = tokenData.ExpiresIn
         };
     }
@@ -116,30 +116,36 @@ public class FitbitService : ProviderServiceBase, IFitbitService
     /// <inheritdoc />
     protected override bool IsTokenExpired(Dictionary<string, object> token)
     {
-        // Check if token has expiration
-        if (!token.TryGetValue("expires_at", out var expiresAtObj))
+        // Check if we have the required fields
+        if (!token.TryGetValue("received_at", out var receivedAtObj) ||
+            !token.TryGetValue("expires_in", out var expiresInObj))
         {
+            Logger.LogDebug("Fitbit token missing received_at/expires_in fields, considering expired");
             return true;
         }
 
-        var expiresAtStr = expiresAtObj?.ToString();
-        if (string.IsNullOrEmpty(expiresAtStr))
+        // Calculate expiration from Unix timestamps
+        if (long.TryParse(receivedAtObj.ToString(), out var receivedAt) &&
+            int.TryParse(expiresInObj.ToString(), out var expiresIn))
         {
-            return true;
+            var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var expiresAt = receivedAt + expiresIn;
+            var isExpired = expiresAt <= now + 300; // 5 minutes buffer
+
+            Logger.LogDebug("Fitbit token - Received: {ReceivedAt}, ExpiresIn: {ExpiresIn}s, ExpiresAt: {ExpiresAt}, Now: {Now}, IsExpired: {IsExpired}",
+                receivedAt, expiresIn, expiresAt, now, isExpired);
+
+            return isExpired;
         }
 
-        if (DateTimeOffset.TryParse(expiresAtStr, out var expiresAt))
-        {
-            // Consider token expired if it expires in less than 5 minutes
-            return expiresAt <= DateTimeOffset.UtcNow.AddMinutes(5);
-        }
-
+        Logger.LogDebug("Failed to parse Fitbit token timestamps");
         return true;
     }
 
     /// <inheritdoc />
     protected override async Task<Dictionary<string, object>> RefreshTokenAsync(Dictionary<string, object> token)
     {
+        Logger.LogDebug("Attempting to refresh Fitbit token");
         // Get refresh token
         if (!token.TryGetValue("refresh_token", out var refreshTokenObj) || refreshTokenObj == null)
         {
@@ -206,7 +212,7 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             ["refresh_token"] = tokenData.RefreshToken,
             ["token_type"] = tokenData.TokenType,
             ["scope"] = tokenData.Scope,
-            ["expires_at"] = DateTimeOffset.UtcNow.AddSeconds(tokenData.ExpiresIn).ToString("o"),
+            ["received_at"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             ["expires_in"] = tokenData.ExpiresIn
         };
     }
@@ -361,13 +367,16 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         request.Headers.Add("Accept-Language", "en_US");
 
-        Logger.LogDebug("Fitbit API request: {Method} {Uri}", request.Method, request.RequestUri);
+        Logger.LogDebug("Fitbit API request: {Method} {Uri}, Token: {Token}...",
+            request.Method, request.RequestUri, accessToken.Length > 10 ? accessToken.Substring(0, 10) : accessToken);
 
         var response = await SendRateLimitedRequestAsync(request);
 
         if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
-            Logger.LogWarning("Fitbit token expired");
+            var unauthorizedContent = await response.Content.ReadAsStringAsync();
+            Logger.LogWarning("Fitbit API returned 401 Unauthorized. Response headers: {Headers}. Response content: {Content}",
+                response.Headers.ToString(), unauthorizedContent);
             throw new ProviderAuthException(
                 "fitbit",
                 "Fitbit authorization expired. Please reconnect your account.",

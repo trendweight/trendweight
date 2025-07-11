@@ -31,6 +31,13 @@ TrendWeight is a web application for tracking weight trends by integrating with 
 - **@js-joda/core** for date/time handling
 - **react-icons** for icons
 
+### Development Environment
+- The dev server is always running
+- Frontend logs end up in `logs/frontend.log`
+- Backend logs end up in `logs/backend.log`
+- Both servers reload automatically when code changes are made
+- Both log files are very long so you generally should `tail -100` or `-200` (depending on if you expect verbose debugging output that will generate many lines of output)
+
 ### Reference Implementation
 If `trendweight-classic/` folder exists locally, it contains the legacy C# MVC application for reference when implementing features or comparing with the live site. This folder is not part of the repository.
 
