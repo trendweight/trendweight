@@ -1,5 +1,5 @@
-import { ChronoUnit, Instant, ZoneId } from "@js-joda/core";
-import type { Measurement, ProfileData, SourceMeasurement, SourceData } from "../../core/interfaces";
+import { ChronoUnit, LocalDate, LocalTime } from "@js-joda/core";
+import type { Measurement, ProfileData, SourceData, SourceMeasurement } from "../../core/interfaces";
 import "../../core/time";
 
 export const computeMeasurements = (data: SourceData[], profile: ProfileData): Measurement[] => {
@@ -14,10 +14,15 @@ export const computeMeasurements = (data: SourceData[], profile: ProfileData): M
         return [];
       }
       return sourceData.measurements.map((sourceMeasurement) => {
-        const timestamp = Instant.ofEpochSecond(sourceMeasurement.timestamp).atZone(ZoneId.of(profile.timezone)).toLocalDateTime();
+        // Parse date and time to create LocalDateTime
+        const localDateTime = LocalDate.parse(sourceMeasurement.date).atTime(LocalTime.parse(sourceMeasurement.time));
+
+        // Apply dayStartOffset to determine which date this belongs to
+        const adjustedDateTime = localDateTime.minusHours(dayStartOffset);
+
         return {
-          date: timestamp.minusHours(dayStartOffset).toLocalDate(),
-          timestamp,
+          date: adjustedDateTime.toLocalDate(),
+          timestamp: adjustedDateTime, // Keep original for intra-day sorting
           source: sourceData.source,
           weight: sourceMeasurement.weight * conversionFactor, // Convert kg to lbs if needed
           fatRatio: sourceMeasurement.fatRatio,

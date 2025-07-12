@@ -33,7 +33,8 @@ export interface ApiSourceData {
   source: string; // "withings" or "fitbit"
   lastUpdate: string; // ISO timestamp
   measurements?: Array<{
-    timestamp: number; // Unix timestamp
+    date: string; // "2024-01-15"
+    time: string; // "06:30:00"
     weight: number;
     fatRatio?: number;
   }>;

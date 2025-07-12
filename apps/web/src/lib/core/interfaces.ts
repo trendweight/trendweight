@@ -1,9 +1,10 @@
 import type { LocalDate, LocalDateTime } from "@js-joda/core";
 
 export interface RawMeasurement {
-  timestamp: number;
-  weight: number;
-  fatRatio?: number;
+  date: string; // "2024-01-15"
+  time: string; // "06:30:00"
+  weight: number; // kg
+  fatRatio?: number; // 0-1 ratio
 }
 
 export type Sources = "withings" | "fitbit";

@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json;
 using TrendWeight.Features.Measurements.Models;
 using TrendWeight.Infrastructure.DataAccess;
@@ -50,7 +51,6 @@ public class SourceDataService : ISourceDataService
                     };
 
                     await _supabaseService.InsertAsync(dbSourceData);
-                    _logger.LogInformation("Created new source data for user {Uid} provider {Provider}", userId, sourceData.Source);
                 }
                 else
                 {
@@ -58,19 +58,19 @@ public class SourceDataService : ISourceDataService
                     var newMeasurements = sourceData.Measurements ?? new List<RawMeasurement>();
                     var existingMeasurements = dbSourceData.Measurements ?? new List<RawMeasurement>();
 
-                    // Calculate the cutoff timestamp (90 days before last sync)
+                    // Calculate the cutoff date (90 days before last sync)
                     var lastSyncTime = string.IsNullOrEmpty(dbSourceData.LastSync)
                         ? DateTime.UtcNow
                         : DateTime.Parse(dbSourceData.LastSync, null, System.Globalization.DateTimeStyles.RoundtripKind).ToUniversalTime();
-                    var cutoffTimestamp = ((DateTimeOffset)lastSyncTime.AddDays(-90)).ToUnixTimeSeconds();
+                    var cutoffDate = lastSyncTime.AddDays(-90).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-                    // Sort new measurements in descending order by timestamp
-                    newMeasurements.Sort((a, b) => b.Timestamp.CompareTo(a.Timestamp));
+                    // Sort new measurements in descending order by date/time
+                    newMeasurements.Sort((a, b) => string.Compare($"{b.Date} {b.Time}", $"{a.Date} {a.Time}", StringComparison.Ordinal));
 
                     // Get existing measurements that should be replaced (within the refresh window)
                     var existingMeasurementsToReplace = existingMeasurements
-                        .Where(m => m.Timestamp >= cutoffTimestamp)
-                        .OrderByDescending(m => m.Timestamp)
+                        .Where(m => string.Compare(m.Date, cutoffDate, StringComparison.Ordinal) >= 0)
+                        .OrderByDescending(m => $"{m.Date} {m.Time}")
                         .ToList();
 
                     // Check if data actually changed by comparing overlapping measurements
@@ -80,27 +80,21 @@ public class SourceDataService : ISourceDataService
                     {
                         // Keep older measurements (before the refresh window)
                         var existingMeasurementsToKeep = existingMeasurements
-                            .Where(m => m.Timestamp < cutoffTimestamp)
+                            .Where(m => string.Compare(m.Date, cutoffDate, StringComparison.Ordinal) < 0)
                             .ToList();
 
                         // Combine: new measurements + older kept measurements
                         var mergedMeasurements = newMeasurements.Concat(existingMeasurementsToKeep).ToList();
 
-                        // Sort merged measurements in descending order
-                        mergedMeasurements.Sort((a, b) => b.Timestamp.CompareTo(a.Timestamp));
+                        // Sort merged measurements in descending order by date/time
+                        mergedMeasurements.Sort((a, b) => string.Compare($"{b.Date} {b.Time}", $"{a.Date} {a.Time}", StringComparison.Ordinal));
 
                         // Update the measurements
                         dbSourceData.Measurements = mergedMeasurements;
 
-                        _logger.LogInformation("Merged measurements for user {Uid} provider {Provider}: " +
-                            "{NewCount} new + {KeptCount} kept = {TotalCount} total",
-                            userId, sourceData.Source, newMeasurements.Count,
-                            existingMeasurementsToKeep.Count, mergedMeasurements.Count);
                     }
                     else
                     {
-                        _logger.LogInformation("No measurement changes detected for user {Uid} provider {Provider}",
-                            userId, sourceData.Source);
                     }
 
                     // Always update LastSync timestamp and clear resync flag
@@ -307,7 +301,8 @@ public class SourceDataService : ISourceDataService
             var m1 = list1[i];
             var m2 = list2[i];
 
-            if (m1.Timestamp != m2.Timestamp ||
+            if (m1.Date != m2.Date ||
+                m1.Time != m2.Time ||
                 m1.Weight != m2.Weight ||
                 m1.FatRatio != m2.FatRatio)
             {

@@ -318,10 +318,25 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         var body = withingsResponse!.Body!;
         var timezone = body.Timezone;
 
+        // Get timezone info for conversion
+        TimeZoneInfo? tzInfo = null;
+        if (!string.IsNullOrEmpty(timezone))
+        {
+            try
+            {
+                tzInfo = TimeZoneInfo.FindSystemTimeZoneById(timezone);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning("Failed to parse timezone {Timezone}, will use UTC: {Error}", timezone, ex.Message);
+            }
+        }
+
         var measurements = new List<RawMeasurement>();
         foreach (var group in body.MeasureGroups)
         {
             var timestamp = group.Date;
+
             var weightMeasure = group.Measures.Find(m => m.Type == 1); // Type 1 = Weight
             var fatMeasure = group.Measures.Find(m => m.Type == 6);    // Type 6 = Fat Percentage
 
@@ -336,9 +351,16 @@ public class WithingsService : ProviderServiceBase, IWithingsService
                     fatRatio = fatPercent / 100m; // Convert percentage to ratio
                 }
 
+                // Convert Unix timestamp to local date/time
+                var utcDateTime = DateTimeOffset.FromUnixTimeSeconds(timestamp).UtcDateTime;
+                var localDateTime = tzInfo != null
+                    ? TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, tzInfo)
+                    : utcDateTime; // Fallback to UTC if timezone not available
+
                 var measurement = new RawMeasurement
                 {
-                    Timestamp = timestamp,
+                    Date = localDateTime.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                    Time = localDateTime.ToString("HH:mm:ss", CultureInfo.InvariantCulture),
                     Weight = weight, // Always store in kg
                     FatRatio = fatRatio
                 };
@@ -347,8 +369,8 @@ public class WithingsService : ProviderServiceBase, IWithingsService
             }
         }
 
-        // Sort measurements in descending order by timestamp
-        measurements.Sort((a, b) => b.Timestamp.CompareTo(a.Timestamp));
+        // Sort measurements in descending order by date/time
+        measurements.Sort((a, b) => string.Compare($"{b.Date} {b.Time}", $"{a.Date} {a.Time}", StringComparison.Ordinal));
 
         return (measurements, body.More > 0, body.Offset, timezone);
     }
