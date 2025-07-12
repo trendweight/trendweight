@@ -1,16 +1,19 @@
 namespace TrendWeight.Features.Measurements.Models;
 
 /// <summary>
-/// Raw measurement data matching legacy RawMeasurement interface
-/// Stored exactly as received from providers
+/// Raw measurement data stored with local date/time to avoid timezone complexity
 /// </summary>
 public record RawMeasurement
 {
     /// <summary>
-    /// Unix timestamp in seconds (as provided by providers)
-    /// Will be converted to user's local date on client
+    /// Date in user's local timezone (yyyy-MM-dd format)
     /// </summary>
-    public long Timestamp { get; init; }
+    public string Date { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Time in user's local timezone (HH:mm:ss format)
+    /// </summary>
+    public string Time { get; init; } = string.Empty;
 
     /// <summary>
     /// Weight in kilograms (using decimal to avoid floating point issues)
