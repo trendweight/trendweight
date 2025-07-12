@@ -1,6 +1,8 @@
 import type { FC } from "react";
+import { Navigate } from "@tanstack/react-router";
 import { DashboardProvider } from "../../lib/dashboard/context";
 import { useComputeDashboardData } from "../../lib/dashboard/hooks";
+import { ApiError } from "../../lib/api/client";
 import Buttons from "./Buttons";
 import Chart from "./chart/Chart";
 import Currently from "./Currently";
@@ -13,8 +15,14 @@ import ProviderSyncErrors from "./ProviderSyncErrors";
 const Dashboard: FC = () => {
   const dashboardData = useComputeDashboardData();
 
+  // Check if profile exists - if not, redirect to initial setup
+  if (dashboardData.profileError instanceof ApiError && dashboardData.profileError.status === 404) {
+    return <Navigate to="/initial-setup" replace />;
+  }
+
+  // If profile exists but no measurements, redirect to link page
   if (dashboardData.measurements.length === 0) {
-    return <div>No data yet.</div>;
+    return <Navigate to="/link" replace />;
   }
 
   return (

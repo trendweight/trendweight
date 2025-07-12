@@ -36,10 +36,4 @@ public class FitbitTokenResponse
     /// </summary>
     [JsonPropertyName("scope")]
     public string Scope { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Fitbit user ID
-    /// </summary>
-    [JsonPropertyName("user_id")]
-    public string UserId { get; set; } = string.Empty;
 }

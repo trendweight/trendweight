@@ -15,14 +15,20 @@ import { SharingSection } from "../components/settings/SharingSection";
 import { DangerZoneSection } from "../components/settings/DangerZoneSection";
 import { useNavigationGuard } from "../lib/hooks/useNavigationGuard";
 import type { SettingsData } from "../lib/core/interfaces";
+import { ensureProfile } from "../lib/loaders/utils";
 
 export const Route = createFileRoute("/settings")({
   beforeLoad: requireAuth,
+  loader: async () => {
+    // Ensure user has a profile
+    await ensureProfile();
+    return null;
+  },
   component: SettingsPage,
 });
 
 function SettingsPage() {
-  const { data: settingsData, isLoading, isError, error } = useSettings();
+  const { data: settingsData } = useSettings();
   const updateProfile = useUpdateProfile();
 
   const {
@@ -42,6 +48,42 @@ function SettingsPage() {
     }
   }, [settingsData, reset]);
 
+  // Watch for unit changes and convert values
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      if (name === "useMetric" && type === "change") {
+        const isMetric = value.useMetric;
+
+        // Convert planned pounds per week when switching units
+        const currentPlan = value.plannedPoundsPerWeek;
+        if (currentPlan && currentPlan !== 0) {
+          if (isMetric) {
+            // Converting from lbs to kg (roughly divide by 2)
+            setValue("plannedPoundsPerWeek", currentPlan / 2);
+          } else {
+            // Converting from kg to lbs (roughly multiply by 2)
+            setValue("plannedPoundsPerWeek", currentPlan * 2);
+          }
+        }
+
+        // Convert goal weight when switching units
+        const currentGoalWeight = value.goalWeight;
+        if (currentGoalWeight && currentGoalWeight !== 0) {
+          if (isMetric) {
+            // Converting from lbs to kg (divide by 2.20462 and round)
+            const kgValue = Math.round(currentGoalWeight / 2.20462);
+            setValue("goalWeight", kgValue);
+          } else {
+            // Converting from kg to lbs (multiply by 2.20462 and round)
+            const lbsValue = Math.round(currentGoalWeight * 2.20462);
+            setValue("goalWeight", lbsValue);
+          }
+        }
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setValue]);
+
   // Warn user about unsaved changes when navigating away
   useNavigationGuard(isDirty);
 
@@ -53,39 +95,6 @@ function SettingsPage() {
       console.error("Failed to update settings:", error);
     }
   };
-
-  if (isLoading) {
-    return (
-      <>
-        <title>{pageTitle("Settings")}</title>
-        <Layout>
-          <SettingsLayout>
-            <div className="p-8 text-center">
-              <p className="text-gray-500">Loading settings...</p>
-            </div>
-          </SettingsLayout>
-        </Layout>
-      </>
-    );
-  }
-
-  if (isError) {
-    return (
-      <>
-        <title>{pageTitle("Settings")}</title>
-        <Layout>
-          <SettingsLayout>
-            <div className="p-8">
-              <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded">
-                <p className="font-medium">Error loading settings</p>
-                <p className="text-sm mt-1">{error instanceof Error ? error.message : "Unknown error"}</p>
-              </div>
-            </div>
-          </SettingsLayout>
-        </Layout>
-      </>
-    );
-  }
 
   return (
     <>

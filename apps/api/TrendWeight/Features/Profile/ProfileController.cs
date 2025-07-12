@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Security.Claims;
 using TrendWeight.Features.Profile.Models;
 using TrendWeight.Features.Profile.Services;
+using TrendWeight.Infrastructure.DataAccess.Models;
 
 namespace TrendWeight.Features.Profile;
 
@@ -12,14 +13,14 @@ namespace TrendWeight.Features.Profile;
 [Authorize]
 public class ProfileController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IProfileService _profileService;
     private readonly ILogger<ProfileController> _logger;
 
     public ProfileController(
-        IUserService userService,
+        IProfileService profileService,
         ILogger<ProfileController> logger)
     {
-        _userService = userService;
+        _profileService = profileService;
         _logger = logger;
     }
 
@@ -41,7 +42,7 @@ public class ProfileController : ControllerBase
             }
 
             // Get user from Supabase by UID
-            var user = await _userService.GetByIdAsync(userId);
+            var user = await _profileService.GetByIdAsync(userId);
             if (user == null)
             {
                 _logger.LogWarning("User document not found for Supabase UID: {UserId}", userId);
@@ -90,7 +91,7 @@ public class ProfileController : ControllerBase
     }
 
     /// <summary>
-    /// Updates the user's profile/settings
+    /// Updates the user's profile/settings or creates a new profile if none exists
     /// </summary>
     /// <param name="request">The profile fields to update</param>
     /// <returns>The updated profile data</returns>
@@ -107,40 +108,36 @@ public class ProfileController : ControllerBase
                 return Unauthorized(new { error = "User ID not found" });
             }
 
-            // Get user from database
-            var user = await _userService.GetByIdAsync(userId);
-            if (user == null)
+            // Get user email from authenticated user claim
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(userEmail))
             {
-                _logger.LogWarning("User document not found for Supabase UID: {UserId}", userId);
-                return NotFound(new { error = "User not found" });
+                _logger.LogWarning("User email not found in authenticated user claims");
+                return Unauthorized(new { error = "User email not found" });
             }
 
-            // Update only the fields that were provided
-            if (request.FirstName != null)
-                user.Profile.FirstName = request.FirstName;
-            if (request.Timezone != null)
-                user.Profile.Timezone = request.Timezone;
-            if (request.GoalStart.HasValue)
-                user.Profile.GoalStart = request.GoalStart.Value;
-            if (request.GoalWeight.HasValue)
-                user.Profile.GoalWeight = request.GoalWeight.Value;
-            if (request.PlannedPoundsPerWeek.HasValue)
-                user.Profile.PlannedPoundsPerWeek = request.PlannedPoundsPerWeek.Value;
-            if (request.DayStartOffset.HasValue)
-                user.Profile.DayStartOffset = request.DayStartOffset.Value;
-            if (request.UseMetric.HasValue)
-                user.Profile.UseMetric = request.UseMetric.Value;
-            if (request.ShowCalories.HasValue)
-                user.Profile.ShowCalories = request.ShowCalories.Value;
+            // Use the service to update or create the profile
+            var profile = await _profileService.UpdateOrCreateProfileAsync(userId, userEmail, request);
 
-            // Update timestamp
-            user.UpdatedAt = DateTime.UtcNow.ToString("o");
-
-            // Save to database
-            await _userService.UpdateAsync(user);
-
-            // Return updated profile data
-            return await GetProfile();
+            // Return updated profile data in the same format as GET
+            return Ok(new
+            {
+                user = new
+                {
+                    uid = userId,
+                    email = profile.Email,
+                    firstName = profile.Profile.FirstName,
+                    timezone = profile.Profile.Timezone,
+                    goalStart = profile.Profile.GoalStart?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                    goalWeight = profile.Profile.GoalWeight,
+                    plannedPoundsPerWeek = profile.Profile.PlannedPoundsPerWeek,
+                    dayStartOffset = profile.Profile.DayStartOffset,
+                    useMetric = profile.Profile.UseMetric,
+                    showCalories = profile.Profile.ShowCalories,
+                    sharingToken = profile.Profile.SharingToken
+                },
+                timestamp = DateTime.UtcNow
+            });
         }
         catch (Exception ex)
         {

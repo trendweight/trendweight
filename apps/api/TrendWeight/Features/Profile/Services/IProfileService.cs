@@ -1,12 +1,13 @@
 using TrendWeight.Infrastructure.DataAccess.Models;
+using TrendWeight.Features.Profile.Models;
 
 namespace TrendWeight.Features.Profile.Services;
 
-public interface IUserService
+public interface IProfileService
 {
     Task<DbProfile?> GetByIdAsync(Guid id);
     Task<DbProfile?> GetByIdAsync(string id); // Overload for string IDs (Supabase UIDs)
-    Task<DbProfile?> GetByEmailAsync(string email);
     Task<DbProfile> CreateAsync(DbProfile profile);
     Task<DbProfile> UpdateAsync(DbProfile profile);
+    Task<DbProfile> UpdateOrCreateProfileAsync(string userId, string email, UpdateProfileRequest request);
 }

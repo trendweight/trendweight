@@ -46,7 +46,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ISupabaseService, SupabaseService>();
 
         // Register feature services
-        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProfileService, ProfileService>();
         services.AddScoped<IProviderLinkService, ProviderLinkService>();
         services.AddScoped<ISourceDataService, SourceDataService>();
 

@@ -54,3 +54,12 @@ export function useResyncProvider() {
     },
   });
 }
+
+export function useReconnectProvider() {
+  return useMutation({
+    mutationFn: async (provider: string) => {
+      const endpoint = provider === "fitbit" ? "/fitbit/link" : "/withings/link";
+      return apiRequest<{ url?: string; authorizationUrl?: string }>(endpoint);
+    },
+  });
+}
