@@ -269,22 +269,6 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             currentStart = currentEnd.AddDays(1);
         }
 
-        Logger.LogInformation("Fetched {Count} measurements from Fitbit spanning {StartDate} to {EndDate}",
-            allMeasurements.Count,
-            startDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-            endDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
-
-        if (allMeasurements.Count > 0)
-        {
-            var earliestMeasurement = allMeasurements.OrderBy(m => m.Timestamp).First();
-            var latestMeasurement = allMeasurements.OrderBy(m => m.Timestamp).Last();
-            var earliestDate = DateTimeOffset.FromUnixTimeSeconds(earliestMeasurement.Timestamp).DateTime;
-            var latestDate = DateTimeOffset.FromUnixTimeSeconds(latestMeasurement.Timestamp).DateTime;
-
-            Logger.LogInformation("Actual measurement dates: {EarliestDate} to {LatestDate}",
-                earliestDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-                latestDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
-        }
 
         return allMeasurements;
     }
@@ -365,9 +349,6 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         request.Headers.Add("Accept-Language", "en_US");
 
-        Logger.LogDebug("Fitbit API request: {Method} {Uri}, Token: {Token}...",
-            request.Method, request.RequestUri, accessToken.Length > 10 ? accessToken.Substring(0, 10) : accessToken);
-
         var response = await SendRateLimitedRequestAsync(request);
 
         if (response.StatusCode == HttpStatusCode.Unauthorized)
@@ -389,9 +370,6 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         }
 
         var content = await response.Content.ReadAsStringAsync();
-        var debugContent = TruncateJsonArrays(content, 3);
-        Logger.LogDebug("Fitbit weight log response for {StartDate} to {EndDate}: {Content}", startStr, endStr, debugContent);
-
         var weightLog = JsonSerializer.Deserialize<FitbitWeightLog>(content);
 
         if (weightLog?.Weight == null)
@@ -400,7 +378,6 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             return measurements;
         }
 
-        Logger.LogDebug("Found {Count} weight entries in Fitbit response", weightLog.Weight.Count);
 
         if (weightLog.Weight.Count == 0)
         {
@@ -410,110 +387,22 @@ public class FitbitService : ProviderServiceBase, IFitbitService
 
         foreach (var entry in weightLog.Weight)
         {
-            // Parse date and time to create timestamp
-            if (DateTime.TryParse($"{entry.Date} {entry.Time}", out var dateTime))
+            // Convert pounds to kg for storage
+            var weightInKg = entry.Weight / PoundsToKgFactor;
+
+            // Fitbit already provides date/time in local timezone - store as-is
+            var measurement = new RawMeasurement
             {
-                var timestamp = new DateTimeOffset(dateTime, TimeSpan.Zero).ToUnixTimeSeconds();
+                Date = entry.Date,  // Already "yyyy-MM-dd" format
+                Time = entry.Time,  // Already "HH:mm:ss" format
+                Weight = weightInKg,
+                FatRatio = entry.Fat.HasValue ? entry.Fat.Value / 100m : null // Convert percentage to ratio
+            };
 
-                // Convert pounds to kg for storage
-                var weightInKg = entry.Weight / PoundsToKgFactor;
-
-                Logger.LogDebug("Processing weight entry: Date={Date}, Time={Time}, Weight={Weight}lbs ({WeightKg}kg)",
-                    entry.Date, entry.Time, entry.Weight, weightInKg);
-
-                var measurement = new RawMeasurement
-                {
-                    Timestamp = timestamp,
-                    Weight = weightInKg,
-                    FatRatio = entry.Fat.HasValue ? entry.Fat.Value / 100m : null // Convert percentage to ratio
-                };
-
-                measurements.Add(measurement);
-            }
-            else
-            {
-                Logger.LogWarning("Failed to parse date/time: {Date} {Time}", entry.Date, entry.Time);
-            }
+            measurements.Add(measurement);
         }
 
         Logger.LogDebug("Processed {Count} measurements from Fitbit", measurements.Count);
         return measurements;
-    }
-
-    /// <summary>
-    /// Truncates JSON arrays in a string to show only first and last few elements
-    /// </summary>
-    private static string TruncateJsonArrays(string json, int keepCount)
-    {
-        try
-        {
-            using var doc = JsonDocument.Parse(json);
-            return TruncateJsonElement(doc.RootElement, keepCount);
-        }
-        catch
-        {
-            // If we can't parse it, return a truncated version
-            return json.Length > 500 ? string.Concat(json.AsSpan(0, 500), "...") : json;
-        }
-    }
-
-    /// <summary>
-    /// Recursively truncates arrays in a JsonElement
-    /// </summary>
-    private static string TruncateJsonElement(JsonElement element, int keepCount)
-    {
-        switch (element.ValueKind)
-        {
-            case JsonValueKind.Object:
-                var obj = new StringBuilder("{");
-                var objFirst = true;
-                foreach (var prop in element.EnumerateObject())
-                {
-                    if (!objFirst) obj.Append(',');
-                    objFirst = false;
-                    obj.Append(CultureInfo.InvariantCulture, $"\"{prop.Name}\":");
-                    obj.Append(TruncateJsonElement(prop.Value, keepCount));
-                }
-                obj.Append('}');
-                return obj.ToString();
-
-            case JsonValueKind.Array:
-                var arr = new StringBuilder("[");
-                var items = element.EnumerateArray().ToList();
-                if (items.Count <= keepCount * 2)
-                {
-                    // Array is small enough, include all items
-                    arr.Append(string.Join(",", items.Select(item => TruncateJsonElement(item, keepCount))));
-                }
-                else
-                {
-                    // Show first few and last few items
-                    var firstItems = items.Take(keepCount).Select(item => TruncateJsonElement(item, keepCount));
-                    var lastItems = items.Skip(items.Count - keepCount).Select(item => TruncateJsonElement(item, keepCount));
-                    arr.Append(string.Join(",", firstItems));
-                    arr.Append(CultureInfo.InvariantCulture, $",...({items.Count - keepCount * 2} more items)...,");
-                    arr.Append(string.Join(",", lastItems));
-                }
-                arr.Append(']');
-                return arr.ToString();
-
-            case JsonValueKind.String:
-                return JsonSerializer.Serialize(element.GetString());
-
-            case JsonValueKind.Number:
-                return element.GetRawText();
-
-            case JsonValueKind.True:
-                return "true";
-
-            case JsonValueKind.False:
-                return "false";
-
-            case JsonValueKind.Null:
-                return "null";
-
-            default:
-                return element.GetRawText();
-        }
     }
 }
