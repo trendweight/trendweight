@@ -79,7 +79,7 @@ public class SupabaseService : ISupabaseService
         try
         {
             var response = await _supabaseClient.From<T>()
-                .Insert(model);
+                .Insert(model, new Supabase.Postgrest.QueryOptions { Upsert = false });
 
             return response.Models.First();
         }

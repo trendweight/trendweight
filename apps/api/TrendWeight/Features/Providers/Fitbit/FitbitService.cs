@@ -32,9 +32,9 @@ public class FitbitService : ProviderServiceBase, IFitbitService
         FitbitConfig config,
         IProviderLinkService providerLinkService,
         ISourceDataService sourceDataService,
-        IUserService userService,
+        IProfileService profileService,
         ILogger<FitbitService> logger)
-        : base(providerLinkService, sourceDataService, userService, logger)
+        : base(providerLinkService, sourceDataService, profileService, logger)
     {
         _httpClient = httpClient;
         _config = config;
@@ -100,10 +100,9 @@ public class FitbitService : ProviderServiceBase, IFitbitService
 
         Logger.LogDebug("Successfully exchanged Fitbit authorization code for tokens");
 
-        // Create token dictionary
+        // Create token dictionary (excluding user_id since we don't use it)
         return new Dictionary<string, object>
         {
-            ["user_id"] = tokenData.UserId,
             ["access_token"] = tokenData.AccessToken,
             ["refresh_token"] = tokenData.RefreshToken,
             ["token_type"] = tokenData.TokenType,
@@ -204,10 +203,9 @@ public class FitbitService : ProviderServiceBase, IFitbitService
 
         Logger.LogDebug("Successfully refreshed Fitbit access token");
 
-        // Create refreshed token dictionary
+        // Create refreshed token dictionary (excluding user_id since we don't use it)
         return new Dictionary<string, object>
         {
-            ["user_id"] = tokenData.UserId,
             ["access_token"] = tokenData.AccessToken,
             ["refresh_token"] = tokenData.RefreshToken,
             ["token_type"] = tokenData.TokenType,

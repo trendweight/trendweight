@@ -2,10 +2,10 @@ import { useState } from "react";
 import { HiCheckCircle } from "react-icons/hi";
 import { useProviderLinks } from "../../lib/api/queries";
 import { useDisconnectProvider, useResyncProvider } from "../../lib/api/mutations";
+import { apiRequest } from "../../lib/api/client";
 import { useToast } from "../../lib/hooks/useToast";
 import { ConfirmDialog } from "../ui/ConfirmDialog";
 import { Heading } from "../ui/Heading";
-import { apiRequest } from "../../lib/api/client";
 
 interface ProviderListProps {
   variant?: "link" | "settings"; // Different layouts for different pages
@@ -38,10 +38,9 @@ const providers = [
 ];
 
 export function ProviderList({ variant = "link", showHeader = true }: ProviderListProps) {
-  const { data: providerLinks, isLoading } = useProviderLinks();
+  const { data: providerLinks } = useProviderLinks();
   const { showToast } = useToast();
   const [disconnectProvider, setDisconnectProvider] = useState<{ id: string; name: string } | null>(null);
-  const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
 
   const disconnectMutation = useDisconnectProvider();
   const resyncMutation = useResyncProvider();
@@ -49,17 +48,15 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
   const connectedProviders = new Set(providerLinks?.map((link) => link.provider) || []);
 
   const handleConnect = async (providerId: string) => {
-    setLoadingProvider(providerId);
     try {
-      const endpoint = providerId === "withings" ? "/withings/link" : "/fitbit/link";
-      const response = await apiRequest<{ authorizationUrl?: string; url?: string }>(endpoint);
+      const endpoint = providerId === "fitbit" ? "/fitbit/link" : "/withings/link";
+      const response = await apiRequest<{ url?: string; authorizationUrl?: string }>(endpoint);
       const redirectUrl = response.authorizationUrl || response.url;
       if (redirectUrl) {
         window.location.assign(redirectUrl);
       }
     } catch (error) {
       console.error(`Error getting ${providerId} authorization URL:`, error);
-      setLoadingProvider(null);
       showToast({
         title: "Connection Failed",
         description: `Failed to connect to ${providerId}. Please try again.`,
@@ -68,7 +65,8 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
     }
   };
 
-  if (isLoading) {
+  // Suspense handles loading state
+  if (!providerLinks) {
     return <div className="text-gray-500">Loading providers...</div>;
   }
 
@@ -154,10 +152,9 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                   ) : (
                     <button
                       onClick={() => handleConnect(provider.id)}
-                      disabled={loadingProvider !== null}
-                      className="px-4 py-2 text-sm font-medium text-white bg-brand-600 rounded-md hover:bg-brand-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors"
+                      className="px-4 py-2 text-sm font-medium text-white bg-brand-600 rounded-md hover:bg-brand-700 transition-colors"
                     >
-                      {loadingProvider === provider.id ? "Loading..." : "Connect"}
+                      Connect
                     </button>
                   )}
                 </div>
@@ -223,10 +220,9 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                   ) : (
                     <button
                       onClick={() => handleConnect(provider.id)}
-                      disabled={loadingProvider !== null}
-                      className="px-4 @sm:px-6 py-2 rounded font-medium text-sm bg-green-600 text-white hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                      className="px-4 @sm:px-6 py-2 rounded font-medium text-sm bg-green-600 text-white hover:bg-green-700 transition-colors"
                     >
-                      {loadingProvider === provider.id ? "Loading..." : `Connect ${provider.name} Account`}
+                      Connect {provider.name} Account
                     </button>
                   )}
                 </div>

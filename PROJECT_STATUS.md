@@ -43,6 +43,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Mobile logout fixes for iPhone Safari
 - [x] Touch device navigation improvements
 - [x] Improved proxy header security
+- [ ] Initial profile setup
 - [ ] Account migration from legacy site
 
 ### ✅ Database & Data Layer

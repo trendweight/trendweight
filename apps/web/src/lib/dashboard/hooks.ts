@@ -1,7 +1,9 @@
 import { useContext, useMemo, useState } from "react";
-import { dashboardContext, type DashboardData } from "./dashboardContext";
+import { dashboardContext } from "./dashboardContext";
+import type { DashboardData } from "./dashboardContext";
 import { useDashboardQueries } from "../api/queries";
 import type { Mode, TimeRange } from "../core/interfaces";
+import type { ApiSourceData } from "../api/types";
 import { usePersistedState } from "../hooks/usePersistedState";
 import { computeDataPoints } from "./computations/data-points";
 import { computeMeasurements } from "./computations/measurements";
@@ -20,12 +22,12 @@ export const useComputeDashboardData = (): DashboardData => {
   const [timeRange, setTimeRange] = usePersistedState<TimeRange>("timeRange", "4w");
 
   // Get profile and measurement data in parallel
-  const { profile, measurementData: apiSourceData, providerStatus } = useDashboardQueries();
+  const { profile, measurementData: apiSourceData, providerStatus, profileError } = useDashboardQueries();
 
   // Transform API data to match core interfaces
   const sourceData = useMemo(
     () =>
-      apiSourceData.map((data) => ({
+      apiSourceData.map((data: ApiSourceData) => ({
         source: data.source as "withings" | "fitbit",
         lastUpdate: data.lastUpdate,
         measurements: data.measurements,
@@ -33,8 +35,8 @@ export const useComputeDashboardData = (): DashboardData => {
     [apiSourceData],
   );
 
-  // Compute derived data - profile and apiSourceData are guaranteed by suspense
-  const measurements = useMemo(() => computeMeasurements(sourceData, profile), [profile, sourceData]);
+  // Compute derived data - always call hooks, conditionally compute values
+  const measurements = useMemo(() => (profile ? computeMeasurements(sourceData, profile) : []), [profile, sourceData]);
 
   const dataPoints = useMemo(() => computeDataPoints(mode, measurements), [measurements, mode]);
 
@@ -44,10 +46,22 @@ export const useComputeDashboardData = (): DashboardData => {
 
   const deltas = useMemo(() => computeDeltas(mode, dataPoints), [mode, dataPoints]);
 
+  // Return appropriate data based on profile existence
   const data: DashboardData = {
     dataPoints,
     measurements,
-    profile,
+    profile: profile || {
+      firstName: "",
+      timezone: "America/New_York",
+      useMetric: false,
+      goalStart: undefined,
+      goalWeight: 0,
+      plannedPoundsPerWeek: 0,
+      dayStartOffset: 0,
+      showCalories: false,
+      sharingToken: undefined,
+    },
+    profileError,
     mode: [mode, setMode],
     timeRange: [timeRange, setTimeRange],
     weightSlope,

@@ -14,18 +14,18 @@ namespace TrendWeight.Features.Measurements;
 [Authorize]
 public class DataRefreshController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IProfileService _profileService;
     private readonly IProviderIntegrationService _providerIntegrationService;
     private readonly ISourceDataService _sourceDataService;
     private readonly ILogger<DataRefreshController> _logger;
 
     public DataRefreshController(
-        IUserService userService,
+        IProfileService profileService,
         IProviderIntegrationService providerIntegrationService,
         ISourceDataService sourceDataService,
         ILogger<DataRefreshController> logger)
     {
-        _userService = userService;
+        _profileService = profileService;
         _providerIntegrationService = providerIntegrationService;
         _sourceDataService = sourceDataService;
         _logger = logger;
@@ -50,7 +50,7 @@ public class DataRefreshController : ControllerBase
             _logger.LogInformation("Refreshing data for user ID: {UserId}", userId);
 
             // Get user by Supabase UID
-            var user = await _userService.GetByIdAsync(userId);
+            var user = await _profileService.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound(new { error = "User not found" });
@@ -133,7 +133,7 @@ public class DataRefreshController : ControllerBase
             }
 
             // Get user by Supabase UID
-            var user = await _userService.GetByIdAsync(userId);
+            var user = await _profileService.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound(new { error = "User not found" });

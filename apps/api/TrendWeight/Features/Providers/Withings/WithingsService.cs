@@ -30,9 +30,9 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         WithingsConfig config,
         IProviderLinkService providerLinkService,
         ISourceDataService sourceDataService,
-        IUserService userService,
+        IProfileService profileService,
         ILogger<WithingsService> logger)
-        : base(providerLinkService, sourceDataService, userService, logger)
+        : base(providerLinkService, sourceDataService, profileService, logger)
     {
         _httpClient = httpClient;
         _config = config;
@@ -115,10 +115,9 @@ public class WithingsService : ProviderServiceBase, IWithingsService
 
         var tokenData = withingsResponse!.Body!;
 
-        // Create token dictionary
+        // Create token dictionary (excluding userid since we don't use it)
         return new Dictionary<string, object>
         {
-            ["userid"] = tokenData.Userid,
             ["access_token"] = tokenData.AccessToken ?? string.Empty,
             ["refresh_token"] = tokenData.RefreshToken ?? string.Empty,
             ["token_type"] = tokenData.TokenType ?? string.Empty,
@@ -214,10 +213,9 @@ public class WithingsService : ProviderServiceBase, IWithingsService
 
         var tokenData = withingsResponse!.Body!;
 
-        // Create refreshed token dictionary
+        // Create refreshed token dictionary (excluding userid since we don't use it)
         return new Dictionary<string, object>
         {
-            ["userid"] = tokenData.Userid,
             ["access_token"] = tokenData.AccessToken ?? string.Empty,
             ["refresh_token"] = tokenData.RefreshToken ?? string.Empty,
             ["token_type"] = tokenData.TokenType ?? string.Empty,
