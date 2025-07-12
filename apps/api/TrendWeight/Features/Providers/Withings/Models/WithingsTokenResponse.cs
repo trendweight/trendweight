@@ -8,12 +8,6 @@ namespace TrendWeight.Features.Providers.Withings.Models;
 public class WithingsTokenResponse
 {
     /// <summary>
-    /// User ID from Withings
-    /// </summary>
-    [JsonPropertyName("userid")]
-    public long Userid { get; set; }
-
-    /// <summary>
     /// Access token for API calls
     /// </summary>
     [JsonPropertyName("access_token")]

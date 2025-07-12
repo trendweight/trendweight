@@ -17,20 +17,20 @@ public class ProvidersController : ControllerBase
     private readonly IProviderLinkService _providerLinkService;
     private readonly ISourceDataService _sourceDataService;
     private readonly IProviderIntegrationService _providerIntegrationService;
-    private readonly IUserService _userService;
+    private readonly IProfileService _profileService;
     private readonly ILogger<ProvidersController> _logger;
 
     public ProvidersController(
         IProviderLinkService providerLinkService,
         ISourceDataService sourceDataService,
         IProviderIntegrationService providerIntegrationService,
-        IUserService userService,
+        IProfileService profileService,
         ILogger<ProvidersController> logger)
     {
         _providerLinkService = providerLinkService;
         _sourceDataService = sourceDataService;
         _providerIntegrationService = providerIntegrationService;
-        _userService = userService;
+        _profileService = profileService;
         _logger = logger;
     }
 
@@ -161,7 +161,7 @@ public class ProvidersController : ControllerBase
             }
 
             // Get user to check metric preference
-            var user = await _userService.GetByIdAsync(userId);
+            var user = await _profileService.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound(new { error = "User not found" });

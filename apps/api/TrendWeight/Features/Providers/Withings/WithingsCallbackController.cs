@@ -16,20 +16,20 @@ namespace TrendWeight.Features.Providers.Withings;
 public class WithingsCallbackController : ControllerBase
 {
     private readonly IWithingsService _withingsService;
-    private readonly IUserService _userService;
+    private readonly IProfileService _profileService;
     private readonly IProviderLinkService _providerLinkService;
     private readonly IConfiguration _configuration;
     private readonly ILogger<WithingsCallbackController> _logger;
 
     public WithingsCallbackController(
         IWithingsService withingsService,
-        IUserService userService,
+        IProfileService profileService,
         IProviderLinkService providerLinkService,
         IConfiguration configuration,
         ILogger<WithingsCallbackController> logger)
     {
         _withingsService = withingsService;
-        _userService = userService;
+        _profileService = profileService;
         _providerLinkService = providerLinkService;
         _configuration = configuration;
         _logger = logger;
@@ -94,7 +94,7 @@ public class WithingsCallbackController : ControllerBase
             }
 
             // Get user by Supabase UID
-            var user = await _userService.GetByIdAsync(linkDetails.Uid);
+            var user = await _profileService.GetByIdAsync(linkDetails.Uid);
             if (user == null)
             {
                 _logger.LogError("User not found for user ID: {UserId}", linkDetails.Uid);

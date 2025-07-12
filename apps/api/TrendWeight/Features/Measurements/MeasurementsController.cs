@@ -18,7 +18,7 @@ namespace TrendWeight.Features.Measurements;
 [Authorize]
 public class MeasurementsController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IProfileService _profileService;
     private readonly IProviderIntegrationService _providerIntegrationService;
     private readonly ISourceDataService _sourceDataService;
     private readonly ILogger<MeasurementsController> _logger;
@@ -29,13 +29,13 @@ public class MeasurementsController : ControllerBase
     private readonly int CACHE_DURATION_SECONDS;
 
     public MeasurementsController(
-        IUserService userService,
+        IProfileService profileService,
         IProviderIntegrationService providerIntegrationService,
         ISourceDataService sourceDataService,
         ILogger<MeasurementsController> logger,
         IWebHostEnvironment environment)
     {
-        _userService = userService;
+        _profileService = profileService;
         _providerIntegrationService = providerIntegrationService;
         _sourceDataService = sourceDataService;
         _logger = logger;
@@ -67,7 +67,7 @@ public class MeasurementsController : ControllerBase
             _logger.LogInformation("Getting measurements for user ID: {UserId}", userId);
 
             // Get user by Supabase UID
-            var user = await _userService.GetByIdAsync(userId);
+            var user = await _profileService.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound(new { error = "User not found" });

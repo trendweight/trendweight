@@ -1,6 +1,5 @@
 import type { FC } from "react";
-import { useState } from "react";
-import { apiRequest } from "../../lib/api/client";
+import { useReconnectProvider } from "../../lib/api/mutations";
 import type { ProviderSyncStatus } from "../../lib/api/types";
 
 interface ProviderSyncErrorProps {
@@ -9,7 +8,7 @@ interface ProviderSyncErrorProps {
 }
 
 const ProviderSyncError: FC<ProviderSyncErrorProps> = ({ provider, status }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const reconnectProvider = useReconnectProvider();
 
   // Skip if no error
   if (status.success || !status.error) {
@@ -19,11 +18,8 @@ const ProviderSyncError: FC<ProviderSyncErrorProps> = ({ provider, status }) => 
   const providerDisplayName = provider === "fitbit" ? "Fitbit" : "Withings";
 
   const handleReconnect = async () => {
-    setIsLoading(true);
     try {
-      // Use the same endpoints as the link page
-      const endpoint = provider === "fitbit" ? "/fitbit/link" : "/withings/link";
-      const response = await apiRequest<{ url?: string; authorizationUrl?: string }>(endpoint);
+      const response = await reconnectProvider.mutateAsync(provider);
 
       // Redirect to the authorization URL
       const authUrl = response.url || response.authorizationUrl;
@@ -32,7 +28,6 @@ const ProviderSyncError: FC<ProviderSyncErrorProps> = ({ provider, status }) => 
       }
     } catch (error) {
       console.error(`Error initiating ${provider} reconnection:`, error);
-      setIsLoading(false);
     }
   };
 
@@ -65,12 +60,12 @@ const ProviderSyncError: FC<ProviderSyncErrorProps> = ({ provider, status }) => 
       </div>
       <button
         onClick={handleReconnect}
-        disabled={isLoading}
+        disabled={reconnectProvider.isPending}
         className={`ml-4 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors ${
           isAuthError ? "bg-amber-600 hover:bg-amber-700" : "bg-amber-500 hover:bg-amber-600"
         }`}
       >
-        {isLoading ? "Loading..." : buttonText}
+        {reconnectProvider.isPending ? "Loading..." : buttonText}
       </button>
     </div>
   );

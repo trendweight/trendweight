@@ -6,9 +6,15 @@ import { pageTitle } from "../lib/utils/pageTitle";
 import { useSearch } from "@tanstack/react-router";
 import { ProviderList } from "../components/providers/ProviderList";
 import { useToast } from "../lib/hooks/useToast";
+import { ensureProfile } from "../lib/loaders/utils";
 
 export const Route = createFileRoute("/link")({
   beforeLoad: requireAuth,
+  loader: async () => {
+    // Ensure user has completed initial setup
+    await ensureProfile();
+    return null;
+  },
   component: LinkPage,
   validateSearch: (search: Record<string, unknown>): { provider?: string; success?: string; error?: string } => {
     return {

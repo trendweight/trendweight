@@ -16,18 +16,18 @@ public abstract class ProviderServiceBase : IProviderService
 {
     protected IProviderLinkService ProviderLinkService { get; }
     protected ISourceDataService SourceDataService { get; }
-    protected IUserService UserService { get; }
+    protected IProfileService ProfileService { get; }
     protected ILogger Logger { get; }
 
     protected ProviderServiceBase(
         IProviderLinkService providerLinkService,
         ISourceDataService sourceDataService,
-        IUserService userService,
+        IProfileService profileService,
         ILogger logger)
     {
         ProviderLinkService = providerLinkService;
         SourceDataService = sourceDataService;
-        UserService = userService;
+        ProfileService = profileService;
         Logger = logger;
     }
 
