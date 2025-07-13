@@ -50,10 +50,10 @@ export function GoalSection({ register, errors, watch, control }: GoalSectionPro
             max={new Date().toISOString().split("T")[0]}
             className="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           />
-          <p className="mt-1 text-sm text-gray-500">Tell us when you started working on your current plan</p>
+          <p className="mt-1 text-sm text-gray-500">The baseline date for measuring progress toward your goal.</p>
         </div>
 
-        <div>
+        <div className="mt-6">
           <label htmlFor="goalWeight" className="block text-sm font-medium text-gray-700 mb-1">
             Goal Weight ({weightUnit})
           </label>
@@ -68,9 +68,10 @@ export function GoalSection({ register, errors, watch, control }: GoalSectionPro
             className="w-full md:w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           />
           {errors.goalWeight && <p className="mt-1 text-sm text-red-600">{errors.goalWeight.message}</p>}
+          <p className="mt-1 text-sm text-gray-500">The weight you are working toward achieving.</p>
         </div>
 
-        <div>
+        <div className="mt-6">
           <label htmlFor="plannedPoundsPerWeek" className="block text-sm font-medium text-gray-700 mb-1">
             My Plan
           </label>
@@ -90,6 +91,7 @@ export function GoalSection({ register, errors, watch, control }: GoalSectionPro
               )}
             />
           </div>
+          <p className="mt-2 text-sm text-gray-500">Your planned rate of weight change. This helps track if you're ahead or behind schedule.</p>
         </div>
       </div>
     </div>

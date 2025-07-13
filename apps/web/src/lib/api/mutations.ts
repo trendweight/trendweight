@@ -5,7 +5,6 @@ import type { ProfileResponse } from "./types";
 
 interface UpdateProfileData {
   firstName?: string;
-  timezone?: string;
   goalStart?: string;
   goalWeight?: number;
   plannedPoundsPerWeek?: number;

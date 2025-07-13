@@ -43,7 +43,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Mobile logout fixes for iPhone Safari
 - [x] Touch device navigation improvements
 - [x] Improved proxy header security
-- [ ] Initial profile setup
+- [x] Initial profile setup
 - [ ] Account migration from legacy site
 
 ### ✅ Database & Data Layer
@@ -86,15 +86,16 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Recent readings list
 - [x] Support for body fat %, lean mass, etc.
 - [x] Client-side trend calculation
-- [x] Demo dashboard with sample data
+- [ ] Demo dashboard with sample data
 - [x] Optimized data loading with parallel queries
 - [x] Consistent weight storage in kg (instant unit switching)
 - [x] Provider sync error display with reconnect buttons
 - [ ] Handle "no data" state elegantly
-- [ ] Handle "no provider links" state
+- [x] Handle "no provider links" state
 - [ ] Shared/public dashboard URLs
 - [ ] Dashboard sharing UI
 - [ ] Explore UI
+- [ ] Support for a plan to gain weight
 
 ### ✅ Settings & Profile
 
@@ -103,7 +104,6 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Profile API endpoint (GET/PUT /api/profile)
 - [x] Settings UI implementation (comprehensive with all sections)
 - [x] Weight units preference
-- [x] Timezone selection (with @vvo/tzdb)
 - [x] Day start offset
 - [ ] Privacy settings
 - [x] Connect/disconnect providers
