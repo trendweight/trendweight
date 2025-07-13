@@ -55,7 +55,6 @@ export function useProfile() {
       if (!data) return null;
       return {
         firstName: data.user.firstName,
-        timezone: data.user.timezone,
         goalStart: data.user.goalStart,
         goalWeight: data.user.goalWeight,
         plannedPoundsPerWeek: data.user.plannedPoundsPerWeek,
@@ -89,7 +88,6 @@ export function useDashboardQueries() {
           if (!data) return null;
           return {
             firstName: data.user.firstName,
-            timezone: data.user.timezone,
             goalStart: data.user.goalStart,
             goalWeight: data.user.goalWeight,
             plannedPoundsPerWeek: data.user.plannedPoundsPerWeek,

@@ -230,9 +230,9 @@ The app uses @bprogress/react for progress indication:
 
 ## Date/Time Handling
 
-- **Frontend**: Uses `@js-joda/core` for timezone-aware date operations
-- **Backend**: Consider using NodaTime for proper timezone handling
-- User's timezone and dayStartOffset must be respected for grouping measurements
+- **Frontend**: Uses `@js-joda/core` for date operations
+- **Backend**: Stores all measurements as local date/time strings
+- DayStartOffset must be respected for grouping measurements
 
 ## API Patterns
 
@@ -439,11 +439,10 @@ The containerized application:
 
 1. **Never store secrets in code** - Use environment variables
 2. **Always handle errors gracefully** - Show user-friendly messages
-3. **Respect user's timezone** - All date operations must be timezone-aware
-4. **Test on mobile** - The app must be fully responsive
-5. **Keep accessibility in mind** - Use semantic HTML and ARIA labels
-6. **Provider disconnection** - When a user disconnects a provider, both the provider link AND the associated source data are deleted to ensure clean state
-7. **Fitbit API limitations**:
+3. **Test on mobile** - The app must be fully responsive
+4. **Keep accessibility in mind** - Use semantic HTML and ARIA labels
+5. **Provider disconnection** - When a user disconnects a provider, both the provider link AND the associated source data are deleted to ensure clean state
+6. **Fitbit API limitations**:
    - Weight data requests cannot start before 2009-01-01
    - Maximum date range per request is 32 days (not 31 or 33)
    - Body-weight endpoint may return extrapolated data, not actual measurements
@@ -451,12 +450,26 @@ The containerized application:
 8. **Service Layer Pattern** - Controllers should be thin, delegating business logic to services
 9. **Profile Creation** - ProfileService handles complex update/create logic, never defaults nullable fields to 0
 10. **Provider Token Fields** - Withings and Fitbit sometimes return userid fields that vary in type, we don't use these fields
+11. **Timezone Field Removed** - User timezone was removed from the profile as it wasn't being used. Only Withings API timezone is used for timestamp conversion.
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
 NEVER create files unless they're absolutely necessary for achieving your goal.
 ALWAYS prefer editing an existing file to creating a new one.
 NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
+
+## Settings Page Help Text
+
+All settings on the /settings page have concise help text:
+- **First Name**: "Used for greetings on the dashboard"
+- **Weight Units**: "Choose your preferred unit of measurement"
+- **Start Date**: "The baseline date for measuring progress toward your goal"
+- **Goal Weight**: "The weight you are working toward achieving"
+- **My Plan**: "Your planned rate of weight change. This helps track if you're ahead or behind schedule."
+- **Day Start**: Already has comprehensive multi-paragraph explanation
+- **Show calorie calculations**: "Display estimated calorie surplus/deficit based on your weight changes"
+
+Settings sections use `mt-6` spacing between groups for visual separation.
 
 ### IMPORTANT: Keep CLAUDE.md Updated
 **You MUST automatically update this CLAUDE.md file whenever you learn something new that is likely important for future sessions.** This includes:

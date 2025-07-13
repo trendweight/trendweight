@@ -52,7 +52,6 @@ export const useComputeDashboardData = (): DashboardData => {
     measurements,
     profile: profile || {
       firstName: "",
-      timezone: "America/New_York",
       useMetric: false,
       goalStart: undefined,
       goalWeight: 0,

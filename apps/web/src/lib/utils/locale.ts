@@ -22,19 +22,6 @@ export function shouldUseMetric(locale?: string): boolean {
 }
 
 /**
- * Gets the user's timezone from the browser
- * @returns The user's timezone string (e.g., "America/New_York")
- */
-export function getBrowserTimezone(): string {
-  try {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York";
-  } catch {
-    // Fallback if Intl API is not available
-    return "America/New_York";
-  }
-}
-
-/**
  * Extracts the first name from a full name string
  * @param fullName - The full name string
  * @returns The first name or empty string
