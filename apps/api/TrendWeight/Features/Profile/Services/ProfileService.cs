@@ -62,7 +62,6 @@ public class ProfileService : IProfileService
                 Profile = new ProfileData
                 {
                     FirstName = request.FirstName ?? "",
-                    Timezone = request.Timezone ?? "America/New_York",
                     UseMetric = request.UseMetric ?? false,
                     GoalStart = request.GoalStart,
                     GoalWeight = request.GoalWeight,
@@ -82,23 +81,16 @@ public class ProfileService : IProfileService
         {
             _logger.LogInformation("Updating existing profile for user {UserId}", userId);
 
-            // Update only the fields that were provided
-            if (request.FirstName != null)
-                profile.Profile.FirstName = request.FirstName;
-            if (request.Timezone != null)
-                profile.Profile.Timezone = request.Timezone;
-            if (request.GoalStart.HasValue)
-                profile.Profile.GoalStart = request.GoalStart.Value;
-            if (request.GoalWeight.HasValue)
-                profile.Profile.GoalWeight = request.GoalWeight.Value;
-            if (request.PlannedPoundsPerWeek.HasValue)
-                profile.Profile.PlannedPoundsPerWeek = request.PlannedPoundsPerWeek.Value;
-            if (request.DayStartOffset.HasValue)
-                profile.Profile.DayStartOffset = request.DayStartOffset.Value;
-            if (request.UseMetric.HasValue)
-                profile.Profile.UseMetric = request.UseMetric.Value;
-            if (request.ShowCalories.HasValue)
-                profile.Profile.ShowCalories = request.ShowCalories.Value;
+            // Update all fields from the request
+            // Note: The frontend sends all fields, so we update all of them
+            // This allows clearing optional fields by setting them to null
+            profile.Profile.FirstName = request.FirstName ?? profile.Profile.FirstName;
+            profile.Profile.GoalStart = request.GoalStart;
+            profile.Profile.GoalWeight = request.GoalWeight;
+            profile.Profile.PlannedPoundsPerWeek = request.PlannedPoundsPerWeek;
+            profile.Profile.DayStartOffset = request.DayStartOffset;
+            profile.Profile.UseMetric = request.UseMetric ?? profile.Profile.UseMetric;
+            profile.Profile.ShowCalories = request.ShowCalories;
 
             // Update timestamp
             profile.UpdatedAt = DateTime.UtcNow.ToString("o");

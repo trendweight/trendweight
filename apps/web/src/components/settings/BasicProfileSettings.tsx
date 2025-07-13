@@ -2,7 +2,6 @@ import type { UseFormRegister, FieldErrors, Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import type { SettingsData } from "../../lib/core/interfaces";
 import { ToggleGroup } from "../ui/ToggleGroup";
-import { TimezoneSelect } from "../ui/TimezoneSelect";
 
 interface BasicProfileSettingsProps {
   register: UseFormRegister<SettingsData>;
@@ -28,16 +27,10 @@ export function BasicProfileSettings({ register, errors, control }: BasicProfile
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
         />
         {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>}
+        <p className="mt-1 text-sm text-gray-500">Used for greetings on the dashboard.</p>
       </div>
 
-      <div>
-        <label htmlFor="timezone" className="block text-sm font-medium text-gray-700 mb-1">
-          Time Zone
-        </label>
-        <TimezoneSelect control={control} error={errors.timezone?.message} />
-      </div>
-
-      <div>
+      <div className="mt-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">Weight Units</label>
         <Controller
           name="useMetric"
@@ -53,6 +46,7 @@ export function BasicProfileSettings({ register, errors, control }: BasicProfile
             />
           )}
         />
+        <p className="mt-2 text-sm text-gray-500">Choose your preferred unit of measurement.</p>
       </div>
     </div>
   );

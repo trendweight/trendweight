@@ -6,7 +6,7 @@ import { BasicProfileSettings } from "../components/settings/BasicProfileSetting
 import { useUpdateProfile } from "../lib/api/mutations";
 import { requireAuth } from "../lib/auth/authGuard";
 import { pageTitle } from "../lib/utils/pageTitle";
-import { getBrowserTimezone, shouldUseMetric, extractFirstName } from "../lib/utils/locale";
+import { shouldUseMetric, extractFirstName } from "../lib/utils/locale";
 import { useAuth } from "../lib/auth/useAuth";
 import type { SettingsData } from "../lib/core/interfaces";
 import { queryOptions } from "../lib/api/queries";
@@ -42,7 +42,6 @@ function InitialSetupPage() {
   } = useForm<SettingsData>({
     defaultValues: {
       firstName: "",
-      timezone: getBrowserTimezone(),
       useMetric: shouldUseMetric(),
     },
   });

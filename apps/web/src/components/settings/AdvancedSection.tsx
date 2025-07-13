@@ -57,7 +57,7 @@ export function AdvancedSection({ control }: AdvancedSectionProps) {
           </div>
         </div>
 
-        <div>
+        <div className="mt-6">
           <Controller
             name="showCalories"
             control={control}
@@ -68,11 +68,11 @@ export function AdvancedSection({ control }: AdvancedSectionProps) {
                 </div>
                 <label htmlFor={field.name} className="cursor-pointer">
                   <div className="text-sm font-medium text-gray-700">Show calorie calculations</div>
-                  <p className="text-sm text-gray-600 mt-1">Display estimated calorie surplus/deficit based on your weight changes</p>
                 </label>
               </div>
             )}
           />
+          <p className="mt-2 text-sm text-gray-600">Display estimated calorie surplus/deficit based on your weight changes.</p>
         </div>
       </div>
     </div>

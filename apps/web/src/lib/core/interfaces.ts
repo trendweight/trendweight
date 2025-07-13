@@ -48,7 +48,6 @@ export interface Links {
 
 export interface ProfileData {
   firstName: string;
-  timezone: string;
   goalStart?: string;
   goalWeight?: number;
   plannedPoundsPerWeek?: number;

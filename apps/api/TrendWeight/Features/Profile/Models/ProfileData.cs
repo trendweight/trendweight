@@ -7,7 +7,6 @@ namespace TrendWeight.Features.Profile.Models;
 public class ProfileData
 {
     public string FirstName { get; set; } = string.Empty;
-    public string Timezone { get; set; } = "America/New_York";
     public DateTime? GoalStart { get; set; }
     public decimal? GoalWeight { get; set; }
     public decimal? PlannedPoundsPerWeek { get; set; }

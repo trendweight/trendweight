@@ -89,8 +89,16 @@ function SettingsPage() {
 
   const onSubmit = async (data: SettingsData) => {
     try {
-      await updateProfile.mutateAsync(data);
-      reset(data); // Reset form state to mark as clean
+      // Transform empty strings to undefined for optional fields
+      // and handle NaN for number fields
+      const cleanedData = {
+        ...data,
+        goalStart: data.goalStart === "" ? undefined : data.goalStart,
+        goalWeight: isNaN(data.goalWeight as number) ? undefined : data.goalWeight,
+      };
+
+      await updateProfile.mutateAsync(cleanedData);
+      reset(cleanedData); // Reset form state to mark as clean
     } catch (error) {
       console.error("Failed to update settings:", error);
     }

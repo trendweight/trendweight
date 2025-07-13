@@ -53,7 +53,6 @@ public class ProfileController : ControllerBase
             var profileData = new ProfileData
             {
                 FirstName = user.Profile.FirstName,
-                Timezone = user.Profile.Timezone,
                 GoalStart = user.Profile.GoalStart,
                 GoalWeight = user.Profile.GoalWeight,
                 PlannedPoundsPerWeek = user.Profile.PlannedPoundsPerWeek,
@@ -71,7 +70,6 @@ public class ProfileController : ControllerBase
                     uid = userId,
                     email = user.Email,
                     firstName = profileData.FirstName,
-                    timezone = profileData.Timezone,
                     goalStart = profileData.GoalStart?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                     goalWeight = profileData.GoalWeight,
                     plannedPoundsPerWeek = profileData.PlannedPoundsPerWeek,
@@ -127,7 +125,6 @@ public class ProfileController : ControllerBase
                     uid = userId,
                     email = profile.Email,
                     firstName = profile.Profile.FirstName,
-                    timezone = profile.Profile.Timezone,
                     goalStart = profile.Profile.GoalStart?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                     goalWeight = profile.Profile.GoalWeight,
                     plannedPoundsPerWeek = profile.Profile.PlannedPoundsPerWeek,
