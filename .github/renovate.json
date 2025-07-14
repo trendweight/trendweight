@@ -3,6 +3,7 @@
   "extends": [
     "config:recommended",
     ":semanticCommits",
+    ":semanticCommitTypeAll(chore)",
     ":rebaseStalePrs",
     ":pinDependencies",
     ":pinDevDependencies",
@@ -10,63 +11,109 @@
     "group:recommended"
   ],
   "timezone": "America/Chicago",
-  "assignees": ["ervwalter"],
+  "assignees": [
+    "ervwalter"
+  ],
   "gitAuthor": "Erv Walter <erv@ewal.net>",
-  "labels": ["dependencies"],
+  "labels": [
+    "dependencies"
+  ],
   "packageRules": [
     {
       "description": "Automerge npm patch updates",
-      "matchManagers": ["npm"],
-      "matchUpdateTypes": ["patch"],
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
       "groupName": "npm patch dependencies",
       "automerge": true,
       "minimumReleaseAge": "2 days"
     },
     {
       "description": "Automerge NuGet patch updates",
-      "matchManagers": ["nuget"],
-      "matchUpdateTypes": ["patch"],
+      "matchManagers": [
+        "nuget"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
       "groupName": "NuGet patch dependencies",
       "automerge": true,
       "minimumReleaseAge": "2 days"
     },
     {
       "description": "Automerge GitHub Actions patch updates",
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["patch"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
       "groupName": "GitHub Actions patch updates",
       "automerge": true,
       "minimumReleaseAge": "3 days"
     },
     {
       "description": "Group npm minor updates (manual merge)",
-      "matchManagers": ["npm"],
-      "matchUpdateTypes": ["minor"],
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
       "groupName": "npm minor dependencies",
-      "schedule": ["after 10pm on saturday", "before 5am on sunday"]
+      "schedule": [
+        "after 10pm on saturday",
+        "before 5am on sunday"
+      ]
     },
     {
       "description": "Group NuGet minor updates (manual merge)",
-      "matchManagers": ["nuget"],
-      "matchUpdateTypes": ["minor"],
+      "matchManagers": [
+        "nuget"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
       "groupName": "NuGet minor dependencies",
-      "schedule": ["after 10pm on saturday", "before 5am on sunday"]
+      "schedule": [
+        "after 10pm on saturday",
+        "before 5am on sunday"
+      ]
     },
     {
       "description": "Group non-major Docker updates (manual merge)",
-      "matchManagers": ["dockerfile"],
-      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
       "groupName": "Docker non-major updates",
       "minimumReleaseAge": "7 days",
-      "schedule": ["after 10pm on saturday", "before 5am on sunday"]
+      "schedule": [
+        "after 10pm on saturday",
+        "before 5am on sunday"
+      ]
     },
     {
       "description": "Group GitHub Actions minor updates (manual merge)",
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["minor"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
       "groupName": "GitHub Actions minor updates",
       "minimumReleaseAge": "3 days",
-      "schedule": ["after 10pm on saturday", "before 5am on sunday"]
+      "schedule": [
+        "after 10pm on saturday",
+        "before 5am on sunday"
+      ]
     }
   ],
   "prConcurrentLimit": 20,
