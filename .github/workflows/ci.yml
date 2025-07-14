@@ -3,6 +3,7 @@ name: CI/CD
 on:
   push:
     branches: [ "*" ]
+    tags: [ "v*" ]
   pull_request:
     branches: [ main ]
 
@@ -99,8 +100,10 @@ jobs:
         tags: |
           type=ref,event=branch
           type=ref,event=pr
+          type=ref,event=tag
           type=sha
           type=raw,value=latest,enable={{is_default_branch}}
+          type=raw,value=latest-release,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
     
     - name: Extract metadata for DigitalOcean Registry
       id: meta-do
@@ -110,8 +113,10 @@ jobs:
         tags: |
           type=ref,event=branch
           type=ref,event=pr
+          type=ref,event=tag
           type=sha
           type=raw,value=latest,enable={{is_default_branch}}
+          type=raw,value=latest-release,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
     
     - name: Get version
       id: version
