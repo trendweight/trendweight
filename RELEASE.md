@@ -116,6 +116,12 @@ LABEL version=$VERSION
 - Ensure conventional commit format is correct
 - Verify branch protections allow PR creation
 
+### Permission errors (can't create labels)?
+If you see "You do not have permission to create labels", you need to:
+1. Create a Personal Access Token with `repo` scope
+2. Add it as `RELEASE_PLEASE_TOKEN` in repository secrets
+3. The workflow will use it instead of the default GITHUB_TOKEN
+
 ### Version not bumping correctly?
 - During alpha: This is expected, only prerelease number increments
 - After stable: Check `bump-patch-for-minor-pre-major` setting
