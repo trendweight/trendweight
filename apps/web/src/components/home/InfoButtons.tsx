@@ -25,7 +25,7 @@ export function InfoButtons() {
           to="/login"
           className={`w-full md:w-80 bg-brand-600 text-white px-6 py-6 md:py-7 rounded hover:bg-brand-700 transition-colors text-center text-xl lg:text-2xl font-normal ${visibility}`}
         >
-          Get Started
+          Log In / Sign Up
         </Link>
       )}
     </div>
