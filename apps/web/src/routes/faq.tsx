@@ -132,7 +132,7 @@ function FAQPage() {
                   <Question title="Is TrendWeight open source?">
                     <p>
                       Yes. You can find the project on GitHub{" "}
-                      <a href="https://github.com/trendweight" className="text-brand-600 hover:text-brand-700 underline">
+                      <a href="https://github.com/ervwalter/trendweight" className="text-brand-600 hover:text-brand-700 underline">
                         here
                       </a>
                       . However, it's essentially a one-man show (me), and I'm pretty protective of the project—probably too overprotective. That said, if you

@@ -2,6 +2,7 @@ import { useSuspenseQuery, useSuspenseQueries } from "@tanstack/react-query";
 import { apiRequest, ApiError } from "./client";
 import type { ProfileResponse, ProviderLink, MeasurementsResponse } from "./types";
 import type { ProfileData, SettingsData } from "../core/interfaces";
+import { getDemoData, getDemoProfile } from "../demo/demoData";
 
 // Query keys
 export const queryKeys = {
@@ -79,11 +80,34 @@ export function useSettings() {
 }
 
 // Combined profile and measurement data query with suspense (loads in parallel)
-export function useDashboardQueries() {
+export function useDashboardQueries(demoMode?: boolean) {
+  // Create demo query options that match the expected types
+  const demoQueryOptions = {
+    profile: {
+      queryKey: ["demo-profile"] as const,
+      queryFn: async (): Promise<ProfileResponse> => {
+        const demoProfile = getDemoProfile();
+        return {
+          user: {
+            ...demoProfile,
+            uid: "demo",
+            email: "demo@example.com",
+          },
+          timestamp: new Date().toISOString(),
+        };
+      },
+    },
+    data: {
+      queryKey: ["demo-data"] as const,
+      queryFn: async (): Promise<MeasurementsResponse> => getDemoData(),
+    },
+  };
+
+  // Always call the hook with consistent types
   const results = useSuspenseQueries({
     queries: [
       {
-        ...queryOptions.profile,
+        ...(demoMode ? demoQueryOptions.profile : queryOptions.profile),
         select: (data: ProfileResponse | null): ProfileData | null => {
           if (!data) return null;
           return {
@@ -98,7 +122,7 @@ export function useDashboardQueries() {
           };
         },
       },
-      queryOptions.data,
+      demoMode ? demoQueryOptions.data : queryOptions.data,
     ],
   });
 
