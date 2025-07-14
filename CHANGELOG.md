@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0-alpha.4](https://github.com/ervwalter/trendweight/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2025-07-14)
+
+
+### Bug Fixes
+
+* **ci:** require PAT for Release Please to trigger tag workflows ([9cd9bd7](https://github.com/ervwalter/trendweight/commit/9cd9bd704435c3b9fb7ecdeada2b505d55b526ec))
+
 ## [2.0.0-alpha.3](https://github.com/ervwalter/trendweight/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2025-07-14)
 
 
