@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "../components/Layout";
+import Dashboard from "../components/dashboard/Dashboard";
 import { pageTitle } from "../lib/utils/pageTitle";
 
 export const Route = createFileRoute("/demo")({
@@ -9,12 +10,9 @@ export const Route = createFileRoute("/demo")({
 function DemoPage() {
   return (
     <>
-      <title>{pageTitle("Demo")}</title>
+      <title>{pageTitle("Demo Dashboard")}</title>
       <Layout>
-        <div>
-          <h1 className="text-4xl font-bold mb-4">Demo</h1>
-          <p className="text-gray-600">Demo coming soon...</p>
-        </div>
+        <Dashboard demoMode={true} />
       </Layout>
     </>
   );

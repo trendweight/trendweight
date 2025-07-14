@@ -20,7 +20,7 @@ const Stats = () => {
 
   const ppw = useMetric ? plannedPoundsPerWeek && plannedPoundsPerWeek * (2.20462262 / 2) : plannedPoundsPerWeek;
   const caloriesPerDay = (gainPerWeek / 7) * 3500 * (useMetric ? 2.20462262 : 1);
-  const caloriesVsPlan = plannedPoundsPerWeek !== undefined ? caloriesPerDay - plannedPoundsPerWeek * 500 : 0;
+  const caloriesVsPlan = plannedPoundsPerWeek !== undefined ? Math.abs(plannedPoundsPerWeek) * 500 - caloriesPerDay : 0;
 
   return (
     <div>

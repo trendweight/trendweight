@@ -12,16 +12,20 @@ import Deltas from "./Deltas";
 import HelpLink from "./HelpLink";
 import ProviderSyncErrors from "./ProviderSyncErrors";
 
-const Dashboard: FC = () => {
-  const dashboardData = useComputeDashboardData();
+interface DashboardProps {
+  demoMode?: boolean;
+}
 
-  // Check if profile exists - if not, redirect to initial setup
-  if (dashboardData.profileError instanceof ApiError && dashboardData.profileError.status === 404) {
+const Dashboard: FC<DashboardProps> = ({ demoMode }) => {
+  const dashboardData = useComputeDashboardData(demoMode);
+
+  // Check if profile exists - if not, redirect to initial setup (skip for demo mode)
+  if (!demoMode && dashboardData.profileError instanceof ApiError && dashboardData.profileError.status === 404) {
     return <Navigate to="/initial-setup" replace />;
   }
 
-  // If profile exists but no measurements, redirect to link page
-  if (dashboardData.measurements.length === 0) {
+  // If profile exists but no measurements, redirect to link page (skip for demo mode)
+  if (!demoMode && dashboardData.measurements.length === 0) {
     return <Navigate to="/link" replace />;
   }
 

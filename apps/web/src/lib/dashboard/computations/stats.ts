@@ -23,13 +23,12 @@ export const computeDeltas = (_mode: Mode, dataPoints: DataPoint[]): Delta[] => 
   }
 
   const mostRecentTrendValue = points[0].trend;
-  const deltaStart = today.equals(points[0].date) ? today : today.minusDays(1);
   let index: number;
 
   // Yesterday
   if (daysSinceMostRecent <= 1 && points.length > 1) {
     const comparisonDataPoint = points[1];
-    if (comparisonDataPoint.date.until(deltaStart, ChronoUnit.DAYS) === 1) {
+    if (comparisonDataPoint.date.until(points[0].date, ChronoUnit.DAYS) === 1) {
       deltas.push({
         period: 1,
         description: "yesterday",
@@ -39,7 +38,7 @@ export const computeDeltas = (_mode: Mode, dataPoints: DataPoint[]): Delta[] => 
   }
 
   // A week ago
-  const targetDate7 = deltaStart.minusDays(7);
+  const targetDate7 = points[0].date.minusDays(7);
   index = points.findIndex((m) => m.date.equals(targetDate7));
   // Needs to be at least 4 readings between now and a week ago for a valid trend comparison
   if (index >= 4) {
@@ -51,7 +50,7 @@ export const computeDeltas = (_mode: Mode, dataPoints: DataPoint[]): Delta[] => 
   }
 
   // Two weeks ago
-  const targetDate14 = deltaStart.minusDays(14);
+  const targetDate14 = points[0].date.minusDays(14);
   index = points.findIndex((m) => m.date.equals(targetDate14));
   if (index >= 9) {
     deltas.push({
@@ -62,7 +61,7 @@ export const computeDeltas = (_mode: Mode, dataPoints: DataPoint[]): Delta[] => 
   }
 
   // A month ago
-  const targetDate28 = deltaStart.minusDays(28);
+  const targetDate28 = points[0].date.minusDays(28);
   index = points.findIndex((m) => m.date.equals(targetDate28));
   if (index >= 19) {
     deltas.push({
