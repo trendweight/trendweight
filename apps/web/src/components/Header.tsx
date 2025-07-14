@@ -30,7 +30,7 @@ export function Header() {
       <Container>
         <nav className="flex items-stretch justify-between">
           <div className="flex items-center gap-2 py-3">
-            <Link to="/" className="font-logo text-3xl font-bold leading-tight">
+            <Link to={isLoggedIn ? "/dashboard" : "/"} className="font-logo text-3xl font-bold leading-tight">
               TrendWeight
             </Link>
             <Logo className="h-8 w-auto" />
