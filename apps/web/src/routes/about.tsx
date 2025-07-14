@@ -10,7 +10,7 @@ export const Route = createFileRoute("/about")({
 
 function AboutPage() {
   const { isInitializing, user } = useAuth();
-  const getStarted = isInitializing || !user ? { label: "Get Started", href: "/login" } : { label: "Go to Dashboard", href: "/dashboard" };
+  const getStarted = isInitializing || !user ? { label: "Log In / Sign Up", href: "/login" } : { label: "Go to Dashboard", href: "/dashboard" };
 
   return (
     <>

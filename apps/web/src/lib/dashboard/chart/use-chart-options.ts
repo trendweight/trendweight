@@ -4,12 +4,12 @@ import { Modes } from "../../core/interfaces";
 import type { DashboardData } from "../dashboardContext";
 import chartOptionsTemplate from "./chart-options-template";
 import { createDiamondsSeries, createDotSeries, createLineSeries, createProjectionSeries, createSinkersSeries, createTrendSeries } from "./create-chart-series";
+import { useIsMobile } from "../../hooks/useMediaQuery";
 
 const toEpoch = (date: LocalDate) => date.toEpochDay() * 86400000;
 
 export const useChartOptions = (data: DashboardData) => {
-  // TODO: Add media query hook for narrow screens
-  const isNarrow = false;
+  const isNarrow = useIsMobile();
 
   const {
     dataPoints,
