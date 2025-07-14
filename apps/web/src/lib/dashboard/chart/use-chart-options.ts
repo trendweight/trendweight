@@ -28,24 +28,31 @@ export const useChartOptions = (data: DashboardData) => {
 
     const modeText = Modes[mode];
     const lastMeasurement = dataPoints[dataPoints.length - 1];
-    const actualData: [number, number | null][] = dataPoints.map((m) => [toEpoch(m.date), m.isInterpolated ? null : m.actual]);
-    const interpolatedData: [number, number | null][] = dataPoints.map((m) => [toEpoch(m.date), m.isInterpolated ? m.actual : null]);
-    const trendData: [number, number][] = dataPoints.map((m) => [toEpoch(m.date), m.trend]);
+
+    // Convert to percentage for fat percent mode
+    const multiplier = mode === "fatpercent" ? 100 : 1;
+
+    const actualData: [number, number | null][] = dataPoints.map((m) => [toEpoch(m.date), m.isInterpolated ? null : m.actual ? m.actual * multiplier : null]);
+    const interpolatedData: [number, number | null][] = dataPoints.map((m) => [
+      toEpoch(m.date),
+      m.isInterpolated ? (m.actual ? m.actual * multiplier : null) : null,
+    ]);
+    const trendData: [number, number][] = dataPoints.map((m) => [toEpoch(m.date), m.trend * multiplier]);
     const projectionsData: [number, number][] = [
-      [toEpoch(lastMeasurement.date), lastMeasurement.trend],
-      [toEpoch(lastMeasurement.date.plusDays(6)), lastMeasurement.trend + activeSlope * 6],
+      [toEpoch(lastMeasurement.date), lastMeasurement.trend * multiplier],
+      [toEpoch(lastMeasurement.date.plusDays(6)), (lastMeasurement.trend + activeSlope * 6) * multiplier],
     ];
 
     const actualSinkersData: [number, number | null, number | null, null][] = dataPoints.map((m) => [
       toEpoch(m.date),
-      m.isInterpolated ? null : m.actual,
-      m.isInterpolated ? null : m.trend,
+      m.isInterpolated ? null : m.actual ? m.actual * multiplier : null,
+      m.isInterpolated ? null : m.trend * multiplier,
       null,
     ]);
     const interpolatedSinkersData: [number, number | null, number | null, null][] = dataPoints.map((m) => [
       toEpoch(m.date),
-      m.isInterpolated ? m.actual : null,
-      m.isInterpolated ? m.trend : null,
+      m.isInterpolated ? (m.actual ? m.actual * multiplier : null) : null,
+      m.isInterpolated ? m.trend * multiplier : null,
       null,
     ]);
 
@@ -113,7 +120,7 @@ export const useChartOptions = (data: DashboardData) => {
 
     // Goal bands for weight mode
     if (mode === "weight" && goalWeight && options.yAxis && !Array.isArray(options.yAxis)) {
-      const goalWidth = useMetric ? 1.134 : 5;
+      const goalWidth = useMetric ? 1.134 : 2.5;
       options.yAxis.plotBands = [
         {
           from: goalWeight - goalWidth,
