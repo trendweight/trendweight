@@ -13,9 +13,57 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: googleapis/release-please-action@v4
+        id: release
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN || secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+
+  tag-docker-release:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
+      DO_REGISTRY: registry.digitalocean.com
+      DO_IMAGE_NAME: ${{ secrets.DIGITALOCEAN_REGISTRY_NAME }}/trendweight
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Log in to DigitalOcean Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DO_REGISTRY }}
+          username: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          password: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      
+      - name: Pull and tag latest image as latest-release
+        run: |
+          # Pull the latest image
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker pull ${{ env.DO_REGISTRY }}/${{ env.DO_IMAGE_NAME }}:latest
+          
+          # Tag as latest-release and with version tag
+          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-release
+          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.release-please.outputs.tag_name }}
+          docker tag ${{ env.DO_REGISTRY }}/${{ env.DO_IMAGE_NAME }}:latest ${{ env.DO_REGISTRY }}/${{ env.DO_IMAGE_NAME }}:latest-release
+          docker tag ${{ env.DO_REGISTRY }}/${{ env.DO_IMAGE_NAME }}:latest ${{ env.DO_REGISTRY }}/${{ env.DO_IMAGE_NAME }}:${{ needs.release-please.outputs.tag_name }}
+          
+          # Push the new tags
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-release
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.release-please.outputs.tag_name }}
+          docker push ${{ env.DO_REGISTRY }}/${{ env.DO_IMAGE_NAME }}:latest-release
+          docker push ${{ env.DO_REGISTRY }}/${{ env.DO_IMAGE_NAME }}:${{ needs.release-please.outputs.tag_name }}
