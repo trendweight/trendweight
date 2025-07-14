@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.0-alpha.3](https://github.com/ervwalter/trendweight/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2025-07-14)
+
+
+### Bug Fixes
+
+* **ci:** enable Docker push for tagged releases ([20740d3](https://github.com/ervwalter/trendweight/commit/20740d305a2d74f9b5b1af2b001f5aa3a719e1c5))
+* push Docker images when building from release tags ([f98aa5a](https://github.com/ervwalter/trendweight/commit/f98aa5aa88b2c32309b8cf58ea988dcff17d65ec))
+
 ## [2.0.0-alpha.2](https://github.com/ervwalter/trendweight/compare/v2.0.0-alpha.1...v2.0.0-alpha.2) (2025-07-14)
 
 
