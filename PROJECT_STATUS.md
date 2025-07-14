@@ -86,7 +86,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Recent readings list
 - [x] Support for body fat %, lean mass, etc.
 - [x] Client-side trend calculation
-- [ ] Demo dashboard with sample data
+- [x] Demo dashboard with sample data
 - [x] Optimized data loading with parallel queries
 - [x] Consistent weight storage in kg (instant unit switching)
 - [x] Provider sync error display with reconnect buttons

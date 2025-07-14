@@ -115,37 +115,6 @@ function LoginPage() {
 
           {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md">{error}</div>}
 
-          {/* Email login form */}
-          <form onSubmit={handleEmailSubmit} className="mb-6">
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent mb-4"
-              placeholder="Email address"
-              required
-              disabled={isSubmitting}
-            />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-brand-600 text-white py-3 px-6 rounded-md text-base font-medium hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting ? "Sending..." : "Continue"}
-            </button>
-          </form>
-
-          {/* Divider */}
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-gray-50 text-gray-700 uppercase font-medium">or</span>
-            </div>
-          </div>
-
           {/* Social login buttons */}
           <div className="space-y-3">
             <button
@@ -161,7 +130,7 @@ function LoginPage() {
               className="w-full flex items-center justify-start gap-4 px-4 py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
             >
               <img src="/microsoft-logo-BUXxQnXH.svg" alt="Microsoft" className="w-5 h-5" />
-              <span className="flex-1 text-left text-base">Continue with Microsoft Account</span>
+              <span className="flex-1 text-left text-base">Continue with Microsoft</span>
             </button>
 
             <button
@@ -172,6 +141,38 @@ function LoginPage() {
               <span className="flex-1 text-left text-base">Continue with Apple</span>
             </button>
           </div>
+
+          {/* Divider */}
+          <div className="relative my-8">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-gray-50 text-gray-700 uppercase font-medium">or</span>
+            </div>
+          </div>
+
+          {/* Email login form */}
+          <form onSubmit={handleEmailSubmit} className="mb-6">
+            <p className="text-sm text-gray-600 mb-3">Log in manually with an email address</p>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent mb-4"
+              placeholder="Email address"
+              required
+              disabled={isSubmitting}
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-brand-600 text-white py-3 px-6 rounded-md text-base font-medium hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? "Sending..." : "Continue with Email"}
+            </button>
+          </form>
 
           <p className="text-center text-sm text-gray-600 mt-8">
             By continuing, you agree to our{" "}

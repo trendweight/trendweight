@@ -90,7 +90,7 @@ function AppleCallbackPage() {
           <h1 className="text-2xl font-bold mb-4 text-red-600">Sign In Failed</h1>
           <p className="text-gray-700 mb-6">{error}</p>
           <a href="/login" className="inline-block bg-brand-600 text-white py-2 px-4 rounded hover:bg-brand-700 transition-colors">
-            Back to Login
+            Back to Log In
           </a>
         </div>
       </Layout>
