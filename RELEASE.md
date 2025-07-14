@@ -33,6 +33,16 @@ While in alpha mode, ALL commits increment only the prerelease number:
 - `fix:` → 2.0.0-alpha.2 → 2.0.0-alpha.3
 - `feat!:` → 2.0.0-alpha.3 → 2.0.0-alpha.4 (no major bump)
 
+## Initial Setup (REQUIRED)
+
+**Important**: You MUST create a Personal Access Token (PAT) for Release Please to work correctly:
+
+1. Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. Generate a new token with `repo` scope
+3. Add it as a repository secret named `RELEASE_PLEASE_TOKEN`
+
+This is required because tags created with the default GITHUB_TOKEN don't trigger other workflows (like the CI workflow that builds Docker images).
+
 ## How It Works
 
 1. **You push commits** to `main` with conventional commit messages:
@@ -52,6 +62,7 @@ While in alpha mode, ALL commits increment only the prerelease number:
    - Creates git tag `v2.0.0-alpha.2`
    - Creates GitHub release with changelog
    - Commits the updated files to main
+   - Triggers CI workflow to build Docker images with `latest-release` tag
 
 ## Transitioning from Alpha to Stable
 
@@ -117,10 +128,7 @@ LABEL version=$VERSION
 - Verify branch protections allow PR creation
 
 ### Permission errors (can't create labels)?
-If you see "You do not have permission to create labels", you need to:
-1. Create a Personal Access Token with `repo` scope
-2. Add it as `RELEASE_PLEASE_TOKEN` in repository secrets
-3. The workflow will use it instead of the default GITHUB_TOKEN
+See the "Initial Setup" section above - you need a PAT with `repo` scope.
 
 ### Version not bumping correctly?
 - During alpha: This is expected, only prerelease number increments
