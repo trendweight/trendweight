@@ -1,5 +1,36 @@
 # Changelog
 
+## [2.0.0-alpha.5](https://github.com/ervwalter/trendweight/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2025-07-15)
+
+
+### Features
+
+* create Button component with multiple variants and sizes ([e5ace77](https://github.com/ervwalter/trendweight/commit/e5ace772998a0887cf20c3e44b95d0131c0ef1e3))
+* enhance build page with support tools and changelog display ([55b491d](https://github.com/ervwalter/trendweight/commit/55b491d824493d583a90ac6347d41183b024e5ba))
+* implement shared dashboard URLs with third-person view ([2e40281](https://github.com/ervwalter/trendweight/commit/2e40281a2753306a8b31ce9bf4d093476547ae6e))
+* improve dashboard UI and chart display ([512e6aa](https://github.com/ervwalter/trendweight/commit/512e6aae73727cb42730f9389d6becccbef6c8d3))
+
+
+### Bug Fixes
+
+* remove unused isAuthError variable in ProviderSyncError ([e5ace77](https://github.com/ervwalter/trendweight/commit/e5ace772998a0887cf20c3e44b95d0131c0ef1e3))
+
+
+### Documentation
+
+* add UI component usage guidelines to CLAUDE.md and ARCHITECTURE.md ([e5ace77](https://github.com/ervwalter/trendweight/commit/e5ace772998a0887cf20c3e44b95d0131c0ef1e3))
+
+
+### Code Refactoring
+
+* replace direct heading tags with Heading component ([c23b00c](https://github.com/ervwalter/trendweight/commit/c23b00c9f306a82536cc38bf5b5becf857892658))
+* standardize UI components across application ([e5ace77](https://github.com/ervwalter/trendweight/commit/e5ace772998a0887cf20c3e44b95d0131c0ef1e3))
+
+
+### Dependencies
+
+* update npm dependencies ([be20f27](https://github.com/ervwalter/trendweight/commit/be20f2788e4ebef0fa1b033d65da7c75838f645b))
+
 ## [2.0.0-alpha.4](https://github.com/ervwalter/trendweight/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2025-07-14)
 
 
