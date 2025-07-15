@@ -79,7 +79,7 @@
     {
       "type": "deps",
       "section": "Dependencies",
-      "hidden": true
+      "hidden": false
     }
   ]
 }
