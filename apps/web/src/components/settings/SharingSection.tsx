@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { UseFormWatch } from "react-hook-form";
 import type { SettingsData } from "../../lib/core/interfaces";
 import { ConfirmDialog } from "../ui/ConfirmDialog";
+import { Heading } from "../ui/Heading";
 
 interface SharingSectionProps {
   watch: UseFormWatch<SettingsData>;
@@ -34,7 +35,7 @@ export function SharingSection({ watch }: SharingSectionProps) {
   return (
     <>
       <div className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Sharing</h2>
+        <Heading level={2}>Sharing</Heading>
         <p className="text-sm text-gray-600 mb-4">
           You can give the following personal URL to anyone you'd like to share your charts and stats with. You can also decide at any time to change the URL
           (in case you change your mind).

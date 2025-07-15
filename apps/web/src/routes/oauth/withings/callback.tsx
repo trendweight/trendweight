@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Layout } from "../../../components/Layout";
 import { useEffect } from "react";
+import { Heading } from "../../../components/ui/Heading";
 
 export const Route = createFileRoute("/oauth/withings/callback")({
   component: WithingsCallbackPage,
@@ -33,7 +34,9 @@ function WithingsCallbackPage() {
     <Layout>
       <div className="max-w-md mx-auto mt-8">
         <div className={`bg-white shadow rounded-lg p-6 ${isSuccess ? "border-green-500" : "border-red-500"} border-2`}>
-          <h1 className={`text-2xl font-bold mb-4 ${isSuccess ? "text-green-600" : "text-red-600"}`}>{isSuccess ? "Success!" : "Error"}</h1>
+          <Heading level={1} className={isSuccess ? "text-green-600" : "text-red-600"}>
+            {isSuccess ? "Success!" : "Error"}
+          </Heading>
 
           {isSuccess ? (
             <>

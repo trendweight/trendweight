@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "../components/Layout";
 import { pageTitle } from "../lib/utils/pageTitle";
+import { Heading } from "../components/ui/Heading";
 
 export const Route = createFileRoute("/tipjar")({
   component: TipJarPage,
@@ -12,7 +13,9 @@ function TipJarPage() {
       <title>{pageTitle("Tip Jar")}</title>
       <Layout>
         <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-hr:my-6">
-          <h1>Want to help support TrendWeight?</h1>
+          <Heading level={1} display>
+            Want to help support TrendWeight?
+          </Heading>
 
           <p>
             TrendWeight is a free app. I created it in my free time because I like tech gadgets and I wanted a better way to apply the concepts of the Hacker's
@@ -63,7 +66,7 @@ function TipJarPage() {
 
           <hr />
 
-          <h2>Tip with Ko-fi</h2>
+          <Heading level={2}>Tip with Ko-fi</Heading>
 
           <p>Ko-fi lets you give a small amount to someone using a credit card, PayPal, or Apple Pay.</p>
         </div>
@@ -81,7 +84,7 @@ function TipJarPage() {
         <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-hr:my-6">
           <hr />
 
-          <h2>GitHub Sponsors</h2>
+          <Heading level={2}>GitHub Sponsors</Heading>
 
           <p>
             If you're a GitHub user, you can support TrendWeight through GitHub Sponsors. This allows you to make recurring monthly contributions or one-time
@@ -102,7 +105,7 @@ function TipJarPage() {
         <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-hr:my-6">
           <hr />
 
-          <h2>Venmo / PayPal</h2>
+          <Heading level={2}>Venmo / PayPal</Heading>
 
           <p>If you like, you can also send small amounts directly via PayPal or Venmo:</p>
 

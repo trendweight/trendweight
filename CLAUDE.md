@@ -418,6 +418,18 @@ The containerized application:
 2. Update corresponding C# models with `Db` prefix
 3. Update TypeScript interfaces if needed
 
+### Commit Message Guidelines
+**CRITICAL RULE: NO EMOJIS IN COMMIT MESSAGES**
+- Use conventional commit format: `type: description`
+- Types: feat, fix, docs, style, refactor, perf, test, chore, ci, build, revert
+- Never use emojis (no ✨, 🐛, 📝, etc.)
+- Keep first line under 72 characters
+- Use present tense, imperative mood
+- Examples:
+  - `feat: add user authentication system`
+  - `fix: resolve memory leak in rendering process`
+  - `refactor: extract common validation logic into helpers`
+
 ## Troubleshooting
 
 ### Port Conflicts

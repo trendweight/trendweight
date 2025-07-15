@@ -2,6 +2,7 @@ import { recentDate } from "../../lib/core/dates";
 import { Modes } from "../../lib/core/interfaces";
 import { formatMeasurement } from "../../lib/core/numbers";
 import { useDashboardData } from "../../lib/dashboard/hooks";
+import { Heading } from "../ui/Heading";
 
 const RecentReadings = () => {
   const {
@@ -14,7 +15,7 @@ const RecentReadings = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Recent {Modes[mode]} Readings</h2>
+      <Heading level={3}>Recent {Modes[mode]} Readings</Heading>
       <table className="w-full md:w-auto md:min-w-[280px] text-sm">
         <thead>
           <tr>

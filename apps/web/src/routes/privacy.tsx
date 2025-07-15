@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "../components/Layout";
 import { pageTitle } from "../lib/utils/pageTitle";
+import { Heading } from "../components/ui/Heading";
 
 export const Route = createFileRoute("/privacy")({
   component: PrivacyPage,
@@ -12,12 +13,16 @@ function PrivacyPage() {
       <title>{pageTitle("Privacy")}</title>
       <Layout>
         <div className="mt-4 max-w-4xl">
-          <h1 className="text-4xl font-bold pb-4">Privacy Policy</h1>
+          <Heading level={1} className="pb-4" display>
+            Privacy Policy
+          </Heading>
 
           <div className="md:flex md:gap-6">
             <div className="flex-1">
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
-                <h2 className="font-semibold text-lg mb-2">The Short Version</h2>
+                <Heading level={2} className="mb-2">
+                  The Short Version
+                </Heading>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>We only collect what's needed: your email and weight data</li>
                   <li>Your data is encrypted and stored securely</li>
@@ -34,7 +39,9 @@ function PrivacyPage() {
 
           <p>We know your privacy matters, so let's be clear about how we handle your data at TrendWeight.</p>
 
-          <h2 className="text-2xl font-semibold mt-6 mb-3">What We Collect</h2>
+          <Heading level={2} className="mt-6 mb-3">
+            What We Collect
+          </Heading>
           <p>TrendWeight only collects information that's needed to make the service work:</p>
           <ul className="mt-2 px-4 list-disc">
             <li>Your email address (for signing in)</li>
@@ -44,7 +51,9 @@ function PrivacyPage() {
             <li>Your account preferences and settings</li>
           </ul>
 
-          <h2 className="text-2xl font-semibold mt-6 mb-3">How We Protect Your Data</h2>
+          <Heading level={2} className="mt-6 mb-3">
+            How We Protect Your Data
+          </Heading>
           <p>Your data is protected with industry-standard security measures:</p>
           <ul className="mt-2 px-4 list-disc">
             <li>All connections use HTTPS encryption</li>
@@ -53,7 +62,9 @@ function PrivacyPage() {
             <li>Regular security updates are applied to all systems</li>
           </ul>
 
-          <h2 className="text-2xl font-semibold mt-6 mb-3">Analytics</h2>
+          <Heading level={2} className="mt-6 mb-3">
+            Analytics
+          </Heading>
           <p>
             We use{" "}
             <a href="https://plausible.io/" className="text-brand-600 hover:text-brand-700 underline">
@@ -67,7 +78,9 @@ function PrivacyPage() {
             .
           </p>
 
-          <h2 className="text-2xl font-semibold mt-6 mb-3">Service Providers</h2>
+          <Heading level={2} className="mt-6 mb-3">
+            Service Providers
+          </Heading>
           <p>These services help TrendWeight work. They only receive the minimum information needed:</p>
           <ul className="mt-2 px-4 list-disc">
             <li>
@@ -106,7 +119,9 @@ function PrivacyPage() {
             </li>
           </ul>
 
-          <h2 className="text-2xl font-semibold mt-6 mb-3">Your Rights</h2>
+          <Heading level={2} className="mt-6 mb-3">
+            Your Rights
+          </Heading>
           <ul className="mt-2 px-4 list-disc">
             <li>You can download a copy of all your data from the Settings page</li>
             <li>You can delete your account anytime from the Settings page</li>
@@ -114,15 +129,21 @@ function PrivacyPage() {
             <li>We never sell or share your personal information with third parties</li>
           </ul>
 
-          <h2 className="text-2xl font-semibold mt-6 mb-3">Other Websites</h2>
+          <Heading level={2} className="mt-6 mb-3">
+            Other Websites
+          </Heading>
           <p>
             TrendWeight includes links to other websites like Amazon, Withings, and Fitbit. When you visit those sites, their privacy policies apply, not ours.
           </p>
 
-          <h2 className="text-2xl font-semibold mt-6 mb-3">Changes to This Policy</h2>
+          <Heading level={2} className="mt-6 mb-3">
+            Changes to This Policy
+          </Heading>
           <p>We may update this policy from time to time. The most current version will always be on this page with the effective date at the bottom.</p>
 
-          <h2 className="text-2xl font-semibold mt-6 mb-3">Contact</h2>
+          <Heading level={2} className="mt-6 mb-3">
+            Contact
+          </Heading>
           <p>
             Questions about your privacy or this policy? Email{" "}
             <a href="mailto:erv@ewal.net" className="text-brand-600 hover:text-brand-700 underline">

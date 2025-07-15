@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ConfirmDialog } from "../ui/ConfirmDialog";
+import { Heading } from "../ui/Heading";
 
 export function DangerZoneSection() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -13,7 +14,7 @@ export function DangerZoneSection() {
   return (
     <>
       <div className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Danger Zone</h2>
+        <Heading level={2}>Danger Zone</Heading>
         <p className="text-sm text-gray-600 mb-4">
           If you wish to delete your account, you may do so at any time. Your account, your settings, and all your weight data will be deleted from TrendWeight
           servers. If you wish to recreate your account at a later date, you may, but you'll need to reconnect your new account to a scale to redownload any

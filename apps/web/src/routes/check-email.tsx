@@ -4,6 +4,7 @@ import { Layout } from "../components/Layout";
 import { HiOutlineMail } from "react-icons/hi";
 import { useAuth } from "../lib/auth/useAuth";
 import { pageTitle } from "../lib/utils/pageTitle";
+import { Heading } from "../components/ui/Heading";
 
 export const Route = createFileRoute("/check-email")({
   component: CheckEmailPage,
@@ -79,7 +80,9 @@ function CheckEmailPage() {
             <HiOutlineMail className="h-8 w-8" />
           </div>
 
-          <h1 className="text-4xl font-bold mb-4">Check your email!</h1>
+          <Heading level={1} display>
+            Check your email!
+          </Heading>
 
           <p className="text-lg text-gray-600 mb-2">We sent a login link to</p>
 

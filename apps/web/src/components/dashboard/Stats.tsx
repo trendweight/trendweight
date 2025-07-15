@@ -3,6 +3,7 @@ import { shortDate } from "../../lib/core/dates";
 import type { Measurement } from "../../lib/core/interfaces";
 import { formatNumber, formatWeight } from "../../lib/core/numbers";
 import { useDashboardData } from "../../lib/dashboard/hooks";
+import { Heading } from "../ui/Heading";
 
 const Stats = () => {
   const {
@@ -25,7 +26,9 @@ const Stats = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-3">Overall Weight Statistics</h2>
+      <Heading level={3} className="mb-3">
+        Overall Weight Statistics
+      </Heading>
       <ul className="space-y-1">
         <li>
           {isMe ? "You are" : `${firstName} is`} {weightSlope > 0 ? "gaining" : "losing"} <strong>{formatWeight(gainPerWeek, useMetric)}/week</strong> of total

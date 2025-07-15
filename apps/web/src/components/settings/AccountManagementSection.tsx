@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { UseFormWatch } from "react-hook-form";
 import type { SettingsData } from "../../lib/core/interfaces";
 import { ConfirmDialog } from "../ui/ConfirmDialog";
+import { Heading } from "../ui/Heading";
 
 interface AccountManagementSectionProps {
   watch: UseFormWatch<SettingsData>;
@@ -42,7 +43,7 @@ export function AccountManagementSection({ watch }: AccountManagementSectionProp
     <>
       {/* Sharing Section */}
       <div className="p-6 border-b border-gray-200">
-        <h2 className="text-xl font-semibold mb-4">Sharing</h2>
+        <Heading level={2}>Sharing</Heading>
         <p className="text-sm text-gray-600 mb-4">
           You can give the following personal URL to anyone you'd like to share your charts and stats with. You can also decide at any time to change the URL
           (in case you change your mind).
@@ -93,7 +94,7 @@ export function AccountManagementSection({ watch }: AccountManagementSectionProp
 
       {/* Danger Zone Section */}
       <div className="p-6 border-2 border-red-100 rounded-lg m-6">
-        <h2 className="text-xl font-semibold mb-4">Danger Zone</h2>
+        <Heading level={2}>Danger Zone</Heading>
         <p className="text-sm text-gray-600 mb-4">
           If you wish to delete your account, you may do so at any time. Your account, your settings, and all your weight data will be deleted from TrendWeight
           servers. If you wish to recreate your account at a later date, you may, but you'll need to reconnect your new account to a scale to redownload any

@@ -1,8 +1,12 @@
+import { Heading } from "../ui/Heading";
+
 export function Blurb() {
   return (
     <div className="flex flex-col items-center justify-center md:pr-6">
       <div>
-        <h2 className="text-2xl font-bold pb-4">Am I losing weight?</h2>
+        <Heading level={2} className="pb-4">
+          Am I losing weight?
+        </Heading>
         <div className="pb-4">TrendWeight can help answer that question by analyzing your day to day weight changes</div>
         <div className="pb-4">
           <b>Step 1</b>: Weigh yourself every day.

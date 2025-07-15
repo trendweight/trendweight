@@ -1,6 +1,7 @@
 import { Modes } from "../../lib/core/interfaces";
 import { formatMeasurement } from "../../lib/core/numbers";
 import { useDashboardData } from "../../lib/dashboard/hooks";
+import { Heading } from "../ui/Heading";
 import ChangeArrow from "./ChangeArrow";
 
 const Deltas = () => {
@@ -27,7 +28,9 @@ const Deltas = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-3">{Modes[mode]} Changes Over Time</h2>
+      <Heading level={3} className="mb-3">
+        {Modes[mode]} Changes Over Time
+      </Heading>
       <div className="space-y-1">
         {deltas.map((d) => (
           <div key={d.period}>

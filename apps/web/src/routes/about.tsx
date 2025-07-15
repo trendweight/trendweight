@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineRss, HiOutlineShoppingCart } from "react-icons/hi";
 import { Layout } from "../components/Layout";
+import { Heading } from "../components/ui/Heading";
 import { useAuth } from "../lib/auth/useAuth";
 import { pageTitle } from "../lib/utils/pageTitle";
 
@@ -22,7 +23,9 @@ function AboutPage() {
               <img src="/screenshot-large.png" alt="dashboard screenshot" className="w-full h-auto" />
             </Link>
           </div>
-          <h1 className="text-4xl font-bold pb-4">What is TrendWeight, Exactly?</h1>
+          <Heading level={1} className="pb-4">
+            What is TrendWeight, Exactly?
+          </Heading>
           <p className="pb-4">TrendWeight is a free weight tracking web app that filters out the noise and focuses on longer term trends in weight change.</p>
           <p className="pb-4">
             When you really want to track your weight loss, you probably know you should disregard day to day changes in weight and instead focus on the trend
@@ -64,7 +67,9 @@ function AboutPage() {
                       <HiOutlineLightBulb className="h-6 w-6" />
                     </div>
                   </div>
-                  <h3 className="mt-6 text-gray-900 text-lg font-medium tracking-tight pb-0">Questions?</h3>
+                  <Heading level={3} className="mt-6 text-gray-900 tracking-tight pb-0 mb-0">
+                    Questions?
+                  </Heading>
                   <p className="mt-5 text-gray-500 text-base">
                     Take a look at these{" "}
                     <Link to="/faq" className="text-brand-600 hover:text-brand-700 underline">
@@ -85,7 +90,9 @@ function AboutPage() {
                       <HiOutlineShoppingCart className="h-6 w-6" />
                     </div>
                   </div>
-                  <h3 className="mt-6 text-gray-900 text-lg font-medium tracking-tight pb-0">Get a Scale</h3>
+                  <Heading level={3} className="mt-6 text-gray-900 tracking-tight pb-0 mb-0">
+                    Get a Scale
+                  </Heading>
                   <ul className="pl-4 mt-5 text-gray-500 text-base list-disc">
                     <li>
                       <a href="https://amzn.to/2Rh8yH1" className="text-brand-600 hover:text-brand-700 underline">
@@ -107,7 +114,9 @@ function AboutPage() {
                       <HiOutlineRss className="h-6 w-6" />
                     </div>
                   </div>
-                  <h3 className="mt-6 text-gray-900 text-lg font-medium tracking-tight pb-0">Stay Updated</h3>
+                  <Heading level={3} className="mt-6 text-gray-900 tracking-tight pb-0 mb-0">
+                    Stay Updated
+                  </Heading>
                   <ul className="pl-4 mt-5 text-gray-500 text-base list-disc">
                     <li>
                       <a href="https://twitter.com/trendweight" className="text-brand-600 hover:text-brand-700 underline">
@@ -134,7 +143,9 @@ function AboutPage() {
                       <HiOutlineHeart className="h-6 w-6" />
                     </div>
                   </div>
-                  <h3 className="mt-6 text-gray-900 text-lg font-medium tracking-tight pb-0">Support TrendWeight</h3>
+                  <Heading level={3} className="mt-6 text-gray-900 tracking-tight pb-0 mb-0">
+                    Support TrendWeight
+                  </Heading>
                   <p className="mt-5 text-gray-500 text-base">
                     TrendWeight is free, forever. But if you want info about how you can help fund it,{" "}
                     <Link to="/tipjar" className="text-brand-600 hover:text-brand-700 underline">
@@ -148,7 +159,9 @@ function AboutPage() {
           </div>
           <div className="bg-brand-50 border border-brand-100 mt-10 rounded-lg">
             <div className="px-6 md:px-12 py-8 md:py-10 lg:py-12">
-              <h2 className="text-brand-600 text-xl sm:text-2xl font-extrabold tracking-tight">Ready to check it out?</h2>
+              <Heading level={2} className="text-brand-600 font-extrabold tracking-tight mb-0">
+                Ready to check it out?
+              </Heading>
               <div className="flex mt-2">
                 <Link to={getStarted.href} className="inline-block bg-brand-600 text-white px-6 py-3 rounded hover:bg-brand-700 transition-colors text-lg">
                   {getStarted.label}

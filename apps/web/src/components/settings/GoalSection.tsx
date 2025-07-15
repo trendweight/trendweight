@@ -2,6 +2,7 @@ import type { UseFormRegister, FieldErrors, UseFormWatch, Control } from "react-
 import { Controller } from "react-hook-form";
 import type { SettingsData } from "../../lib/core/interfaces";
 import { Select } from "../ui/Select";
+import { Heading } from "../ui/Heading";
 
 interface GoalSectionProps {
   register: UseFormRegister<SettingsData>;
@@ -33,7 +34,7 @@ export function GoalSection({ register, errors, watch, control }: GoalSectionPro
 
   return (
     <div className="p-6 border-b border-gray-200">
-      <h2 className="text-xl font-semibold mb-4">Goal Settings</h2>
+      <Heading level={2}>Goal Settings</Heading>
       <p className="text-sm text-gray-600 mb-6">
         If you provide some details on your weight loss goals, your dashboard will include statistics on how closely you are following your plan.
       </p>

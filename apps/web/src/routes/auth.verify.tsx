@@ -4,6 +4,7 @@ import { Layout } from "../components/Layout";
 import { useAuth } from "../lib/auth/useAuth";
 import { supabase } from "../lib/supabase/client";
 import { pageTitle } from "../lib/utils/pageTitle";
+import { Heading } from "../components/ui/Heading";
 
 export const Route = createFileRoute("/auth/verify")({
   // This runs BEFORE the component renders, outside of React's lifecycle
@@ -112,12 +113,16 @@ function VerifyEmailPage() {
         <div className="max-w-md mx-auto text-center">
           {isVerifying ? (
             <>
-              <h1 className="text-4xl font-bold mb-4">Verifying...</h1>
+              <Heading level={1} display>
+                Verifying...
+              </Heading>
               <p className="text-gray-600">Please wait while we verify your login link.</p>
             </>
           ) : error ? (
             <>
-              <h1 className="text-4xl font-bold mb-4">Verification Failed</h1>
+              <Heading level={1} display>
+                Verification Failed
+              </Heading>
               <p className="text-red-600 mb-4">{error}</p>
               <Link to="/login" className="text-brand-600 hover:text-brand-700 underline">
                 Return to login
@@ -126,7 +131,9 @@ function VerifyEmailPage() {
           ) : (
             // This shouldn't happen, but just in case
             <>
-              <h1 className="text-4xl font-bold mb-4">Processing...</h1>
+              <Heading level={1} display>
+                Processing...
+              </Heading>
               <p className="text-gray-600">Please wait...</p>
             </>
           )}

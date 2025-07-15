@@ -105,7 +105,9 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                 <div className="flex items-center space-x-3">
                   <img src={provider.logo} alt={provider.name} className="w-10 h-10" />
                   <div>
-                    <h3 className="font-medium text-gray-900">{provider.name}</h3>
+                    <Heading level={3} className="text-gray-900">
+                      {provider.name}
+                    </Heading>
                     <p className="text-sm text-gray-600">
                       {isConnected ? `Connected ${new Date(providerLink!.connectedAt).toLocaleDateString()}` : "Not connected"}
                     </p>

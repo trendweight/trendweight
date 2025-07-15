@@ -11,6 +11,7 @@ import { useAuth } from "../lib/auth/useAuth";
 import type { SettingsData } from "../lib/core/interfaces";
 import { queryOptions } from "../lib/api/queries";
 import { queryClient } from "../lib/queryClient";
+import { Heading } from "../components/ui/Heading";
 
 export const Route = createFileRoute("/initial-setup")({
   beforeLoad: requireAuth,
@@ -75,7 +76,7 @@ function InitialSetupPage() {
         <div className="max-w-xl mx-auto">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
             <div className="p-6 border-b border-gray-200">
-              <h1 className="text-2xl font-semibold">Welcome to TrendWeight!</h1>
+              <Heading level={1}>Welcome to TrendWeight!</Heading>
               <p className="text-gray-600 mt-2">Let's set up your profile to get started.</p>
             </div>
 

@@ -3,6 +3,7 @@ import { Controller } from "react-hook-form";
 import type { SettingsData } from "../../lib/core/interfaces";
 import { Switch } from "../ui/Switch";
 import { Select } from "../ui/Select";
+import { Heading } from "../ui/Heading";
 
 interface AdvancedSectionProps {
   register: UseFormRegister<SettingsData>;
@@ -21,7 +22,7 @@ const dayStartOptions = Array.from({ length: 24 }, (_, i) => {
 export function AdvancedSection({ control }: AdvancedSectionProps) {
   return (
     <div className="p-6 border-b border-gray-200">
-      <h2 className="text-xl font-semibold mb-4">Advanced Settings</h2>
+      <Heading level={2}>Advanced Settings</Heading>
 
       <div className="space-y-4">
         <div>

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Container } from "../components/Container";
 import { Layout } from "../components/Layout";
 import { pageTitle } from "../lib/utils/pageTitle";
+import { Heading } from "../components/ui/Heading";
 
 export const Route = createFileRoute("/build")({
   component: BuildDetails,
@@ -27,7 +28,9 @@ function BuildDetails() {
 
       <Layout>
         <Container>
-          <h1 className="mb-6 text-3xl font-bold">Build Details</h1>
+          <Heading level={1} className="mb-6" display>
+            Build Details
+          </Heading>
 
           <div className="overflow-x-auto">
             <table className="min-w-full">

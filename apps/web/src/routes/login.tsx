@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Layout } from "../components/Layout";
 import { useAuth } from "../lib/auth/useAuth";
 import { pageTitle } from "../lib/utils/pageTitle";
+import { Heading } from "../components/ui/Heading";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -110,7 +111,9 @@ function LoginPage() {
       <title>{pageTitle("Log In")}</title>
       <Layout>
         <div className="max-w-md mx-auto py-12">
-          <h1 className="text-4xl font-bold text-center mb-4">Welcome</h1>
+          <Heading level={1} className="text-center" display>
+            Welcome
+          </Heading>
           <p className="text-center text-gray-600 mb-8">Log in to your account or create a new one</p>
 
           {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md">{error}</div>}

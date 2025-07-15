@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Heading } from "../ui/Heading";
 
 interface SettingsLayoutProps {
   children: ReactNode;
@@ -7,7 +8,9 @@ interface SettingsLayoutProps {
 export function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Settings</h1>
+      <Heading level={1} className="mb-8" display>
+        Settings
+      </Heading>
       {children}
     </div>
   );

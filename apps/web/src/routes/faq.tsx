@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Layout } from "../components/Layout";
 import { Question } from "../components/faq/Question";
 import { pageTitle } from "../lib/utils/pageTitle";
+import { Heading } from "../components/ui/Heading";
 
 export const Route = createFileRoute("/faq")({
   component: FAQPage,
@@ -16,7 +17,9 @@ function FAQPage() {
           <div>
             <div className="lg:grid lg:gap-8 lg:grid-cols-4">
               <div>
-                <h1 className="text-gray-900 text-2xl font-extrabold pb-4">Frequently asked questions</h1>
+                <Heading level={1} className="text-gray-900 pb-4">
+                  Frequently asked questions
+                </Heading>
                 <p className="text-base text-gray-500">
                   Can't find the answer you're looking for? Email me at{" "}
                   <a href="mailto:erv@ewal.net" className="text-brand-600 hover:text-brand-700 underline">

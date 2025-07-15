@@ -9,6 +9,7 @@ import remarkMath from "remark-math";
 import { Layout } from "../components/Layout";
 import mathContent from "../content/math-of-trendweight.md?raw";
 import { pageTitle } from "../lib/utils/pageTitle";
+import { Heading } from "../components/ui/Heading";
 
 export const Route = createFileRoute("/math")({
   component: MathPage,
@@ -54,7 +55,9 @@ function MathPage() {
             <div className="lg:grid lg:gap-8 lg:grid-cols-4">
               <div className="hidden lg:block">
                 <div>
-                  <h2 className="text-gray-900 text-xl font-bold pb-4">Table of Contents</h2>
+                  <Heading level={2} className="text-gray-900 pb-4">
+                    Table of Contents
+                  </Heading>
                   <ul className="list-disc pl-5 space-y-1 text-sm">
                     {headings.map((heading) => (
                       <li key={heading.id}>
@@ -85,16 +88,16 @@ function MathPage() {
                     rehypePlugins={[rehypeKatex]}
                     components={{
                       // Add IDs to headings for navigation
-                      h2: ({ children, ...props }) => {
+                      h2: ({ children }) => {
                         const text = children?.toString() || "";
                         const id = text
                           .toLowerCase()
                           .replace(/[^\w\s-]/g, "")
                           .replace(/\s+/g, "-");
                         return (
-                          <h2 id={id} {...props}>
+                          <Heading level={2} id={id}>
                             {children}
-                          </h2>
+                          </Heading>
                         );
                       },
                       // Only override what needs special handling
