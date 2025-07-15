@@ -4,24 +4,62 @@ import { queryOptions } from "../api/queries";
 
 /**
  * Ensures the user has a profile, redirecting to initial setup if not.
- * @throws Redirect to /initial-setup if no profile exists
+ * @param sharingCode - Optional sharing code for shared dashboards
+ * @throws Redirect to /initial-setup if no profile exists (authenticated users)
+ * @throws Redirect to / if sharing not enabled (shared dashboards)
  */
-export async function ensureProfile(): Promise<void> {
-  const profile = await queryClient.fetchQuery(queryOptions.profile);
+export async function ensureProfile(sharingCode?: string): Promise<void> {
+  if (sharingCode) {
+    // Skip validation for demo
+    if (sharingCode === "demo") {
+      return;
+    }
 
-  if (!profile) {
-    throw redirect({ to: "/initial-setup", replace: true });
+    // For shared dashboards, check if sharing is enabled
+    try {
+      const profile = await queryClient.fetchQuery(queryOptions.profile(sharingCode));
+
+      if (!profile || !profile.user?.sharingEnabled) {
+        throw redirect({ to: "/", replace: true });
+      }
+    } catch {
+      // If profile not found or any error, redirect to home
+      throw redirect({ to: "/", replace: true });
+    }
+  } else {
+    // For authenticated users, check if profile exists
+    const profile = await queryClient.fetchQuery(queryOptions.profile());
+
+    if (!profile) {
+      throw redirect({ to: "/initial-setup", replace: true });
+    }
   }
 }
 
 /**
- * Ensures the user has connected provider links, redirecting to link page if not.
- * @throws Redirect to /link if no provider links exist
+ * Ensures the user has connected provider links, redirecting if not.
+ * @param sharingCode - Optional sharing code for shared dashboards
+ * @throws Redirect to /link for authenticated users or / for shared dashboards if no provider links exist
  */
-export async function ensureProviderLinks(): Promise<void> {
-  const providerLinks = await queryClient.fetchQuery(queryOptions.providerLinks);
+export async function ensureProviderLinks(sharingCode?: string): Promise<void> {
+  if (sharingCode) {
+    // Skip validation for demo
+    if (sharingCode === "demo") {
+      return;
+    }
 
-  if (!providerLinks || providerLinks.length === 0) {
-    throw redirect({ to: "/link", replace: true });
+    // For shared dashboards, check provider links
+    const providerLinks = await queryClient.fetchQuery(queryOptions.providerLinks(sharingCode));
+
+    if (!providerLinks || providerLinks.length === 0) {
+      throw redirect({ to: "/", replace: true });
+    }
+  } else {
+    // For authenticated users, use the normal provider links query
+    const providerLinks = await queryClient.fetchQuery(queryOptions.providerLinks());
+
+    if (!providerLinks || providerLinks.length === 0) {
+      throw redirect({ to: "/link", replace: true });
+    }
   }
 }

@@ -104,11 +104,11 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Settings UI implementation (comprehensive with all sections)
 - [x] Weight units preference
 - [x] Day start offset
-- [ ] Privacy settings
+- [x] Privacy settings
 - [x] Connect/disconnect providers
 - [x] Delete account functionality (UI ready, backend pending)
 - [ ] Data export functionality (download your data)
-- [ ] Complete dashboard sharing UI (regenerate URL, enable/disable sharing)
+- [x] Complete dashboard sharing UI (regenerate URL, enable/disable sharing)
 
 ### ✅ Static Pages
 

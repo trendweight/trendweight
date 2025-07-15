@@ -1,23 +1,30 @@
 import { useSuspenseQuery, useSuspenseQueries } from "@tanstack/react-query";
 import { apiRequest, ApiError } from "./client";
 import type { ProfileResponse, ProviderLink, MeasurementsResponse } from "./types";
-import type { ProfileData, SettingsData } from "../core/interfaces";
+import type { ProfileData, SettingsData, SharingData } from "../core/interfaces";
 import { getDemoData, getDemoProfile } from "../demo/demoData";
+
+// Query key helpers
+const createQueryKey = <T extends readonly unknown[]>(base: T, sharingCode?: string): T | readonly [...T, string] => {
+  return sharingCode ? ([...base, sharingCode] as const) : base;
+};
 
 // Query keys
 export const queryKeys = {
-  profile: ["profile"] as const,
-  data: ["data"] as const,
-  providerLinks: ["providerLinks"] as const,
+  profile: (sharingCode?: string) => createQueryKey(["profile"] as const, sharingCode),
+  data: (sharingCode?: string) => createQueryKey(["data"] as const, sharingCode),
+  providerLinks: (sharingCode?: string) => createQueryKey(["providerLinks"] as const, sharingCode),
+  sharing: ["sharing"] as const,
 };
 
 // Query options for reuse
 export const queryOptions = {
-  profile: {
-    queryKey: queryKeys.profile,
+  profile: (sharingCode?: string) => ({
+    queryKey: queryKeys.profile(sharingCode),
     queryFn: async () => {
       try {
-        return await apiRequest<ProfileResponse>("/profile");
+        const endpoint = sharingCode ? `/profile/${sharingCode}` : "/profile";
+        return await apiRequest<ProfileResponse>(endpoint);
       } catch (error) {
         if (error instanceof ApiError && error.status === 404) {
           // Return null for 404s (user exists but no profile yet)
@@ -26,17 +33,18 @@ export const queryOptions = {
         throw error;
       }
     },
-  },
-  data: {
-    queryKey: queryKeys.data,
-    queryFn: () => apiRequest<MeasurementsResponse>("/data"),
+  }),
+  data: (sharingCode?: string) => ({
+    queryKey: queryKeys.data(sharingCode),
+    queryFn: () => apiRequest<MeasurementsResponse>(sharingCode ? `/data/${sharingCode}` : "/data"),
     staleTime: 60000, // 1 minute (matching legacy React Query config)
-  },
-  providerLinks: {
-    queryKey: queryKeys.providerLinks,
+  }),
+  providerLinks: (sharingCode?: string) => ({
+    queryKey: queryKeys.providerLinks(sharingCode),
     queryFn: async () => {
       try {
-        return await apiRequest<ProviderLink[]>("/providers/links");
+        const endpoint = sharingCode ? `/providers/links/${sharingCode}` : "/providers/links";
+        return await apiRequest<ProviderLink[]>(endpoint);
       } catch (error) {
         if (error instanceof ApiError && error.status === 404) {
           // Return empty array for 404s (no provider links yet)
@@ -45,13 +53,17 @@ export const queryOptions = {
         throw error;
       }
     },
+  }),
+  sharing: {
+    queryKey: queryKeys.sharing,
+    queryFn: () => apiRequest<SharingData>("/sharing"),
   },
 };
 
 // Profile query (with suspense) - returns just ProfileData for dashboard
 export function useProfile() {
   return useSuspenseQuery({
-    ...queryOptions.profile,
+    ...queryOptions.profile(),
     select: (data: ProfileResponse | null): ProfileData | null => {
       if (!data) return null;
       return {
@@ -63,6 +75,7 @@ export function useProfile() {
         useMetric: data.user.useMetric,
         showCalories: data.user.showCalories,
         sharingToken: data.user.sharingToken,
+        sharingEnabled: data.user.sharingEnabled,
       };
     },
   });
@@ -71,7 +84,7 @@ export function useProfile() {
 // Settings query - returns full SettingsData including email/uid
 export function useSettings() {
   return useSuspenseQuery({
-    ...queryOptions.profile,
+    ...queryOptions.profile(),
     select: (data: ProfileResponse | null): SettingsData | null => {
       if (!data) return null;
       return data.user;
@@ -107,25 +120,8 @@ export function useDashboardQueries(sharingCode?: string) {
     },
   };
 
-  // Create sharing code query options
-  const sharingQueryOptions =
-    sharingCode && sharingCode !== "demo"
-      ? {
-          profile: {
-            queryKey: ["profile", sharingCode] as const,
-            queryFn: () => apiRequest<ProfileResponse>(`/profile/${sharingCode}`),
-          },
-          data: {
-            queryKey: ["data", sharingCode] as const,
-            queryFn: () => apiRequest<MeasurementsResponse>(`/data/${sharingCode}`),
-            staleTime: 60000,
-          },
-        }
-      : null;
-
   // Determine which query options to use
-  const queryOptionsToUse =
-    sharingCode === "demo" ? demoQueryOptions : sharingCode ? sharingQueryOptions! : { profile: queryOptions.profile, data: queryOptions.data };
+  const queryOptionsToUse = sharingCode === "demo" ? demoQueryOptions : { profile: queryOptions.profile(sharingCode), data: queryOptions.data(sharingCode) };
 
   // Always call the hook with consistent types
   const results = useSuspenseQueries({
@@ -165,5 +161,10 @@ export function useDashboardQueries(sharingCode?: string) {
 
 // Provider links query
 export function useProviderLinks() {
-  return useSuspenseQuery(queryOptions.providerLinks);
+  return useSuspenseQuery(queryOptions.providerLinks());
+}
+
+// Sharing settings query
+export function useSharingSettings() {
+  return useSuspenseQuery(queryOptions.sharing);
 }

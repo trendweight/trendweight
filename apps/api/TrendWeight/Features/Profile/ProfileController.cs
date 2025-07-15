@@ -77,6 +77,13 @@ public class ProfileController : ControllerBase
                 return NotFound(new { error = "User not found" });
             }
 
+            // Check if sharing is actually enabled
+            if (!user.Profile.SharingEnabled)
+            {
+                _logger.LogWarning("Sharing is disabled for sharing code: {SharingCode}", sharingCode);
+                return NotFound(new { error = "Sharing is disabled" });
+            }
+
             // Always return isMe = false when using sharing code
             // This allows users to preview how their dashboard appears to others
             return BuildProfileResponse(user, isMe: false);
@@ -100,7 +107,8 @@ public class ProfileController : ControllerBase
             DayStartOffset = user.Profile.DayStartOffset,
             UseMetric = user.Profile.UseMetric,
             ShowCalories = user.Profile.ShowCalories,
-            SharingToken = user.Profile.SharingToken
+            SharingToken = user.Profile.SharingToken,
+            SharingEnabled = user.Profile.SharingEnabled
         };
 
         // Return profile data with metadata
@@ -117,7 +125,7 @@ public class ProfileController : ControllerBase
                 dayStartOffset = profileData.DayStartOffset,
                 useMetric = profileData.UseMetric,
                 showCalories = profileData.ShowCalories,
-                sharingToken = profileData.SharingToken
+                sharingEnabled = profileData.SharingEnabled
             },
             isMe = isMe,
             timestamp = DateTime.UtcNow
@@ -159,6 +167,54 @@ public class ProfileController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error updating profile for user");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
+    /// Generate a new sharing token
+    /// </summary>
+    /// <returns>Updated sharing data with new token</returns>
+    [HttpPost("generate-token")]
+    public async Task<ActionResult<object>> GenerateNewToken()
+    {
+        try
+        {
+            // Get user ID from authenticated user claim
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                _logger.LogWarning("User ID not found in authenticated user claims");
+                return Unauthorized(new { error = "User ID not found" });
+            }
+
+            // Get user from Supabase by UID
+            var user = await _profileService.GetByIdAsync(userId);
+            if (user == null)
+            {
+                _logger.LogWarning("User document not found for Supabase UID: {UserId}", userId);
+                return NotFound(new { error = "User not found" });
+            }
+
+            // Generate a new unique token
+            var newToken = await _profileService.GenerateUniqueShareTokenAsync();
+
+            // Update the token
+            user.Profile.SharingToken = newToken;
+            user.UpdatedAt = DateTime.UtcNow.ToString("o");
+
+            // Save the update
+            var updatedUser = await _profileService.UpdateAsync(user);
+
+            return Ok(new
+            {
+                sharingEnabled = updatedUser.Profile.SharingEnabled,
+                sharingToken = updatedUser.Profile.SharingToken
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating new share token for user");
             return StatusCode(500, new { error = "Internal server error" });
         }
     }

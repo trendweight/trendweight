@@ -1,19 +1,19 @@
-import { useState } from "react";
-import type { UseFormWatch } from "react-hook-form";
-import type { SettingsData } from "../../lib/core/interfaces";
+import { useState, Suspense } from "react";
 import { ConfirmDialog } from "../ui/ConfirmDialog";
 import { Heading } from "../ui/Heading";
 import { Button } from "../ui/Button";
+import { useSharingSettings } from "../../lib/api/queries";
+import { useToggleSharing, useGenerateShareToken } from "../../lib/api/mutations";
+import { Switch } from "../ui/Switch";
 
-interface SharingSectionProps {
-  watch: UseFormWatch<SettingsData>;
-}
-
-export function SharingSection({ watch }: SharingSectionProps) {
+function SharingSectionContent() {
   const [showNewUrlConfirm, setShowNewUrlConfirm] = useState(false);
   const [copied, setCopied] = useState(false);
-  const sharingToken = watch("sharingToken");
-  const shareUrl = sharingToken ? `${window.location.origin}/u/${sharingToken}` : null;
+  const { data: sharingData } = useSharingSettings();
+  const toggleSharing = useToggleSharing();
+  const generateToken = useGenerateShareToken();
+
+  const shareUrl = sharingData?.sharingToken ? `${window.location.origin}/u/${sharingData.sharingToken}` : null;
 
   const handleCopy = async () => {
     if (shareUrl) {
@@ -27,10 +27,17 @@ export function SharingSection({ watch }: SharingSectionProps) {
     }
   };
 
-  const handleGenerateNewUrl = () => {
-    // TODO: Implement generate new sharing token
-    console.log("Generate new URL functionality not implemented yet");
-    setShowNewUrlConfirm(false);
+  const handleToggleSharing = (enabled: boolean) => {
+    toggleSharing.mutate(enabled);
+  };
+
+  const handleGenerateNewUrl = async () => {
+    try {
+      await generateToken.mutateAsync();
+      setShowNewUrlConfirm(false);
+    } catch (error) {
+      console.error("Failed to generate new URL:", error);
+    }
   };
 
   return (
@@ -42,6 +49,21 @@ export function SharingSection({ watch }: SharingSectionProps) {
           (in case you change your mind).
         </p>
 
+        <div className="mb-6 flex items-center space-x-3">
+          <Switch checked={sharingData?.sharingEnabled ?? false} onCheckedChange={handleToggleSharing} disabled={toggleSharing.isPending} />
+          <label className="text-sm font-medium">Enable sharing</label>
+          {toggleSharing.isPending && (
+            <svg className="h-4 w-4 animate-spin text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          )}
+        </div>
+
         {shareUrl && (
           <div className="flex items-center space-x-4">
             <div className="relative flex-1">
@@ -49,8 +71,11 @@ export function SharingSection({ watch }: SharingSectionProps) {
                 type="text"
                 value={shareUrl}
                 readOnly
-                className="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 pr-10 text-sm"
-                onClick={(e) => e.currentTarget.select()}
+                className={`w-full rounded-md border px-3 py-2 pr-10 text-sm ${
+                  sharingData?.sharingEnabled ? "border-gray-300 bg-gray-50" : "border-gray-200 bg-gray-100 text-gray-400"
+                }`}
+                onClick={(e) => sharingData?.sharingEnabled && e.currentTarget.select()}
+                disabled={!sharingData?.sharingEnabled}
               />
               <Button
                 type="button"
@@ -59,6 +84,7 @@ export function SharingSection({ watch }: SharingSectionProps) {
                 size="sm"
                 className="absolute top-1/2 right-2 -translate-y-1/2 p-1"
                 title={copied ? "Copied!" : "Copy to clipboard"}
+                disabled={!sharingData?.sharingEnabled}
               >
                 {copied ? (
                   <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,8 +102,8 @@ export function SharingSection({ watch }: SharingSectionProps) {
                 )}
               </Button>
             </div>
-            <Button type="button" onClick={() => setShowNewUrlConfirm(true)} variant="secondary" size="sm">
-              Get a New URL
+            <Button type="button" onClick={() => setShowNewUrlConfirm(true)} variant="secondary" size="sm" disabled={generateToken.isPending}>
+              {generateToken.isPending ? "Generating..." : "Get a New URL"}
             </Button>
           </div>
         )}
@@ -99,5 +125,20 @@ export function SharingSection({ watch }: SharingSectionProps) {
         onConfirm={handleGenerateNewUrl}
       />
     </>
+  );
+}
+
+export function SharingSection() {
+  return (
+    <Suspense
+      fallback={
+        <div className="p-6">
+          <Heading level={2}>Sharing</Heading>
+          <p className="text-sm text-gray-500">Loading sharing settings...</p>
+        </div>
+      }
+    >
+      <SharingSectionContent />
+    </Suspense>
   );
 }

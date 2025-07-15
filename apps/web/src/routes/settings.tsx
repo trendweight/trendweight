@@ -138,7 +138,7 @@ function SettingsPage() {
 
           {/* Sharing Card */}
           <div className="mb-6 rounded-lg border border-gray-200 bg-white shadow-sm">
-            <SharingSection watch={watch} />
+            <SharingSection />
           </div>
 
           {/* Danger Zone Card */}

@@ -18,7 +18,7 @@ export const Route = createFileRoute("/initial-setup")({
   beforeLoad: requireAuth,
   loader: async () => {
     // Check if user already has a profile
-    const profile = await queryClient.fetchQuery(queryOptions.profile);
+    const profile = await queryClient.fetchQuery(queryOptions.profile());
 
     if (profile) {
       // User already has a profile, redirect to settings

@@ -1,3 +1,7 @@
+using System.Globalization;
+using System.Numerics;
+using System.Security.Cryptography;
+using System.Text;
 using TrendWeight.Infrastructure.DataAccess;
 using TrendWeight.Infrastructure.DataAccess.Models;
 using TrendWeight.Features.Profile.Models;
@@ -68,7 +72,7 @@ public class ProfileService : IProfileService
                     PlannedPoundsPerWeek = request.PlannedPoundsPerWeek,
                     DayStartOffset = request.DayStartOffset,
                     ShowCalories = request.ShowCalories,
-                    SharingToken = Guid.NewGuid().ToString()
+                    SharingToken = await GenerateUniqueShareTokenAsync()
                 },
                 CreatedAt = DateTime.UtcNow.ToString("o"),
                 UpdatedAt = DateTime.UtcNow.ToString("o")
@@ -105,5 +109,67 @@ public class ProfileService : IProfileService
     {
         var profiles = await _supabaseService.GetAllAsync<DbProfile>();
         return profiles.FirstOrDefault(p => p.Profile?.SharingToken == sharingToken);
+    }
+
+    /// <summary>
+    /// Generates a new share token with 128 bits of entropy
+    /// </summary>
+    public string GenerateShareToken()
+    {
+        // Generate 128 bits (16 bytes) of cryptographically secure random data
+        var bytes = new byte[16];
+        using (var rng = System.Security.Cryptography.RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(bytes);
+        }
+
+        // Convert to base36 (0-9, a-z) for URL-friendly, lowercase representation
+        // This gives us ~25 characters for 128 bits of entropy
+        return ToBase36(bytes);
+    }
+
+    /// <summary>
+    /// Converts byte array to base36 string (0-9, a-z)
+    /// </summary>
+    private static string ToBase36(byte[] bytes)
+    {
+        const string base36Chars = "0123456789abcdefghijklmnopqrstuvwxyz";
+        var result = new System.Text.StringBuilder();
+
+        // Convert bytes to BigInteger for easier base conversion
+        var bigInt = new System.Numerics.BigInteger(bytes.Concat(new byte[] { 0 }).ToArray());
+
+        // Convert to base36
+        while (bigInt > 0)
+        {
+            var remainder = (int)(bigInt % 36);
+            result.Insert(0, base36Chars[remainder]);
+            bigInt /= 36;
+        }
+
+        // Pad to ensure consistent length (25 chars for 128 bits in base36)
+        while (result.Length < 25)
+        {
+            result.Insert(0, '0');
+        }
+
+        return result.ToString();
+    }
+
+    /// <summary>
+    /// Generates a unique share token, checking for collisions
+    /// </summary>
+    public async Task<string> GenerateUniqueShareTokenAsync()
+    {
+        string token;
+        DbProfile? existing;
+
+        do
+        {
+            token = GenerateShareToken();
+            existing = await GetBySharingTokenAsync(token);
+        } while (existing != null);
+
+        return token;
     }
 }

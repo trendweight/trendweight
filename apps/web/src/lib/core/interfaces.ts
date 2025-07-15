@@ -55,11 +55,17 @@ export interface ProfileData {
   useMetric: boolean;
   showCalories?: boolean;
   sharingToken?: string;
+  sharingEnabled?: boolean;
 }
 
 export interface SettingsData extends ProfileData {
   uid: string;
   email: string;
+}
+
+export interface SharingData {
+  sharingEnabled: boolean;
+  sharingToken?: string;
 }
 
 export const Modes = {

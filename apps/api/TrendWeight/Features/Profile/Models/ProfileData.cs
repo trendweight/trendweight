@@ -14,4 +14,5 @@ public class ProfileData
     public bool UseMetric { get; set; }
     public bool? ShowCalories { get; set; }
     public string? SharingToken { get; set; }
+    public bool SharingEnabled { get; set; }
 }

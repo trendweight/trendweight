@@ -202,4 +202,44 @@ public class ProvidersController : ControllerBase
             return StatusCode(500, new { error = "Internal server error" });
         }
     }
+
+    /// <summary>
+    /// Gets provider links for a user via sharing code (no authentication required)
+    /// </summary>
+    /// <param name="sharingCode">The sharing code</param>
+    /// <returns>List of provider links</returns>
+    [HttpGet("links/{sharingCode}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<List<object>>> GetProviderLinksBySharingCode(string sharingCode)
+    {
+        try
+        {
+            // Get user by sharing code
+            var user = await _profileService.GetBySharingTokenAsync(sharingCode);
+            if (user == null || !user.Profile.SharingEnabled)
+            {
+                _logger.LogWarning("User not found or sharing disabled for sharing code: {SharingCode}", sharingCode);
+                return NotFound(new { error = "User not found" });
+            }
+
+            // Get all provider links for the user
+            var providerLinks = await _providerLinkService.GetAllForUserAsync(user.Uid);
+
+            // Transform to response format
+            var response = providerLinks.Select(link => new
+            {
+                provider = link.Provider,
+                connectedAt = link.UpdatedAt,
+                updateReason = link.UpdateReason,
+                hasToken = link.Token != null && link.Token.Count > 0
+            }).ToList();
+
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting provider links for sharing code");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
 }
