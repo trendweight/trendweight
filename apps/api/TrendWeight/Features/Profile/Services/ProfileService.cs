@@ -100,4 +100,10 @@ public class ProfileService : IProfileService
 
         return profile;
     }
+
+    public async Task<DbProfile?> GetBySharingTokenAsync(string sharingToken)
+    {
+        var profiles = await _supabaseService.GetAllAsync<DbProfile>();
+        return profiles.FirstOrDefault(p => p.Profile?.SharingToken == sharingToken);
+    }
 }

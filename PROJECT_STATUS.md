@@ -92,8 +92,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Provider sync error display with reconnect buttons
 - [ ] Handle "no data" state elegantly
 - [x] Handle "no provider links" state
-- [ ] Shared/public dashboard URLs
-- [ ] Dashboard sharing UI
+- [x] Shared/public dashboard URLs
 - [ ] Explore UI
 - [ ] Support for a plan to gain weight
 
@@ -109,6 +108,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Connect/disconnect providers
 - [x] Delete account functionality (UI ready, backend pending)
 - [ ] Data export functionality (download your data)
+- [ ] Complete dashboard sharing UI (regenerate URL, enable/disable sharing)
 
 ### ✅ Static Pages
 

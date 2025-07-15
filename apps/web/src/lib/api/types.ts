@@ -4,6 +4,7 @@ import type { SettingsData } from "../core/interfaces";
 export interface ProfileResponse {
   user: SettingsData;
   timestamp: string;
+  isMe?: boolean;
 }
 
 export interface Measurement {
@@ -59,4 +60,5 @@ export interface ProviderSyncStatus {
 export interface MeasurementsResponse {
   data: ApiSourceData[];
   providerStatus: Record<string, ProviderSyncStatus>;
+  isMe?: boolean;
 }

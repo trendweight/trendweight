@@ -80,7 +80,7 @@ export function useSettings() {
 }
 
 // Combined profile and measurement data query with suspense (loads in parallel)
-export function useDashboardQueries(demoMode?: boolean) {
+export function useDashboardQueries(sharingCode?: string) {
   // Create demo query options that match the expected types
   const demoQueryOptions = {
     profile: {
@@ -93,21 +93,45 @@ export function useDashboardQueries(demoMode?: boolean) {
             uid: "demo",
             email: "demo@example.com",
           },
+          isMe: false,
           timestamp: new Date().toISOString(),
         };
       },
     },
     data: {
       queryKey: ["demo-data"] as const,
-      queryFn: async (): Promise<MeasurementsResponse> => getDemoData(),
+      queryFn: async (): Promise<MeasurementsResponse> => ({
+        ...getDemoData(),
+        isMe: false,
+      }),
     },
   };
+
+  // Create sharing code query options
+  const sharingQueryOptions =
+    sharingCode && sharingCode !== "demo"
+      ? {
+          profile: {
+            queryKey: ["profile", sharingCode] as const,
+            queryFn: () => apiRequest<ProfileResponse>(`/profile/${sharingCode}`),
+          },
+          data: {
+            queryKey: ["data", sharingCode] as const,
+            queryFn: () => apiRequest<MeasurementsResponse>(`/data/${sharingCode}`),
+            staleTime: 60000,
+          },
+        }
+      : null;
+
+  // Determine which query options to use
+  const queryOptionsToUse =
+    sharingCode === "demo" ? demoQueryOptions : sharingCode ? sharingQueryOptions! : { profile: queryOptions.profile, data: queryOptions.data };
 
   // Always call the hook with consistent types
   const results = useSuspenseQueries({
     queries: [
       {
-        ...(demoMode ? demoQueryOptions.profile : queryOptions.profile),
+        ...queryOptionsToUse.profile,
         select: (data: ProfileResponse | null): ProfileData | null => {
           if (!data) return null;
           return {
@@ -122,7 +146,7 @@ export function useDashboardQueries(demoMode?: boolean) {
           };
         },
       },
-      demoMode ? demoQueryOptions.data : queryOptions.data,
+      queryOptionsToUse.data,
     ],
   });
 
@@ -135,6 +159,7 @@ export function useDashboardQueries(demoMode?: boolean) {
     measurementData: measurementsResponse.data,
     providerStatus: measurementsResponse.providerStatus,
     profileError: profileResult.data === null ? new ApiError(404, "Profile not found") : null,
+    isMe: measurementsResponse.isMe ?? true,
   };
 }
 

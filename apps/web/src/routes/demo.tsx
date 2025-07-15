@@ -1,19 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Layout } from "../components/Layout";
-import Dashboard from "../components/dashboard/Dashboard";
-import { pageTitle } from "../lib/utils/pageTitle";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/demo")({
-  component: DemoPage,
+  loader: () => {
+    throw redirect({
+      to: "/u/$sharingCode",
+      params: { sharingCode: "demo" },
+      replace: true,
+    });
+  },
 });
-
-function DemoPage() {
-  return (
-    <>
-      <title>{pageTitle("Demo Dashboard")}</title>
-      <Layout>
-        <Dashboard demoMode={true} />
-      </Layout>
-    </>
-  );
-}

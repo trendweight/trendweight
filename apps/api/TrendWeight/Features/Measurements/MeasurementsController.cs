@@ -6,6 +6,7 @@ using TrendWeight.Features.Profile.Services;
 using TrendWeight.Features.Providers;
 using TrendWeight.Features.Providers.Models;
 using TrendWeight.Features.Measurements.Models;
+using TrendWeight.Infrastructure.DataAccess.Models;
 
 namespace TrendWeight.Features.Measurements;
 
@@ -73,8 +74,55 @@ public class MeasurementsController : ControllerBase
                 return NotFound(new { error = "User not found" });
             }
 
+            return await GetMeasurementsForUser(user, isMe: true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting measurements");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
+    /// Gets measurement data via sharing code, refreshing from providers if needed
+    /// </summary>
+    /// <param name="sharingCode">The sharing code</param>
+    /// <returns>MeasurementsResponse with data and provider status</returns>
+    [HttpGet("{sharingCode}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetMeasurementsBySharingCode(string sharingCode)
+    {
+        try
+        {
+            // Get user by sharing code
+            var user = await _profileService.GetBySharingTokenAsync(sharingCode);
+            if (user == null)
+            {
+                _logger.LogWarning("User not found for sharing code: {SharingCode}", sharingCode);
+                return NotFound(new { error = "User not found" });
+            }
+
+            _logger.LogInformation("Getting measurements for user ID: {UserId} via sharing code", user.Uid);
+
+            // Always return isMe = false when using sharing code
+            // This allows users to preview how their dashboard appears to others
+            return await GetMeasurementsForUser(user, isMe: false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting measurements for sharing code");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    private async Task<IActionResult> GetMeasurementsForUser(DbProfile user, bool isMe)
+    {
+        try
+        {
+            var userId = user.Uid;
+
             // Get active providers
-            var activeProviders = await _providerIntegrationService.GetActiveProvidersAsync(user.Uid);
+            var activeProviders = await _providerIntegrationService.GetActiveProvidersAsync(userId);
 
             // Track provider sync status
             var providerStatus = new Dictionary<string, ProviderSyncStatus>();
@@ -87,7 +135,7 @@ public class MeasurementsController : ControllerBase
             foreach (var provider in activeProviders)
             {
                 // Check last sync time for this provider
-                var lastSync = await _sourceDataService.GetLastSyncTimeAsync(user.Uid, provider);
+                var lastSync = await _sourceDataService.GetLastSyncTimeAsync(userId, provider);
                 var needsRefresh = lastSync == null || (now - lastSync.Value).TotalSeconds > CACHE_DURATION_SECONDS;
 
                 if (lastSync != null)
@@ -102,7 +150,7 @@ public class MeasurementsController : ControllerBase
                         provider, lastSync?.ToString("o") ?? "never");
 
                     // Add refresh task
-                    refreshTasks.Add(RefreshProviderAsync(user.Uid, provider, user.Profile.UseMetric));
+                    refreshTasks.Add(RefreshProviderAsync(userId, provider, user.Profile.UseMetric));
                 }
                 else
                 {
@@ -139,20 +187,26 @@ public class MeasurementsController : ControllerBase
             }
 
             // Get the current data (whether refreshed or cached)
-            var currentData = await _sourceDataService.GetSourceDataAsync(user.Uid) ?? new List<SourceData>();
+            var currentData = await _sourceDataService.GetSourceDataAsync(userId) ?? new List<SourceData>();
 
-            // Return the enhanced response
-            var response = new MeasurementsResponse
+            // Return the enhanced response with isMe flag
+            // Only include providerStatus when it's the authenticated user
+            var response = new Dictionary<string, object>
             {
-                Data = currentData,
-                ProviderStatus = providerStatus
+                ["data"] = currentData,
+                ["isMe"] = isMe
             };
+
+            if (isMe)
+            {
+                response["providerStatus"] = providerStatus;
+            }
 
             return Ok(response);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting measurements");
+            _logger.LogError(ex, "Error getting measurements for user");
             return StatusCode(500, new { error = "Internal server error" });
         }
     }

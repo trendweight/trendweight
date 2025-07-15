@@ -49,43 +49,79 @@ public class ProfileController : ControllerBase
                 return NotFound(new { error = "User not found" });
             }
 
-            // Map to ProfileData
-            var profileData = new ProfileData
-            {
-                FirstName = user.Profile.FirstName,
-                GoalStart = user.Profile.GoalStart,
-                GoalWeight = user.Profile.GoalWeight,
-                PlannedPoundsPerWeek = user.Profile.PlannedPoundsPerWeek,
-                DayStartOffset = user.Profile.DayStartOffset,
-                UseMetric = user.Profile.UseMetric,
-                ShowCalories = user.Profile.ShowCalories,
-                SharingToken = user.Profile.SharingToken
-            };
-
-            // Return profile data with metadata
-            return Ok(new
-            {
-                user = new
-                {
-                    uid = userId,
-                    email = user.Email,
-                    firstName = profileData.FirstName,
-                    goalStart = profileData.GoalStart?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-                    goalWeight = profileData.GoalWeight,
-                    plannedPoundsPerWeek = profileData.PlannedPoundsPerWeek,
-                    dayStartOffset = profileData.DayStartOffset,
-                    useMetric = profileData.UseMetric,
-                    showCalories = profileData.ShowCalories,
-                    sharingToken = profileData.SharingToken
-                },
-                timestamp = DateTime.UtcNow
-            });
+            return BuildProfileResponse(user, isMe: true);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting profile for user");
             return StatusCode(500, new { error = "Internal server error" });
         }
+    }
+
+    /// <summary>
+    /// Gets a user's profile/settings via sharing code (no authentication required)
+    /// </summary>
+    /// <param name="sharingCode">The sharing code</param>
+    /// <returns>The user's profile data</returns>
+    [HttpGet("{sharingCode}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<object>> GetProfileBySharingCode(string sharingCode)
+    {
+        try
+        {
+            // Get user by sharing code
+            var user = await _profileService.GetBySharingTokenAsync(sharingCode);
+            if (user == null)
+            {
+                _logger.LogWarning("User not found for sharing code: {SharingCode}", sharingCode);
+                return NotFound(new { error = "User not found" });
+            }
+
+            // Always return isMe = false when using sharing code
+            // This allows users to preview how their dashboard appears to others
+            return BuildProfileResponse(user, isMe: false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting profile for sharing code");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    private ActionResult<object> BuildProfileResponse(DbProfile user, bool isMe)
+    {
+        // Map to ProfileData
+        var profileData = new ProfileData
+        {
+            FirstName = user.Profile.FirstName,
+            GoalStart = user.Profile.GoalStart,
+            GoalWeight = user.Profile.GoalWeight,
+            PlannedPoundsPerWeek = user.Profile.PlannedPoundsPerWeek,
+            DayStartOffset = user.Profile.DayStartOffset,
+            UseMetric = user.Profile.UseMetric,
+            ShowCalories = user.Profile.ShowCalories,
+            SharingToken = user.Profile.SharingToken
+        };
+
+        // Return profile data with metadata
+        return Ok(new
+        {
+            user = new
+            {
+                uid = user.Uid.ToString(),
+                email = user.Email,
+                firstName = profileData.FirstName,
+                goalStart = profileData.GoalStart?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                goalWeight = profileData.GoalWeight,
+                plannedPoundsPerWeek = profileData.PlannedPoundsPerWeek,
+                dayStartOffset = profileData.DayStartOffset,
+                useMetric = profileData.UseMetric,
+                showCalories = profileData.ShowCalories,
+                sharingToken = profileData.SharingToken
+            },
+            isMe = isMe,
+            timestamp = DateTime.UtcNow
+        });
     }
 
     /// <summary>
@@ -118,23 +154,7 @@ public class ProfileController : ControllerBase
             var profile = await _profileService.UpdateOrCreateProfileAsync(userId, userEmail, request);
 
             // Return updated profile data in the same format as GET
-            return Ok(new
-            {
-                user = new
-                {
-                    uid = userId,
-                    email = profile.Email,
-                    firstName = profile.Profile.FirstName,
-                    goalStart = profile.Profile.GoalStart?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-                    goalWeight = profile.Profile.GoalWeight,
-                    plannedPoundsPerWeek = profile.Profile.PlannedPoundsPerWeek,
-                    dayStartOffset = profile.Profile.DayStartOffset,
-                    useMetric = profile.Profile.UseMetric,
-                    showCalories = profile.Profile.ShowCalories,
-                    sharingToken = profile.Profile.SharingToken
-                },
-                timestamp = DateTime.UtcNow
-            });
+            return BuildProfileResponse(profile, isMe: true);
         }
         catch (Exception ex)
         {

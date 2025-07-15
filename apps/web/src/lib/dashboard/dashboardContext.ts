@@ -13,6 +13,7 @@ export interface DashboardData {
   activeSlope: number;
   deltas: Delta[];
   providerStatus?: Record<string, ProviderSyncStatus>;
+  isMe: boolean;
 }
 
 export const dashboardContext = createContext<DashboardData | undefined>(undefined);

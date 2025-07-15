@@ -3,6 +3,8 @@ import { Navigate } from "@tanstack/react-router";
 import { DashboardProvider } from "../../lib/dashboard/context";
 import { useComputeDashboardData } from "../../lib/dashboard/hooks";
 import { ApiError } from "../../lib/api/client";
+import { Modes, TimeRanges } from "../../lib/core/interfaces";
+import { Heading } from "../ui/Heading";
 import Buttons from "./Buttons";
 import Chart from "./chart/Chart";
 import Currently from "./Currently";
@@ -13,19 +15,24 @@ import HelpLink from "./HelpLink";
 import ProviderSyncErrors from "./ProviderSyncErrors";
 
 interface DashboardProps {
-  demoMode?: boolean;
+  sharingCode?: string;
 }
 
-const Dashboard: FC<DashboardProps> = ({ demoMode }) => {
-  const dashboardData = useComputeDashboardData(demoMode);
+const Dashboard: FC<DashboardProps> = ({ sharingCode }) => {
+  const dashboardData = useComputeDashboardData(sharingCode);
 
-  // Check if profile exists - if not, redirect to initial setup (skip for demo mode)
-  if (!demoMode && dashboardData.profileError instanceof ApiError && dashboardData.profileError.status === 404) {
+  // Check if profile exists - if not, redirect to initial setup (skip for shared views)
+  if (!sharingCode && dashboardData.profileError instanceof ApiError && dashboardData.profileError.status === 404) {
     return <Navigate to="/initial-setup" replace />;
   }
 
-  // If profile exists but no measurements, redirect to link page (skip for demo mode)
-  if (!demoMode && dashboardData.measurements.length === 0) {
+  // If shared view and profile not found, redirect to home
+  if (sharingCode && sharingCode !== "demo" && dashboardData.profileError instanceof ApiError && dashboardData.profileError.status === 404) {
+    return <Navigate to="/" replace />;
+  }
+
+  // If profile exists but no measurements, redirect to link page (skip for shared views)
+  if (!sharingCode && dashboardData.measurements.length === 0) {
     return <Navigate to="/link" replace />;
   }
 
@@ -36,6 +43,10 @@ const Dashboard: FC<DashboardProps> = ({ demoMode }) => {
         <Buttons />
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12">
           <div className="w-full md:w-[475px] lg:w-[650px] xl:w-[840px]">
+            <Heading level={2} className="mb-4">
+              {Modes[dashboardData.mode[0]]}, {dashboardData.timeRange[0] === "all" ? "All Time" : `Past ${TimeRanges[dashboardData.timeRange[0]]}`}
+              {!dashboardData.isMe && ` for ${dashboardData.profile.firstName}`}
+            </Heading>
             <Chart />
           </div>
           <Currently />

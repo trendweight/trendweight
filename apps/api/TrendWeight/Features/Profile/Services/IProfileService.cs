@@ -10,4 +10,5 @@ public interface IProfileService
     Task<DbProfile> CreateAsync(DbProfile profile);
     Task<DbProfile> UpdateAsync(DbProfile profile);
     Task<DbProfile> UpdateOrCreateProfileAsync(string userId, string email, UpdateProfileRequest request);
+    Task<DbProfile?> GetBySharingTokenAsync(string sharingToken);
 }

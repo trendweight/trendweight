@@ -17,12 +17,12 @@ export const useDashboardData = (): DashboardData => {
   return data;
 };
 
-export const useComputeDashboardData = (demoMode?: boolean): DashboardData => {
+export const useComputeDashboardData = (sharingCode?: string): DashboardData => {
   const [mode, setMode] = useState<Mode>("weight");
   const [timeRange, setTimeRange] = usePersistedState<TimeRange>("timeRange", "4w");
 
   // Get profile and measurement data in parallel
-  const { profile, measurementData: apiSourceData, providerStatus, profileError } = useDashboardQueries(demoMode);
+  const { profile, measurementData: apiSourceData, providerStatus, profileError, isMe } = useDashboardQueries(sharingCode);
 
   // Transform API data to match core interfaces
   const sourceData = useMemo(
@@ -67,6 +67,7 @@ export const useComputeDashboardData = (demoMode?: boolean): DashboardData => {
     activeSlope,
     deltas,
     providerStatus,
+    isMe: isMe ?? true,
   };
 
   return data;

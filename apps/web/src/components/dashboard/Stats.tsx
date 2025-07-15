@@ -8,7 +8,8 @@ const Stats = () => {
   const {
     weightSlope,
     measurements,
-    profile: { useMetric, goalWeight, showCalories, plannedPoundsPerWeek },
+    profile: { useMetric, goalWeight, showCalories, plannedPoundsPerWeek, firstName },
+    isMe,
   } = useDashboardData();
 
   const lastMeasurement = measurements[measurements.length - 1];
@@ -27,22 +28,26 @@ const Stats = () => {
       <h2 className="text-xl font-semibold mb-3">Overall Weight Statistics</h2>
       <ul className="space-y-1">
         <li>
-          You are {weightSlope > 0 ? "gaining" : "losing"} <strong>{formatWeight(gainPerWeek, useMetric)}/week</strong> of total weight.{" "}
+          {isMe ? "You are" : `${firstName} is`} {weightSlope > 0 ? "gaining" : "losing"} <strong>{formatWeight(gainPerWeek, useMetric)}/week</strong> of total
+          weight.{" "}
         </li>
         <li className="mt-4">
-          You have been tracking your weight for <strong>{duration}</strong>.
+          {isMe ? "You have" : "They have"} been tracking {isMe ? "your" : "their"} weight for <strong>{duration}</strong>.
         </li>
         {distanceToGoal !== undefined &&
           (distanceToGoal === 0 ? (
-            <li>You have reached your goal weight.</li>
+            <li>
+              {isMe ? "You have" : "They have"} reached {isMe ? "your" : "their"} goal weight.
+            </li>
           ) : (
             <>
               <li>
-                You have <strong>{formatWeight(Math.abs(distanceToGoal), useMetric)}</strong> to {distanceToGoal > 0 ? "lose" : "gain"} to reach your goal.
+                {isMe ? "You have" : "They have"} <strong>{formatWeight(Math.abs(distanceToGoal), useMetric)}</strong> to {distanceToGoal > 0 ? "lose" : "gain"}{" "}
+                to reach {isMe ? "your" : "their"} goal.
               </li>
               {dateOfGoal && (
                 <li>
-                  You will reach your goal around <strong>{shortDate(dateOfGoal)}</strong>
+                  {isMe ? "You" : "They"} will reach {isMe ? "your" : "their"} goal around <strong>{shortDate(dateOfGoal)}</strong>
                 </li>
               )}
             </>
@@ -50,16 +55,17 @@ const Stats = () => {
         {showCalories && ppw && ppw <= 0 && (
           <>
             <li className="mt-4">
-              You are burning <strong>{formatNumber(caloriesPerDay)} cal/day</strong> {weightSlope > 0 ? "less" : "more"} than you are eat.
+              {isMe ? "You are" : "They are"} burning <strong>{formatNumber(caloriesPerDay)} cal/day</strong> {weightSlope > 0 ? "less" : "more"} than{" "}
+              {isMe ? "you are" : "they are"} eating.
             </li>
             <li>
               {caloriesVsPlan < 0 ? (
                 <>
-                  You are burning <strong>{formatNumber(-1 * caloriesVsPlan)} cal/day</strong> beyond your plan.
+                  {isMe ? "You are" : "They are"} burning <strong>{formatNumber(-1 * caloriesVsPlan)} cal/day</strong> beyond {isMe ? "your" : "their"} plan.
                 </>
               ) : (
                 <>
-                  You must cut <strong>{formatNumber(caloriesVsPlan)} cal/day</strong> to lose {formatWeight(-1 * ppw, useMetric)}/week.
+                  {isMe ? "You" : "They"} must cut <strong>{formatNumber(caloriesVsPlan)} cal/day</strong> to lose {formatWeight(-1 * ppw, useMetric)}/week.
                 </>
               )}
             </li>
