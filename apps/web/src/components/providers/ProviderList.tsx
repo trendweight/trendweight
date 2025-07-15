@@ -6,6 +6,7 @@ import { apiRequest } from "../../lib/api/client";
 import { useToast } from "../../lib/hooks/useToast";
 import { ConfirmDialog } from "../ui/ConfirmDialog";
 import { Heading } from "../ui/Heading";
+import { Button } from "../ui/Button";
 
 interface ProviderListProps {
   variant?: "link" | "settings"; // Different layouts for different pages
@@ -117,7 +118,7 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                 <div className="flex items-center space-x-2 self-end @sm:self-auto">
                   {isConnected ? (
                     <>
-                      <button
+                      <Button
                         type="button"
                         onClick={() => {
                           resyncMutation.mutate(provider.id, {
@@ -138,26 +139,25 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                           });
                         }}
                         disabled={resyncMutation.isPending}
-                        className="bg-brand-600 hover:bg-brand-700 rounded-md px-4 py-2 text-sm font-medium text-white transition-colors disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
+                        variant="primary"
+                        size="sm"
                       >
                         {resyncMutation.isPending ? "Syncing..." : "Resync"}
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         type="button"
                         onClick={() => setDisconnectProvider({ id: provider.id, name: provider.name })}
                         disabled={disconnectMutation.isPending}
-                        className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-800 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
+                        variant="destructive"
+                        size="sm"
                       >
                         {disconnectMutation.isPending ? "Disconnecting..." : "Disconnect"}
-                      </button>
+                      </Button>
                     </>
                   ) : (
-                    <button
-                      onClick={() => handleConnect(provider.id)}
-                      className="bg-brand-600 hover:bg-brand-700 rounded-md px-4 py-2 text-sm font-medium text-white transition-colors"
-                    >
+                    <Button onClick={() => handleConnect(provider.id)} variant="primary" size="sm">
                       Connect
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -187,7 +187,7 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                   <p className="mb-4 text-xs text-gray-500 italic @sm:text-sm">{provider.note}</p>
                   {isConnected ? (
                     <div className="flex flex-col gap-2 @sm:flex-row">
-                      <button
+                      <Button
                         onClick={() => {
                           resyncMutation.mutate(provider.id, {
                             onSuccess: () => {
@@ -207,25 +207,26 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                           });
                         }}
                         disabled={resyncMutation.isPending}
-                        className="bg-brand-600 hover:bg-brand-700 rounded px-4 py-2 text-sm font-medium text-white transition-colors disabled:cursor-not-allowed disabled:bg-gray-400 @sm:px-6"
+                        variant="primary"
+                        size="sm"
+                        className="@sm:px-6"
                       >
                         {resyncMutation.isPending && resyncMutation.variables === provider.id ? "Syncing..." : "Resync Data"}
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         onClick={() => setDisconnectProvider({ id: provider.id, name: provider.name })}
                         disabled={disconnectMutation.isPending}
-                        className="rounded bg-red-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-800 disabled:cursor-not-allowed disabled:bg-gray-400 @sm:px-6"
+                        variant="destructive"
+                        size="sm"
+                        className="@sm:px-6"
                       >
                         {disconnectMutation.isPending && disconnectMutation.variables === provider.id ? "Disconnecting..." : "Disconnect"}
-                      </button>
+                      </Button>
                     </div>
                   ) : (
-                    <button
-                      onClick={() => handleConnect(provider.id)}
-                      className="rounded bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700 @sm:px-6"
-                    >
+                    <Button onClick={() => handleConnect(provider.id)} variant="success" size="sm" className="@sm:px-6">
                       Connect {provider.name} Account
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>

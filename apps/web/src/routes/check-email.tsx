@@ -5,6 +5,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { useAuth } from "../lib/auth/useAuth";
 import { pageTitle } from "../lib/utils/pageTitle";
 import { Heading } from "../components/ui/Heading";
+import { Button } from "../components/ui/Button";
 
 export const Route = createFileRoute("/check-email")({
   component: CheckEmailPage,
@@ -95,13 +96,9 @@ function CheckEmailPage() {
           {!canResend ? (
             <p className="text-sm text-gray-500">Didn't get it? You can request a new link in {resendCountdown} seconds</p>
           ) : (
-            <button
-              onClick={handleResend}
-              disabled={isResending}
-              className="text-brand-600 hover:text-brand-700 underline disabled:cursor-not-allowed disabled:opacity-50"
-            >
+            <Button onClick={handleResend} disabled={isResending} variant="ghost" className="underline">
               {isResending ? "Sending..." : "Send again"}
-            </button>
+            </Button>
           )}
 
           <div className="mt-8 border-t border-gray-200 pt-8">

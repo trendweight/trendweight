@@ -12,6 +12,7 @@ import type { SettingsData } from "../lib/core/interfaces";
 import { queryOptions } from "../lib/api/queries";
 import { queryClient } from "../lib/queryClient";
 import { Heading } from "../components/ui/Heading";
+import { Button } from "../components/ui/Button";
 
 export const Route = createFileRoute("/initial-setup")({
   beforeLoad: requireAuth,
@@ -85,15 +86,9 @@ function InitialSetupPage() {
 
               <div className="mt-6 flex items-center justify-between">
                 <div>{updateProfile.isError && <p className="text-sm text-red-600">Failed to create profile. Please try again.</p>}</div>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`rounded-md px-6 py-2 font-medium transition-colors ${
-                    !isSubmitting ? "bg-brand-600 hover:bg-brand-700 text-white" : "cursor-not-allowed bg-gray-300 text-gray-500"
-                  }`}
-                >
+                <Button type="submit" disabled={isSubmitting} variant="primary">
                   {isSubmitting ? "Creating Profile..." : "Continue"}
-                </button>
+                </Button>
               </div>
             </form>
           </div>

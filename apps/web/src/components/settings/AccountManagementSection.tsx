@@ -3,6 +3,7 @@ import type { UseFormWatch } from "react-hook-form";
 import type { SettingsData } from "../../lib/core/interfaces";
 import { ConfirmDialog } from "../ui/ConfirmDialog";
 import { Heading } from "../ui/Heading";
+import { Button } from "../ui/Button";
 
 interface AccountManagementSectionProps {
   watch: UseFormWatch<SettingsData>;
@@ -59,10 +60,12 @@ export function AccountManagementSection({ watch }: AccountManagementSectionProp
                 className="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 pr-10 text-sm"
                 onClick={(e) => e.currentTarget.select()}
               />
-              <button
+              <Button
                 type="button"
                 onClick={handleCopy}
-                className="absolute top-1/2 right-2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
+                variant="ghost"
+                size="sm"
+                className="absolute top-1/2 right-2 -translate-y-1/2 p-1"
                 title={copied ? "Copied!" : "Copy to clipboard"}
               >
                 {copied ? (
@@ -79,15 +82,11 @@ export function AccountManagementSection({ watch }: AccountManagementSectionProp
                     />
                   </svg>
                 )}
-              </button>
+              </Button>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowNewUrlConfirm(true)}
-              className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
+            <Button type="button" onClick={() => setShowNewUrlConfirm(true)} variant="secondary" size="sm">
               Get a New URL
-            </button>
+            </Button>
           </div>
         )}
       </div>
@@ -101,13 +100,9 @@ export function AccountManagementSection({ watch }: AccountManagementSectionProp
           weight data from Fitbit or Withings at that time.
         </p>
 
-        <button
-          type="button"
-          onClick={() => setShowDeleteConfirm(true)}
-          className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800"
-        >
+        <Button type="button" onClick={() => setShowDeleteConfirm(true)} variant="destructive" size="sm">
           Delete Account
-        </button>
+        </Button>
       </div>
 
       {/* Confirmation Dialogs */}

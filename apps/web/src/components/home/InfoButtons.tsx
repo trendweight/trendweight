@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useAuth } from "../../lib/auth/useAuth";
+import { Button } from "../ui/Button";
 
 export function InfoButtons() {
   const { isInitializing, isLoggedIn } = useAuth();
@@ -7,26 +8,17 @@ export function InfoButtons() {
 
   return (
     <div className="flex w-full flex-col items-center gap-4 md:flex-row">
-      <Link
-        to="/about"
-        className="w-full rounded bg-green-600 px-6 py-6 text-center text-xl font-normal text-white transition-colors hover:bg-green-700 md:w-80 md:py-7 lg:text-2xl"
-      >
-        Learn More
-      </Link>
+      <Button asChild variant="success" size="xl" className="w-full font-normal md:w-80">
+        <Link to="/about">Learn More</Link>
+      </Button>
       {isLoggedIn ? (
-        <Link
-          to="/dashboard"
-          className={`bg-brand-600 hover:bg-brand-700 w-full rounded px-6 py-6 text-center text-xl font-normal text-white transition-colors md:w-80 md:py-7 lg:text-2xl ${visibility}`}
-        >
-          Go To Dashboard
-        </Link>
+        <Button asChild variant="primary" size="xl" className={`w-full font-normal md:w-80 ${visibility}`}>
+          <Link to="/dashboard">Go To Dashboard</Link>
+        </Button>
       ) : (
-        <Link
-          to="/login"
-          className={`bg-brand-600 hover:bg-brand-700 w-full rounded px-6 py-6 text-center text-xl font-normal text-white transition-colors md:w-80 md:py-7 lg:text-2xl ${visibility}`}
-        >
-          Log In / Sign Up
-        </Link>
+        <Button asChild variant="primary" size="xl" className={`w-full font-normal md:w-80 ${visibility}`}>
+          <Link to="/login">Log In / Sign Up</Link>
+        </Button>
       )}
     </div>
   );

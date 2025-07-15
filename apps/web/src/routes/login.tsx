@@ -4,6 +4,7 @@ import { Layout } from "../components/Layout";
 import { useAuth } from "../lib/auth/useAuth";
 import { pageTitle } from "../lib/utils/pageTitle";
 import { Heading } from "../components/ui/Heading";
+import { Button } from "../components/ui/Button";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -120,29 +121,20 @@ function LoginPage() {
 
           {/* Social login buttons */}
           <div className="space-y-3">
-            <button
-              onClick={() => handleSocialLogin("google")}
-              className="flex w-full items-center justify-start gap-4 rounded-md border border-gray-300 px-4 py-3 transition-colors hover:bg-gray-50"
-            >
+            <Button onClick={() => handleSocialLogin("google")} variant="secondary" size="lg" className="w-full justify-start gap-4">
               <img src="/google-logo-NePEveMl.svg" alt="Google" className="h-5 w-5" />
-              <span className="flex-1 text-left text-base">Continue with Google</span>
-            </button>
+              <span className="flex-1 text-left">Continue with Google</span>
+            </Button>
 
-            <button
-              onClick={() => handleSocialLogin("microsoft")}
-              className="flex w-full items-center justify-start gap-4 rounded-md border border-gray-300 px-4 py-3 transition-colors hover:bg-gray-50"
-            >
+            <Button onClick={() => handleSocialLogin("microsoft")} variant="secondary" size="lg" className="w-full justify-start gap-4">
               <img src="/microsoft-logo-BUXxQnXH.svg" alt="Microsoft" className="h-5 w-5" />
-              <span className="flex-1 text-left text-base">Continue with Microsoft</span>
-            </button>
+              <span className="flex-1 text-left">Continue with Microsoft</span>
+            </Button>
 
-            <button
-              onClick={() => handleSocialLogin("apple")}
-              className="flex w-full items-center justify-start gap-4 rounded-md border border-gray-300 px-4 py-3 transition-colors hover:bg-gray-50"
-            >
+            <Button onClick={() => handleSocialLogin("apple")} variant="secondary" size="lg" className="w-full justify-start gap-4">
               <img src="/apple-logo-vertically-balanced-rwLdlt8P.svg" alt="Apple" className="h-5 w-5" />
-              <span className="flex-1 text-left text-base">Continue with Apple</span>
-            </button>
+              <span className="flex-1 text-left">Continue with Apple</span>
+            </Button>
           </div>
 
           {/* Divider */}
@@ -168,13 +160,9 @@ function LoginPage() {
               required
               disabled={isSubmitting}
             />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="bg-brand-600 hover:bg-brand-700 w-full rounded-md px-6 py-3 text-base font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-            >
+            <Button type="submit" disabled={isSubmitting} variant="primary" size="lg" className="w-full">
               {isSubmitting ? "Sending..." : "Continue with Email"}
-            </button>
+            </Button>
           </form>
 
           <p className="mt-8 text-center text-sm text-gray-600">

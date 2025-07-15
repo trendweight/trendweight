@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ConfirmDialog } from "../ui/ConfirmDialog";
 import { Heading } from "../ui/Heading";
+import { Button } from "../ui/Button";
 
 export function DangerZoneSection() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -21,13 +22,9 @@ export function DangerZoneSection() {
           weight data from Fitbit or Withings at that time.
         </p>
 
-        <button
-          type="button"
-          onClick={() => setShowDeleteConfirm(true)}
-          className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800"
-        >
+        <Button type="button" onClick={() => setShowDeleteConfirm(true)} variant="destructive" size="sm">
           Delete Account
-        </button>
+        </Button>
       </div>
 
       <ConfirmDialog

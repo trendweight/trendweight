@@ -10,6 +10,7 @@ import { Layout } from "../components/Layout";
 import mathContent from "../content/math-of-trendweight.md?raw";
 import { pageTitle } from "../lib/utils/pageTitle";
 import { Heading } from "../components/ui/Heading";
+import { Button } from "../components/ui/Button";
 
 export const Route = createFileRoute("/math")({
   component: MathPage,
@@ -69,14 +70,10 @@ function MathPage() {
                   </ul>
                   {showBackToTop && (
                     <div className="fixed bottom-8">
-                      <button
-                        onClick={scrollToTop}
-                        className="bg-brand-600 hover:bg-brand-700 flex items-center gap-2 rounded-lg px-4 py-2 text-white shadow-lg transition-colors"
-                        aria-label="Back to top"
-                      >
+                      <Button onClick={scrollToTop} variant="primary" className="flex items-center gap-2 shadow-lg" aria-label="Back to top">
                         <HiArrowUp className="h-4 w-4" />
-                        <span className="text-sm font-medium">Back to top</span>
-                      </button>
+                        <span>Back to top</span>
+                      </Button>
                     </div>
                   )}
                 </div>

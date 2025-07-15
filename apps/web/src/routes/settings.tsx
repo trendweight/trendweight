@@ -16,6 +16,7 @@ import { DangerZoneSection } from "../components/settings/DangerZoneSection";
 import { useNavigationGuard } from "../lib/hooks/useNavigationGuard";
 import type { SettingsData } from "../lib/core/interfaces";
 import { ensureProfile } from "../lib/loaders/utils";
+import { Button } from "../components/ui/Button";
 
 export const Route = createFileRoute("/settings")({
   beforeLoad: requireAuth,
@@ -123,15 +124,9 @@ function SettingsPage() {
                   {updateProfile.isError && <p className="text-sm text-red-600">Failed to save settings. Please try again.</p>}
                   {updateProfile.isSuccess && !isDirty && <p className="text-sm text-green-600">Settings saved successfully!</p>}
                 </div>
-                <button
-                  type="submit"
-                  disabled={!isDirty || isSubmitting}
-                  className={`rounded-md px-6 py-2 font-medium transition-colors ${
-                    isDirty && !isSubmitting ? "bg-brand-600 hover:bg-brand-700 text-white" : "cursor-not-allowed bg-gray-300 text-gray-500"
-                  }`}
-                >
+                <Button type="submit" disabled={!isDirty || isSubmitting} variant={isDirty && !isSubmitting ? "primary" : "secondary"}>
                   {isSubmitting ? "Saving..." : "Save Settings"}
-                </button>
+                </Button>
               </div>
             </form>
           </div>

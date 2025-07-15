@@ -257,6 +257,44 @@ The app uses @bprogress/react for progress indication:
 - Custom styled with Tailwind CSS v4
 - Consistent use of CSS variables for theming
 
+### Standard UI Components
+**IMPORTANT**: Always use the standard UI components instead of raw HTML elements:
+
+#### Button Component (`/components/ui/Button.tsx`)
+- **Never use raw `<button>` elements** - Always use the `Button` component
+- Available variants: `primary`, `secondary`, `ghost`, `success`, `destructive`, `warning`
+- Available sizes: `sm`, `md`, `lg`, `xl`
+- Supports `asChild` prop for use with Link components
+- Example usage:
+  ```tsx
+  import { Button } from "../components/ui/Button";
+  
+  // Standard button
+  <Button variant="primary" size="md">Click me</Button>
+  
+  // Button as a Link
+  <Button asChild variant="secondary">
+    <Link to="/settings">Go to Settings</Link>
+  </Button>
+  
+  // With custom classes (uses tailwind-merge for proper overrides)
+  <Button variant="secondary" className="w-full justify-start">
+    Sign in with Google
+  </Button>
+  ```
+
+#### Heading Component (`/components/ui/Heading.tsx`)
+- **Never use raw heading tags** (`<h1>`, `<h2>`, etc.) - Always use the `Heading` component
+- Ensures consistent typography and spacing across the application
+- Supports levels 1-4 and custom className overrides
+- Example usage:
+  ```tsx
+  import { Heading } from "../components/ui/Heading";
+  
+  <Heading level={1}>Page Title</Heading>
+  <Heading level={2} className="text-gray-600">Section Header</Heading>
+  ```
+
 ### Form Management
 - react-hook-form for form state management
 - Use Controller wrapper for custom components to enable dirty state tracking

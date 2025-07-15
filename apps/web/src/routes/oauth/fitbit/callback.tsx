@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Layout } from "../../../components/Layout";
 import { useEffect } from "react";
 import { Heading } from "../../../components/ui/Heading";
+import { Button } from "../../../components/ui/Button";
 
 export const Route = createFileRoute("/oauth/fitbit/callback")({
   component: FitbitCallbackPage,
@@ -73,9 +74,9 @@ function FitbitCallbackPage() {
             <>
               <p className="mb-4 text-gray-700">Failed to link your Fitbit account.</p>
               <p className="mb-4 text-sm text-red-600">Error: {errorMessage}</p>
-              <button onClick={() => navigate({ to: "/link" })} className="bg-brand-600 hover:bg-brand-700 rounded px-4 py-2 text-white">
+              <Button onClick={() => navigate({ to: "/link" })} variant="primary">
                 Try Again
-              </button>
+              </Button>
             </>
           )}
         </div>
