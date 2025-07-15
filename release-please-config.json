@@ -75,6 +75,11 @@
       "type": "chore",
       "section": "Miscellaneous",
       "hidden": true
+    },
+    {
+      "type": "deps",
+      "section": "Dependencies",
+      "hidden": true
     }
   ]
 }
