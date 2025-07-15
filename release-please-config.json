@@ -59,7 +59,7 @@
     {
       "type": "test",
       "section": "Tests",
-      "hidden": true
+      "hidden": false
     },
     {
       "type": "build",

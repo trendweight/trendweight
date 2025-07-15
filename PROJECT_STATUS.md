@@ -90,7 +90,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Optimized data loading with parallel queries
 - [x] Consistent weight storage in kg (instant unit switching)
 - [x] Provider sync error display with reconnect buttons
-- [ ] Handle "no data" state elegantly
+- [x] Handle "no data" state elegantly
 - [x] Handle "no provider links" state
 - [x] Shared/public dashboard URLs
 - [ ] Explore UI
