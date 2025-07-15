@@ -13,6 +13,8 @@ import Stats from "./Stats";
 import Deltas from "./Deltas";
 import HelpLink from "./HelpLink";
 import ProviderSyncErrors from "./ProviderSyncErrors";
+import { NoDataCard } from "./NoDataCard";
+import { useProviderLinks } from "../../lib/api/queries";
 
 interface DashboardProps {
   sharingCode?: string;
@@ -20,6 +22,7 @@ interface DashboardProps {
 
 const Dashboard: FC<DashboardProps> = ({ sharingCode }) => {
   const dashboardData = useComputeDashboardData(sharingCode);
+  const { data: providerLinks } = useProviderLinks();
 
   // Check if profile exists - if not, redirect to initial setup (skip for shared views)
   if (!sharingCode && dashboardData.profileError instanceof ApiError && dashboardData.profileError.status === 404) {
@@ -31,9 +34,21 @@ const Dashboard: FC<DashboardProps> = ({ sharingCode }) => {
     return <Navigate to="/" replace />;
   }
 
-  // If profile exists but no measurements, redirect to link page (skip for shared views)
+  // Check if user has any connected providers
+  const hasConnectedProviders = providerLinks?.some((link) => link.hasToken);
+
+  // If profile exists but no measurements
   if (!sharingCode && dashboardData.measurements.length === 0) {
-    return <Navigate to="/link" replace />;
+    // If no providers connected, redirect to link page
+    if (!hasConnectedProviders) {
+      return <Navigate to="/link" replace />;
+    }
+    // If providers connected but no data, show waiting message
+    return (
+      <div className="py-8">
+        <NoDataCard />
+      </div>
+    );
   }
 
   return (

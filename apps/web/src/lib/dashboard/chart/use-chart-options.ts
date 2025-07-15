@@ -118,6 +118,15 @@ export const useChartOptions = (data: DashboardData) => {
       }
     }
 
+    // Set minimum y-axis range based on mode and units
+    if (options.yAxis && !Array.isArray(options.yAxis)) {
+      if (mode === "fatpercent") {
+        options.yAxis.minRange = 5;
+      } else if (mode === "weight") {
+        options.yAxis.minRange = useMetric ? 3 : 5;
+      }
+    }
+
     // Goal bands for weight mode
     if (mode === "weight" && goalWeight && options.yAxis && !Array.isArray(options.yAxis)) {
       const goalWidth = useMetric ? 1.134 : 2.5;

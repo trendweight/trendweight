@@ -48,7 +48,7 @@ const Stats = () => {
                 {isMe ? "You have" : "They have"} <strong>{formatWeight(Math.abs(distanceToGoal), useMetric)}</strong> to {distanceToGoal > 0 ? "lose" : "gain"}{" "}
                 to reach {isMe ? "your" : "their"} goal.
               </li>
-              {dateOfGoal && (
+              {dateOfGoal && LocalDate.now().until(dateOfGoal, ChronoUnit.YEARS) < 3 && (
                 <li>
                   {isMe ? "You" : "They"} will reach {isMe ? "your" : "their"} goal around <strong>{shortDate(dateOfGoal)}</strong>
                 </li>
