@@ -74,7 +74,7 @@ function AppleCallbackPage() {
       <>
         <title>{pageTitle("Signing in...")}</title>
         <Layout>
-          <div className="max-w-md mx-auto py-12 text-center">
+          <div className="mx-auto max-w-md py-12 text-center">
             <Heading level={1}>Completing sign in...</Heading>
             <p className="text-gray-600">Please wait while we complete your sign in with Apple.</p>
           </div>
@@ -87,12 +87,12 @@ function AppleCallbackPage() {
     <>
       <title>{pageTitle("Sign In Error")}</title>
       <Layout>
-        <div className="max-w-md mx-auto py-12">
+        <div className="mx-auto max-w-md py-12">
           <Heading level={1} className="text-red-600">
             Sign In Failed
           </Heading>
-          <p className="text-gray-700 mb-6">{error}</p>
-          <a href="/login" className="inline-block bg-brand-600 text-white py-2 px-4 rounded hover:bg-brand-700 transition-colors">
+          <p className="mb-6 text-gray-700">{error}</p>
+          <a href="/login" className="bg-brand-600 hover:bg-brand-700 inline-block rounded px-4 py-2 text-white transition-colors">
             Back to Log In
           </a>
         </div>

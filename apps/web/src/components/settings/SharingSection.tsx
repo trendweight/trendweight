@@ -36,7 +36,7 @@ export function SharingSection({ watch }: SharingSectionProps) {
     <>
       <div className="p-6">
         <Heading level={2}>Sharing</Heading>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="mb-4 text-sm text-gray-600">
           You can give the following personal URL to anyone you'd like to share your charts and stats with. You can also decide at any time to change the URL
           (in case you change your mind).
         </p>
@@ -48,21 +48,21 @@ export function SharingSection({ watch }: SharingSectionProps) {
                 type="text"
                 value={shareUrl}
                 readOnly
-                className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md bg-gray-50 text-sm"
+                className="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 pr-10 text-sm"
                 onClick={(e) => e.currentTarget.select()}
               />
               <button
                 type="button"
                 onClick={handleCopy}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
+                className="absolute top-1/2 right-2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
                 title={copied ? "Copied!" : "Copy to clipboard"}
               >
                 {copied ? (
-                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 ) : (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -76,7 +76,7 @@ export function SharingSection({ watch }: SharingSectionProps) {
             <button
               type="button"
               onClick={() => setShowNewUrlConfirm(true)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               Get a New URL
             </button>
@@ -91,7 +91,7 @@ export function SharingSection({ watch }: SharingSectionProps) {
         description={
           <div className="space-y-2">
             <p>This will permanently invalidate your current sharing URL:</p>
-            <p className="font-mono text-sm bg-gray-100 p-2 rounded">{shareUrl}</p>
+            <p className="rounded bg-gray-100 p-2 font-mono text-sm">{shareUrl}</p>
             <p>Anyone using the old URL will no longer be able to access your dashboard. This action cannot be undone.</p>
           </div>
         }

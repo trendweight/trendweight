@@ -15,9 +15,9 @@ function FAQPage() {
       <Layout>
         <div className="bg-white">
           <div>
-            <div className="lg:grid lg:gap-8 lg:grid-cols-4">
+            <div className="lg:grid lg:grid-cols-4 lg:gap-8">
               <div>
-                <Heading level={1} className="text-gray-900 pb-4">
+                <Heading level={1} className="pb-4 text-gray-900">
                   Frequently asked questions
                 </Heading>
                 <p className="text-base text-gray-500">
@@ -28,7 +28,7 @@ function FAQPage() {
                   .
                 </p>
               </div>
-              <div className="mt-6 lg:mt-0 lg:col-span-3">
+              <div className="mt-6 lg:col-span-3 lg:mt-0">
                 <dl className="space-y-8">
                   <Question title="Do I need to have a Withings or Fitbit scale to use this site? Can I manually enter my weight data instead?">
                     <p>

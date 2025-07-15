@@ -7,7 +7,7 @@ interface SettingsLayoutProps {
 
 export function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl">
       <Heading level={1} className="mb-8" display>
         Settings
       </Heading>

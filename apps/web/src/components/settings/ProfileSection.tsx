@@ -13,7 +13,7 @@ interface ProfileSectionProps {
 
 export function ProfileSection({ register, errors, control }: ProfileSectionProps) {
   return (
-    <div className="p-6 border-b border-gray-200">
+    <div className="border-b border-gray-200 p-6">
       <Heading level={2}>Profile Settings</Heading>
       <BasicProfileSettings register={register} errors={errors} control={control} />
     </div>

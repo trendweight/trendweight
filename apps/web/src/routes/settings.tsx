@@ -110,14 +110,14 @@ function SettingsPage() {
       <Layout>
         <SettingsLayout>
           {/* Settings Form Card */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+          <div className="mb-6 rounded-lg border border-gray-200 bg-white shadow-sm">
             <form onSubmit={handleSubmit(onSubmit)}>
               <ProfileSection register={register} errors={errors} watch={watch} setValue={setValue} control={control} />
               <GoalSection register={register} errors={errors} watch={watch} control={control} />
               <AdvancedSection register={register} errors={errors} watch={watch} setValue={setValue} control={control} />
 
               {/* Save button */}
-              <div className="p-6 flex items-center justify-between">
+              <div className="flex items-center justify-between p-6">
                 <div>
                   {isDirty && <p className="text-sm text-gray-600">You have unsaved changes</p>}
                   {updateProfile.isError && <p className="text-sm text-red-600">Failed to save settings. Please try again.</p>}
@@ -126,8 +126,8 @@ function SettingsPage() {
                 <button
                   type="submit"
                   disabled={!isDirty || isSubmitting}
-                  className={`px-6 py-2 rounded-md font-medium transition-colors ${
-                    isDirty && !isSubmitting ? "bg-brand-600 text-white hover:bg-brand-700" : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  className={`rounded-md px-6 py-2 font-medium transition-colors ${
+                    isDirty && !isSubmitting ? "bg-brand-600 hover:bg-brand-700 text-white" : "cursor-not-allowed bg-gray-300 text-gray-500"
                   }`}
                 >
                   {isSubmitting ? "Saving..." : "Save Settings"}
@@ -137,17 +137,17 @@ function SettingsPage() {
           </div>
 
           {/* Connected Accounts Card */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+          <div className="mb-6 rounded-lg border border-gray-200 bg-white shadow-sm">
             <ConnectedAccountsSection />
           </div>
 
           {/* Sharing Card */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+          <div className="mb-6 rounded-lg border border-gray-200 bg-white shadow-sm">
             <SharingSection watch={watch} />
           </div>
 
           {/* Danger Zone Card */}
-          <div className="bg-white rounded-lg shadow-sm border-2 border-red-200">
+          <div className="rounded-lg border-2 border-red-200 bg-white shadow-sm">
             <DangerZoneSection />
           </div>
         </SettingsLayout>

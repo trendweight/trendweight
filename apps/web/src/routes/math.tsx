@@ -52,16 +52,16 @@ function MathPage() {
       <Layout>
         <div className="bg-white">
           <div>
-            <div className="lg:grid lg:gap-8 lg:grid-cols-4">
+            <div className="lg:grid lg:grid-cols-4 lg:gap-8">
               <div className="hidden lg:block">
                 <div>
-                  <Heading level={2} className="text-gray-900 pb-4">
+                  <Heading level={2} className="pb-4 text-gray-900">
                     Table of Contents
                   </Heading>
-                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <ul className="list-disc space-y-1 pl-5 text-sm">
                     {headings.map((heading) => (
                       <li key={heading.id}>
-                        <a href={`#${heading.id}`} className="text-gray-600 hover:text-brand-600 hover:underline transition-colors">
+                        <a href={`#${heading.id}`} className="hover:text-brand-600 text-gray-600 transition-colors hover:underline">
                           {heading.text}
                         </a>
                       </li>
@@ -71,18 +71,18 @@ function MathPage() {
                     <div className="fixed bottom-8">
                       <button
                         onClick={scrollToTop}
-                        className="flex items-center gap-2 px-4 py-2 bg-brand-600 text-white rounded-lg shadow-lg hover:bg-brand-700 transition-colors"
+                        className="bg-brand-600 hover:bg-brand-700 flex items-center gap-2 rounded-lg px-4 py-2 text-white shadow-lg transition-colors"
                         aria-label="Back to top"
                       >
-                        <HiArrowUp className="w-4 h-4" />
+                        <HiArrowUp className="h-4 w-4" />
                         <span className="text-sm font-medium">Back to top</span>
                       </button>
                     </div>
                   )}
                 </div>
               </div>
-              <div className="mt-6 lg:mt-0 lg:col-span-3">
-                <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-h1:mb-4 prose-h2:mt-6 prose-h2:mb-3 prose-h3:mt-4 prose-h3:mb-2 prose-h4:mt-3 prose-h4:mb-2">
+              <div className="mt-6 lg:col-span-3 lg:mt-0">
+                <div className="prose prose-gray prose-li:my-0.5 prose-h1:mb-4 prose-h2:mt-6 prose-h2:mb-3 prose-h3:mt-4 prose-h3:mb-2 prose-h4:mt-3 prose-h4:mb-2 max-w-none">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm, remarkMath]}
                     rehypePlugins={[rehypeKatex]}
@@ -104,7 +104,7 @@ function MathPage() {
                       code: ({ children, className, ...props }) => {
                         const isInline = !className?.includes("language-");
                         return isInline ? (
-                          <code className="px-1 py-0.5 bg-gray-100 text-gray-800 rounded text-sm" {...props}>
+                          <code className="rounded bg-gray-100 px-1 py-0.5 text-sm text-gray-800" {...props}>
                             {children}
                           </code>
                         ) : (
@@ -112,7 +112,7 @@ function MathPage() {
                         );
                       },
                       pre: ({ children, ...props }) => (
-                        <pre className="bg-gray-100 text-gray-800 rounded-lg overflow-x-auto" {...props}>
+                        <pre className="overflow-x-auto rounded-lg bg-gray-100 text-gray-800" {...props}>
                           {children}
                         </pre>
                       ),

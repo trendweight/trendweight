@@ -30,12 +30,12 @@ export function Header() {
       <Container>
         <nav className="flex items-stretch justify-between">
           <div className="flex items-center gap-2 py-3">
-            <Link to={isLoggedIn ? "/dashboard" : "/"} className="font-logo text-3xl font-bold leading-tight">
+            <Link to={isLoggedIn ? "/dashboard" : "/"} className="font-logo text-3xl leading-tight font-bold">
               TrendWeight
             </Link>
             <Logo className="h-8 w-auto" />
           </div>
-          <div className="hidden md:flex items-stretch md:pr-8">
+          <div className="hidden items-stretch md:flex md:pr-8">
             <NavLink to="/" visibility={visibility}>
               Home
             </NavLink>
@@ -57,14 +57,14 @@ export function Header() {
                 Log In
               </NavLink>
             ) : (
-              <button className={`flex items-center px-3 hover:bg-white hover:text-brand-800 transition-colors ${visibility}`} onClick={() => signOut()}>
+              <button className={`hover:text-brand-800 flex items-center px-3 transition-colors hover:bg-white ${visibility}`} onClick={() => signOut()}>
                 Log Out
               </button>
             )}
           </div>
           <button
             ref={buttonRef}
-            className="flex md:hidden items-center p-2 text-white"
+            className="flex items-center p-2 text-white md:hidden"
             aria-label="Open menu"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -96,7 +96,7 @@ export function Header() {
               </MobileNavLink>
             ) : (
               <button
-                className={`block w-full text-left px-3 py-2 text-white hover:bg-brand-300 rounded ${visibility}`}
+                className={`hover:bg-brand-300 block w-full rounded px-3 py-2 text-left text-white ${visibility}`}
                 onClick={async (e) => {
                   e.preventDefault();
                   await signOut();
@@ -128,7 +128,7 @@ function NavLink({ to, children, visibility = "visible" }: NavLinkProps) {
   return (
     <Link
       to={to}
-      className={`flex items-center px-3 hover:bg-white hover:text-brand-800 transition-colors ${visibility}`}
+      className={`hover:text-brand-800 flex items-center px-3 transition-colors hover:bg-white ${visibility}`}
       activeProps={{
         className: "bg-brand-400",
       }}
@@ -146,7 +146,7 @@ function MobileNavLink({ to, children, onClick, visibility = "visible" }: Mobile
   return (
     <Link
       to={to}
-      className={`px-3 py-2 text-white hover:bg-brand-300 rounded ${visibility}`}
+      className={`hover:bg-brand-300 rounded px-3 py-2 text-white ${visibility}`}
       activeProps={{
         className: "bg-brand-300",
       }}

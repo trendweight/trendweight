@@ -79,11 +79,11 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
           <Heading level={1} display>
             Connect Your Scale
           </Heading>
-          <p className="text-base sm:text-lg text-gray-600 mb-2">
+          <p className="mb-2 text-base text-gray-600 sm:text-lg">
             Connect your Withings or Fitbit account to automatically track your weight with TrendWeight. When you're ready, click one of the options below and
             authorize TrendWeight to access your weight data.
           </p>
-          <p className="text-sm sm:text-base text-gray-600 mb-8">
+          <p className="mb-8 text-sm text-gray-600 sm:text-base">
             <span className="font-semibold">Don't have a smart scale?</span> No problem! You can manually enter your weight in either app and TrendWeight will
             still track your trends.
           </p>
@@ -100,10 +100,10 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
             return (
               <div
                 key={provider.id}
-                className="flex flex-col @sm:flex-row @sm:items-center @sm:justify-between p-4 border border-gray-200 rounded-lg space-y-3 @sm:space-y-0"
+                className="flex flex-col space-y-3 rounded-lg border border-gray-200 p-4 @sm:flex-row @sm:items-center @sm:justify-between @sm:space-y-0"
               >
                 <div className="flex items-center space-x-3">
-                  <img src={provider.logo} alt={provider.name} className="w-10 h-10" />
+                  <img src={provider.logo} alt={provider.name} className="h-10 w-10" />
                   <div>
                     <Heading level={3} className="text-gray-900">
                       {provider.name}
@@ -138,7 +138,7 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                           });
                         }}
                         disabled={resyncMutation.isPending}
-                        className="px-4 py-2 text-sm font-medium text-white bg-brand-600 rounded-md hover:bg-brand-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors"
+                        className="bg-brand-600 hover:bg-brand-700 rounded-md px-4 py-2 text-sm font-medium text-white transition-colors disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
                       >
                         {resyncMutation.isPending ? "Syncing..." : "Resync"}
                       </button>
@@ -146,7 +146,7 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                         type="button"
                         onClick={() => setDisconnectProvider({ id: provider.id, name: provider.name })}
                         disabled={disconnectMutation.isPending}
-                        className="px-4 py-2 text-sm font-medium text-white bg-red-700 rounded-md hover:bg-red-800 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors"
+                        className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-800 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
                       >
                         {disconnectMutation.isPending ? "Disconnecting..." : "Disconnect"}
                       </button>
@@ -154,7 +154,7 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                   ) : (
                     <button
                       onClick={() => handleConnect(provider.id)}
-                      className="px-4 py-2 text-sm font-medium text-white bg-brand-600 rounded-md hover:bg-brand-700 transition-colors"
+                      className="bg-brand-600 hover:bg-brand-700 rounded-md px-4 py-2 text-sm font-medium text-white transition-colors"
                     >
                       Connect
                     </button>
@@ -166,27 +166,27 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
 
           // Full layout for link page
           return (
-            <div key={provider.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 @sm:p-6 relative">
+            <div key={provider.id} className="relative rounded-lg border border-gray-200 bg-gray-50 p-4 @sm:p-6">
               {isConnected && (
                 <div className="absolute top-4 right-4">
-                  <HiCheckCircle className="w-5 h-5 @sm:w-6 @sm:h-6 text-green-600" />
+                  <HiCheckCircle className="h-5 w-5 text-green-600 @sm:h-6 @sm:w-6" />
                 </div>
               )}
               <Heading level={2}>{provider.displayName}</Heading>
-              <div className="flex flex-col @md:flex-row gap-4 @md:gap-6">
+              <div className="flex flex-col gap-4 @md:flex-row @md:gap-6">
                 <div className="flex-shrink-0 self-center @md:self-start">
-                  <img src={provider.logo} alt={`${provider.name} logo`} className="w-24 @sm:w-32 @md:w-48 h-auto" />
+                  <img src={provider.logo} alt={`${provider.name} logo`} className="h-auto w-24 @sm:w-32 @md:w-48" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm @sm:text-base text-gray-600 mb-3">{provider.description}</p>
-                  <p className="text-sm @sm:text-base text-gray-600 mb-3">
+                  <p className="mb-3 text-sm text-gray-600 @sm:text-base">{provider.description}</p>
+                  <p className="mb-3 text-sm text-gray-600 @sm:text-base">
                     <a href={provider.linkUrl} target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:text-brand-700 font-medium">
                       {provider.linkText}
                     </a>
                   </p>
-                  <p className="text-xs @sm:text-sm text-gray-500 italic mb-4">{provider.note}</p>
+                  <p className="mb-4 text-xs text-gray-500 italic @sm:text-sm">{provider.note}</p>
                   {isConnected ? (
-                    <div className="flex flex-col @sm:flex-row gap-2">
+                    <div className="flex flex-col gap-2 @sm:flex-row">
                       <button
                         onClick={() => {
                           resyncMutation.mutate(provider.id, {
@@ -207,14 +207,14 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                           });
                         }}
                         disabled={resyncMutation.isPending}
-                        className="px-4 @sm:px-6 py-2 rounded font-medium text-sm bg-brand-600 text-white hover:bg-brand-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                        className="bg-brand-600 hover:bg-brand-700 rounded px-4 py-2 text-sm font-medium text-white transition-colors disabled:cursor-not-allowed disabled:bg-gray-400 @sm:px-6"
                       >
                         {resyncMutation.isPending && resyncMutation.variables === provider.id ? "Syncing..." : "Resync Data"}
                       </button>
                       <button
                         onClick={() => setDisconnectProvider({ id: provider.id, name: provider.name })}
                         disabled={disconnectMutation.isPending}
-                        className="px-4 @sm:px-6 py-2 rounded font-medium text-sm bg-red-700 text-white hover:bg-red-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                        className="rounded bg-red-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-800 disabled:cursor-not-allowed disabled:bg-gray-400 @sm:px-6"
                       >
                         {disconnectMutation.isPending && disconnectMutation.variables === provider.id ? "Disconnecting..." : "Disconnect"}
                       </button>
@@ -222,7 +222,7 @@ export function ProviderList({ variant = "link", showHeader = true }: ProviderLi
                   ) : (
                     <button
                       onClick={() => handleConnect(provider.id)}
-                      className="px-4 @sm:px-6 py-2 rounded font-medium text-sm bg-green-600 text-white hover:bg-green-700 transition-colors"
+                      className="rounded bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700 @sm:px-6"
                     >
                       Connect {provider.name} Account
                     </button>

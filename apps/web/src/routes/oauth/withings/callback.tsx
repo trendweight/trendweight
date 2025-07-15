@@ -32,22 +32,22 @@ function WithingsCallbackPage() {
 
   return (
     <Layout>
-      <div className="max-w-md mx-auto mt-8">
-        <div className={`bg-white shadow rounded-lg p-6 ${isSuccess ? "border-green-500" : "border-red-500"} border-2`}>
+      <div className="mx-auto mt-8 max-w-md">
+        <div className={`rounded-lg bg-white p-6 shadow ${isSuccess ? "border-green-500" : "border-red-500"} border-2`}>
           <Heading level={1} className={isSuccess ? "text-green-600" : "text-red-600"}>
             {isSuccess ? "Success!" : "Error"}
           </Heading>
 
           {isSuccess ? (
             <>
-              <p className="text-gray-700 mb-4">Your Withings account has been successfully linked.</p>
+              <p className="mb-4 text-gray-700">Your Withings account has been successfully linked.</p>
               <p className="text-sm text-gray-500">Redirecting to dashboard in 3 seconds...</p>
             </>
           ) : (
             <>
-              <p className="text-gray-700 mb-4">Failed to link your Withings account.</p>
-              <p className="text-sm text-red-600 mb-4">Error: {errorMessage}</p>
-              <button onClick={() => navigate({ to: "/link" })} className="bg-brand-600 text-white px-4 py-2 rounded hover:bg-brand-700">
+              <p className="mb-4 text-gray-700">Failed to link your Withings account.</p>
+              <p className="mb-4 text-sm text-red-600">Error: {errorMessage}</p>
+              <button onClick={() => navigate({ to: "/link" })} className="bg-brand-600 hover:bg-brand-700 rounded px-4 py-2 text-white">
                 Try Again
               </button>
             </>

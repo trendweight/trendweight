@@ -56,7 +56,7 @@ const Dashboard: FC<DashboardProps> = ({ sharingCode }) => {
       <div className="flex flex-col gap-4">
         <ProviderSyncErrors providerStatus={dashboardData.providerStatus} />
         <Buttons />
-        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:gap-12">
           <div className="w-full md:w-[475px] lg:w-[650px] xl:w-[840px]">
             <Heading level={2} className="mb-4">
               {Modes[dashboardData.mode[0]]}, {dashboardData.timeRange[0] === "all" ? "All Time" : `Past ${TimeRanges[dashboardData.timeRange[0]]}`}
@@ -66,7 +66,7 @@ const Dashboard: FC<DashboardProps> = ({ sharingCode }) => {
           </div>
           <Currently />
         </div>
-        <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-12 lg:gap-20">
+        <div className="flex flex-col-reverse gap-4 md:flex-row md:gap-12 lg:gap-20">
           <RecentReadings />
           <div className="flex flex-col gap-4">
             <Deltas />

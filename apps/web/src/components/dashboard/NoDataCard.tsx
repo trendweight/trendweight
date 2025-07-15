@@ -9,10 +9,10 @@ export function NoDataCard() {
   const providerNames = connectedProviders.map((link) => (link.provider === "withings" ? "Withings" : "Fitbit")).join(" and ");
 
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+    <div className="mx-auto max-w-2xl rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0">
-          <HiOutlineClock className="w-8 h-8" />
+          <HiOutlineClock className="h-8 w-8" />
         </div>
         <div className="space-y-3">
           <Heading level={3}>Waiting for Data</Heading>

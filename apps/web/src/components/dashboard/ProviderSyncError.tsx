@@ -51,17 +51,17 @@ const ProviderSyncError: FC<ProviderSyncErrorProps> = ({ provider, status }) => 
   }
 
   return (
-    <div className="mb-4 flex items-center justify-between rounded-lg bg-amber-50 border border-amber-200 p-4">
+    <div className="mb-4 flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 p-4">
       <div className="flex items-center space-x-3">
-        <span className="text-amber-600 text-xl" role="img" aria-label="Warning">
+        <span className="text-xl text-amber-600" role="img" aria-label="Warning">
           ⚠️
         </span>
-        <span className="text-amber-800 flex-1">{errorMessage}</span>
+        <span className="flex-1 text-amber-800">{errorMessage}</span>
       </div>
       <button
         onClick={handleReconnect}
         disabled={reconnectProvider.isPending}
-        className={`ml-4 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors ${
+        className={`ml-4 rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-400 ${
           isAuthError ? "bg-amber-600 hover:bg-amber-700" : "bg-amber-500 hover:bg-amber-600"
         }`}
       >

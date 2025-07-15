@@ -11,7 +11,7 @@ export function NotFound() {
         <div className="flex min-h-[67vh] flex-col items-start justify-start md:items-center md:justify-center">
           <div className="flex flex-col items-start space-y-8 p-4 md:flex-row md:items-center">
             <div className="w-full max-w-[600px] border-none py-4 pr-0 md:border-r md:border-gray-300 md:pr-8">
-              <div className="font-serif text-4xl font-bold leading-tight text-brand-600 md:text-5xl">TrendWeight</div>
+              <div className="text-brand-600 font-serif text-4xl leading-tight font-bold md:text-5xl">TrendWeight</div>
               <div className="mt-4">
                 <b>404.</b> That's an error.
               </div>
@@ -20,7 +20,7 @@ export function NotFound() {
                 Maybe the page was moved. Or maybe the link you clicked on is just wrong. Or maybe it was abducted? We'll probably never know.
               </div>
               <div className="mt-4">
-                <a href="/" className="inline-block rounded bg-brand-600 px-4 py-2 text-white transition-colors hover:bg-brand-700">
+                <a href="/" className="bg-brand-600 hover:bg-brand-700 inline-block rounded px-4 py-2 text-white transition-colors">
                   Go to Homepage
                 </a>
               </div>

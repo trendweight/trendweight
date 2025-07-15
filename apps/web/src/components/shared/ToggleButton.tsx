@@ -14,7 +14,7 @@ export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(({ 
       ref={ref}
       value={value}
       className={clsx(
-        "bg-white text-gray-800 px-2 py-1 text-sm font-normal border border-gray-300",
+        "border border-gray-300 bg-white px-2 py-1 text-sm font-normal text-gray-800",
         "data-[state=on]:bg-brand-500 data-[state=on]:border-brand-500 data-[state=on]:text-white",
         "md:hover:bg-gray-200 md:hover:text-gray-800",
         "md:data-[state=on]:hover:bg-brand-800 md:data-[state=on]:hover:text-white",

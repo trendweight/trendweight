@@ -12,7 +12,7 @@ function TipJarPage() {
     <>
       <title>{pageTitle("Tip Jar")}</title>
       <Layout>
-        <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-hr:my-6">
+        <div className="prose prose-gray prose-li:my-0.5 prose-hr:my-6 max-w-none">
           <Heading level={1} display>
             Want to help support TrendWeight?
           </Heading>
@@ -81,7 +81,7 @@ function TipJarPage() {
           />
         </div>
 
-        <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-hr:my-6">
+        <div className="prose prose-gray prose-li:my-0.5 prose-hr:my-6 max-w-none">
           <hr />
 
           <Heading level={2}>GitHub Sponsors</Heading>
@@ -102,7 +102,7 @@ function TipJarPage() {
           />
         </div>
 
-        <div className="prose prose-gray max-w-none prose-li:my-0.5 prose-hr:my-6">
+        <div className="prose prose-gray prose-li:my-0.5 prose-hr:my-6 max-w-none">
           <hr />
 
           <Heading level={2}>Venmo / PayPal</Heading>

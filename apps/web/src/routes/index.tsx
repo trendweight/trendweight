@@ -12,7 +12,7 @@ function HomePage() {
   return (
     <>
       <title>{pageTitle()}</title>
-      <div className="min-h-screen flex flex-col">
+      <div className="flex min-h-screen flex-col">
         <Banner />
         <MainContent />
         <Footer />

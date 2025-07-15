@@ -6,8 +6,8 @@ import { WorksWith } from "./WorksWith";
 
 export function MainContent() {
   return (
-    <Container className="py-6 md:py-10 flex-grow">
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_3fr] gap-6 md:gap-10">
+    <Container className="flex-grow py-6 md:py-10">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-[2fr_3fr] md:gap-10">
         {/* Grid areas match legacy app layout */}
         <div className="order-1 md:order-1">
           <Blurb />

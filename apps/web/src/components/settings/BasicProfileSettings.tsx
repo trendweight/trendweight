@@ -17,21 +17,21 @@ export function BasicProfileSettings({ register, errors, control }: BasicProfile
   return (
     <div className="space-y-4">
       <div>
-        <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="firstName" className="mb-1 block text-sm font-medium text-gray-700">
           First Name
         </label>
         <input
           id="firstName"
           type="text"
           {...register("firstName", { required: "First name is required" })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+          className="focus:ring-brand-500 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
         />
         {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>}
         <p className="mt-1 text-sm text-gray-500">Used for greetings on the dashboard.</p>
       </div>
 
       <div className="mt-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">Weight Units</label>
+        <label className="mb-2 block text-sm font-medium text-gray-700">Weight Units</label>
         <Controller
           name="useMetric"
           control={control}

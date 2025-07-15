@@ -75,8 +75,8 @@ function CheckEmailPage() {
     <>
       <title>{pageTitle("Check Email")}</title>
       <Layout>
-        <div className="max-w-md mx-auto text-center">
-          <div className="inline-flex bg-brand-100 text-brand-600 items-center justify-center p-4 rounded-full mb-6">
+        <div className="mx-auto max-w-md text-center">
+          <div className="bg-brand-100 text-brand-600 mb-6 inline-flex items-center justify-center rounded-full p-4">
             <HiOutlineMail className="h-8 w-8" />
           </div>
 
@@ -84,13 +84,13 @@ function CheckEmailPage() {
             Check your email!
           </Heading>
 
-          <p className="text-lg text-gray-600 mb-2">We sent a login link to</p>
+          <p className="mb-2 text-lg text-gray-600">We sent a login link to</p>
 
-          <p className="text-lg font-medium mb-8">{email || "your email address"}</p>
+          <p className="mb-8 text-lg font-medium">{email || "your email address"}</p>
 
-          <p className="text-gray-600 mb-8">Open the link in your email to continue. This link will expire in 1 hour.</p>
+          <p className="mb-8 text-gray-600">Open the link in your email to continue. This link will expire in 1 hour.</p>
 
-          {error && <p className="text-sm text-red-600 mb-4">{error}</p>}
+          {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
           {!canResend ? (
             <p className="text-sm text-gray-500">Didn't get it? You can request a new link in {resendCountdown} seconds</p>
@@ -98,13 +98,13 @@ function CheckEmailPage() {
             <button
               onClick={handleResend}
               disabled={isResending}
-              className="text-brand-600 hover:text-brand-700 underline disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-brand-600 hover:text-brand-700 underline disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isResending ? "Sending..." : "Send again"}
             </button>
           )}
 
-          <div className="mt-8 pt-8 border-t border-gray-200">
+          <div className="mt-8 border-t border-gray-200 pt-8">
             <p className="text-sm text-gray-600">
               Wrong email?{" "}
               <Link to="/login" className="text-brand-600 hover:text-brand-700 underline">

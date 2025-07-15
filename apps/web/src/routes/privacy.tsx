@@ -19,11 +19,11 @@ function PrivacyPage() {
 
           <div className="md:flex md:gap-6">
             <div className="flex-1">
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+              <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
                 <Heading level={2} className="mb-2">
                   The Short Version
                 </Heading>
-                <ul className="list-disc pl-5 space-y-1">
+                <ul className="list-disc space-y-1 pl-5">
                   <li>We only collect what's needed: your email and weight data</li>
                   <li>Your data is encrypted and stored securely</li>
                   <li>We never sell your information to anyone</li>
@@ -32,8 +32,8 @@ function PrivacyPage() {
               </div>
             </div>
 
-            <div className="md:w-48 mb-4 md:mb-0">
-              <img src="/security.svg" className="w-full h-auto" alt="security matters" />
+            <div className="mb-4 md:mb-0 md:w-48">
+              <img src="/security.svg" className="h-auto w-full" alt="security matters" />
             </div>
           </div>
 
@@ -43,7 +43,7 @@ function PrivacyPage() {
             What We Collect
           </Heading>
           <p>TrendWeight only collects information that's needed to make the service work:</p>
-          <ul className="mt-2 px-4 list-disc">
+          <ul className="mt-2 list-disc px-4">
             <li>Your email address (for signing in)</li>
             <li>Weight measurements from your connected devices</li>
             <li>Body fat percentage (if your scale provides it)</li>
@@ -55,7 +55,7 @@ function PrivacyPage() {
             How We Protect Your Data
           </Heading>
           <p>Your data is protected with industry-standard security measures:</p>
-          <ul className="mt-2 px-4 list-disc">
+          <ul className="mt-2 list-disc px-4">
             <li>All connections use HTTPS encryption</li>
             <li>Passwords are never stored (we use secure email sign-in or social logins)</li>
             <li>Database access is restricted and monitored</li>
@@ -82,7 +82,7 @@ function PrivacyPage() {
             Service Providers
           </Heading>
           <p>These services help TrendWeight work. They only receive the minimum information needed:</p>
-          <ul className="mt-2 px-4 list-disc">
+          <ul className="mt-2 list-disc px-4">
             <li>
               <a href="https://www.cloudflare.com/" className="text-brand-600 hover:text-brand-700 underline">
                 CloudFlare
@@ -104,7 +104,7 @@ function PrivacyPage() {
           </ul>
 
           <p className="mt-4 font-semibold">Connected Device Providers (if you use them):</p>
-          <ul className="mt-2 px-4 list-disc">
+          <ul className="mt-2 list-disc px-4">
             <li>
               <a href="https://withings.com/" className="text-brand-600 hover:text-brand-700 underline">
                 Withings
@@ -122,7 +122,7 @@ function PrivacyPage() {
           <Heading level={2} className="mt-6 mb-3">
             Your Rights
           </Heading>
-          <ul className="mt-2 px-4 list-disc">
+          <ul className="mt-2 list-disc px-4">
             <li>You can download a copy of all your data from the Settings page</li>
             <li>You can delete your account anytime from the Settings page</li>
             <li>When you delete your account, your data is removed immediately from our systems</li>

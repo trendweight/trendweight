@@ -26,41 +26,41 @@ export function Footer() {
   return (
     <footer className="py-4">
       <Container>
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 text-gray-400">
-          <div className="text-sm flex items-center gap-2">
+        <div className="flex flex-col gap-4 text-gray-400 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-2 text-sm">
             © 2012-{new Date().getFullYear()} Erv Walter<span>·</span>
             {versionUrl.startsWith("http") ? (
-              <a href={versionUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 hover:underline transition-colors">
+              <a href={versionUrl} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-gray-600 hover:underline">
                 {versionDisplay}
               </a>
             ) : (
-              <Link to={versionUrl} className="hover:text-gray-600 hover:underline transition-colors">
+              <Link to={versionUrl} className="transition-colors hover:text-gray-600 hover:underline">
                 {versionDisplay}
               </Link>
             )}
           </div>
-          <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm">
+          <div className="flex flex-wrap items-center gap-2 text-sm md:gap-4">
             <div className="flex items-center gap-2 md:gap-4">
-              <a href="https://twitter.com/trendweight" className="hover:text-gray-600 transition-colors">
+              <a href="https://twitter.com/trendweight" className="transition-colors hover:text-gray-600">
                 <FaTwitter />
               </a>
-              <a href="https://facebook.com/trendweight" className="hover:text-gray-600 transition-colors">
+              <a href="https://facebook.com/trendweight" className="transition-colors hover:text-gray-600">
                 <FaFacebook />
               </a>
-              <a href="https://github.com/trendweight" className="hover:text-gray-600 transition-colors">
+              <a href="https://github.com/trendweight" className="transition-colors hover:text-gray-600">
                 <FaGithub />
               </a>
-              <a href="https://blog.trendweight.com" className="hover:text-gray-600 transition-colors">
+              <a href="https://blog.trendweight.com" className="transition-colors hover:text-gray-600">
                 <FaRss />
               </a>
             </div>
-            <a href="mailto:erv@ewal.net" className="hover:text-gray-600 transition-colors">
+            <a href="mailto:erv@ewal.net" className="transition-colors hover:text-gray-600">
               Contact
             </a>
-            <a href="/tipjar" className="hover:text-gray-600 transition-colors">
+            <a href="/tipjar" className="transition-colors hover:text-gray-600">
               Tip Jar
             </a>
-            <a href="/privacy" className="hover:text-gray-600 transition-colors">
+            <a href="/privacy" className="transition-colors hover:text-gray-600">
               Privacy
             </a>
           </div>

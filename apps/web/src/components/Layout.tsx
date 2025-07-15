@@ -9,7 +9,7 @@ interface LayoutProps {
 
 function LoadingFallback() {
   return (
-    <div className="flex justify-center items-center min-h-[400px]">
+    <div className="flex min-h-[400px] items-center justify-center">
       <div className="text-gray-500">Loading...</div>
     </div>
   );
@@ -17,7 +17,7 @@ function LoadingFallback() {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Header />
       <Container as="main" className="flex-grow py-4 md:py-6">
         <Suspense fallback={<LoadingFallback />}>{children}</Suspense>

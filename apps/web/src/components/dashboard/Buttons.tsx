@@ -10,7 +10,7 @@ const Buttons = () => {
   } = useDashboardData();
 
   return (
-    <div className="flex flex-col-reverse md:flex-row gap-4">
+    <div className="flex flex-col-reverse gap-4 md:flex-row">
       <ToggleButtonGroup value={timeRange} onChange={(value) => setTimeRange(value as TimeRange)} defaultValue="4w" aria-label="Time Range">
         <ToggleButton value="4w">4 weeks</ToggleButton>
         <ToggleButton value="3m">3 months</ToggleButton>

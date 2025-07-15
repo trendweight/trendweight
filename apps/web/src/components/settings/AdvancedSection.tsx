@@ -21,12 +21,12 @@ const dayStartOptions = Array.from({ length: 24 }, (_, i) => {
 
 export function AdvancedSection({ control }: AdvancedSectionProps) {
   return (
-    <div className="p-6 border-b border-gray-200">
+    <div className="border-b border-gray-200 p-6">
       <Heading level={2}>Advanced Settings</Heading>
 
       <div className="space-y-4">
         <div>
-          <label htmlFor="dayStartOffset" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="dayStartOffset" className="mb-1 block text-sm font-medium text-gray-700">
             Day Start
           </label>
           <div className="w-full md:w-48">
@@ -45,7 +45,7 @@ export function AdvancedSection({ control }: AdvancedSectionProps) {
               )}
             />
           </div>
-          <div className="mt-2 text-sm text-gray-600 space-y-2">
+          <div className="mt-2 space-y-2 text-sm text-gray-600">
             <p>
               TrendWeight uses the first weight reading of each day, and this setting determines the time of day that TrendWeight considers a new day to have
               started.

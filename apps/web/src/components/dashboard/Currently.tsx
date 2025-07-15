@@ -36,15 +36,15 @@ const Currently = () => {
 
   return (
     <div className="flex flex-col pb-0 md:pb-12">
-      <div className="font-light text-lg">Current {Modes[mode]}</div>
-      <div className="text-4xl md:text-5xl font-medium">{formatMeasurement(last.trend, { type: mode, metric: useMetric })}</div>
+      <div className="text-lg font-light">Current {Modes[mode]}</div>
+      <div className="text-4xl font-medium md:text-5xl">{formatMeasurement(last.trend, { type: mode, metric: useMetric })}</div>
       <div className="flex items-center text-2xl">
         <div>{formatMeasurement(difference, { type: mode, metric: useMetric, sign: true })}</div>
         <div className="ml-2">
           <ChangeArrow change={difference} intendedDirection={intendedDirection} />
         </div>
       </div>
-      <div className="text-gray-600 font-light italic text-sm pt-2">
+      <div className="pt-2 text-sm font-light text-gray-600 italic">
         {goalStartDate ? `since ${shortDate(goalStartDate)}` : `as of ${shortDate(last.date)}`}
       </div>
     </div>

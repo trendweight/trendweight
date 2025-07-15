@@ -110,7 +110,7 @@ function VerifyEmailPage() {
     <>
       <title>{pageTitle("Verify Email")}</title>
       <Layout>
-        <div className="max-w-md mx-auto text-center">
+        <div className="mx-auto max-w-md text-center">
           {isVerifying ? (
             <>
               <Heading level={1} display>
@@ -123,7 +123,7 @@ function VerifyEmailPage() {
               <Heading level={1} display>
                 Verification Failed
               </Heading>
-              <p className="text-red-600 mb-4">{error}</p>
+              <p className="mb-4 text-red-600">{error}</p>
               <Link to="/login" className="text-brand-600 hover:text-brand-700 underline">
                 Return to login
               </Link>

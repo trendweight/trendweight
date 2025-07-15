@@ -110,37 +110,37 @@ function LoginPage() {
     <>
       <title>{pageTitle("Log In")}</title>
       <Layout>
-        <div className="max-w-md mx-auto py-12">
+        <div className="mx-auto max-w-md py-12">
           <Heading level={1} className="text-center" display>
             Welcome
           </Heading>
-          <p className="text-center text-gray-600 mb-8">Log in to your account or create a new one</p>
+          <p className="mb-8 text-center text-gray-600">Log in to your account or create a new one</p>
 
-          {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md">{error}</div>}
+          {error && <div className="mb-4 rounded-md border border-red-200 bg-red-50 p-3 text-red-700">{error}</div>}
 
           {/* Social login buttons */}
           <div className="space-y-3">
             <button
               onClick={() => handleSocialLogin("google")}
-              className="w-full flex items-center justify-start gap-4 px-4 py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              className="flex w-full items-center justify-start gap-4 rounded-md border border-gray-300 px-4 py-3 transition-colors hover:bg-gray-50"
             >
-              <img src="/google-logo-NePEveMl.svg" alt="Google" className="w-5 h-5" />
+              <img src="/google-logo-NePEveMl.svg" alt="Google" className="h-5 w-5" />
               <span className="flex-1 text-left text-base">Continue with Google</span>
             </button>
 
             <button
               onClick={() => handleSocialLogin("microsoft")}
-              className="w-full flex items-center justify-start gap-4 px-4 py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              className="flex w-full items-center justify-start gap-4 rounded-md border border-gray-300 px-4 py-3 transition-colors hover:bg-gray-50"
             >
-              <img src="/microsoft-logo-BUXxQnXH.svg" alt="Microsoft" className="w-5 h-5" />
+              <img src="/microsoft-logo-BUXxQnXH.svg" alt="Microsoft" className="h-5 w-5" />
               <span className="flex-1 text-left text-base">Continue with Microsoft</span>
             </button>
 
             <button
               onClick={() => handleSocialLogin("apple")}
-              className="w-full flex items-center justify-start gap-4 px-4 py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              className="flex w-full items-center justify-start gap-4 rounded-md border border-gray-300 px-4 py-3 transition-colors hover:bg-gray-50"
             >
-              <img src="/apple-logo-vertically-balanced-rwLdlt8P.svg" alt="Apple" className="w-5 h-5" />
+              <img src="/apple-logo-vertically-balanced-rwLdlt8P.svg" alt="Apple" className="h-5 w-5" />
               <span className="flex-1 text-left text-base">Continue with Apple</span>
             </button>
           </div>
@@ -151,19 +151,19 @@ function LoginPage() {
               <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-gray-50 text-gray-700 uppercase font-medium">or</span>
+              <span className="bg-gray-50 px-4 font-medium text-gray-700 uppercase">or</span>
             </div>
           </div>
 
           {/* Email login form */}
           <form onSubmit={handleEmailSubmit} className="mb-6">
-            <p className="text-sm text-gray-600 mb-3">Log in manually with an email address</p>
+            <p className="mb-3 text-sm text-gray-600">Log in manually with an email address</p>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent mb-4"
+              className="focus:ring-brand-500 mb-4 w-full rounded-md border border-gray-300 px-4 py-3 text-base focus:border-transparent focus:ring-2 focus:outline-none"
               placeholder="Email address"
               required
               disabled={isSubmitting}
@@ -171,13 +171,13 @@ function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-brand-600 text-white py-3 px-6 rounded-md text-base font-medium hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-brand-600 hover:bg-brand-700 w-full rounded-md px-6 py-3 text-base font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSubmitting ? "Sending..." : "Continue with Email"}
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-600 mt-8">
+          <p className="mt-8 text-center text-sm text-gray-600">
             By continuing, you agree to our{" "}
             <Link to="/privacy" className="text-brand-600 hover:text-brand-700 underline">
               Privacy Policy

@@ -73,11 +73,11 @@ function InitialSetupPage() {
     <>
       <title>{pageTitle("Initial Setup")}</title>
       <Layout>
-        <div className="max-w-xl mx-auto">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
+        <div className="mx-auto max-w-xl">
+          <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
+            <div className="border-b border-gray-200 p-6">
               <Heading level={1}>Welcome to TrendWeight!</Heading>
-              <p className="text-gray-600 mt-2">Let's set up your profile to get started.</p>
+              <p className="mt-2 text-gray-600">Let's set up your profile to get started.</p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="p-6">
@@ -88,8 +88,8 @@ function InitialSetupPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`px-6 py-2 rounded-md font-medium transition-colors ${
-                    !isSubmitting ? "bg-brand-600 text-white hover:bg-brand-700" : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  className={`rounded-md px-6 py-2 font-medium transition-colors ${
+                    !isSubmitting ? "bg-brand-600 hover:bg-brand-700 text-white" : "cursor-not-allowed bg-gray-300 text-gray-500"
                   }`}
                 >
                   {isSubmitting ? "Creating Profile..." : "Continue"}
