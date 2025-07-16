@@ -1,19 +1,19 @@
-import type { FC } from "react";
 import { Navigate } from "@tanstack/react-router";
-import { DashboardProvider } from "../../lib/dashboard/context";
-import { useComputeDashboardData } from "../../lib/dashboard/hooks";
+import type { FC } from "react";
 import { ApiError } from "../../lib/api/client";
 import { Modes, TimeRanges } from "../../lib/core/interfaces";
+import { DashboardProvider } from "../../lib/dashboard/context";
+import { useComputeDashboardData } from "../../lib/dashboard/hooks";
 import { Heading } from "../ui/Heading";
 import Buttons from "./Buttons";
 import Chart from "./chart/Chart";
 import Currently from "./Currently";
-import RecentReadings from "./RecentReadings";
-import Stats from "./Stats";
 import Deltas from "./Deltas";
 import HelpLink from "./HelpLink";
-import ProviderSyncErrors from "./ProviderSyncErrors";
 import { NoDataCard } from "./NoDataCard";
+import ProviderSyncErrors from "./ProviderSyncErrors";
+import RecentReadings from "./RecentReadings";
+import Stats from "./Stats";
 
 interface DashboardProps {
   sharingCode?: string;
@@ -55,7 +55,12 @@ const Dashboard: FC<DashboardProps> = ({ sharingCode }) => {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:gap-12">
           <div className="w-full md:w-[475px] lg:w-[650px] xl:w-[840px]">
             <Heading level={2} className="mb-4">
-              {Modes[dashboardData.mode[0]]}, {dashboardData.timeRange[0] === "all" ? "All Time" : `Past ${TimeRanges[dashboardData.timeRange[0]]}`}
+              {Modes[dashboardData.mode[0]]},{" "}
+              {dashboardData.timeRange[0] === "all"
+                ? "All Time"
+                : dashboardData.timeRange[0] === "explore"
+                  ? "Explore"
+                  : `Past ${TimeRanges[dashboardData.timeRange[0]]}`}
               {!dashboardData.isMe && ` for ${dashboardData.profile.firstName}`}
             </Heading>
             <Chart />

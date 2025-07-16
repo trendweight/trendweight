@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { ToggleButton } from "../shared/ToggleButton";
 import { ToggleButtonGroup } from "../shared/ToggleButtonGroup";
 import { useDashboardData } from "../../lib/dashboard/hooks";
+import { useIsMobile } from "../../lib/hooks/useMediaQuery";
 import type { Mode, TimeRange } from "../../lib/core/interfaces";
 
 const Buttons = () => {
@@ -8,6 +10,14 @@ const Buttons = () => {
     mode: [mode, setMode],
     timeRange: [timeRange, setTimeRange],
   } = useDashboardData();
+  const isMobile = useIsMobile();
+
+  // Switch away from explore mode when going to mobile
+  useEffect(() => {
+    if (isMobile && timeRange === "explore") {
+      setTimeRange("4w");
+    }
+  }, [isMobile, timeRange, setTimeRange]);
 
   return (
     <div className="flex flex-col-reverse gap-4 md:flex-row">
@@ -17,6 +27,7 @@ const Buttons = () => {
         <ToggleButton value="6m">6 months</ToggleButton>
         <ToggleButton value="1y">1 year</ToggleButton>
         <ToggleButton value="all">All</ToggleButton>
+        {!isMobile && <ToggleButton value="explore">Explore</ToggleButton>}
       </ToggleButtonGroup>
 
       <ToggleButtonGroup value={mode} onChange={(value) => setMode(value as Mode)} defaultValue="weight" aria-label="Mode">

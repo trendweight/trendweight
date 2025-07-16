@@ -83,6 +83,7 @@ export const TimeRanges = {
   "6m": "6 months",
   "1y": "1 year",
   all: "All Time",
+  explore: "Explore",
 } as const;
 
 export type TimeRange = keyof typeof TimeRanges;

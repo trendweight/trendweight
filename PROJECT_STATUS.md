@@ -93,7 +93,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Handle "no data" state elegantly
 - [x] Handle "no provider links" state
 - [x] Shared/public dashboard URLs
-- [ ] Explore UI
+- [x] Explore UI
 - [ ] Support for a plan to gain weight
 
 ### ✅ Settings & Profile
