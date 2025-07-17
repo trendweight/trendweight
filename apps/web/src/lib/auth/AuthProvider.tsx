@@ -23,12 +23,13 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   // Send login email
-  const sendLoginEmail = async (email: string) => {
+  const sendLoginEmail = async (email: string, captchaToken?: string) => {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
         shouldCreateUser: true,
         emailRedirectTo: `${window.location.origin}/auth/verify`,
+        captchaToken,
       },
     });
 
