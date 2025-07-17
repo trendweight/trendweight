@@ -11,6 +11,7 @@ import { ProfileSection } from "../components/settings/ProfileSection";
 import { GoalSection } from "../components/settings/GoalSection";
 import { AdvancedSection } from "../components/settings/AdvancedSection";
 import { ConnectedAccountsSection } from "../components/settings/ConnectedAccountsSection";
+import { DownloadSection } from "../components/settings/DownloadSection";
 import { SharingSection } from "../components/settings/SharingSection";
 import { DangerZoneSection } from "../components/settings/DangerZoneSection";
 import { useNavigationGuard } from "../lib/hooks/useNavigationGuard";
@@ -135,6 +136,9 @@ function SettingsPage() {
           <div className="mb-6 rounded-lg border border-gray-200 bg-white shadow-sm">
             <ConnectedAccountsSection />
           </div>
+
+          {/* Download Card */}
+          <DownloadSection />
 
           {/* Sharing Card */}
           <div className="mb-6 rounded-lg border border-gray-200 bg-white shadow-sm">

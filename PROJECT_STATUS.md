@@ -106,8 +106,9 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Day start offset
 - [x] Privacy settings
 - [x] Connect/disconnect providers
-- [x] Delete account functionality (UI ready, backend pending)
-- [ ] Data export functionality (download your data)
+- [x] Delete account UI
+- [ ] Delete account backend
+- [x] Data export functionality (download your data)
 - [x] Complete dashboard sharing UI (regenerate URL, enable/disable sharing)
 
 ### ✅ Static Pages
@@ -122,8 +123,8 @@ This issues tracks the implementation status of TrendWeight migration
 
 ### 🚀 Additional Features
 
-- [ ] All measurements page
-- [ ] Data export (CSV, JSON)
+- [x] All measurements page (implemented as Download Your Data page)
+- [x] Data export (CSV)
 
 ### 🔧 Testing
 

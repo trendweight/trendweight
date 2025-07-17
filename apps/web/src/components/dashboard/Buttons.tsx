@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { ToggleButton } from "../shared/ToggleButton";
-import { ToggleButtonGroup } from "../shared/ToggleButtonGroup";
+import { ToggleButton } from "../ui/ToggleButton";
+import { ToggleButtonGroup } from "../ui/ToggleButtonGroup";
 import { useDashboardData } from "../../lib/dashboard/hooks";
 import { useIsMobile } from "../../lib/hooks/useMediaQuery";
 import type { Mode, TimeRange } from "../../lib/core/interfaces";

@@ -1,7 +1,8 @@
 import type { UseFormRegister, FieldErrors, Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import type { SettingsData } from "../../lib/core/interfaces";
-import { ToggleGroup } from "../ui/ToggleGroup";
+import { ToggleButton } from "../ui/ToggleButton";
+import { ToggleButtonGroup } from "../ui/ToggleButtonGroup";
 
 interface BasicProfileSettingsProps {
   register: UseFormRegister<SettingsData>;
@@ -36,14 +37,15 @@ export function BasicProfileSettings({ register, errors, control }: BasicProfile
           name="useMetric"
           control={control}
           render={({ field }) => (
-            <ToggleGroup
-              options={[
-                { value: "false", label: "lbs" },
-                { value: "true", label: "kg" },
-              ]}
+            <ToggleButtonGroup
               value={String(field.value ?? false)}
               onChange={(value) => field.onChange(value === "true")}
-            />
+              aria-label="Weight Units"
+              variant="subtle"
+            >
+              <ToggleButton value="false">lbs</ToggleButton>
+              <ToggleButton value="true">kg</ToggleButton>
+            </ToggleButtonGroup>
           )}
         />
         <p className="mt-2 text-sm text-gray-500">Choose your preferred unit of measurement.</p>
