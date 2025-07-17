@@ -6,11 +6,15 @@ namespace TrendWeight.Infrastructure.DataAccess;
 public class SupabaseService : ISupabaseService
 {
     private readonly Client _supabaseClient;
+    private readonly SupabaseConfig _config;
     private readonly ILogger<SupabaseService> _logger;
+    private readonly HttpClient _httpClient;
 
-    public SupabaseService(SupabaseConfig config, ILogger<SupabaseService> logger)
+    public SupabaseService(SupabaseConfig config, ILogger<SupabaseService> logger, IHttpClientFactory httpClientFactory)
     {
+        _config = config;
         _logger = logger;
+        _httpClient = httpClientFactory.CreateClient();
 
         var options = new SupabaseOptions
         {
@@ -134,6 +138,37 @@ public class SupabaseService : ISupabaseService
         {
             _logger.LogError(ex, "Error querying {Type}", typeof(T).Name);
             return new List<T>();
+        }
+    }
+
+    public async Task<bool> DeleteAuthUserAsync(Guid userId)
+    {
+        try
+        {
+            // Supabase Auth Admin API endpoint for deleting users
+            var url = $"{_config.Url}/auth/v1/admin/users/{userId}";
+
+            using var request = new HttpRequestMessage(HttpMethod.Delete, url);
+            request.Headers.Add("apikey", _config.ServiceKey);
+            request.Headers.Add("Authorization", $"Bearer {_config.ServiceKey}");
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                _logger.LogInformation("Successfully deleted auth user {UserId}", userId);
+                return true;
+            }
+
+            var errorContent = await response.Content.ReadAsStringAsync();
+            _logger.LogError("Failed to delete auth user {UserId}. Status: {StatusCode}, Error: {Error}",
+                userId, response.StatusCode, errorContent);
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting auth user {UserId}", userId);
+            return false;
         }
     }
 }

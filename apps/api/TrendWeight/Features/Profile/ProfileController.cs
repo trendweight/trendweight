@@ -218,4 +218,45 @@ public class ProfileController : ControllerBase
             return StatusCode(500, new { error = "Internal server error" });
         }
     }
+
+    /// <summary>
+    /// Deletes the user's account and all associated data
+    /// </summary>
+    /// <returns>Success or error response</returns>
+    [HttpDelete]
+    public async Task<ActionResult> DeleteAccount()
+    {
+        try
+        {
+            // Get user ID from authenticated user claim
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                _logger.LogWarning("User ID not found in authenticated user claims");
+                return Unauthorized(new { error = "User ID not found" });
+            }
+
+            // Parse user ID as GUID
+            if (!Guid.TryParse(userId, out var userGuid))
+            {
+                _logger.LogWarning("Invalid user ID format: {UserId}", userId);
+                return BadRequest(new { error = "Invalid user ID format" });
+            }
+
+            // Delete the account
+            var success = await _profileService.DeleteAccountAsync(userGuid);
+            if (!success)
+            {
+                return StatusCode(500, new { error = "Failed to delete account" });
+            }
+
+            _logger.LogInformation("Account deleted successfully for user {UserId}", userId);
+            return Ok(new { message = "Account deleted successfully" });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting account");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
 }

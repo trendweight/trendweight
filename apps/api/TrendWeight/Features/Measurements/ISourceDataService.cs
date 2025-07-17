@@ -54,4 +54,10 @@ public interface ISourceDataService
     /// <param name="userId">User's Supabase UID</param>
     /// <param name="provider">Provider name to delete specific provider data</param>
     Task DeleteSourceDataAsync(Guid userId, string provider);
+
+    /// <summary>
+    /// Deletes all source data for a user
+    /// </summary>
+    /// <param name="userId">User's Supabase UID</param>
+    Task DeleteAllSourceDataAsync(Guid userId);
 }

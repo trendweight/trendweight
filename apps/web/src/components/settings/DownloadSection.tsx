@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { Heading } from "../ui/Heading";
-import { Button } from "../ui/Button";
 import { useProviderLinks } from "../../lib/api/queries";
+import { Button } from "../ui/Button";
+import { Heading } from "../ui/Heading";
 
 export function DownloadSection() {
   const { data: providerLinks } = useProviderLinks();
@@ -21,7 +21,7 @@ export function DownloadSection() {
           other applications.
         </p>
         <div className="mt-4">
-          <Button asChild variant="secondary" size="sm">
+          <Button asChild variant="primary" size="sm">
             <Link to="/download">View / Download Your Data</Link>
           </Button>
         </div>

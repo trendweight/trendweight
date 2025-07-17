@@ -1,15 +1,30 @@
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { ConfirmDialog } from "../ui/ConfirmDialog";
 import { Heading } from "../ui/Heading";
 import { Button } from "../ui/Button";
+import { useDeleteAccount } from "../../lib/api/mutations";
+import { useAuth } from "../../lib/auth/useAuth";
 
 export function DangerZoneSection() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
+  const deleteAccountMutation = useDeleteAccount();
 
-  const handleDeleteAccount = () => {
-    // TODO: Implement account deletion
-    console.log("Account deletion functionality not implemented yet");
-    setShowDeleteConfirm(false);
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccountMutation.mutateAsync();
+
+      // Sign out the user
+      await signOut();
+
+      // Navigate to success page
+      navigate({ to: "/account-deleted" });
+    } catch (error) {
+      console.error("Failed to delete account:", error);
+      // Keep the dialog open to show error state
+    }
   };
 
   return (
@@ -22,14 +37,18 @@ export function DangerZoneSection() {
           weight data from Fitbit or Withings at that time.
         </p>
 
-        <Button type="button" onClick={() => setShowDeleteConfirm(true)} variant="destructive" size="sm">
-          Delete Account
+        <Button type="button" onClick={() => setShowDeleteConfirm(true)} variant="destructive" size="sm" disabled={deleteAccountMutation.isPending}>
+          {deleteAccountMutation.isPending ? "Deleting..." : "Delete Account"}
         </Button>
       </div>
 
       <ConfirmDialog
         open={showDeleteConfirm}
-        onOpenChange={setShowDeleteConfirm}
+        onOpenChange={(open) => {
+          if (!deleteAccountMutation.isPending) {
+            setShowDeleteConfirm(open);
+          }
+        }}
         title="Delete Your Account?"
         description={
           <div className="space-y-2">
@@ -41,9 +60,14 @@ export function DangerZoneSection() {
             </ul>
             <p className="font-semibold">This action cannot be undone.</p>
             <p>If you recreate your account later, you'll need to reconnect your scale to re-download any weight data.</p>
+            {deleteAccountMutation.error && (
+              <p className="text-sm text-red-600">
+                Error: {deleteAccountMutation.error instanceof Error ? deleteAccountMutation.error.message : "Failed to delete account"}
+              </p>
+            )}
           </div>
         }
-        confirmText="Yes, Delete My Account"
+        confirmText={deleteAccountMutation.isPending ? "Deleting..." : "Yes, Delete My Account"}
         destructive
         onConfirm={handleDeleteAccount}
       />

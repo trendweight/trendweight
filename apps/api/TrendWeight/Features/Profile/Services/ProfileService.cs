@@ -5,6 +5,8 @@ using System.Text;
 using TrendWeight.Infrastructure.DataAccess;
 using TrendWeight.Infrastructure.DataAccess.Models;
 using TrendWeight.Features.Profile.Models;
+using TrendWeight.Features.Measurements;
+using TrendWeight.Features.ProviderLinks.Services;
 
 namespace TrendWeight.Features.Profile.Services;
 
@@ -12,11 +14,19 @@ public class ProfileService : IProfileService
 {
     private readonly ISupabaseService _supabaseService;
     private readonly ILogger<ProfileService> _logger;
+    private readonly ISourceDataService _sourceDataService;
+    private readonly IProviderLinkService _providerLinkService;
 
-    public ProfileService(ISupabaseService supabaseService, ILogger<ProfileService> logger)
+    public ProfileService(
+        ISupabaseService supabaseService,
+        ILogger<ProfileService> logger,
+        ISourceDataService sourceDataService,
+        IProviderLinkService providerLinkService)
     {
         _supabaseService = supabaseService;
         _logger = logger;
+        _sourceDataService = sourceDataService;
+        _providerLinkService = providerLinkService;
     }
 
 
@@ -171,5 +181,50 @@ public class ProfileService : IProfileService
         } while (existing != null);
 
         return token;
+    }
+
+    /// <summary>
+    /// Deletes a user account and all associated data
+    /// </summary>
+    /// <param name="userId">The user's Supabase UID</param>
+    /// <returns>True if successful, false otherwise</returns>
+    public async Task<bool> DeleteAccountAsync(Guid userId)
+    {
+        try
+        {
+            _logger.LogInformation("Starting account deletion for user {UserId}", userId);
+
+            // 1. Delete all source data
+            await _sourceDataService.DeleteAllSourceDataAsync(userId);
+            _logger.LogInformation("Deleted all source data for user {UserId}", userId);
+
+            // 2. Delete all provider links
+            await _providerLinkService.DeleteAllProviderLinksAsync(userId);
+            _logger.LogInformation("Deleted all provider links for user {UserId}", userId);
+
+            // 3. Delete the user's profile
+            var profile = await GetByIdAsync(userId);
+            if (profile != null)
+            {
+                await _supabaseService.DeleteAsync<DbProfile>(profile);
+                _logger.LogInformation("Deleted profile for user {UserId}", userId);
+            }
+
+            // 4. Delete the user from Supabase Auth
+            var authDeleted = await _supabaseService.DeleteAuthUserAsync(userId);
+            if (!authDeleted)
+            {
+                _logger.LogError("Failed to delete auth user {UserId}, but other data was deleted", userId);
+                return false;
+            }
+
+            _logger.LogInformation("Successfully completed account deletion for user {UserId}", userId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting account for user {UserId}", userId);
+            return false;
+        }
     }
 }

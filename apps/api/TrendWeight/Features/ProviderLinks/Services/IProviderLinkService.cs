@@ -12,4 +12,5 @@ public interface IProviderLinkService
     Task DeleteAsync(Guid uid, string provider);
     Task RemoveProviderLinkAsync(Guid uid, string provider);
     Task StoreProviderLinkAsync(Guid uid, string provider, Dictionary<string, object> token, string? updateReason = null);
+    Task DeleteAllProviderLinksAsync(Guid uid);
 }

@@ -107,7 +107,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Privacy settings
 - [x] Connect/disconnect providers
 - [x] Delete account UI
-- [ ] Delete account backend
+- [x] Delete account backend
 - [x] Data export functionality (download your data)
 - [x] Complete dashboard sharing UI (regenerate URL, enable/disable sharing)
 

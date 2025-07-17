@@ -1,23 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { Layout } from "../components/Layout";
-import { useSettings } from "../lib/api/queries";
-import { useUpdateProfile } from "../lib/api/mutations";
-import { requireAuth } from "../lib/auth/authGuard";
-import { pageTitle } from "../lib/utils/pageTitle";
-import { SettingsLayout } from "../components/settings/SettingsLayout";
-import { ProfileSection } from "../components/settings/ProfileSection";
-import { GoalSection } from "../components/settings/GoalSection";
 import { AdvancedSection } from "../components/settings/AdvancedSection";
 import { ConnectedAccountsSection } from "../components/settings/ConnectedAccountsSection";
-import { DownloadSection } from "../components/settings/DownloadSection";
-import { SharingSection } from "../components/settings/SharingSection";
 import { DangerZoneSection } from "../components/settings/DangerZoneSection";
-import { useNavigationGuard } from "../lib/hooks/useNavigationGuard";
-import type { SettingsData } from "../lib/core/interfaces";
-import { ensureProfile } from "../lib/loaders/utils";
+import { DownloadSection } from "../components/settings/DownloadSection";
+import { GoalSection } from "../components/settings/GoalSection";
+import { ProfileSection } from "../components/settings/ProfileSection";
+import { SettingsLayout } from "../components/settings/SettingsLayout";
+import { SharingSection } from "../components/settings/SharingSection";
 import { Button } from "../components/ui/Button";
+import { useUpdateProfile } from "../lib/api/mutations";
+import { useSettings } from "../lib/api/queries";
+import { requireAuth } from "../lib/auth/authGuard";
+import type { SettingsData } from "../lib/core/interfaces";
+import { useNavigationGuard } from "../lib/hooks/useNavigationGuard";
+import { ensureProfile } from "../lib/loaders/utils";
+import { pageTitle } from "../lib/utils/pageTitle";
 
 export const Route = createFileRoute("/settings")({
   beforeLoad: requireAuth,
@@ -132,6 +132,11 @@ function SettingsPage() {
             </form>
           </div>
 
+          {/* Sharing Card */}
+          <div className="mb-6 rounded-lg border border-gray-200 bg-white shadow-sm">
+            <SharingSection />
+          </div>
+
           {/* Connected Accounts Card */}
           <div className="mb-6 rounded-lg border border-gray-200 bg-white shadow-sm">
             <ConnectedAccountsSection />
@@ -139,11 +144,6 @@ function SettingsPage() {
 
           {/* Download Card */}
           <DownloadSection />
-
-          {/* Sharing Card */}
-          <div className="mb-6 rounded-lg border border-gray-200 bg-white shadow-sm">
-            <SharingSection />
-          </div>
 
           {/* Danger Zone Card */}
           <div className="rounded-lg border-2 border-red-200 bg-white shadow-sm">

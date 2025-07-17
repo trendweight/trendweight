@@ -118,3 +118,9 @@ export function useGenerateShareToken() {
     },
   });
 }
+
+export function useDeleteAccount() {
+  return useMutation({
+    mutationFn: () => apiRequest("/profile", { method: "DELETE" }),
+  });
+}
