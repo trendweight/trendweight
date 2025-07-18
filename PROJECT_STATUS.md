@@ -44,7 +44,7 @@ This issues tracks the implementation status of TrendWeight migration
 - [x] Touch device navigation improvements
 - [x] Improved proxy header security
 - [x] Initial profile setup
-- [ ] Account migration from legacy site
+- [x] Account migration from legacy site
 
 ### ✅ Database & Data Layer
 
@@ -125,6 +125,7 @@ This issues tracks the implementation status of TrendWeight migration
 
 - [x] All measurements page (implemented as Download Your Data page)
 - [x] Data export (CSV)
+- [ ] Enhanced migration welcome page with feature highlights
 
 ### 🔧 Testing
 
@@ -149,3 +150,46 @@ This issues tracks the implementation status of TrendWeight migration
 - ⚙️ Partially implemented / In progress
 - 🚀 Future enhancement (not MVP)
 - 🐛 Bug fix / Technical debt
+
+## Design Notes
+
+### Migration Page UI Enhancement (Future)
+
+The migration welcome page initially had a more modern design with these elements:
+- Large drop shadow (`shadow-lg`) on the main content card
+- Narrower max width (`max-w-md` instead of `max-w-xl`)
+- More padding (`p-8`) for a spacious feel
+- Centered content with extra vertical padding (`py-12`)
+
+This design looked more modern and polished compared to the current consistent UI. Consider adopting this style app-wide in the future:
+```css
+/* Original migration page styling */
+.card {
+  @apply rounded-lg bg-white p-8 shadow-lg;
+}
+.container {
+  @apply mx-auto max-w-md px-4 py-12;
+}
+```
+
+This would give the entire app a more elevated, card-based design aesthetic.
+
+### Enhanced Migration Welcome Page (Future)
+
+The current migration welcome page is functional but could be enhanced to better communicate the benefits of the new TrendWeight:
+
+- Highlight new features that weren't in classic TrendWeight:
+  - Modern, responsive design that works great on mobile
+  - Real-time syncing with providers
+  - Enhanced privacy controls and sharing options
+  - Faster performance and better reliability
+  - Data export capabilities
+  - Support for body fat %, lean mass, and other metrics
+  
+- Show a visual comparison or feature grid
+- Include screenshots of the new dashboard
+- Add a "What's New" section with recent improvements
+- Consider adding a brief tutorial or onboarding flow
+- Link to documentation or help resources
+
+This would help migrated users understand the value of the new platform and discover features they might not have known about.

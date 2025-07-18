@@ -49,6 +49,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProfileService, ProfileService>();
         services.AddScoped<IProviderLinkService, ProviderLinkService>();
         services.AddScoped<ISourceDataService, SourceDataService>();
+        services.AddScoped<ILegacyDbService, LegacyDbService>();
 
         // Register Withings service
         var withingsConfig = new WithingsConfig();

@@ -33,6 +33,11 @@ export async function ensureProfile(sharingCode?: string): Promise<void> {
     if (!profile) {
       throw redirect({ to: "/initial-setup", replace: true });
     }
+
+    // Check if this is a newly migrated profile
+    if (profile.user?.isNewlyMigrated) {
+      throw redirect({ to: "/migration", replace: true });
+    }
   }
 }
 
@@ -61,5 +66,24 @@ export async function ensureProviderLinks(sharingCode?: string): Promise<void> {
     if (!providerLinks || providerLinks.length === 0) {
       throw redirect({ to: "/link", replace: true });
     }
+  }
+}
+
+/**
+ * Ensures the user is newly migrated, redirecting if not.
+ * Used specifically for the migration welcome page.
+ * @throws Redirect to /dashboard if user is not newly migrated
+ */
+export async function ensureNewlyMigrated(): Promise<void> {
+  const profile = await queryClient.fetchQuery(queryOptions.profile());
+
+  // If no profile exists, redirect to initial setup
+  if (!profile) {
+    throw redirect({ to: "/initial-setup", replace: true });
+  }
+
+  // If user is not newly migrated, redirect to dashboard
+  if (!profile.user?.isNewlyMigrated) {
+    throw redirect({ to: "/dashboard", replace: true });
   }
 }

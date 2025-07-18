@@ -15,4 +15,6 @@ public class ProfileData
     public bool? ShowCalories { get; set; }
     public string? SharingToken { get; set; }
     public bool SharingEnabled { get; set; }
+    public bool IsMigrated { get; set; }
+    public bool IsNewlyMigrated { get; set; }
 }

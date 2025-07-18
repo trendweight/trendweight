@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Security.Claims;
 using TrendWeight.Features.Profile.Models;
 using TrendWeight.Features.Profile.Services;
+using TrendWeight.Features.ProviderLinks.Services;
 using TrendWeight.Infrastructure.DataAccess.Models;
 
 namespace TrendWeight.Features.Profile;
@@ -14,13 +15,19 @@ namespace TrendWeight.Features.Profile;
 public class ProfileController : ControllerBase
 {
     private readonly IProfileService _profileService;
+    private readonly ILegacyDbService _legacyDbService;
+    private readonly IProviderLinkService _providerLinkService;
     private readonly ILogger<ProfileController> _logger;
 
     public ProfileController(
         IProfileService profileService,
+        ILegacyDbService legacyDbService,
+        IProviderLinkService providerLinkService,
         ILogger<ProfileController> logger)
     {
         _profileService = profileService;
+        _legacyDbService = legacyDbService;
+        _providerLinkService = providerLinkService;
         _logger = logger;
     }
 
@@ -45,6 +52,22 @@ public class ProfileController : ControllerBase
             var user = await _profileService.GetByIdAsync(userId);
             if (user == null)
             {
+                // Check for legacy profile migration
+                var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+                if (!string.IsNullOrEmpty(userEmail))
+                {
+                    var legacyProfile = await _legacyDbService.FindProfileByEmailAsync(userEmail);
+                    if (legacyProfile != null)
+                    {
+                        _logger.LogInformation("Migrating legacy profile for email {Email}", userEmail);
+
+                        // Create migrated profile
+                        var migratedProfile = await MigrateLegacyProfileAsync(userId, userEmail, legacyProfile);
+
+                        return BuildProfileResponse(migratedProfile, isMe: true);
+                    }
+                }
+
                 _logger.LogWarning("User document not found for Supabase UID: {UserId}", userId);
                 return NotFound(new { error = "User not found" });
             }
@@ -108,7 +131,9 @@ public class ProfileController : ControllerBase
             UseMetric = user.Profile.UseMetric,
             ShowCalories = user.Profile.ShowCalories,
             SharingToken = user.Profile.SharingToken,
-            SharingEnabled = user.Profile.SharingEnabled
+            SharingEnabled = user.Profile.SharingEnabled,
+            IsMigrated = user.Profile.IsMigrated,
+            IsNewlyMigrated = user.Profile.IsNewlyMigrated
         };
 
         // Return profile data with metadata
@@ -125,7 +150,9 @@ public class ProfileController : ControllerBase
                 dayStartOffset = profileData.DayStartOffset,
                 useMetric = profileData.UseMetric,
                 showCalories = profileData.ShowCalories,
-                sharingEnabled = profileData.SharingEnabled
+                sharingEnabled = profileData.SharingEnabled,
+                isMigrated = profileData.IsMigrated,
+                isNewlyMigrated = profileData.IsNewlyMigrated
             },
             isMe = isMe,
             timestamp = DateTime.UtcNow
@@ -220,6 +247,48 @@ public class ProfileController : ControllerBase
     }
 
     /// <summary>
+    /// Complete the migration process by clearing the IsNewlyMigrated flag
+    /// </summary>
+    /// <returns>Success response</returns>
+    [HttpPost("complete-migration")]
+    public async Task<ActionResult> CompleteMigration()
+    {
+        try
+        {
+            // Get user ID from authenticated user claim
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                _logger.LogWarning("User ID not found in authenticated user claims");
+                return Unauthorized(new { error = "User ID not found" });
+            }
+
+            // Get user from Supabase by UID
+            var user = await _profileService.GetByIdAsync(userId);
+            if (user == null)
+            {
+                _logger.LogWarning("User document not found for Supabase UID: {UserId}", userId);
+                return NotFound(new { error = "User not found" });
+            }
+
+            // Clear the IsNewlyMigrated flag
+            user.Profile.IsNewlyMigrated = false;
+            user.UpdatedAt = DateTime.UtcNow.ToString("o");
+
+            // Save the update
+            await _profileService.UpdateAsync(user);
+
+            _logger.LogInformation("Completed migration for user {UserId}", userId);
+            return Ok(new { success = true });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error completing migration for user");
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
     /// Deletes the user's account and all associated data
     /// </summary>
     /// <returns>Success or error response</returns>
@@ -258,5 +327,60 @@ public class ProfileController : ControllerBase
             _logger.LogError(ex, "Error deleting account");
             return StatusCode(500, new { error = "Internal server error" });
         }
+    }
+
+    /// <summary>
+    /// Migrate a legacy profile to the new system
+    /// </summary>
+    private async Task<DbProfile> MigrateLegacyProfileAsync(string userId, string email, LegacyProfile legacyProfile)
+    {
+        // Create new profile with migrated data
+        var userGuid = Guid.Parse(userId);
+        var profile = new DbProfile
+        {
+            Uid = userGuid,
+            Email = email,
+            Profile = new ProfileData
+            {
+                FirstName = legacyProfile.FirstName,
+                UseMetric = legacyProfile.UseMetric,
+                GoalStart = legacyProfile.StartDate,
+                GoalWeight = legacyProfile.GoalWeight,
+                PlannedPoundsPerWeek = legacyProfile.PlannedPoundsPerWeek,
+                DayStartOffset = legacyProfile.DayStartOffset,
+                ShowCalories = false, // Default value
+                SharingToken = legacyProfile.PrivateUrlKey, // Use existing sharing token
+                SharingEnabled = true, // Always enabled in legacy app
+                IsMigrated = true,
+                IsNewlyMigrated = true
+            },
+            CreatedAt = DateTime.UtcNow.ToString("o"),
+            UpdatedAt = DateTime.UtcNow.ToString("o")
+        };
+
+        // Save the profile
+        profile = await _profileService.CreateAsync(profile);
+
+        // Create provider links if legacy profile has OAuth tokens
+        if (!string.IsNullOrEmpty(legacyProfile.FitbitRefreshToken) && !string.IsNullOrEmpty(legacyProfile.DeviceType))
+        {
+            var providerName = legacyProfile.DeviceType.ToLowerInvariant();
+
+            // Create an expired token that will trigger refresh on first use
+            var expiredToken = new Dictionary<string, object>
+            {
+                ["refresh_token"] = legacyProfile.FitbitRefreshToken,
+                ["access_token"] = "",
+                ["token_type"] = "Bearer",
+                ["scope"] = "user.metrics",
+                ["received_at"] = 0L, // Unix timestamp 0 (1970-01-01)
+                ["expires_in"] = 3600 // 1 hour (already expired since received_at is 0)
+            };
+
+            await _providerLinkService.StoreProviderLinkAsync(userGuid, providerName, expiredToken);
+            _logger.LogInformation("Migrated {Provider} OAuth token for user {UserId}", providerName, userId);
+        }
+
+        return profile;
     }
 }
