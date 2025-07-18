@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.0.0-alpha.6](https://github.com/ervwalter/trendweight/compare/v2.0.0-alpha.5...v2.0.0-alpha.6) (2025-07-18)
+
+
+### Features
+
+* add Cloudflare Turnstile CAPTCHA to authentication ([9f6c6ae](https://github.com/ervwalter/trendweight/commit/9f6c6ae58683f8dd22a57755dde2d2cccacc9450))
+* add download page for viewing and exporting scale readings ([993819c](https://github.com/ervwalter/trendweight/commit/993819c438de63463ef517daa23cd25f76a48616))
+* implement complete account deletion functionality ([1f14a10](https://github.com/ervwalter/trendweight/commit/1f14a104c87bb22693c9b447cc190093a6aee59c))
+* implement interactive explore mode for dashboard charts ([dcb7c31](https://github.com/ervwalter/trendweight/commit/dcb7c317ed0b63a8555d2e2639550607c126d6cd))
+* implement legacy user migration from classic TrendWeight ([22b77f5](https://github.com/ervwalter/trendweight/commit/22b77f57b86c356f2f4c2b4f828fe2040984207f))
+* implement secure dashboard sharing functionality ([7d30057](https://github.com/ervwalter/trendweight/commit/7d30057c2b3db6816ad283259a16048399497b7d))
+
+
+### Bug Fixes
+
+* improve OAuth callback error handling and make token exchange idempotent ([fd61711](https://github.com/ervwalter/trendweight/commit/fd61711aecc478772923b5d0304ac268897caa98))
+
+
+### Documentation
+
+* update project status to reflect completed data export feature ([993819c](https://github.com/ervwalter/trendweight/commit/993819c438de63463ef517daa23cd25f76a48616))
+
+
+### Code Refactoring
+
+* simplify footer version link to always use /build page ([9eecd60](https://github.com/ervwalter/trendweight/commit/9eecd6053bf3cbcceaae4ce04bf30e76b2a32c6b))
+* unify toggle button components and move to ui folder ([993819c](https://github.com/ervwalter/trendweight/commit/993819c438de63463ef517daa23cd25f76a48616))
+
 ## [2.0.0-alpha.5](https://github.com/ervwalter/trendweight/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2025-07-15)
 
 
