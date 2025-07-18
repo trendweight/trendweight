@@ -62,3 +62,19 @@ export interface MeasurementsResponse {
   providerStatus: Record<string, ProviderSyncStatus>;
   isMe?: boolean;
 }
+
+// API error response with error codes
+export interface ApiErrorResponse {
+  error: string;
+  errorCode?: string;
+  isRetryable?: boolean;
+}
+
+export const ErrorCodes = {
+  RATE_LIMITED: "RATE_LIMITED",
+  UNAUTHORIZED: "UNAUTHORIZED",
+  INVALID_CODE: "INVALID_CODE",
+  FORBIDDEN: "FORBIDDEN",
+  SERVICE_UNAVAILABLE: "SERVICE_UNAVAILABLE",
+  UNEXPECTED_ERROR: "UNEXPECTED_ERROR",
+} as const;

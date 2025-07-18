@@ -51,10 +51,24 @@ public abstract class ProviderServiceBase : IProviderService
             Logger.LogDebug("Successfully stored {Provider} link for user {UserId}", ProviderName, userId);
             return true;
         }
+        catch (ProviderException ex) when (ex.ErrorCode == "DUPLICATE_REQUEST")
+        {
+            // This happens when the same OAuth code is exchanged twice (e.g., React Strict Mode)
+            // Check if we already have a valid token for this user
+            var existingLink = await ProviderLinkService.GetProviderLinkAsync(userId, ProviderName);
+            if (existingLink != null)
+            {
+                Logger.LogInformation("Duplicate token exchange request for {Provider} user {UserId}, but valid token already exists", ProviderName, userId);
+                return true;
+            }
+
+            // If no existing link, this is a real error
+            throw;
+        }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Failed to exchange authorization code for {Provider}", ProviderName);
-            return false;
+            throw;
         }
     }
 

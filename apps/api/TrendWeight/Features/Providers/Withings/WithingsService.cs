@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Net;
 using System.Text.Json;
 using System.Web;
 using TrendWeight.Features.Measurements;
@@ -76,7 +77,18 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         {
             Logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}",
                 response.StatusCode, response.ReasonPhrase);
-            throw new HttpRequestException($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
+
+            var (message, errorCode, isRetryable) = response.StatusCode switch
+            {
+                HttpStatusCode.TooManyRequests => ("Withings is currently experiencing high traffic. Please try again in a few minutes.", "RATE_LIMITED", true),
+                HttpStatusCode.Unauthorized => ("Authorization failed. Please try connecting your Withings account again.", "UNAUTHORIZED", false),
+                HttpStatusCode.BadRequest => ("Invalid authorization code. Please try connecting your Withings account again.", "INVALID_CODE", false),
+                HttpStatusCode.Forbidden => ("Access denied by Withings. Please check your account permissions.", "FORBIDDEN", false),
+                HttpStatusCode.ServiceUnavailable => ("Withings services are temporarily unavailable. Please try again later.", "SERVICE_UNAVAILABLE", true),
+                _ => ($"Unable to connect to Withings (Error: {response.StatusCode}). Please try again later.", "UNEXPECTED_ERROR", false)
+            };
+
+            throw new ProviderException(message, response.StatusCode, errorCode, isRetryable);
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
@@ -97,6 +109,18 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         {
             Logger.LogError("Withings API error: {Status} {Error}",
                 withingsResponse?.Status, withingsResponse?.Error);
+
+            // Handle "Same arguments in less than 10 seconds" error (status 601)
+            // This happens when the same OAuth code is used twice within 10 seconds
+            if (withingsResponse?.Status == 601)
+            {
+                throw new ProviderException(
+                    "Request was already processed. If you're seeing this error, the connection may have already succeeded. Please check your account settings.",
+                    HttpStatusCode.Conflict,
+                    "DUPLICATE_REQUEST",
+                    false // Not retryable - the request was already processed
+                );
+            }
 
             // Check for auth-related errors
             // Withings uses status 401 for invalid token
@@ -183,7 +207,18 @@ public class WithingsService : ProviderServiceBase, IWithingsService
         {
             Logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}",
                 response.StatusCode, response.ReasonPhrase);
-            throw new HttpRequestException($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
+
+            var (message, errorCode, isRetryable) = response.StatusCode switch
+            {
+                HttpStatusCode.TooManyRequests => ("Withings is currently experiencing high traffic. Please try again in a few minutes.", "RATE_LIMITED", true),
+                HttpStatusCode.Unauthorized => ("Authorization failed. Please try connecting your Withings account again.", "UNAUTHORIZED", false),
+                HttpStatusCode.BadRequest => ("Invalid authorization code. Please try connecting your Withings account again.", "INVALID_CODE", false),
+                HttpStatusCode.Forbidden => ("Access denied by Withings. Please check your account permissions.", "FORBIDDEN", false),
+                HttpStatusCode.ServiceUnavailable => ("Withings services are temporarily unavailable. Please try again later.", "SERVICE_UNAVAILABLE", true),
+                _ => ($"Unable to connect to Withings (Error: {response.StatusCode}). Please try again later.", "UNEXPECTED_ERROR", false)
+            };
+
+            throw new ProviderException(message, response.StatusCode, errorCode, isRetryable);
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
@@ -287,7 +322,18 @@ public class WithingsService : ProviderServiceBase, IWithingsService
             var errorContent = await response.Content.ReadAsStringAsync();
             Logger.LogError("Withings HTTP error: {StatusCode} {ReasonPhrase}. Response content: {Content}",
                 response.StatusCode, response.ReasonPhrase, errorContent);
-            throw new HttpRequestException($"Withings HTTP error: {response.StatusCode} {response.ReasonPhrase}");
+
+            var (message, errorCode, isRetryable) = response.StatusCode switch
+            {
+                HttpStatusCode.TooManyRequests => ("Withings is currently experiencing high traffic. Please try again in a few minutes.", "RATE_LIMITED", true),
+                HttpStatusCode.Unauthorized => ("Authorization failed. Please try connecting your Withings account again.", "UNAUTHORIZED", false),
+                HttpStatusCode.BadRequest => ("Invalid request to Withings. Please try again.", "INVALID_CODE", false),
+                HttpStatusCode.Forbidden => ("Access denied by Withings. Please check your account permissions.", "FORBIDDEN", false),
+                HttpStatusCode.ServiceUnavailable => ("Withings services are temporarily unavailable. Please try again later.", "SERVICE_UNAVAILABLE", true),
+                _ => ($"Unable to connect to Withings (Error: {response.StatusCode}). Please try again later.", "UNEXPECTED_ERROR", false)
+            };
+
+            throw new ProviderException(message, response.StatusCode, errorCode, isRetryable);
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();

@@ -87,7 +87,18 @@ public class FitbitService : ProviderServiceBase, IFitbitService
             var errorContent = await response.Content.ReadAsStringAsync();
             Logger.LogError("Fitbit token exchange failed: {StatusCode} {Content}",
                 response.StatusCode, errorContent);
-            throw new HttpRequestException($"Fitbit token exchange failed: {response.StatusCode}");
+
+            var (message, errorCode, isRetryable) = response.StatusCode switch
+            {
+                HttpStatusCode.TooManyRequests => ("Fitbit is currently experiencing high traffic. Please try again in a few minutes.", "RATE_LIMITED", true),
+                HttpStatusCode.Unauthorized => ("Authorization failed. Please try connecting your Fitbit account again.", "UNAUTHORIZED", false),
+                HttpStatusCode.BadRequest => ("Invalid authorization code. Please try connecting your Fitbit account again.", "INVALID_CODE", false),
+                HttpStatusCode.Forbidden => ("Access denied by Fitbit. Please check your account permissions.", "FORBIDDEN", false),
+                HttpStatusCode.ServiceUnavailable => ("Fitbit services are temporarily unavailable. Please try again later.", "SERVICE_UNAVAILABLE", true),
+                _ => ($"Unable to connect to Fitbit (Error: {response.StatusCode}). Please try again later.", "UNEXPECTED_ERROR", false)
+            };
+
+            throw new ProviderException(message, response.StatusCode, errorCode, isRetryable);
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();

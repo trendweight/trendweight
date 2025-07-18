@@ -2,10 +2,14 @@ import { supabase } from "../supabase/client";
 
 export class ApiError extends Error {
   status: number;
+  errorCode?: string;
+  isRetryable?: boolean;
 
-  constructor(status: number, message: string) {
+  constructor(status: number, message: string, errorCode?: string, isRetryable?: boolean) {
     super(message);
     this.status = status;
+    this.errorCode = errorCode;
+    this.isRetryable = isRetryable;
     this.name = "ApiError";
   }
 }
@@ -37,7 +41,27 @@ export async function apiRequest<T>(path: string, options?: RequestInit): Promis
   });
 
   if (!response.ok) {
-    throw new ApiError(response.status, `API request failed: ${response.statusText}`);
+    // Try to parse error response
+    let errorMessage = `API request failed: ${response.statusText}`;
+    let errorCode: string | undefined;
+    let isRetryable: boolean | undefined;
+
+    try {
+      const errorData = await response.json();
+      if (errorData.error) {
+        errorMessage = errorData.error;
+      }
+      if (errorData.errorCode) {
+        errorCode = errorData.errorCode;
+      }
+      if (errorData.isRetryable !== undefined) {
+        isRetryable = errorData.isRetryable;
+      }
+    } catch {
+      // Ignore JSON parse errors, use default message
+    }
+
+    throw new ApiError(response.status, errorMessage, errorCode, isRetryable);
   }
 
   return response.json();

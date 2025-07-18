@@ -124,3 +124,44 @@ export function useDeleteAccount() {
     mutationFn: () => apiRequest("/profile", { method: "DELETE" }),
   });
 }
+
+interface ExchangeTokenRequest {
+  code: string;
+}
+
+interface ExchangeTokenResponse {
+  success: boolean;
+  message: string;
+}
+
+export function useExchangeFitbitToken() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ code }: ExchangeTokenRequest) =>
+      apiRequest<ExchangeTokenResponse>("/fitbit/exchange-token", {
+        method: "POST",
+        body: JSON.stringify({ code }),
+      }),
+    onSuccess: () => {
+      // Invalidate provider links to show the new connection
+      queryClient.invalidateQueries({ queryKey: queryKeys.providerLinks() });
+    },
+  });
+}
+
+export function useExchangeWithingsToken() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ code }: ExchangeTokenRequest) =>
+      apiRequest<ExchangeTokenResponse>("/withings/exchange-token", {
+        method: "POST",
+        body: JSON.stringify({ code }),
+      }),
+    onSuccess: () => {
+      // Invalidate provider links to show the new connection
+      queryClient.invalidateQueries({ queryKey: queryKeys.providerLinks() });
+    },
+  });
+}

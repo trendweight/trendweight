@@ -4,6 +4,8 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using TrendWeight.Features.Common;
+using TrendWeight.Features.Common.Models;
+using TrendWeight.Features.Providers.Exceptions;
 
 namespace TrendWeight.Features.Providers.Fitbit;
 
@@ -67,7 +69,7 @@ public class FitbitLinkController : BaseAuthController
         var state = tokenHandler.WriteToken(token);
 
         // Get callback URL - ForwardedHeaders middleware has already updated Request.Scheme and Request.Host
-        var callbackUrl = $"{Request.Scheme}://{Request.Host}/api/fitbit/callback";
+        var callbackUrl = $"{Request.Scheme}://{Request.Host}/oauth/fitbit/callback";
 
         _logger.LogInformation("Using callback URL: {CallbackUrl}", callbackUrl);
 
@@ -77,5 +79,70 @@ public class FitbitLinkController : BaseAuthController
         _logger.LogInformation("Generated authorization URL: {AuthorizationUrl}", authUrl);
 
         return Ok(new { url = authUrl });
+    }
+
+    /// <summary>
+    /// Exchange authorization code for access token
+    /// </summary>
+    [HttpPost("exchange-token")]
+    public async Task<IActionResult> ExchangeToken([FromBody] ExchangeTokenRequest request)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(request.Code))
+            {
+                return BadRequest(new { error = "Authorization code is required" });
+            }
+
+            // Build the redirect URI that was used in the authorization request
+            // ForwardedHeaders middleware has already updated Request.Scheme and Request.Host
+            var redirectUri = $"{Request.Scheme}://{Request.Host}/oauth/fitbit/callback";
+
+            _logger.LogDebug("Exchanging Fitbit code for token with redirect URI: {RedirectUri}", redirectUri);
+
+            var success = await _fitbitService.ExchangeAuthorizationCodeAsync(request.Code, redirectUri, Guid.Parse(UserId));
+
+            if (success)
+            {
+                return Ok(new { success = true, message = "Fitbit account successfully connected" });
+            }
+
+            return BadRequest(new { error = "Failed to complete authorization" });
+        }
+        catch (ProviderException ex)
+        {
+            _logger.LogError(ex, "Provider error during Fitbit token exchange");
+
+            var response = new ApiErrorResponse
+            {
+                Error = ex.Message,
+                ErrorCode = ex.ErrorCode,
+                IsRetryable = ex.IsRetryable
+            };
+
+            // Return the appropriate status code based on the provider's response
+            return StatusCode((int)ex.StatusCode, response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error during Fitbit token exchange");
+            return StatusCode(500, new ApiErrorResponse
+            {
+                Error = "An unexpected error occurred. Please try again.",
+                ErrorCode = ErrorCodes.UnexpectedError,
+                IsRetryable = false
+            });
+        }
+    }
+
+    /// <summary>
+    /// Request model for token exchange
+    /// </summary>
+    public class ExchangeTokenRequest
+    {
+        /// <summary>
+        /// Authorization code from OAuth provider
+        /// </summary>
+        public string Code { get; set; } = string.Empty;
     }
 }

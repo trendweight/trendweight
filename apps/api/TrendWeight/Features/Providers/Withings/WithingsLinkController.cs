@@ -1,9 +1,11 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using TrendWeight.Features.Common;
+using TrendWeight.Features.Common.Models;
+using TrendWeight.Features.Providers.Exceptions;
 using TrendWeight.Features.Providers.Models;
 
 namespace TrendWeight.Features.Providers.Withings;
@@ -13,8 +15,7 @@ namespace TrendWeight.Features.Providers.Withings;
 /// </summary>
 [ApiController]
 [Route("api/withings")]
-[Authorize]
-public class WithingsLinkController : ControllerBase
+public class WithingsLinkController : BaseAuthController
 {
     private readonly IWithingsService _withingsService;
     private readonly IConfiguration _configuration;
@@ -39,12 +40,6 @@ public class WithingsLinkController : ControllerBase
     {
         try
         {
-            // Get Supabase UID from JWT
-            var supabaseUid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(supabaseUid))
-            {
-                return Unauthorized(new { error = "User ID not found in token" });
-            }
 
             // Get JWT signing key
             var jwtSigningKey = _configuration["Jwt:SigningKey"];
@@ -57,7 +52,7 @@ public class WithingsLinkController : ControllerBase
             // Create OAuth state
             var state = new OAuthState
             {
-                Uid = supabaseUid,
+                Uid = UserId,
                 Reason = "link"
             };
 
@@ -81,7 +76,7 @@ public class WithingsLinkController : ControllerBase
             var signedState = tokenHandler.WriteToken(token);
 
             // Get callback URL - ForwardedHeaders middleware has already updated Request.Scheme and Request.Host
-            var callbackUrl = $"{Request.Scheme}://{Request.Host}/api/withings/callback";
+            var callbackUrl = $"{Request.Scheme}://{Request.Host}/oauth/withings/callback";
 
             _logger.LogInformation("Using callback URL: {CallbackUrl}", callbackUrl);
 
@@ -101,5 +96,70 @@ public class WithingsLinkController : ControllerBase
             _logger.LogError(ex, "Error generating Withings authorization URL");
             return StatusCode(500, new { error = "Internal server error" });
         }
+    }
+
+    /// <summary>
+    /// Exchange authorization code for access token
+    /// </summary>
+    [HttpPost("exchange-token")]
+    public async Task<IActionResult> ExchangeToken([FromBody] ExchangeTokenRequest request)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(request.Code))
+            {
+                return BadRequest(new { error = "Authorization code is required" });
+            }
+
+            // Build the redirect URI that was used in the authorization request
+            // ForwardedHeaders middleware has already updated Request.Scheme and Request.Host
+            var redirectUri = $"{Request.Scheme}://{Request.Host}/oauth/withings/callback";
+
+            _logger.LogDebug("Exchanging Withings code for token with redirect URI: {RedirectUri}", redirectUri);
+
+            var success = await _withingsService.ExchangeAuthorizationCodeAsync(request.Code, redirectUri, Guid.Parse(UserId));
+
+            if (success)
+            {
+                return Ok(new { success = true, message = "Withings account successfully connected" });
+            }
+
+            return BadRequest(new { error = "Failed to complete authorization" });
+        }
+        catch (ProviderException ex)
+        {
+            _logger.LogError(ex, "Provider error during Withings token exchange");
+
+            var response = new ApiErrorResponse
+            {
+                Error = ex.Message,
+                ErrorCode = ex.ErrorCode,
+                IsRetryable = ex.IsRetryable
+            };
+
+            // Return the appropriate status code based on the provider's response
+            return StatusCode((int)ex.StatusCode, response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error during Withings token exchange");
+            return StatusCode(500, new ApiErrorResponse
+            {
+                Error = "An unexpected error occurred. Please try again.",
+                ErrorCode = ErrorCodes.UnexpectedError,
+                IsRetryable = false
+            });
+        }
+    }
+
+    /// <summary>
+    /// Request model for token exchange
+    /// </summary>
+    public class ExchangeTokenRequest
+    {
+        /// <summary>
+        /// Authorization code from OAuth provider
+        /// </summary>
+        public string Code { get; set; } = string.Empty;
     }
 }
